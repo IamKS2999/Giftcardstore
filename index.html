@@ -38,9 +38,17 @@ body {
     line-height: 1.5;
 }
 
+body.modal-open {
+    overflow: hidden;
+}
+
 button,
 input {
     font: inherit;
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
 }
 
 
@@ -53,12 +61,12 @@ header {
     top: 0;
     z-index: 50;
 
-    background: rgba(255,255,255,0.92);
+    background: rgba(255,255,255,0.94);
     backdrop-filter: blur(16px);
 
     border-bottom: 1px solid #ebe9f4;
 
-    padding: 16px 7%;
+    padding: 15px 7%;
 
     display: flex;
     justify-content: space-between;
@@ -69,14 +77,17 @@ header {
     font-size: 23px;
     font-weight: 800;
 
-    background: linear-gradient(
-        135deg,
-        #7c3aed,
-        #2563eb
-    );
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #2563eb
+        );
 
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+
+    cursor: pointer;
 }
 
 nav {
@@ -85,40 +96,68 @@ nav {
 }
 
 nav a {
-    margin-left: 28px;
+    margin-left: 25px;
 
     text-decoration: none;
     color: #504d62;
 
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 650;
 }
 
 nav a:hover {
     color: #6d28d9;
 }
 
+.header-account {
+    margin-left: 12px;
+}
+
 .login,
-.orders-button {
+.orders-button,
+.account-button {
     border: none;
-    padding: 11px 17px;
+
+    padding: 10px 15px;
 
     border-radius: 10px;
 
-    font-weight: 700;
-    cursor: pointer;
+    font-weight: 750;
 
-    margin-left: 14px;
+    cursor: pointer;
 }
 
 .login {
     background: #17152b;
     color: white;
+
+    margin-left: 12px;
 }
 
 .orders-button {
     background: #eee9ff;
     color: #6d28d9;
+
+    margin-left: 12px;
+}
+
+.account-button {
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #2563eb
+        );
+
+    color: white;
+
+    margin-left: 12px;
+}
+
+.account-button:hover,
+.login:hover,
+.orders-button:hover {
+    transform: translateY(-1px);
 }
 
 
@@ -372,12 +411,14 @@ nav a:hover {
 }
 
 
-/* SEARCH */
+/* =====================================================
+   SEARCH
+===================================================== */
 
 .search-wrap {
     position: relative;
 
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .search-icon {
@@ -389,6 +430,8 @@ nav a:hover {
     transform: translateY(-50%);
 
     color: #918ba3;
+
+    pointer-events: none;
 }
 
 .search {
@@ -418,7 +461,9 @@ nav a:hover {
 }
 
 
-/* CATEGORIES */
+/* =====================================================
+   CATEGORIES
+===================================================== */
 
 .categories {
     display: flex;
@@ -427,7 +472,7 @@ nav a:hover {
 
     overflow-x: auto;
 
-    padding: 3px 0 15px;
+    padding: 3px 0 18px;
 
     scrollbar-width: none;
 }
@@ -507,6 +552,8 @@ nav a:hover {
     transition:
         transform 0.22s,
         box-shadow 0.22s;
+
+    animation: cardAppear 0.3s ease;
 }
 
 .card:hover {
@@ -514,6 +561,20 @@ nav a:hover {
 
     box-shadow:
         0 18px 45px rgba(40,25,80,0.10);
+}
+
+@keyframes cardAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
 }
 
 .brand-box {
@@ -625,9 +686,21 @@ nav a:hover {
     transform: translateY(-1px);
 }
 
+.no-products {
+    display: none;
+
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    padding: 45px 20px;
+
+    color: #777287;
+}
+
 
 /* =====================================================
-   OVERLAYS
+   GENERAL OVERLAY
 ===================================================== */
 
 .overlay {
@@ -655,7 +728,7 @@ nav a:hover {
 
     width: 100%;
 
-    max-width: 450px;
+    max-width: 470px;
 
     max-height: 90vh;
 
@@ -670,6 +743,10 @@ nav a:hover {
 
     animation:
         panelIn 0.2s ease-out;
+}
+
+.panel.large {
+    max-width: 700px;
 }
 
 @keyframes panelIn {
@@ -717,6 +794,10 @@ nav a:hover {
     font-size: 21px;
 
     cursor: pointer;
+}
+
+.close:hover {
+    background: #e9e1ff;
 }
 
 
@@ -785,7 +866,9 @@ nav a:hover {
 }
 
 
-/* FIXED VALUES */
+/* =====================================================
+   FIXED VALUES
+===================================================== */
 
 .fixed-values {
     display: grid;
@@ -825,7 +908,9 @@ nav a:hover {
 }
 
 
-/* CUSTOM */
+/* =====================================================
+   CUSTOM
+===================================================== */
 
 .custom-area {
     display: none;
@@ -861,7 +946,9 @@ nav a:hover {
 }
 
 
-/* PRICE PREVIEW */
+/* =====================================================
+   PRICE PREVIEW
+===================================================== */
 
 .price-preview {
     background:
@@ -906,53 +993,6 @@ nav a:hover {
     color: #251c4f;
 }
 
-
-/* =====================================================
-   ORDER SUMMARY
-===================================================== */
-
-.order-brand {
-    color: #7c3aed;
-
-    font-size: 14px;
-
-    font-weight: 800;
-}
-
-.order-value {
-    font-size: 27px;
-
-    font-weight: 800;
-
-    margin: 5px 0 20px;
-}
-
-.order-row {
-    display: flex;
-
-    justify-content: space-between;
-
-    padding: 13px 0;
-
-    border-bottom: 1px solid #eeeaf4;
-
-    color: #686276;
-}
-
-.order-row span:last-child {
-    color: #272139;
-
-    font-weight: 650;
-}
-
-.total {
-    font-size: 20px;
-
-    font-weight: 800;
-
-    color: #251c4f !important;
-}
-
 .continue,
 .confirm {
     width: 100%;
@@ -979,6 +1019,57 @@ nav a:hover {
     margin-top: 15px;
 
     cursor: pointer;
+}
+
+
+/* =====================================================
+   ORDER SUMMARY
+===================================================== */
+
+.order-brand {
+    color: #7c3aed;
+
+    font-size: 14px;
+
+    font-weight: 800;
+}
+
+.order-value {
+    font-size: 27px;
+
+    font-weight: 800;
+
+    margin: 5px 0 20px;
+}
+
+.order-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 13px 0;
+
+    border-bottom: 1px solid #eeeaf4;
+
+    color: #686276;
+}
+
+.order-row span:last-child {
+    color: #272139;
+
+    font-weight: 650;
+
+    text-align: right;
+}
+
+.total {
+    font-size: 20px;
+
+    font-weight: 800;
+
+    color: #251c4f !important;
 }
 
 
@@ -1032,7 +1123,8 @@ label {
     margin-bottom: 8px;
 }
 
-.email {
+.email,
+.account-input {
     width: 100%;
 
     padding: 14px;
@@ -1044,31 +1136,36 @@ label {
     font-size: 16px;
 
     outline: none;
+
+    background: white;
 }
 
-.email:focus {
+.email:focus,
+.account-input:focus {
     border-color: #8b5cf6;
 
     box-shadow:
         0 0 0 4px rgba(124,58,237,0.08);
 }
 
-.email.error {
+.email.error,
+.account-input.error {
     border-color: #ef4444;
 
     background: #fff8f8;
 }
 
-.email-error {
+.email-error,
+.account-error {
     display: none;
 
     color: #dc2626;
 
     font-size: 12px;
 
-    margin-top: -12px;
+    margin-top: 7px;
 
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .note {
@@ -1136,11 +1233,195 @@ label {
     border-radius: 8px;
 
     margin-top: 8px;
+
+    font-weight: 750;
 }
 
 
 /* =====================================================
-   MY ORDERS
+   ACCOUNT
+===================================================== */
+
+.account-intro {
+    background:
+        linear-gradient(
+            135deg,
+            #f7f3ff,
+            #f0f6ff
+        );
+
+    border: 1px solid #e6e0f7;
+
+    border-radius: 15px;
+
+    padding: 17px;
+
+    margin-bottom: 20px;
+}
+
+.account-intro strong {
+    display: block;
+
+    font-size: 18px;
+
+    color: #251c4f;
+}
+
+.account-intro span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #777287;
+
+    font-size: 13px;
+
+    word-break: break-word;
+}
+
+.form-group {
+    margin-bottom: 17px;
+}
+
+.form-group label {
+    margin-bottom: 7px;
+}
+
+.form-note {
+    font-size: 12px;
+
+    color: #858091;
+
+    line-height: 1.5;
+
+    margin-top: 10px;
+}
+
+.logout-button {
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 13px;
+
+    border-radius: 10px;
+
+    border: 1px solid #f0caca;
+
+    background: #fff7f7;
+
+    color: #c62828;
+
+    font-weight: 750;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+.dashboard-welcome {
+    margin-bottom: 20px;
+}
+
+.dashboard-welcome small {
+    color: #7c3aed;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+.dashboard-welcome h3 {
+    font-size: 27px;
+
+    margin-top: 3px;
+}
+
+.dashboard-welcome p {
+    color: #777287;
+
+    font-size: 14px;
+
+    margin-top: 3px;
+}
+
+.stats-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin-bottom: 22px;
+}
+
+.stat-card {
+    background: #faf9ff;
+
+    border: 1px solid #e8e3f5;
+
+    border-radius: 14px;
+
+    padding: 14px;
+
+    text-align: center;
+}
+
+.stat-card strong {
+    display: block;
+
+    font-size: 20px;
+
+    color: #251c4f;
+}
+
+.stat-card span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #858091;
+
+    font-size: 11px;
+}
+
+.dashboard-section-title {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 11px;
+}
+
+.dashboard-section-title h4 {
+    font-size: 16px;
+}
+
+.text-button {
+    border: none;
+
+    background: transparent;
+
+    color: #6d28d9;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   ORDERS
 ===================================================== */
 
 .empty-orders {
@@ -1181,6 +1462,8 @@ label {
 
     align-items: center;
 
+    gap: 10px;
+
     margin-bottom: 12px;
 }
 
@@ -1204,6 +1487,8 @@ label {
     font-size: 11px;
 
     font-weight: 800;
+
+    white-space: nowrap;
 }
 
 .order-card strong {
@@ -1215,6 +1500,8 @@ label {
 
     justify-content: space-between;
 
+    gap: 15px;
+
     margin-top: 9px;
 
     color: #656073;
@@ -1222,10 +1509,117 @@ label {
     font-size: 13px;
 }
 
+.order-card-row span:last-child {
+    text-align: right;
+
+    color: #363143;
+}
+
 .order-id {
     font-size: 12px;
 
-    color: #80798e;
+    color: #80798e !important;
+
+    word-break: break-all;
+}
+
+.order-action {
+    width: 100%;
+
+    margin-top: 13px;
+
+    padding: 10px;
+
+    border: 1px solid #ddd5f2;
+
+    background: white;
+
+    color: #6d28d9;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 750;
+
+    cursor: pointer;
+}
+
+.order-action:hover {
+    background: #f6f2ff;
+}
+
+
+/* =====================================================
+   ORDER DETAIL
+===================================================== */
+
+.detail-brand {
+    color: #7c3aed;
+
+    font-weight: 800;
+
+    font-size: 14px;
+}
+
+.detail-title {
+    font-size: 27px;
+
+    font-weight: 800;
+
+    margin: 4px 0 20px;
+}
+
+.detail-status {
+    display: inline-block;
+
+    background: #dcfce8;
+
+    color: #15803d;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    margin-bottom: 18px;
+}
+
+.detail-box {
+    background: #faf9ff;
+
+    border: 1px solid #e7e1f2;
+
+    border-radius: 14px;
+
+    padding: 15px;
+
+    margin-bottom: 12px;
+}
+
+.detail-box-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 8px 0;
+
+    color: #6d6878;
+
+    font-size: 13px;
+}
+
+.detail-box-row strong {
+    color: #282238;
+
+    text-align: right;
+
+    word-break: break-word;
 }
 
 
@@ -1238,7 +1632,7 @@ footer {
 
     color: #aaa4b7;
 
-    padding: 38px 7%;
+    padding: 45px 7%;
 
     text-align: center;
 
@@ -1259,6 +1653,26 @@ footer p {
     font-size: 13px;
 }
 
+.footer-links {
+    margin-top: 17px;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 20px;
+
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: #c7c2d2;
+
+    text-decoration: none;
+
+    font-size: 12px;
+}
+
 
 /* =====================================================
    MOBILE
@@ -1267,7 +1681,7 @@ footer p {
 @media (max-width:700px) {
 
     header {
-        padding: 14px 5%;
+        padding: 13px 5%;
     }
 
     nav a,
@@ -1279,6 +1693,24 @@ footer p {
         display: block;
 
         margin-left: 0;
+
+        padding: 10px 12px;
+    }
+
+    .account-button {
+        display: block;
+
+        margin-left: 7px;
+
+        padding: 10px 12px;
+
+        max-width: 120px;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
     }
 
     .hero {
@@ -1317,6 +1749,26 @@ footer p {
         padding: 23px;
 
         border-radius: 21px;
+
+        max-height: 92vh;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+
+        gap: 7px;
+    }
+
+    .stat-card {
+        padding: 11px 5px;
+    }
+
+    .stat-card strong {
+        font-size: 17px;
+    }
+
+    .stat-card span {
+        font-size: 10px;
     }
 
 }
@@ -1335,9 +1787,13 @@ footer p {
 
 <header>
 
-<div class="logo">
+<div
+class="logo"
+onclick="scrollToStore()"
+>
 GiftCardStore
 </div>
+
 
 <nav>
 
@@ -1353,6 +1809,7 @@ Gift Cards
 How It Works
 </a>
 
+
 <button
 class="orders-button"
 onclick="openOrders()"
@@ -1360,8 +1817,23 @@ onclick="openOrders()"
 My Orders
 </button>
 
-<button class="login">
+
+<button
+class="login"
+id="loginButton"
+onclick="openAccount()"
+>
 Login
+</button>
+
+
+<button
+class="account-button"
+id="accountButton"
+onclick="openDashboard()"
+style="display:none;"
+>
+Account
 </button>
 
 </nav>
@@ -1470,7 +1942,6 @@ class="products"
 id="products"
 >
 
-
 <div class="section-heading">
 
 <small>
@@ -1500,269 +1971,40 @@ class="search"
 id="search"
 type="text"
 placeholder="Search gift cards..."
-onkeyup="searchCards()"
+oninput="renderProducts()"
 >
 
 </div>
 
 
 
-<div class="categories">
-
-<button class="category active">
-All
-</button>
-
-<button class="category">
-Shopping
-</button>
-
-<button class="category">
-Fashion
-</button>
-
-<button class="category">
-Food
-</button>
-
-<button class="category">
-Electronics
-</button>
-
-<button class="category">
-Entertainment
-</button>
-
-</div>
-
-
-
-<div class="cards">
-
-
-<!-- AMAZON -->
-
-<div class="card">
-
-<div class="brand-box">
-
-<img
-class="brand-logo"
-src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Amazon_2024.svg"
-alt="Amazon logo"
+<div
+class="categories"
+id="categories"
 >
-
 </div>
 
-<div class="brand">
-Amazon
+
+
+<div
+class="cards"
+id="productGrid"
+>
 </div>
+
+
+<div
+class="no-products"
+id="noProducts"
+>
 
 <h3>
-₹1,000 Gift Card
+No gift cards found
 </h3>
 
-<p class="old-price">
-₹1,000
+<p>
+Try another brand, category or search term.
 </p>
-
-<p class="price">
-₹970
-</p>
-
-<span class="discount">
-Save 3%
-</span>
-
-<button
-class="buy"
-onclick="openProduct('Amazon')"
->
-Select Card
-</button>
-
-</div>
-
-
-
-<!-- FLIPKART -->
-
-<div class="card">
-
-<div class="brand-box">
-
-<img
-class="brand-logo"
-src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Flipkart_logo_(2026).svg"
-alt="Flipkart logo"
->
-
-</div>
-
-<div class="brand">
-Flipkart
-</div>
-
-<h3>
-₹1,000 Gift Card
-</h3>
-
-<p class="old-price">
-₹1,000
-</p>
-
-<p class="price">
-₹965
-</p>
-
-<span class="discount">
-Save 3.5%
-</span>
-
-<button
-class="buy"
-onclick="openProduct('Flipkart')"
->
-Select Card
-</button>
-
-</div>
-
-
-
-<!-- MYNTRA -->
-
-<div class="card">
-
-<div class="brand-box">
-
-<img
-class="brand-logo"
-src="https://commons.wikimedia.org/wiki/Special:Redirect/file/65c5da9f878952603e370d03_Myntra-Logo_1.svg"
-alt="Myntra logo"
->
-
-</div>
-
-<div class="brand">
-Myntra
-</div>
-
-<h3>
-₹1,000 Gift Card
-</h3>
-
-<p class="old-price">
-₹1,000
-</p>
-
-<p class="price">
-₹950
-</p>
-
-<span class="discount">
-Save 5%
-</span>
-
-<button
-class="buy"
-onclick="openProduct('Myntra')"
->
-Select Card
-</button>
-
-</div>
-
-
-
-<!-- CROMA -->
-
-<div class="card">
-
-<div class="brand-box">
-
-<img
-class="brand-logo"
-src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Croma_logo.png"
-alt="Croma logo"
->
-
-</div>
-
-<div class="brand">
-Croma
-</div>
-
-<h3>
-₹2,000 Gift Card
-</h3>
-
-<p class="old-price">
-₹2,000
-</p>
-
-<p class="price">
-₹1,900
-</p>
-
-<span class="discount">
-Save 5%
-</span>
-
-<button
-class="buy"
-onclick="openProduct('Croma')"
->
-Select Card
-</button>
-
-</div>
-
-
-
-<!-- DOMINO'S -->
-
-<div class="card">
-
-<div class="brand-box">
-
-<img
-class="brand-logo"
-src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Domino%27s_pizza_logo.svg"
-alt="Domino's logo"
->
-
-</div>
-
-<div class="brand">
-Domino's
-</div>
-
-<h3>
-Flexible Gift Card
-</h3>
-
-<p class="old-price">
-Choose your value
-</p>
-
-<p class="price">
-Custom available
-</p>
-
-<span class="discount">
-Up to 15% off
-</span>
-
-<button
-class="buy"
-onclick="openProduct('Domino')"
->
-Select Card
-</button>
-
-</div>
-
 
 </div>
 
@@ -1838,47 +2080,17 @@ Custom Value
 
 
 
-<!-- FIXED -->
-
 <div id="fixedArea">
 
-<div class="fixed-values">
-
-<button
-class="value-button active"
-onclick="selectFixed(500)"
+<div
+class="fixed-values"
+id="fixedValues"
 >
-₹500
-</button>
-
-<button
-class="value-button"
-onclick="selectFixed(1000)"
->
-₹1,000
-</button>
-
-<button
-class="value-button"
-onclick="selectFixed(2000)"
->
-₹2,000
-</button>
-
-<button
-class="value-button"
-onclick="selectFixed(5000)"
->
-₹5,000
-</button>
-
 </div>
 
 </div>
 
 
-
-<!-- CUSTOM -->
 
 <div
 class="custom-area"
@@ -1889,21 +2101,19 @@ id="customArea"
 class="custom-input"
 id="customAmount"
 type="number"
-min="100"
-max="10000"
 placeholder="Enter amount"
 oninput="updateCustomPrice()"
 >
 
-<p class="range-text">
-Enter an amount between ₹100 and ₹10,000.
+<p
+class="range-text"
+id="rangeText"
+>
 </p>
 
 </div>
 
 
-
-<!-- PRICE -->
 
 <div class="price-preview">
 
@@ -2227,7 +2437,7 @@ class="overlay"
 id="ordersOverlay"
 >
 
-<div class="panel">
+<div class="panel large">
 
 <div class="panel-header">
 
@@ -2255,6 +2465,417 @@ onclick="closeOrders()"
 
 
 <!-- =====================================================
+     ORDER DETAIL
+===================================================== -->
+
+<div
+class="overlay"
+id="orderDetailOverlay"
+>
+
+<div class="panel">
+
+<div class="panel-header">
+
+<h2>
+Order Details
+</h2>
+
+<button
+class="close"
+onclick="closeOrderDetail()"
+>
+×
+</button>
+
+</div>
+
+
+<div
+class="detail-brand"
+id="detailBrand"
+>
+Amazon
+</div>
+
+<div
+class="detail-title"
+id="detailTitle"
+>
+₹1,000 Gift Card
+</div>
+
+
+<div
+class="detail-status"
+id="detailStatus"
+>
+Confirmed
+</div>
+
+
+<div class="detail-box">
+
+<div class="detail-box-row">
+
+<span>
+Gift Card Value
+</span>
+
+<strong id="detailValue">
+₹1,000
+</strong>
+
+</div>
+
+
+<div class="detail-box-row">
+
+<span>
+Discount
+</span>
+
+<strong id="detailDiscount">
+3%
+</strong>
+
+</div>
+
+
+<div class="detail-box-row">
+
+<span>
+Amount Paid
+</span>
+
+<strong id="detailPrice">
+₹970
+</strong>
+
+</div>
+
+
+<div class="detail-box-row">
+
+<span>
+Email
+</span>
+
+<strong id="detailEmail">
+example@gmail.com
+</strong>
+
+</div>
+
+
+<div class="detail-box-row">
+
+<span>
+Order ID
+</span>
+
+<strong id="detailId">
+GCS-000001
+</strong>
+
+</div>
+
+
+<div class="detail-box-row">
+
+<span>
+Date
+</span>
+
+<strong id="detailDate">
+-
+</strong>
+
+</div>
+
+</div>
+
+
+<button
+class="continue"
+onclick="closeOrderDetail()"
+>
+Close
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     ACCOUNT
+===================================================== -->
+
+<div
+class="overlay"
+id="accountOverlay"
+>
+
+<div class="panel">
+
+<div class="panel-header">
+
+<h2 id="accountTitle">
+Create Account
+</h2>
+
+<button
+class="close"
+onclick="closeAccount()"
+>
+×
+</button>
+
+</div>
+
+
+<div
+class="account-intro"
+id="accountIntro"
+>
+
+<strong>
+Your GiftCardStore account
+</strong>
+
+<span>
+Save your profile and keep your prototype orders organised.
+</span>
+
+</div>
+
+
+<div
+id="accountForm"
+>
+
+<div class="form-group">
+
+<label for="accountName">
+Your Name
+</label>
+
+<input
+class="account-input"
+id="accountName"
+type="text"
+autocomplete="name"
+placeholder="Enter your name"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="accountEmail">
+Email Address
+</label>
+
+<input
+class="account-input"
+id="accountEmail"
+type="email"
+inputmode="email"
+autocomplete="email"
+placeholder="you@example.com"
+>
+
+<p
+class="account-error"
+id="accountError"
+>
+Please enter a valid name and email address.
+</p>
+
+</div>
+
+
+<button
+class="confirm"
+onclick="createAccount()"
+>
+Create Account
+</button>
+
+
+<p class="form-note">
+Prototype account only. This version does not use passwords
+or real authentication.
+</p>
+
+</div>
+
+
+<div
+id="loggedInAccount"
+style="display:none;"
+>
+
+<div class="account-intro">
+
+<strong id="profileName">
+Customer
+</strong>
+
+<span id="profileEmail">
+customer@example.com
+</span>
+
+</div>
+
+
+<button
+class="continue"
+onclick="openDashboard()"
+>
+Open My Dashboard
+</button>
+
+
+<button
+class="logout-button"
+onclick="logout()"
+>
+Log Out
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CUSTOMER DASHBOARD
+===================================================== -->
+
+<div
+class="overlay"
+id="dashboardOverlay"
+>
+
+<div class="panel large">
+
+<div class="panel-header">
+
+<h2>
+My Account
+</h2>
+
+<button
+class="close"
+onclick="closeDashboard()"
+>
+×
+</button>
+
+</div>
+
+
+<div class="dashboard-welcome">
+
+<small>
+Customer Dashboard
+</small>
+
+<h3 id="dashboardName">
+Welcome
+</h3>
+
+<p id="dashboardEmail">
+customer@example.com
+</p>
+
+</div>
+
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<strong id="statOrders">
+0
+</strong>
+
+<span>
+Orders
+</span>
+
+</div>
+
+
+<div class="stat-card">
+
+<strong id="statSpent">
+₹0
+</strong>
+
+<span>
+Spent
+</span>
+
+</div>
+
+
+<div class="stat-card">
+
+<strong id="statSavings">
+₹0
+</strong>
+
+<span>
+Saved
+</span>
+
+</div>
+
+</div>
+
+
+<div class="dashboard-section-title">
+
+<h4>
+Recent Orders
+</h4>
+
+<button
+class="text-button"
+onclick="openOrdersFromDashboard()"
+>
+View All
+</button>
+
+</div>
+
+
+<div id="dashboardOrders">
+</div>
+
+
+<button
+class="logout-button"
+onclick="logoutFromDashboard()"
+>
+Log Out
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
      FOOTER
 ===================================================== -->
 
@@ -2267,6 +2888,22 @@ GiftCardStore
 <p>
 Save more. Shop smarter.
 </p>
+
+<div class="footer-links">
+
+<a href="#products">
+Gift Cards
+</a>
+
+<a href="#" onclick="openOrders(); return false;">
+My Orders
+</a>
+
+<a href="#" onclick="openAccount(); return false;">
+My Account
+</a>
+
+</div>
 
 <br>
 
@@ -2281,95 +2918,532 @@ Save more. Shop smarter.
 <script>
 
 /* =====================================================
-   VARIABLES
+   BRICK 10 — PRODUCT CATALOG
 ===================================================== */
 
-let selectedBrand = "Domino's";
+/*
+   All products now live in one catalog.
+
+   To add another brand later, we only need to add
+   another object here instead of rebuilding the
+   product HTML manually.
+*/
+
+const productCatalog = [
+
+    {
+        id: "amazon",
+        key: "Amazon",
+        name: "Amazon",
+        category: "Shopping",
+
+        logo:
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Amazon_2024.svg",
+
+        fixedValues: [
+            500,
+            1000,
+            2000,
+            5000
+        ],
+
+        fixedDiscount: 3,
+        customDiscount: 3,
+
+        custom: true,
+        minCustom: 100,
+        maxCustom: 10000
+    },
+
+
+    {
+        id: "flipkart",
+        key: "Flipkart",
+        name: "Flipkart",
+        category: "Shopping",
+
+        logo:
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Flipkart_logo_(2026).svg",
+
+        fixedValues: [
+            500,
+            1000,
+            2000,
+            5000
+        ],
+
+        fixedDiscount: 3.5,
+        customDiscount: 3.5,
+
+        custom: true,
+        minCustom: 100,
+        maxCustom: 10000
+    },
+
+
+    {
+        id: "myntra",
+        key: "Myntra",
+        name: "Myntra",
+        category: "Fashion",
+
+        logo:
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/65c5da9f878952603e370d03_Myntra-Logo_1.svg",
+
+        fixedValues: [
+            500,
+            1000,
+            2000,
+            5000
+        ],
+
+        fixedDiscount: 5,
+        customDiscount: 5,
+
+        custom: true,
+        minCustom: 100,
+        maxCustom: 10000
+    },
+
+
+    {
+        id: "croma",
+        key: "Croma",
+        name: "Croma",
+        category: "Electronics",
+
+        logo:
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Croma_logo.png",
+
+        fixedValues: [
+            500,
+            1000,
+            2000,
+            5000
+        ],
+
+        fixedDiscount: 5,
+        customDiscount: 5,
+
+        custom: true,
+        minCustom: 100,
+        maxCustom: 10000
+    },
+
+
+    {
+        id: "domino",
+        key: "Domino",
+        name: "Domino's",
+        category: "Food",
+
+        logo:
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Domino%27s_pizza_logo.svg",
+
+        fixedValues: [
+            500,
+            1000,
+            2000,
+            5000
+        ],
+
+        fixedDiscount: 15,
+        customDiscount: 5,
+
+        custom: true,
+        minCustom: 100,
+        maxCustom: 10000
+    }
+
+];
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let selectedProduct = null;
 
 let selectedMode = "fixed";
 
 let selectedValue = 500;
 
-let selectedDiscount = 15;
+let selectedDiscount = 0;
 
-let selectedPrice = 425;
-
+let selectedPrice = 0;
 
 
 /* =====================================================
-   BRAND SETTINGS
+   STORAGE KEYS
 ===================================================== */
 
-const brandSettings = {
+const ORDER_STORAGE_KEY =
+    "giftCardOrders";
 
-    "Domino": {
-        name: "Domino's",
-        fixedDiscount: 15,
-        customDiscount: 5
-    },
+const ACCOUNT_STORAGE_KEY =
+    "giftCardAccount";
 
-    "Amazon": {
-        name: "Amazon",
-        fixedDiscount: 3,
-        customDiscount: 3
-    },
 
-    "Flipkart": {
-        name: "Flipkart",
-        fixedDiscount: 3.5,
-        customDiscount: 3.5
-    },
+/* =====================================================
+   HELPERS
+===================================================== */
 
-    "Myntra": {
-        name: "Myntra",
-        fixedDiscount: 5,
-        customDiscount: 5
-    },
+function money(amount) {
 
-    "Croma": {
-        name: "Croma",
-        fixedDiscount: 5,
-        customDiscount: 5
+    return "₹" +
+        Number(amount).toLocaleString(
+            "en-IN"
+        );
+
+}
+
+
+function getOrders() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                ORDER_STORAGE_KEY
+            )
+        ) || [];
+
     }
 
-};
+    catch {
 
+        return [];
+
+    }
+
+}
+
+
+function saveOrders(orders) {
+
+    localStorage.setItem(
+        ORDER_STORAGE_KEY,
+        JSON.stringify(orders)
+    );
+
+}
+
+
+function getAccount() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                ACCOUNT_STORAGE_KEY
+            )
+        );
+
+    }
+
+    catch {
+
+        return null;
+
+    }
+
+}
+
+
+function saveAccount(account) {
+
+    localStorage.setItem(
+        ACCOUNT_STORAGE_KEY,
+        JSON.stringify(account)
+    );
+
+}
+
+
+function removeAccount() {
+
+    localStorage.removeItem(
+        ACCOUNT_STORAGE_KEY
+    );
+
+}
 
 
 /* =====================================================
    PRICE CALCULATOR
 ===================================================== */
 
-function calculatePrice(amount, discount) {
+function calculatePrice(
+    amount,
+    discount
+) {
 
     return Math.round(
-        amount * (1 - discount / 100)
+        amount *
+        (1 - discount / 100)
     );
 
 }
 
+
+/* =====================================================
+   PRODUCT CATALOG RENDER
+===================================================== */
+
+function renderCategories() {
+
+    const categories =
+        document.getElementById(
+            "categories"
+        );
+
+    const categoryNames = [
+        "All",
+        ...new Set(
+            productCatalog.map(
+                product =>
+                    product.category
+            )
+        )
+    ];
+
+    categories.innerHTML =
+        categoryNames.map(
+            function(category, index) {
+
+                return `
+
+                <button
+                    class="category ${index === 0 ? "active" : ""}"
+                    data-category="${category}"
+                    onclick="selectCategory('${category}')"
+                >
+                    ${category}
+                </button>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+let activeCategory = "All";
+
+
+function selectCategory(category) {
+
+    activeCategory =
+        category;
+
+    document
+        .querySelectorAll(
+            ".category"
+        )
+        .forEach(
+            function(button) {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.category ===
+                    category
+                );
+
+            }
+        );
+
+    renderProducts();
+
+}
+
+
+function renderProducts() {
+
+    const grid =
+        document.getElementById(
+            "productGrid"
+        );
+
+    const noProducts =
+        document.getElementById(
+            "noProducts"
+        );
+
+    const searchInput =
+        document.getElementById(
+            "search"
+        );
+
+    const search =
+        searchInput.value
+            .trim()
+            .toLowerCase();
+
+
+    const filtered =
+        productCatalog.filter(
+            function(product) {
+
+                const matchesCategory =
+                    activeCategory === "All" ||
+                    product.category ===
+                    activeCategory;
+
+                const searchable =
+                    (
+                        product.name +
+                        " " +
+                        product.category
+                    ).toLowerCase();
+
+                const matchesSearch =
+                    searchable.includes(
+                        search
+                    );
+
+                return (
+                    matchesCategory &&
+                    matchesSearch
+                );
+
+            }
+        );
+
+
+    grid.innerHTML =
+        filtered.map(
+            function(product) {
+
+                const defaultValue =
+                    product.fixedValues[0];
+
+                const defaultDiscount =
+                    product.fixedDiscount;
+
+                const defaultPrice =
+                    calculatePrice(
+                        defaultValue,
+                        defaultDiscount
+                    );
+
+                return `
+
+                <div
+                    class="card"
+                    data-product-id="${product.id}"
+                >
+
+                    <div class="brand-box">
+
+                        <img
+                            class="brand-logo"
+                            src="${product.logo}"
+                            alt="${product.name} logo"
+                        >
+
+                    </div>
+
+
+                    <div class="brand">
+                        ${product.name}
+                    </div>
+
+
+                    <h3>
+                        ${
+                            product.fixedValues.length
+                            ? money(defaultValue) +
+                              " Gift Card"
+                            : "Gift Card"
+                        }
+                    </h3>
+
+
+                    <p class="old-price">
+                        ${
+                            product.fixedValues.length
+                            ? money(defaultValue)
+                            : "Choose your value"
+                        }
+                    </p>
+
+
+                    <p class="price">
+                        ${
+                            product.fixedValues.length
+                            ? money(defaultPrice)
+                            : "Custom available"
+                        }
+                    </p>
+
+
+                    <span class="discount">
+                        Save ${defaultDiscount}%
+                    </span>
+
+
+                    <button
+                        class="buy"
+                        onclick="openProduct('${product.id}')"
+                    >
+                        Select Card
+                    </button>
+
+                </div>
+
+                `;
+
+            }
+        ).join("");
+
+
+    if (filtered.length === 0) {
+
+        noProducts.style.display =
+            "block";
+
+    }
+
+    else {
+
+        noProducts.style.display =
+            "none";
+
+    }
+
+}
 
 
 /* =====================================================
    OPEN PRODUCT
 ===================================================== */
 
-function openProduct(brand) {
+function openProduct(productId) {
 
-    let settings =
-        brandSettings[brand];
+    const product =
+        productCatalog.find(
+            item =>
+                item.id === productId
+        );
 
-    selectedBrand =
-        settings.name;
+
+    if (!product) {
+        return;
+    }
+
+
+    selectedProduct =
+        product;
 
     selectedMode =
         "fixed";
 
-    selectedDiscount =
-        settings.fixedDiscount;
-
     selectedValue =
-        500;
+        product.fixedValues[0];
+
+    selectedDiscount =
+        product.fixedDiscount;
 
     selectedPrice =
         calculatePrice(
@@ -2381,13 +3455,47 @@ function openProduct(brand) {
     document.getElementById(
         "productBrand"
     ).textContent =
-        settings.name;
+        product.name;
+
+
+    const fixedValues =
+        document.getElementById(
+            "fixedValues"
+        );
+
+
+    fixedValues.innerHTML =
+        product.fixedValues.map(
+            function(value, index) {
+
+                return `
+
+                <button
+                    class="value-button ${index === 0 ? "active" : ""}"
+                    onclick="selectFixed(${value}, this)"
+                >
+                    ${money(value)}
+                </button>
+
+                `;
+
+            }
+        ).join("");
 
 
     document.getElementById(
-        "productOverlay"
-    ).style.display =
-        "flex";
+        "customAmount"
+    ).value = "";
+
+
+    document.getElementById(
+        "rangeText"
+    ).textContent =
+        "Enter an amount between " +
+        money(product.minCustom) +
+        " and " +
+        money(product.maxCustom) +
+        ".";
 
 
     document.getElementById(
@@ -2397,7 +3505,10 @@ function openProduct(brand) {
 
     document.getElementById(
         "customMode"
-    ).classList.remove("active");
+    ).classList.toggle(
+        "active",
+        false
+    );
 
 
     document.getElementById(
@@ -2409,35 +3520,27 @@ function openProduct(brand) {
     document.getElementById(
         "customArea"
     ).style.display =
-        "none";
+        product.custom
+        ? "none"
+        : "none";
 
 
     document.getElementById(
-        "customAmount"
-    ).value =
-        "";
-
-
-    document.querySelectorAll(
-        ".value-button"
-    ).forEach(function(button) {
-
-        button.classList.remove(
-            "active"
-        );
-
-    });
-
-
-    document.querySelector(
-        ".value-button"
-    ).classList.add("active");
+        "customMode"
+    ).style.display =
+        product.custom
+        ? "block"
+        : "none";
 
 
     updatePreview();
 
-}
 
+    openOverlay(
+        "productOverlay"
+    );
+
+}
 
 
 /* =====================================================
@@ -2446,28 +3549,32 @@ function openProduct(brand) {
 
 function selectMode(mode) {
 
+    if (!selectedProduct) {
+        return;
+    }
+
+
+    if (
+        mode === "custom" &&
+        !selectedProduct.custom
+    ) {
+
+        return;
+
+    }
+
+
     selectedMode =
         mode;
-
-
-    let settings =
-        Object.values(
-            brandSettings
-        ).find(function(item) {
-
-            return item.name ===
-                selectedBrand;
-
-        });
 
 
     if (mode === "fixed") {
 
         selectedDiscount =
-            settings.fixedDiscount;
+            selectedProduct.fixedDiscount;
 
         selectedValue =
-            500;
+            selectedProduct.fixedValues[0];
 
         selectedPrice =
             calculatePrice(
@@ -2497,12 +3604,26 @@ function selectMode(mode) {
         ).style.display =
             "none";
 
+
+        document.querySelectorAll(
+            ".value-button"
+        ).forEach(
+            function(button, index) {
+
+                button.classList.toggle(
+                    "active",
+                    index === 0
+                );
+
+            }
+        );
+
     }
 
     else {
 
         selectedDiscount =
-            settings.customDiscount;
+            selectedProduct.customDiscount;
 
 
         document.getElementById(
@@ -2527,7 +3648,7 @@ function selectMode(mode) {
             "block";
 
 
-        let amount =
+        const amount =
             parseInt(
                 document.getElementById(
                     "customAmount"
@@ -2535,7 +3656,9 @@ function selectMode(mode) {
             );
 
 
-        if (!amount) {
+        if (
+            Number.isNaN(amount)
+        ) {
 
             selectedValue = 0;
 
@@ -2564,12 +3687,19 @@ function selectMode(mode) {
 }
 
 
-
 /* =====================================================
-   FIXED VALUE
+   SELECT FIXED VALUE
 ===================================================== */
 
-function selectFixed(amount) {
+function selectFixed(
+    amount,
+    button
+) {
+
+    if (!selectedProduct) {
+        return;
+    }
+
 
     selectedMode =
         "fixed";
@@ -2577,21 +3707,8 @@ function selectFixed(amount) {
     selectedValue =
         amount;
 
-
-    let settings =
-        Object.values(
-            brandSettings
-        ).find(function(item) {
-
-            return item.name ===
-                selectedBrand;
-
-        });
-
-
     selectedDiscount =
-        settings.fixedDiscount;
-
+        selectedProduct.fixedDiscount;
 
     selectedPrice =
         calculatePrice(
@@ -2602,18 +3719,24 @@ function selectFixed(amount) {
 
     document.querySelectorAll(
         ".value-button"
-    ).forEach(function(button) {
+    ).forEach(
+        function(item) {
 
-        button.classList.remove(
+            item.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    if (button) {
+
+        button.classList.add(
             "active"
         );
 
-    });
-
-
-    event.target.classList.add(
-        "active"
-    );
+    }
 
 
     updatePreview();
@@ -2621,14 +3744,18 @@ function selectFixed(amount) {
 }
 
 
-
 /* =====================================================
-   CUSTOM VALUE
+   CUSTOM PRICE
 ===================================================== */
 
 function updateCustomPrice() {
 
-    let amount =
+    if (!selectedProduct) {
+        return;
+    }
+
+
+    const amount =
         parseInt(
             document.getElementById(
                 "customAmount"
@@ -2636,22 +3763,17 @@ function updateCustomPrice() {
         );
 
 
-    let settings =
-        Object.values(
-            brandSettings
-        ).find(function(item) {
-
-            return item.name ===
-                selectedBrand;
-
-        });
+    selectedMode =
+        "custom";
 
 
     selectedDiscount =
-        settings.customDiscount;
+        selectedProduct.customDiscount;
 
 
-    if (!amount) {
+    if (
+        Number.isNaN(amount)
+    ) {
 
         selectedValue = 0;
 
@@ -2678,7 +3800,6 @@ function updateCustomPrice() {
 }
 
 
-
 /* =====================================================
    PREVIEW
 ===================================================== */
@@ -2688,9 +3809,8 @@ function updatePreview() {
     document.getElementById(
         "previewValue"
     ).textContent =
-        "₹" +
-        selectedValue.toLocaleString(
-            "en-IN"
+        money(
+            selectedValue
         );
 
 
@@ -2704,13 +3824,11 @@ function updatePreview() {
     document.getElementById(
         "previewPrice"
     ).textContent =
-        "₹" +
-        selectedPrice.toLocaleString(
-            "en-IN"
+        money(
+            selectedPrice
         );
 
 }
-
 
 
 /* =====================================================
@@ -2719,12 +3837,17 @@ function updatePreview() {
 
 function continueProduct() {
 
+    if (!selectedProduct) {
+        return;
+    }
+
+
     if (
         selectedMode ===
         "custom"
     ) {
 
-        let amount =
+        const amount =
             parseInt(
                 document.getElementById(
                     "customAmount"
@@ -2733,13 +3856,19 @@ function continueProduct() {
 
 
         if (
-            !amount ||
-            amount < 100 ||
-            amount > 10000
+            Number.isNaN(amount) ||
+            amount <
+                selectedProduct.minCustom ||
+            amount >
+                selectedProduct.maxCustom
         ) {
 
             alert(
-                "Please enter an amount between ₹100 and ₹10,000."
+                "Please enter an amount between " +
+                money(selectedProduct.minCustom) +
+                " and " +
+                money(selectedProduct.maxCustom) +
+                "."
             );
 
             return;
@@ -2762,35 +3891,26 @@ function continueProduct() {
     }
 
 
-    document.getElementById(
-        "productOverlay"
-    ).style.display =
-        "none";
+    closeProduct();
 
 
     document.getElementById(
         "orderBrand"
     ).textContent =
-        selectedBrand;
+        selectedProduct.name;
 
 
     document.getElementById(
         "orderValue"
     ).textContent =
-        "₹" +
-        selectedValue.toLocaleString(
-            "en-IN"
-        ) +
+        money(selectedValue) +
         " Gift Card";
 
 
     document.getElementById(
         "originalPrice"
     ).textContent =
-        "₹" +
-        selectedValue.toLocaleString(
-            "en-IN"
-        );
+        money(selectedValue);
 
 
     document.getElementById(
@@ -2803,58 +3923,20 @@ function continueProduct() {
     document.getElementById(
         "finalPrice"
     ).textContent =
-        "₹" +
-        selectedPrice.toLocaleString(
-            "en-IN"
-        );
+        money(selectedPrice);
 
 
     document.getElementById(
         "totalPrice"
     ).textContent =
-        "₹" +
-        selectedPrice.toLocaleString(
-            "en-IN"
-        );
+        money(selectedPrice);
 
 
-    document.getElementById(
+    openOverlay(
         "orderOverlay"
-    ).style.display =
-        "flex";
+    );
 
 }
-
-
-
-/* =====================================================
-   PRODUCT CLOSE
-===================================================== */
-
-function closeProduct() {
-
-    document.getElementById(
-        "productOverlay"
-    ).style.display =
-        "none";
-
-}
-
-
-
-/* =====================================================
-   ORDER CLOSE
-===================================================== */
-
-function closeOrder() {
-
-    document.getElementById(
-        "orderOverlay"
-    ).style.display =
-        "none";
-
-}
-
 
 
 /* =====================================================
@@ -2863,59 +3945,47 @@ function closeOrder() {
 
 function openCheckout() {
 
-    document.getElementById(
-        "orderOverlay"
-    ).style.display =
-        "none";
+    closeOrder();
 
 
     document.getElementById(
         "checkoutBrand"
     ).textContent =
-        selectedBrand;
+        selectedProduct.name;
 
 
     document.getElementById(
         "checkoutValue"
     ).textContent =
-        "₹" +
-        selectedValue.toLocaleString(
-            "en-IN"
-        ) +
+        money(selectedValue) +
         " Gift Card";
 
 
     document.getElementById(
         "checkoutPrice"
     ).textContent =
-        "₹" +
-        selectedPrice.toLocaleString(
-            "en-IN"
-        );
+        money(selectedPrice);
 
 
-    document.getElementById(
+    const account =
+        getAccount();
+
+
+    if (account) {
+
+        document.getElementById(
+            "email"
+        ).value =
+            account.email;
+
+    }
+
+
+    openOverlay(
         "checkoutOverlay"
-    ).style.display =
-        "flex";
+    );
 
 }
-
-
-
-/* =====================================================
-   CHECKOUT CLOSE
-===================================================== */
-
-function closeCheckout() {
-
-    document.getElementById(
-        "checkoutOverlay"
-    ).style.display =
-        "none";
-
-}
-
 
 
 /* =====================================================
@@ -2942,6 +4012,7 @@ function clearEmailError() {
         "error"
     );
 
+
     document.getElementById(
         "emailError"
     ).style.display =
@@ -2950,14 +4021,13 @@ function clearEmailError() {
 }
 
 
-
 /* =====================================================
    PLACE ORDER
 ===================================================== */
 
 function placeOrder() {
 
-    let email =
+    const email =
         document.getElementById(
             "email"
         ).value.trim();
@@ -2985,7 +4055,7 @@ function placeOrder() {
     }
 
 
-    let randomNumber =
+    const randomNumber =
         Math.floor(
             100000 +
             Math.random() *
@@ -2993,34 +4063,33 @@ function placeOrder() {
         );
 
 
-    let newOrderId =
+    const newOrderId =
         "GCS-" +
         randomNumber;
 
 
-    let order = {
+    const order = {
 
         id:
             newOrderId,
 
+        productId:
+            selectedProduct.id,
+
         brand:
-            selectedBrand,
+            selectedProduct.name,
+
+        category:
+            selectedProduct.category,
 
         value:
-            "₹" +
-            selectedValue.toLocaleString(
-                "en-IN"
-            ),
+            selectedValue,
 
         price:
-            "₹" +
-            selectedPrice.toLocaleString(
-                "en-IN"
-            ),
+            selectedPrice,
 
         discount:
-            selectedDiscount +
-            "%",
+            selectedDiscount,
 
         email:
             email,
@@ -3029,29 +4098,24 @@ function placeOrder() {
             "Confirmed",
 
         date:
-            new Date().toLocaleString()
+            new Date().toLocaleString(
+                "en-IN"
+            )
 
     };
 
 
-    let existingOrders =
-        JSON.parse(
-            localStorage.getItem(
-                "giftCardOrders"
-            )
-        ) || [];
+    const orders =
+        getOrders();
 
 
-    existingOrders.unshift(
+    orders.unshift(
         order
     );
 
 
-    localStorage.setItem(
-        "giftCardOrders",
-        JSON.stringify(
-            existingOrders
-        )
+    saveOrders(
+        orders
     );
 
 
@@ -3068,77 +4132,49 @@ function placeOrder() {
 
 
     document.getElementById(
-        "successOverlay"
-    ).style.display =
-        "flex";
-
-
-    document.getElementById(
         "email"
     ).value =
         "";
 
-}
 
-
-
-/* =====================================================
-   SUCCESS
-===================================================== */
-
-function closeSuccess() {
-
-    document.getElementById(
+    openOverlay(
         "successOverlay"
-    ).style.display =
-        "none";
+    );
 
 }
 
 
-
 /* =====================================================
-   MY ORDERS
+   ORDERS
 ===================================================== */
 
 function openOrders() {
 
     loadOrders();
 
-    document.getElementById(
+    openOverlay(
         "ordersOverlay"
-    ).style.display =
-        "flex";
+    );
 
 }
 
 
 function closeOrders() {
 
-    document.getElementById(
+    closeOverlay(
         "ordersOverlay"
-    ).style.display =
-        "none";
+    );
 
 }
 
 
-
-/* =====================================================
-   LOAD ORDERS
-===================================================== */
-
 function loadOrders() {
 
-    let orders =
-        JSON.parse(
-            localStorage.getItem(
-                "giftCardOrders"
-            )
-        ) || [];
+    const orders =
+        getOrders();
 
 
-    let container =
+    const container =
         document.getElementById(
             "ordersList"
         );
@@ -3177,241 +4213,941 @@ function loadOrders() {
 
 
     container.innerHTML =
+        orders.map(
+            function(order, index) {
+
+                return `
+
+                <div class="order-card">
+
+                    <div class="order-card-top">
+
+                        <span class="order-card-brand">
+                            ${escapeHTML(order.brand)}
+                        </span>
+
+                        <span class="status">
+                            ${escapeHTML(order.status)}
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+                        ${money(order.value)} Gift Card
+                    </strong>
+
+
+                    <div class="order-card-row">
+
+                        <span>
+                            Amount
+                        </span>
+
+                        <span>
+                            ${money(order.price)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="order-card-row">
+
+                        <span>
+                            Discount
+                        </span>
+
+                        <span>
+                            ${order.discount}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="order-card-row">
+
+                        <span>
+                            Order ID
+                        </span>
+
+                        <span class="order-id">
+                            ${escapeHTML(order.id)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="order-card-row">
+
+                        <span>
+                            Date
+                        </span>
+
+                        <span class="order-id">
+                            ${escapeHTML(order.date)}
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        class="order-action"
+                        onclick="openOrderDetail(${index})"
+                    >
+                        View Order Details
+                    </button>
+
+                </div>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =====================================================
+   ORDER DETAIL
+===================================================== */
+
+function openOrderDetail(index) {
+
+    const orders =
+        getOrders();
+
+
+    const order =
+        orders[index];
+
+
+    if (!order) {
+        return;
+    }
+
+
+    document.getElementById(
+        "detailBrand"
+    ).textContent =
+        order.brand;
+
+
+    document.getElementById(
+        "detailTitle"
+    ).textContent =
+        money(order.value) +
+        " Gift Card";
+
+
+    document.getElementById(
+        "detailStatus"
+    ).textContent =
+        order.status;
+
+
+    document.getElementById(
+        "detailValue"
+    ).textContent =
+        money(order.value);
+
+
+    document.getElementById(
+        "detailDiscount"
+    ).textContent =
+        order.discount +
+        "%";
+
+
+    document.getElementById(
+        "detailPrice"
+    ).textContent =
+        money(order.price);
+
+
+    document.getElementById(
+        "detailEmail"
+    ).textContent =
+        order.email;
+
+
+    document.getElementById(
+        "detailId"
+    ).textContent =
+        order.id;
+
+
+    document.getElementById(
+        "detailDate"
+    ).textContent =
+        order.date;
+
+
+    openOverlay(
+        "orderDetailOverlay"
+    );
+
+}
+
+
+function closeOrderDetail() {
+
+    closeOverlay(
+        "orderDetailOverlay"
+    );
+
+}
+
+
+/* =====================================================
+   ACCOUNT — BRICK 8
+===================================================== */
+
+function openAccount() {
+
+    const account =
+        getAccount();
+
+
+    if (account) {
+
+        document.getElementById(
+            "accountTitle"
+        ).textContent =
+            "My Account";
+
+
+        document.getElementById(
+            "accountForm"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "loggedInAccount"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "profileName"
+        ).textContent =
+            account.name;
+
+
+        document.getElementById(
+            "profileEmail"
+        ).textContent =
+            account.email;
+
+    }
+
+    else {
+
+        document.getElementById(
+            "accountTitle"
+        ).textContent =
+            "Create Account";
+
+
+        document.getElementById(
+            "accountForm"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "loggedInAccount"
+        ).style.display =
+            "none";
+
+    }
+
+
+    openOverlay(
+        "accountOverlay"
+    );
+
+}
+
+
+function closeAccount() {
+
+    closeOverlay(
+        "accountOverlay"
+    );
+
+}
+
+
+function createAccount() {
+
+    const name =
+        document.getElementById(
+            "accountName"
+        ).value.trim();
+
+
+    const email =
+        document.getElementById(
+            "accountEmail"
+        ).value.trim();
+
+
+    const error =
+        document.getElementById(
+            "accountError"
+        );
+
+
+    if (
+        name.length < 2 ||
+        !isValidEmail(email)
+    ) {
+
+        document.getElementById(
+            "accountName"
+        ).classList.toggle(
+            "error",
+            name.length < 2
+        );
+
+
+        document.getElementById(
+            "accountEmail"
+        ).classList.toggle(
+            "error",
+            !isValidEmail(email)
+        );
+
+
+        error.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    const account = {
+
+        name:
+            name,
+
+        email:
+            email,
+
+        createdAt:
+            new Date().toLocaleString(
+                "en-IN"
+            )
+
+    };
+
+
+    saveAccount(
+        account
+    );
+
+
+    document.getElementById(
+        "accountName"
+    ).value =
         "";
 
 
-    orders.forEach(
-        function(order) {
-
-            let card =
-                document.createElement(
-                    "div"
-                );
+    document.getElementById(
+        "accountEmail"
+    ).value =
+        "";
 
 
-            card.className =
-                "order-card";
+    error.style.display =
+        "none";
 
 
-            card.innerHTML = `
-
-            <div class="order-card-top">
-
-                <span
-                    class="order-card-brand"
-                >
-                    ${order.brand}
-                </span>
-
-                <span class="status">
-                    ${order.status}
-                </span>
-
-            </div>
+    updateHeader();
 
 
-            <strong>
-                ${order.value} Gift Card
-            </strong>
+    closeAccount();
 
 
-            <div class="order-card-row">
+    openDashboard();
 
-                <span>
-                    Amount
-                </span>
-
-                <span>
-                    ${order.price}
-                </span>
-
-            </div>
+}
 
 
-            <div class="order-card-row">
+function logout() {
 
-                <span>
-                    Discount
-                </span>
+    removeAccount();
 
-                <span>
-                    ${order.discount}
-                </span>
+    updateHeader();
 
-            </div>
+    closeAccount();
+
+}
 
 
-            <div class="order-card-row">
+function updateHeader() {
 
-                <span>
-                    Order ID
-                </span>
-
-                <span class="order-id">
-                    ${order.id}
-                </span>
-
-            </div>
+    const account =
+        getAccount();
 
 
-            <div class="order-card-row">
-
-                <span>
-                    Date
-                </span>
-
-                <span class="order-id">
-                    ${order.date}
-                </span>
-
-            </div>
-
-            `;
+    const loginButton =
+        document.getElementById(
+            "loginButton"
+        );
 
 
-            container.appendChild(
-                card
-            );
+    const accountButton =
+        document.getElementById(
+            "accountButton"
+        );
 
-        }
+
+    if (account) {
+
+        loginButton.style.display =
+            "none";
+
+        accountButton.style.display =
+            "block";
+
+
+        accountButton.textContent =
+            account.name;
+
+    }
+
+    else {
+
+        loginButton.style.display =
+            "block";
+
+        accountButton.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   DASHBOARD — BRICK 9
+===================================================== */
+
+function openDashboard() {
+
+    const account =
+        getAccount();
+
+
+    if (!account) {
+
+        closeAccount();
+
+        openAccount();
+
+        return;
+
+    }
+
+
+    updateDashboard();
+
+
+    closeAccount();
+
+
+    openOverlay(
+        "dashboardOverlay"
     );
 
 }
 
 
+function closeDashboard() {
 
-/* =====================================================
-   SEARCH
-===================================================== */
+    closeOverlay(
+        "dashboardOverlay"
+    );
 
-function searchCards() {
-
-    let input =
-        document.getElementById(
-            "search"
-        ).value.toLowerCase();
+}
 
 
-    let cards =
-        document.querySelectorAll(
-            ".card"
+function updateDashboard() {
+
+    const account =
+        getAccount();
+
+
+    if (!account) {
+        return;
+    }
+
+
+    const orders =
+        getOrders();
+
+
+    const totalSpent =
+        orders.reduce(
+            function(total, order) {
+
+                return total +
+                    Number(order.price || 0);
+
+            },
+            0
         );
 
 
-    cards.forEach(
-        function(card) {
+    const totalSavings =
+        orders.reduce(
+            function(total, order) {
 
-            let text =
-                card.textContent
-                .toLowerCase();
+                const value =
+                    Number(
+                        order.value || 0
+                    );
 
+                const price =
+                    Number(
+                        order.price || 0
+                    );
+
+                return total +
+                    (value - price);
+
+            },
+            0
+        );
+
+
+    document.getElementById(
+        "dashboardName"
+    ).textContent =
+        "Welcome, " +
+        account.name;
+
+
+    document.getElementById(
+        "dashboardEmail"
+    ).textContent =
+        account.email;
+
+
+    document.getElementById(
+        "statOrders"
+    ).textContent =
+        orders.length;
+
+
+    document.getElementById(
+        "statSpent"
+    ).textContent =
+        money(totalSpent);
+
+
+    document.getElementById(
+        "statSavings"
+    ).textContent =
+        money(totalSavings);
+
+
+    const recent =
+        orders.slice(
+            0,
+            3
+        );
+
+
+    const container =
+        document.getElementById(
+            "dashboardOrders"
+        );
+
+
+    if (
+        recent.length === 0
+    ) {
+
+        container.innerHTML = `
+
+        <div class="empty-orders">
+
+            <div class="empty-orders-icon">
+                🛍️
+            </div>
+
+            <p>
+                No orders yet.
+            </p>
+
+            <br>
+
+            <a
+                href="#products"
+                class="button"
+                onclick="closeDashboard()"
+                style="padding:10px 15px;font-size:12px;"
+            >
+                Explore Gift Cards
+            </a>
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        recent.map(
+            function(order) {
+
+                return `
+
+                <div class="order-card">
+
+                    <div class="order-card-top">
+
+                        <span class="order-card-brand">
+                            ${escapeHTML(order.brand)}
+                        </span>
+
+                        <span class="status">
+                            ${escapeHTML(order.status)}
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+                        ${money(order.value)} Gift Card
+                    </strong>
+
+
+                    <div class="order-card-row">
+
+                        <span>
+                            Paid
+                        </span>
+
+                        <span>
+                            ${money(order.price)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="order-card-row">
+
+                        <span>
+                            Order ID
+                        </span>
+
+                        <span class="order-id">
+                            ${escapeHTML(order.id)}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+function openOrdersFromDashboard() {
+
+    closeDashboard();
+
+    openOrders();
+
+}
+
+
+function logoutFromDashboard() {
+
+    removeAccount();
+
+    updateHeader();
+
+    closeDashboard();
+
+}
+
+
+/* =====================================================
+   SUCCESS
+===================================================== */
+
+function closeSuccess() {
+
+    closeOverlay(
+        "successOverlay"
+    );
+
+}
+
+
+/* =====================================================
+   GENERIC OVERLAY CONTROL
+===================================================== */
+
+function openOverlay(id) {
+
+    document.getElementById(
+        id
+    ).style.display =
+        "flex";
+
+
+    document.body.classList.add(
+        "modal-open"
+    );
+
+}
+
+
+function closeOverlay(id) {
+
+    document.getElementById(
+        id
+    ).style.display =
+        "none";
+
+
+    const overlays =
+        document.querySelectorAll(
+            ".overlay"
+        );
+
+
+    let anyOpen = false;
+
+
+    overlays.forEach(
+        function(overlay) {
 
             if (
-                text.includes(input)
+                overlay.style.display ===
+                "flex"
             ) {
 
-                card.style.display =
-                    "block";
-
-            }
-
-            else {
-
-                card.style.display =
-                    "none";
+                anyOpen = true;
 
             }
 
         }
     );
 
+
+    if (!anyOpen) {
+
+        document.body.classList.remove(
+            "modal-open"
+        );
+
+    }
+
 }
 
 
-
 /* =====================================================
-   CLOSE BY BACKDROP
+   SPECIFIC CLOSE FUNCTIONS
 ===================================================== */
 
-window.onclick =
-function(event) {
+function closeProduct() {
 
-    let product =
-        document.getElementById(
-            "productOverlay"
+    closeOverlay(
+        "productOverlay"
+    );
+
+}
+
+
+function closeOrder() {
+
+    closeOverlay(
+        "orderOverlay"
+    );
+
+}
+
+
+function closeCheckout() {
+
+    closeOverlay(
+        "checkoutOverlay"
+    );
+
+}
+
+
+/* =====================================================
+   SEARCH / STORE
+===================================================== */
+
+function scrollToStore() {
+
+    document.getElementById(
+        "products"
+    ).scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =====================================================
+   HTML SAFETY HELPER
+===================================================== */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
         );
 
-    let order =
-        document.getElementById(
-            "orderOverlay"
+}
+
+
+/* =====================================================
+   BACKDROP CLOSE
+===================================================== */
+
+window.addEventListener(
+    "click",
+    function(event) {
+
+        const overlays =
+            document.querySelectorAll(
+                ".overlay"
+            );
+
+
+        overlays.forEach(
+            function(overlay) {
+
+                if (
+                    event.target ===
+                    overlay
+                ) {
+
+                    closeOverlay(
+                        overlay.id
+                    );
+
+                }
+
+            }
         );
 
-    let checkout =
-        document.getElementById(
-            "checkoutOverlay"
+    }
+);
+
+
+/* =====================================================
+   ESCAPE KEY
+===================================================== */
+
+window.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key !==
+            "Escape"
+        ) {
+
+            return;
+
+        }
+
+
+        document.querySelectorAll(
+            ".overlay"
+        ).forEach(
+            function(overlay) {
+
+                if (
+                    overlay.style.display ===
+                    "flex"
+                ) {
+
+                    closeOverlay(
+                        overlay.id
+                    );
+
+                }
+
+            }
         );
 
-    let success =
+    }
+);
+
+
+/* =====================================================
+   INITIALISE STORE
+===================================================== */
+
+renderCategories();
+
+renderProducts();
+
+updateHeader();
+
+
+/* =====================================================
+   ACCOUNT → CHECKOUT SYNC
+===================================================== */
+
+const account =
+    getAccount();
+
+
+if (account) {
+
+    const email =
         document.getElementById(
-            "successOverlay"
+            "email"
         );
 
-    let orders =
-        document.getElementById(
-            "ordersOverlay"
-        );
+    if (email) {
 
-
-    if (
-        event.target ===
-        product
-    ) {
-
-        closeProduct();
+        email.value =
+            account.email;
 
     }
 
-
-    if (
-        event.target ===
-        order
-    ) {
-
-        closeOrder();
-
-    }
-
-
-    if (
-        event.target ===
-        checkout
-    ) {
-
-        closeCheckout();
-
-    }
-
-
-    if (
-        event.target ===
-        success
-    ) {
-
-        closeSuccess();
-
-    }
-
-
-    if (
-        event.target ===
-        orders
-    ) {
-
-        closeOrders();
-
-    }
-
-};
+}
 
 </script>
 
