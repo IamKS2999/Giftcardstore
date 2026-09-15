@@ -22,13 +22,7 @@
 <a href="#products">Gift Cards</a>
 <a href="#footer">How It Works</a>
 
-<button
-    class="orders-button"
-    onclick="GCS.openOrders()"
->
-My Orders
-</button>
-
+<!-- Shown when logged out -->
 <button
     class="login"
     id="loginButton"
@@ -36,18 +30,23 @@ My Orders
 Login
 </button>
 
+<!-- Shown when logged in -->
 <button
     class="orders-button"
     id="accountButton"
     style="display:none"
 >
-My Account
+Account
 </button>
 
 </nav>
 
 </header>
 
+
+<!-- =========================
+     HERO
+========================= -->
 
 <section class="hero">
 
@@ -81,6 +80,10 @@ View Brands
 </section>
 
 
+<!-- =========================
+     TRUST STRIP
+========================= -->
+
 <div class="trust-strip">
 
 <div class="trust-item">
@@ -100,6 +103,10 @@ View Brands
 
 </div>
 
+
+<!-- =========================
+     PRODUCTS
+========================= -->
 
 <section class="products" id="products">
 
@@ -147,7 +154,9 @@ Select a card and choose the value that works for you.
 </section>
 
 
-<!-- PRODUCT -->
+<!-- =========================
+     PRODUCT MODAL
+========================= -->
 
 <div class="overlay" id="productOverlay">
 
@@ -157,23 +166,33 @@ Select a card and choose the value that works for you.
 
 <h2>Choose Gift Card</h2>
 
-<button class="close" onclick="GCS.closeProduct()">
+<button
+    class="close"
+    onclick="GCS.closeProduct()"
+>
 ×
 </button>
 
 </div>
 
-<div class="product-brand" id="productBrand">
+
+<div
+    class="product-brand"
+    id="productBrand"
+>
 Amazon
 </div>
+
 
 <div class="product-name">
 Select your value
 </div>
 
+
 <p class="mode-title">
 Gift Card Type
 </p>
+
 
 <div class="mode-buttons">
 
@@ -198,16 +217,23 @@ Custom Value
 
 <div id="fixedArea">
 
-<div class="fixed-values" id="fixedValues"></div>
+<div
+    class="fixed-values"
+    id="fixedValues"
+></div>
 
 </div>
 
 
-<div class="custom-area" id="customArea">
+<div
+    class="custom-area"
+    id="customArea"
+    style="display:none"
+>
 
 <input
     class="custom-input"
-    id="customAmount"
+    id="customValue"
     type="number"
     min="100"
     max="10000"
@@ -231,12 +257,12 @@ Enter an amount between ₹100 and ₹10,000.
 
 <div class="preview-row">
 <span>Your Discount</span>
-<strong id="previewDiscount">15%</strong>
+<strong id="previewDiscount">3%</strong>
 </div>
 
 <div class="preview-row preview-total">
 <span>You Pay</span>
-<strong id="previewPrice">₹425</strong>
+<strong id="previewPrice">₹485</strong>
 </div>
 
 </div>
@@ -253,7 +279,9 @@ Continue
 </div>
 
 
-<!-- ORDER SUMMARY -->
+<!-- =========================
+     ORDER SUMMARY
+========================= -->
 
 <div class="overlay" id="orderOverlay">
 
@@ -263,39 +291,55 @@ Continue
 
 <h2>Order Summary</h2>
 
-<button class="close" onclick="GCS.closeOrder()">
+<button
+    class="close"
+    onclick="GCS.closeOrder()"
+>
 ×
 </button>
 
 </div>
 
-<div class="order-brand" id="orderBrand">
+
+<div
+    class="order-brand"
+    id="orderBrand"
+>
 Amazon
 </div>
 
-<div class="order-value" id="orderValue">
+
+<div
+    class="order-value"
+    id="orderValue"
+>
 ₹500 Gift Card
 </div>
 
+
 <div class="order-row">
 <span>Gift Card Value</span>
-<span id="originalPrice">₹500</span>
+<span id="orderValueDisplay">₹500</span>
 </div>
+
 
 <div class="order-row">
 <span>Discount</span>
 <span id="orderDiscount">3%</span>
 </div>
 
+
 <div class="order-row">
 <span>You Pay</span>
-<span id="finalPrice">₹485</span>
+<span id="orderPrice">₹485</span>
 </div>
+
 
 <div class="order-row total">
 <span>Total</span>
-<span id="totalPrice">₹485</span>
+<span id="orderTotal">₹485</span>
 </div>
+
 
 <button
     class="continue"
@@ -308,109 +352,9 @@ Continue to Checkout
 </div>
 
 
-<!-- LOGIN -->
-
-<div class="overlay" id="loginOverlay">
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>Login</h2>
-
-<button class="close" onclick="GCS.closeLogin()">
-×
-</button>
-
-</div>
-
-<p style="color:#777287;margin-bottom:20px">
-Login is required before checkout and to access your orders.
-</p>
-
-<label>Email Address</label>
-
-<input
-    class="account-input"
-    id="loginEmail"
-    type="email"
-    placeholder="you@example.com"
->
-
-<p class="form-error" id="loginError">
-Please enter a valid email address.
-</p>
-
-<button
-    class="confirm"
-    onclick="GCS.submitLogin()"
->
-Login
-</button>
-
-<button
-    class="account-action"
-    onclick="GCS.openSignup()"
->
-Create an Account
-</button>
-
-</div>
-</div>
-
-
-<!-- SIGNUP -->
-
-<div class="overlay" id="signupOverlay">
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>Create Account</h2>
-
-<button class="close" onclick="GCS.closeSignup()">
-×
-</button>
-
-</div>
-
-<label>Name</label>
-
-<input
-    class="account-input"
-    id="signupName"
-    type="text"
-    placeholder="Your name"
->
-
-<br><br>
-
-<label>Email Address</label>
-
-<input
-    class="account-input"
-    id="signupEmail"
-    type="email"
-    placeholder="you@example.com"
->
-
-<p class="form-error" id="signupError">
-Please enter your name and a valid email address.
-</p>
-
-<button
-    class="confirm"
-    onclick="GCS.submitSignup()"
->
-Create Account
-</button>
-
-</div>
-</div>
-
-
-<!-- CHECKOUT -->
+<!-- =========================
+     CHECKOUT
+========================= -->
 
 <div class="overlay" id="checkoutOverlay">
 
@@ -420,11 +364,15 @@ Create Account
 
 <h2>Checkout</h2>
 
-<button class="close" onclick="GCS.closeCheckout()">
+<button
+    class="close"
+    onclick="GCS.closeCheckout()"
+>
 ×
 </button>
 
 </div>
+
 
 <div class="checkout-card">
 
@@ -451,9 +399,11 @@ Amazon
 
 </div>
 
+
 <label for="email">
 Email Address
 </label>
+
 
 <input
     class="email"
@@ -464,9 +414,14 @@ Email Address
     oninput="GCS.clearEmailError()"
 >
 
-<p class="email-error" id="emailError">
+
+<p
+    class="email-error"
+    id="emailError"
+>
 Please enter a valid email address.
 </p>
+
 
 <button
     class="confirm"
@@ -474,6 +429,7 @@ Please enter a valid email address.
 >
 Confirm Order
 </button>
+
 
 <p class="note">
 Prototype checkout — no real payment is processed.
@@ -483,15 +439,21 @@ Prototype checkout — no real payment is processed.
 </div>
 
 
-<!-- SUCCESS -->
+<!-- =========================
+     SUCCESS
+========================= -->
 
 <div class="overlay" id="successOverlay">
 
 <div class="panel success">
 
-<div class="success-icon">✓</div>
+<div class="success-icon">
+✓
+</div>
 
-<h2>Order Confirmed</h2>
+<h2>
+Order Confirmed
+</h2>
 
 <p>
 Your prototype order has been successfully created.
@@ -499,9 +461,14 @@ Your prototype order has been successfully created.
 
 <br>
 
-<p>Order ID</p>
+<p>
+Order ID
+</p>
 
-<div class="order-id-display" id="orderId">
+<div
+    class="order-id-display"
+    id="successOrderId"
+>
 GCS-000001
 </div>
 
@@ -518,7 +485,9 @@ Done
 </div>
 
 
-<!-- ORDERS -->
+<!-- =========================
+     ORDERS
+========================= -->
 
 <div class="overlay" id="ordersOverlay">
 
@@ -526,13 +495,19 @@ Done
 
 <div class="panel-header">
 
-<h2>My Orders</h2>
+<h2>
+My Orders
+</h2>
 
-<button class="close" onclick="GCS.closeOrders()">
+<button
+    class="close"
+    onclick="GCS.closeOrders()"
+>
 ×
 </button>
 
 </div>
+
 
 <div id="ordersList"></div>
 
@@ -540,118 +515,157 @@ Done
 </div>
 
 
-<!-- ORDER DETAILS -->
+<!-- =========================
+     ACCOUNT
+========================= -->
 
-<div class="overlay" id="detailsOverlay">
+<div
+    class="overlay"
+    id="accountOverlay"
+    style="display:none"
+>
 
-<div class="panel">
+<div class="panel account-modal">
 
 <div class="panel-header">
 
-<h2>Order Details</h2>
+<div>
 
-<button class="close" onclick="GCS.closeDetails()">
+<h2>
+My Account
+</h2>
+
+<p>
+Manage your GiftCardStore account
+</p>
+
+</div>
+
+
+<button
+    class="close"
+    onclick="closeAccountPanel()"
+>
 ×
 </button>
 
 </div>
 
-<div class="order-card">
 
-<div class="order-card-top">
-<span class="order-card-brand" id="detailBrand">
-Amazon
-</span>
+<div class="account-profile">
 
-<span class="status">
-Confirmed
-</span>
+<div class="account-avatar">
+👤
 </div>
 
-<div class="order-card-row">
-<span>Gift Card Value</span>
-<strong id="detailValue">₹500</strong>
-</div>
 
-<div class="order-card-row">
-<span>Amount Paid</span>
-<strong id="detailPrice">₹485</strong>
-</div>
+<div>
 
-<div class="order-card-row">
-<span>Discount</span>
-<strong id="detailDiscount">3%</strong>
-</div>
+<strong id="accountName">
+Customer
+</strong>
 
-<div class="order-card-row">
-<span>Order ID</span>
-<span class="order-id" id="detailId"></span>
-</div>
-
-<div class="order-card-row">
-<span>Date</span>
-<span class="order-id" id="detailDate"></span>
+<div
+    class="account-email"
+    id="accountEmail"
+>
 </div>
 
 </div>
 
 </div>
+
+
+<div class="account-menu">
+
+
+<button onclick="openProfileSection()">
+
+<span>👤</span>
+
+<div>
+<strong>Profile</strong>
+<small>
+View your account information
+</small>
 </div>
 
-
-<!-- ACCOUNT -->
-
-<div class="overlay" id="accountOverlay">
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>My Account</h2>
-
-<button class="close" onclick="GCS.closeAccount()">
-×
 </button>
 
+
+<button onclick="openOrdersFromAccount()">
+
+<span>📦</span>
+
+<div>
+<strong>My Orders</strong>
+<small>
+View your previous orders
+</small>
 </div>
 
-<div class="account-welcome">
+</button>
 
-<div class="account-avatar" id="accountAvatar">
-A
+
+<button onclick="openPaymentSection()">
+
+<span>💳</span>
+
+<div>
+<strong>Payment Methods</strong>
+<small>
+Manage payment options
+</small>
 </div>
 
-<div class="account-name" id="accountName">
-Account
+</button>
+
+
+<button onclick="openGiftCardsSection()">
+
+<span>🎁</span>
+
+<div>
+<strong>My Gift Cards</strong>
+<small>
+View your purchased gift cards
+</small>
 </div>
 
-<div class="account-email" id="accountEmail">
-email@example.com
+</button>
+
+
+<button onclick="openSettingsSection()">
+
+<span>⚙️</span>
+
+<div>
+<strong>Settings</strong>
+<small>
+Account preferences
+</small>
 </div>
+
+</button>
+
 
 </div>
 
-<div class="account-actions">
 
 <button
-    class="account-action"
-    onclick="GCS.closeAccount();GCS.openOrders()"
+    class="logout-button"
+    onclick="logoutUser()"
 >
-My Orders
-</button>
-
-<button
-    class="account-action"
-    onclick="GCS.logout()"
->
-Logout
+🔐 Logout
 </button>
 
 </div>
-
-</div>
 </div>
 
+
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer id="footer">
 
@@ -659,7 +673,9 @@ Logout
 GiftCardStore
 </div>
 
-<p>Save more. Shop smarter.</p>
+<p>
+Save more. Shop smarter.
+</p>
 
 <br>
 
@@ -669,6 +685,10 @@ GiftCardStore
 
 </footer>
 
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
 
 <script src="js/brands.js"></script>
 <script src="js/products.js"></script>
