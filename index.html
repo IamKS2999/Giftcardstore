@@ -109,10 +109,6 @@ nav a:hover {
     color: #6d28d9;
 }
 
-.header-account {
-    margin-left: 12px;
-}
-
 .login,
 .orders-button,
 .account-button {
@@ -125,19 +121,19 @@ nav a:hover {
     font-weight: 750;
 
     cursor: pointer;
+
+    transition: 0.2s;
 }
 
 .login {
     background: #17152b;
     color: white;
-
     margin-left: 12px;
 }
 
 .orders-button {
     background: #eee9ff;
     color: #6d28d9;
-
     margin-left: 12px;
 }
 
@@ -150,13 +146,12 @@ nav a:hover {
         );
 
     color: white;
-
     margin-left: 12px;
 }
 
-.account-button:hover,
 .login:hover,
-.orders-button:hover {
+.orders-button:hover,
+.account-button:hover {
     transform: translateY(-1px);
 }
 
@@ -553,7 +548,8 @@ nav a:hover {
         transform 0.22s,
         box-shadow 0.22s;
 
-    animation: cardAppear 0.3s ease;
+    animation:
+        cardAppear 0.3s ease;
 }
 
 .card:hover {
@@ -592,6 +588,8 @@ nav a:hover {
     padding: 18px;
 
     margin-bottom: 17px;
+
+    position: relative;
 }
 
 .brand-logo {
@@ -599,6 +597,53 @@ nav a:hover {
     max-height: 70px;
 
     object-fit: contain;
+}
+
+.save-button {
+    position: absolute;
+
+    right: 9px;
+    top: 9px;
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    border: 1px solid #e4def2;
+
+    background: rgba(255,255,255,0.95);
+
+    color: #756d86;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.2s;
+
+    z-index: 2;
+}
+
+.save-button:hover {
+    transform: scale(1.05);
+
+    color: #7c3aed;
+
+    border-color: #c7b8f4;
+}
+
+.save-button.saved {
+    background: #eee8ff;
+
+    color: #6d28d9;
+
+    border-color: #c8b8f5;
 }
 
 .brand {
@@ -700,7 +745,7 @@ nav a:hover {
 
 
 /* =====================================================
-   GENERAL OVERLAY
+   OVERLAYS
 ===================================================== */
 
 .overlay {
@@ -796,10 +841,6 @@ nav a:hover {
     cursor: pointer;
 }
 
-.close:hover {
-    background: #e9e1ff;
-}
-
 
 /* =====================================================
    PRODUCT CONFIGURATION
@@ -865,11 +906,6 @@ nav a:hover {
     border-color: #8b5cf6;
 }
 
-
-/* =====================================================
-   FIXED VALUES
-===================================================== */
-
 .fixed-values {
     display: grid;
 
@@ -907,11 +943,6 @@ nav a:hover {
     color: #6d28d9;
 }
 
-
-/* =====================================================
-   CUSTOM
-===================================================== */
-
 .custom-area {
     display: none;
 }
@@ -944,11 +975,6 @@ nav a:hover {
 
     margin-top: 7px;
 }
-
-
-/* =====================================================
-   PRICE PREVIEW
-===================================================== */
 
 .price-preview {
     background:
@@ -1148,6 +1174,11 @@ label {
         0 0 0 4px rgba(124,58,237,0.08);
 }
 
+.email[readonly] {
+    background: #f8f7fc;
+    color: #5d586d;
+}
+
 .email.error,
 .account-input.error {
     border-color: #ef4444;
@@ -1182,65 +1213,60 @@ label {
 
 
 /* =====================================================
-   SUCCESS
+   LOGIN / ACCOUNT
 ===================================================== */
 
-.success {
-    text-align: center;
+.account-tabs {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+
+    margin-bottom: 20px;
 }
 
-.success-icon {
-    width: 72px;
-    height: 72px;
+.account-tab {
+    border: 1px solid #dfd9ed;
 
-    background: #dcfce8;
+    background: white;
 
-    color: #16a34a;
+    color: #686278;
 
-    border-radius: 50%;
+    border-radius: 10px;
 
-    display: flex;
+    padding: 11px;
 
-    justify-content: center;
-    align-items: center;
+    font-weight: 750;
 
-    font-size: 35px;
-
-    margin: 0 auto 20px;
+    cursor: pointer;
 }
 
-.success h2 {
-    font-size: 27px;
-
-    margin-bottom: 8px;
-}
-
-.success p {
-    color: #6d6879;
-
-    line-height: 1.6;
-}
-
-.order-id-display {
-    display: inline-block;
-
-    background: #f1edff;
+.account-tab.active {
+    background: #f0ebff;
 
     color: #6d28d9;
 
-    padding: 8px 12px;
-
-    border-radius: 8px;
-
-    margin-top: 8px;
-
-    font-weight: 750;
+    border-color: #8b5cf6;
 }
 
+.account-message {
+    display: none;
 
-/* =====================================================
-   ACCOUNT
-===================================================== */
+    background: #f5f1ff;
+
+    color: #5c3b9e;
+
+    border: 1px solid #e4dbfa;
+
+    padding: 11px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+
+    margin-bottom: 15px;
+}
 
 .account-intro {
     background:
@@ -1545,10 +1571,6 @@ label {
     cursor: pointer;
 }
 
-.order-action:hover {
-    background: #f6f2ff;
-}
-
 
 /* =====================================================
    ORDER DETAIL
@@ -1754,7 +1776,8 @@ footer p {
     }
 
     .stats-grid {
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns:
+            repeat(3, 1fr);
 
         gap: 7px;
     }
@@ -1809,7 +1832,6 @@ Gift Cards
 How It Works
 </a>
 
-
 <button
 class="orders-button"
 onclick="openOrders()"
@@ -1817,15 +1839,13 @@ onclick="openOrders()"
 My Orders
 </button>
 
-
 <button
 class="login"
 id="loginButton"
-onclick="openAccount()"
+onclick="openAccount('login')"
 >
 Login
 </button>
-
 
 <button
 class="account-button"
@@ -1959,7 +1979,6 @@ Select a card and choose the value that works for you.
 </div>
 
 
-
 <div class="search-wrap">
 
 <span class="search-icon">
@@ -1977,13 +1996,11 @@ oninput="renderProducts()"
 </div>
 
 
-
 <div
 class="categories"
 id="categories"
 >
 </div>
-
 
 
 <div
@@ -2043,12 +2060,10 @@ onclick="closeProduct()"
 class="product-brand"
 id="productBrand"
 >
-Domino's
+Amazon
 </div>
 
-<div
-class="product-name"
->
+<div class="product-name">
 Select your value
 </div>
 
@@ -2079,7 +2094,6 @@ Custom Value
 </div>
 
 
-
 <div id="fixedArea">
 
 <div
@@ -2089,7 +2103,6 @@ id="fixedValues"
 </div>
 
 </div>
-
 
 
 <div
@@ -2114,7 +2127,6 @@ id="rangeText"
 </div>
 
 
-
 <div class="price-preview">
 
 <div class="preview-row">
@@ -2137,7 +2149,7 @@ Your Discount
 </span>
 
 <strong id="previewDiscount">
-15%
+3%
 </strong>
 
 </div>
@@ -2150,13 +2162,12 @@ You Pay
 </span>
 
 <strong id="previewPrice">
-₹425
+₹485
 </strong>
 
 </div>
 
 </div>
-
 
 
 <button
@@ -2165,7 +2176,6 @@ onclick="continueProduct()"
 >
 Continue
 </button>
-
 
 </div>
 
@@ -2204,7 +2214,7 @@ onclick="closeOrder()"
 class="order-brand"
 id="orderBrand"
 >
-Domino's
+Amazon
 </div>
 
 <div
@@ -2235,7 +2245,7 @@ Discount
 </span>
 
 <span id="orderDiscount">
-15%
+3%
 </span>
 
 </div>
@@ -2248,7 +2258,7 @@ You Pay
 </span>
 
 <span id="finalPrice">
-₹425
+₹485
 </span>
 
 </div>
@@ -2261,7 +2271,7 @@ Total
 </span>
 
 <span id="totalPrice">
-₹425
+₹485
 </span>
 
 </div>
@@ -2314,7 +2324,7 @@ Gift Card
 </p>
 
 <strong id="checkoutBrand">
-Domino's
+Amazon
 </strong>
 
 <p id="checkoutValue">
@@ -2331,31 +2341,30 @@ Total
 class="checkout-total"
 id="checkoutPrice"
 >
-₹425
+₹485
 </strong>
 
 </div>
 
 
 <label for="email">
-Email Address
+Delivery Email
 </label>
 
 <input
 class="email"
 id="email"
 type="email"
-inputmode="email"
+readonly
 autocomplete="email"
-placeholder="you@example.com"
-oninput="clearEmailError()"
+placeholder="Login required"
 >
 
 <p
 class="email-error"
 id="emailError"
 >
-Please enter a valid email address, such as name@example.com.
+Please log in with a valid email address before placing the order.
 </p>
 
 
@@ -2610,7 +2619,7 @@ Close
 
 
 <!-- =====================================================
-     ACCOUNT
+     ACCOUNT / LOGIN
 ===================================================== -->
 
 <div
@@ -2623,7 +2632,7 @@ id="accountOverlay"
 <div class="panel-header">
 
 <h2 id="accountTitle">
-Create Account
+Login
 </h2>
 
 <button
@@ -2637,24 +2646,114 @@ onclick="closeAccount()"
 
 
 <div
-class="account-intro"
-id="accountIntro"
+class="account-message"
+id="accountMessage"
+>
+Please log in to continue.
+</div>
+
+
+<div class="account-tabs">
+
+<button
+class="account-tab active"
+id="loginTab"
+onclick="switchAccountMode('login')"
+>
+Login
+</button>
+
+<button
+class="account-tab"
+id="signupTab"
+onclick="switchAccountMode('signup')"
+>
+Create Account
+</button>
+
+</div>
+
+
+
+<!-- LOGIN -->
+
+<div
+id="loginForm"
 >
 
+<div class="account-intro">
+
 <strong>
-Your GiftCardStore account
+Welcome back
 </strong>
 
 <span>
-Save your profile and keep your prototype orders organised.
+Log in to access your orders and continue checkout.
 </span>
 
 </div>
 
 
-<div
-id="accountForm"
+<div class="form-group">
+
+<label for="loginEmail">
+Email Address
+</label>
+
+<input
+class="account-input"
+id="loginEmail"
+type="email"
+inputmode="email"
+autocomplete="email"
+placeholder="you@example.com"
 >
+
+</div>
+
+
+<p
+class="account-error"
+id="loginError"
+>
+</p>
+
+
+<button
+class="confirm"
+onclick="loginAccount()"
+>
+Login
+</button>
+
+
+<p class="form-note">
+Prototype login — this version does not use passwords or real authentication.
+</p>
+
+</div>
+
+
+
+<!-- SIGN UP -->
+
+<div
+id="signupForm"
+style="display:none;"
+>
+
+<div class="account-intro">
+
+<strong>
+Create your account
+</strong>
+
+<span>
+Your account keeps your prototype profile and orders organised.
+</span>
+
+</div>
+
 
 <div class="form-group">
 
@@ -2688,14 +2787,15 @@ autocomplete="email"
 placeholder="you@example.com"
 >
 
+</div>
+
+
 <p
 class="account-error"
 id="accountError"
 >
 Please enter a valid name and email address.
 </p>
-
-</div>
 
 
 <button
@@ -2707,12 +2807,14 @@ Create Account
 
 
 <p class="form-note">
-Prototype account only. This version does not use passwords
-or real authentication.
+Prototype account only. No real password or authentication system is connected yet.
 </p>
 
 </div>
 
+
+
+<!-- LOGGED IN -->
 
 <div
 id="loggedInAccount"
@@ -2895,11 +2997,17 @@ Save more. Shop smarter.
 Gift Cards
 </a>
 
-<a href="#" onclick="openOrders(); return false;">
+<a
+href="#"
+onclick="openOrders(); return false;"
+>
 My Orders
 </a>
 
-<a href="#" onclick="openAccount(); return false;">
+<a
+href="#"
+onclick="openAccount('auto'); return false;"
+>
 My Account
 </a>
 
@@ -2921,19 +3029,10 @@ My Account
    BRICK 10 — PRODUCT CATALOG
 ===================================================== */
 
-/*
-   All products now live in one catalog.
-
-   To add another brand later, we only need to add
-   another object here instead of rebuilding the
-   product HTML manually.
-*/
-
 const productCatalog = [
 
     {
         id: "amazon",
-        key: "Amazon",
         name: "Amazon",
         category: "Shopping",
 
@@ -2958,7 +3057,6 @@ const productCatalog = [
 
     {
         id: "flipkart",
-        key: "Flipkart",
         name: "Flipkart",
         category: "Shopping",
 
@@ -2983,7 +3081,6 @@ const productCatalog = [
 
     {
         id: "myntra",
-        key: "Myntra",
         name: "Myntra",
         category: "Fashion",
 
@@ -3008,7 +3105,6 @@ const productCatalog = [
 
     {
         id: "croma",
-        key: "Croma",
         name: "Croma",
         category: "Electronics",
 
@@ -3033,7 +3129,6 @@ const productCatalog = [
 
     {
         id: "domino",
-        key: "Domino",
         name: "Domino's",
         category: "Food",
 
@@ -3059,6 +3154,20 @@ const productCatalog = [
 
 
 /* =====================================================
+   STORAGE
+===================================================== */
+
+const ORDER_STORAGE_KEY =
+    "giftCardOrders";
+
+const ACCOUNT_STORAGE_KEY =
+    "giftCardAccount";
+
+const WISHLIST_STORAGE_KEY =
+    "giftCardWishlist";
+
+
+/* =====================================================
    STATE
 ===================================================== */
 
@@ -3072,41 +3181,226 @@ let selectedDiscount = 0;
 
 let selectedPrice = 0;
 
+let activeCategory = "All";
 
-/* =====================================================
-   STORAGE KEYS
-===================================================== */
-
-const ORDER_STORAGE_KEY =
-    "giftCardOrders";
-
-const ACCOUNT_STORAGE_KEY =
-    "giftCardAccount";
+let pendingAction = null;
 
 
 /* =====================================================
-   HELPERS
+   MONEY HELPERS
 ===================================================== */
 
 function money(amount) {
 
+    const number =
+        Number(amount);
+
+    if (
+        !Number.isFinite(number)
+    ) {
+
+        return "₹0";
+
+    }
+
     return "₹" +
-        Number(amount).toLocaleString(
+        number.toLocaleString(
             "en-IN"
         );
 
 }
 
 
+/* =====================================================
+   LEGACY DATA FIX
+===================================================== */
+
+/*
+   Brick 7 stored some orders like:
+
+   value: "₹1,000"
+   price: "₹970"
+   discount: "3%"
+
+   Brick 10 expects numbers.
+
+   This converter makes old orders compatible
+   instead of producing NaN.
+*/
+
+function parseMoney(value) {
+
+    if (
+        typeof value ===
+        "number"
+    ) {
+
+        return Number.isFinite(value)
+            ? value
+            : 0;
+
+    }
+
+
+    const cleaned =
+        String(value ?? "")
+        .replace(
+            /₹/g,
+            ""
+        )
+        .replace(
+            /,/g,
+            ""
+        )
+        .trim();
+
+
+    const number =
+        parseFloat(
+            cleaned
+        );
+
+
+    return Number.isFinite(number)
+        ? number
+        : 0;
+
+}
+
+
+function parseDiscount(value) {
+
+    if (
+        typeof value ===
+        "number"
+    ) {
+
+        return Number.isFinite(value)
+            ? value
+            : 0;
+
+    }
+
+
+    const cleaned =
+        String(value ?? "")
+        .replace(
+            /%/g,
+            ""
+        )
+        .trim();
+
+
+    const number =
+        parseFloat(
+            cleaned
+        );
+
+
+    return Number.isFinite(number)
+        ? number
+        : 0;
+
+}
+
+
+function normalizeOrder(order) {
+
+    return {
+
+        id:
+            String(
+                order.id || ""
+            ),
+
+        productId:
+            order.productId ||
+            "",
+
+        brand:
+            String(
+                order.brand || ""
+            ),
+
+        category:
+            String(
+                order.category || ""
+            ),
+
+        value:
+            parseMoney(
+                order.value
+            ),
+
+        price:
+            parseMoney(
+                order.price
+            ),
+
+        discount:
+            parseDiscount(
+                order.discount
+            ),
+
+        email:
+            String(
+                order.email || ""
+            )
+            .trim(),
+
+        status:
+            String(
+                order.status ||
+                "Confirmed"
+            ),
+
+        date:
+            String(
+                order.date || ""
+            )
+
+    };
+
+}
+
+
+/* =====================================================
+   ORDERS STORAGE
+===================================================== */
+
 function getOrders() {
 
     try {
 
-        return JSON.parse(
-            localStorage.getItem(
-                ORDER_STORAGE_KEY
+        const raw =
+            JSON.parse(
+                localStorage.getItem(
+                    ORDER_STORAGE_KEY
+                )
+            ) || [];
+
+
+        const normalized =
+            raw.map(
+                normalizeOrder
+            );
+
+
+        /*
+           Save the normalized format back.
+           This permanently fixes the old NaN
+           data on this browser.
+        */
+
+        localStorage.setItem(
+            ORDER_STORAGE_KEY,
+            JSON.stringify(
+                normalized
             )
-        ) || [];
+        );
+
+
+        return normalized;
 
     }
 
@@ -3123,11 +3417,19 @@ function saveOrders(orders) {
 
     localStorage.setItem(
         ORDER_STORAGE_KEY,
-        JSON.stringify(orders)
+        JSON.stringify(
+            orders.map(
+                normalizeOrder
+            )
+        )
     );
 
 }
 
+
+/* =====================================================
+   ACCOUNT STORAGE
+===================================================== */
 
 function getAccount() {
 
@@ -3154,7 +3456,9 @@ function saveAccount(account) {
 
     localStorage.setItem(
         ACCOUNT_STORAGE_KEY,
-        JSON.stringify(account)
+        JSON.stringify(
+            account
+        )
     );
 
 }
@@ -3170,6 +3474,108 @@ function removeAccount() {
 
 
 /* =====================================================
+   WISHLIST STORAGE — BRICK 11
+===================================================== */
+
+function getWishlist() {
+
+    try {
+
+        const wishlist =
+            JSON.parse(
+                localStorage.getItem(
+                    WISHLIST_STORAGE_KEY
+                )
+            );
+
+
+        return Array.isArray(wishlist)
+            ? wishlist
+            : [];
+
+    }
+
+    catch {
+
+        return [];
+
+    }
+
+}
+
+
+function saveWishlist(wishlist) {
+
+    localStorage.setItem(
+        WISHLIST_STORAGE_KEY,
+        JSON.stringify(
+            wishlist
+        )
+    );
+
+}
+
+
+function isWishlisted(productId) {
+
+    return getWishlist()
+        .includes(
+            productId
+        );
+
+}
+
+
+function toggleWishlist(
+    productId,
+    event
+) {
+
+    if (event) {
+
+        event.stopPropagation();
+
+    }
+
+
+    let wishlist =
+        getWishlist();
+
+
+    if (
+        wishlist.includes(
+            productId
+        )
+    ) {
+
+        wishlist =
+            wishlist.filter(
+                id =>
+                    id !== productId
+            );
+
+    }
+
+    else {
+
+        wishlist.push(
+            productId
+        );
+
+    }
+
+
+    saveWishlist(
+        wishlist
+    );
+
+
+    renderProducts();
+
+}
+
+
+/* =====================================================
    PRICE CALCULATOR
 ===================================================== */
 
@@ -3179,46 +3585,60 @@ function calculatePrice(
 ) {
 
     return Math.round(
-        amount *
-        (1 - discount / 100)
+        Number(amount) *
+        (
+            1 -
+            Number(discount) /
+            100
+        )
     );
 
 }
 
 
 /* =====================================================
-   PRODUCT CATALOG RENDER
+   CATEGORY RENDER
 ===================================================== */
 
 function renderCategories() {
 
-    const categories =
+    const container =
         document.getElementById(
             "categories"
         );
 
-    const categoryNames = [
+
+    const categories = [
         "All",
         ...new Set(
             productCatalog.map(
                 product =>
                     product.category
             )
-        )
+        ),
+        "Saved"
     ];
 
-    categories.innerHTML =
-        categoryNames.map(
-            function(category, index) {
+
+    container.innerHTML =
+        categories.map(
+            function(category) {
 
                 return `
 
                 <button
-                    class="category ${index === 0 ? "active" : ""}"
-                    data-category="${category}"
+                    class="category ${
+                        activeCategory === category
+                        ? "active"
+                        : ""
+                    }"
                     onclick="selectCategory('${category}')"
                 >
-                    ${category}
+                    ${
+                        category === "Saved"
+                        ? "♡ Saved"
+                        : category
+                    }
                 </button>
 
                 `;
@@ -3229,34 +3649,23 @@ function renderCategories() {
 }
 
 
-let activeCategory = "All";
-
-
-function selectCategory(category) {
+function selectCategory(
+    category
+) {
 
     activeCategory =
         category;
 
-    document
-        .querySelectorAll(
-            ".category"
-        )
-        .forEach(
-            function(button) {
-
-                button.classList.toggle(
-                    "active",
-                    button.dataset.category ===
-                    category
-                );
-
-            }
-        );
+    renderCategories();
 
     renderProducts();
 
 }
 
+
+/* =====================================================
+   PRODUCT RENDER
+===================================================== */
 
 function renderProducts() {
 
@@ -3270,37 +3679,70 @@ function renderProducts() {
             "noProducts"
         );
 
-    const searchInput =
+    const search =
         document.getElementById(
             "search"
-        );
+        ).value
+        .trim()
+        .toLowerCase();
 
-    const search =
-        searchInput.value
-            .trim()
-            .toLowerCase();
+
+    const wishlist =
+        getWishlist();
 
 
     const filtered =
         productCatalog.filter(
             function(product) {
 
-                const matchesCategory =
-                    activeCategory === "All" ||
-                    product.category ===
-                    activeCategory;
+                let matchesCategory;
+
+
+                if (
+                    activeCategory ===
+                    "All"
+                ) {
+
+                    matchesCategory =
+                        true;
+
+                }
+
+                else if (
+                    activeCategory ===
+                    "Saved"
+                ) {
+
+                    matchesCategory =
+                        wishlist.includes(
+                            product.id
+                        );
+
+                }
+
+                else {
+
+                    matchesCategory =
+                        product.category ===
+                        activeCategory;
+
+                }
+
 
                 const searchable =
                     (
                         product.name +
                         " " +
                         product.category
-                    ).toLowerCase();
+                    )
+                    .toLowerCase();
+
 
                 const matchesSearch =
                     searchable.includes(
                         search
                     );
+
 
                 return (
                     matchesCategory &&
@@ -3315,17 +3757,26 @@ function renderProducts() {
         filtered.map(
             function(product) {
 
-                const defaultValue =
+                const value =
                     product.fixedValues[0];
 
-                const defaultDiscount =
+
+                const discount =
                     product.fixedDiscount;
 
-                const defaultPrice =
+
+                const price =
                     calculatePrice(
-                        defaultValue,
-                        defaultDiscount
+                        value,
+                        discount
                     );
+
+
+                const saved =
+                    wishlist.includes(
+                        product.id
+                    );
+
 
                 return `
 
@@ -3342,6 +3793,26 @@ function renderProducts() {
                             alt="${product.name} logo"
                         >
 
+
+                        <button
+                            class="save-button ${
+                                saved ? "saved" : ""
+                            }"
+                            onclick="toggleWishlist('${product.id}', event)"
+                            aria-label="Save ${product.name}"
+                            title="${
+                                saved
+                                ? "Remove from saved"
+                                : "Save gift card"
+                            }"
+                        >
+                            ${
+                                saved
+                                ? "♥"
+                                : "♡"
+                            }
+                        </button>
+
                     </div>
 
 
@@ -3351,35 +3822,23 @@ function renderProducts() {
 
 
                     <h3>
-                        ${
-                            product.fixedValues.length
-                            ? money(defaultValue) +
-                              " Gift Card"
-                            : "Gift Card"
-                        }
+                        ${money(value)}
+                        Gift Card
                     </h3>
 
 
                     <p class="old-price">
-                        ${
-                            product.fixedValues.length
-                            ? money(defaultValue)
-                            : "Choose your value"
-                        }
+                        ${money(value)}
                     </p>
 
 
                     <p class="price">
-                        ${
-                            product.fixedValues.length
-                            ? money(defaultPrice)
-                            : "Custom available"
-                        }
+                        ${money(price)}
                     </p>
 
 
                     <span class="discount">
-                        Save ${defaultDiscount}%
+                        Save ${discount}%
                     </span>
 
 
@@ -3398,19 +3857,10 @@ function renderProducts() {
         ).join("");
 
 
-    if (filtered.length === 0) {
-
-        noProducts.style.display =
-            "block";
-
-    }
-
-    else {
-
-        noProducts.style.display =
-            "none";
-
-    }
+    noProducts.style.display =
+        filtered.length === 0
+        ? "block"
+        : "none";
 
 }
 
@@ -3419,12 +3869,15 @@ function renderProducts() {
    OPEN PRODUCT
 ===================================================== */
 
-function openProduct(productId) {
+function openProduct(
+    productId
+) {
 
     const product =
         productCatalog.find(
             item =>
-                item.id === productId
+                item.id ===
+                productId
         );
 
 
@@ -3436,14 +3889,18 @@ function openProduct(productId) {
     selectedProduct =
         product;
 
+
     selectedMode =
         "fixed";
+
 
     selectedValue =
         product.fixedValues[0];
 
+
     selectedDiscount =
         product.fixedDiscount;
+
 
     selectedPrice =
         calculatePrice(
@@ -3471,7 +3928,11 @@ function openProduct(productId) {
                 return `
 
                 <button
-                    class="value-button ${index === 0 ? "active" : ""}"
+                    class="value-button ${
+                        index === 0
+                        ? "active"
+                        : ""
+                    }"
                     onclick="selectFixed(${value}, this)"
                 >
                     ${money(value)}
@@ -3483,9 +3944,22 @@ function openProduct(productId) {
         ).join("");
 
 
+    const customMode =
+        document.getElementById(
+            "customMode"
+        );
+
+
+    customMode.style.display =
+        product.custom
+        ? "block"
+        : "none";
+
+
     document.getElementById(
         "customAmount"
-    ).value = "";
+    ).value =
+        "";
 
 
     document.getElementById(
@@ -3500,14 +3974,13 @@ function openProduct(productId) {
 
     document.getElementById(
         "fixedMode"
-    ).classList.add("active");
+    ).classList.add(
+        "active"
+    );
 
 
-    document.getElementById(
-        "customMode"
-    ).classList.toggle(
-        "active",
-        false
+    customMode.classList.remove(
+        "active"
     );
 
 
@@ -3520,17 +3993,7 @@ function openProduct(productId) {
     document.getElementById(
         "customArea"
     ).style.display =
-        product.custom
-        ? "none"
-        : "none";
-
-
-    document.getElementById(
-        "customMode"
-    ).style.display =
-        product.custom
-        ? "block"
-        : "none";
+        "none";
 
 
     updatePreview();
@@ -3547,7 +4010,9 @@ function openProduct(productId) {
    SELECT MODE
 ===================================================== */
 
-function selectMode(mode) {
+function selectMode(
+    mode
+) {
 
     if (!selectedProduct) {
         return;
@@ -3568,13 +4033,17 @@ function selectMode(mode) {
         mode;
 
 
-    if (mode === "fixed") {
+    if (
+        mode === "fixed"
+    ) {
 
         selectedDiscount =
             selectedProduct.fixedDiscount;
 
+
         selectedValue =
             selectedProduct.fixedValues[0];
+
 
         selectedPrice =
             calculatePrice(
@@ -3585,12 +4054,16 @@ function selectMode(mode) {
 
         document.getElementById(
             "fixedMode"
-        ).classList.add("active");
+        ).classList.add(
+            "active"
+        );
 
 
         document.getElementById(
             "customMode"
-        ).classList.remove("active");
+        ).classList.remove(
+            "active"
+        );
 
 
         document.getElementById(
@@ -3628,12 +4101,16 @@ function selectMode(mode) {
 
         document.getElementById(
             "fixedMode"
-        ).classList.remove("active");
+        ).classList.remove(
+            "active"
+        );
 
 
         document.getElementById(
             "customMode"
-        ).classList.add("active");
+        ).classList.add(
+            "active"
+        );
 
 
         document.getElementById(
@@ -3648,36 +4125,7 @@ function selectMode(mode) {
             "block";
 
 
-        const amount =
-            parseInt(
-                document.getElementById(
-                    "customAmount"
-                ).value
-            );
-
-
-        if (
-            Number.isNaN(amount)
-        ) {
-
-            selectedValue = 0;
-
-            selectedPrice = 0;
-
-        }
-
-        else {
-
-            selectedValue =
-                amount;
-
-            selectedPrice =
-                calculatePrice(
-                    amount,
-                    selectedDiscount
-                );
-
-        }
+        updateCustomPrice();
 
     }
 
@@ -3688,7 +4136,7 @@ function selectMode(mode) {
 
 
 /* =====================================================
-   SELECT FIXED VALUE
+   FIXED VALUE
 ===================================================== */
 
 function selectFixed(
@@ -3704,15 +4152,18 @@ function selectFixed(
     selectedMode =
         "fixed";
 
+
     selectedValue =
-        amount;
+        Number(amount);
+
 
     selectedDiscount =
         selectedProduct.fixedDiscount;
 
+
     selectedPrice =
         calculatePrice(
-            amount,
+            selectedValue,
             selectedDiscount
         );
 
@@ -3775,9 +4226,11 @@ function updateCustomPrice() {
         Number.isNaN(amount)
     ) {
 
-        selectedValue = 0;
+        selectedValue =
+            0;
 
-        selectedPrice = 0;
+        selectedPrice =
+            0;
 
     }
 
@@ -3865,9 +4318,13 @@ function continueProduct() {
 
             alert(
                 "Please enter an amount between " +
-                money(selectedProduct.minCustom) +
+                money(
+                    selectedProduct.minCustom
+                ) +
                 " and " +
-                money(selectedProduct.maxCustom) +
+                money(
+                    selectedProduct.maxCustom
+                ) +
                 "."
             );
 
@@ -3903,14 +4360,18 @@ function continueProduct() {
     document.getElementById(
         "orderValue"
     ).textContent =
-        money(selectedValue) +
+        money(
+            selectedValue
+        ) +
         " Gift Card";
 
 
     document.getElementById(
         "originalPrice"
     ).textContent =
-        money(selectedValue);
+        money(
+            selectedValue
+        );
 
 
     document.getElementById(
@@ -3923,13 +4384,17 @@ function continueProduct() {
     document.getElementById(
         "finalPrice"
     ).textContent =
-        money(selectedPrice);
+        money(
+            selectedPrice
+        );
 
 
     document.getElementById(
         "totalPrice"
     ).textContent =
-        money(selectedPrice);
+        money(
+            selectedPrice
+        );
 
 
     openOverlay(
@@ -3940,10 +4405,39 @@ function continueProduct() {
 
 
 /* =====================================================
-   CHECKOUT
+   CHECKOUT LOGIN GATE
 ===================================================== */
 
 function openCheckout() {
+
+    const account =
+        getAccount();
+
+
+    /*
+       THIS IS THE IMPORTANT ACCESS CONTROL.
+
+       Guests can see the order summary,
+       but cannot enter checkout until logged in.
+    */
+
+    if (!account) {
+
+        closeOrder();
+
+        pendingAction =
+            "checkout";
+
+
+        openAccount(
+            "login",
+            "Please log in to continue to checkout."
+        );
+
+        return;
+
+    }
+
 
     closeOrder();
 
@@ -3957,28 +4451,27 @@ function openCheckout() {
     document.getElementById(
         "checkoutValue"
     ).textContent =
-        money(selectedValue) +
+        money(
+            selectedValue
+        ) +
         " Gift Card";
 
 
     document.getElementById(
         "checkoutPrice"
     ).textContent =
-        money(selectedPrice);
+        money(
+            selectedPrice
+        );
 
 
-    const account =
-        getAccount();
+    document.getElementById(
+        "email"
+    ).value =
+        account.email;
 
 
-    if (account) {
-
-        document.getElementById(
-            "email"
-        ).value =
-            account.email;
-
-    }
+    clearEmailError();
 
 
     openOverlay(
@@ -3992,12 +4485,15 @@ function openCheckout() {
    EMAIL VALIDATION
 ===================================================== */
 
-function isValidEmail(email) {
+function isValidEmail(
+    email
+) {
 
-    const emailPattern =
+    const pattern =
         /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-    return emailPattern.test(
+
+    return pattern.test(
         email
     );
 
@@ -4026,6 +4522,35 @@ function clearEmailError() {
 ===================================================== */
 
 function placeOrder() {
+
+    const account =
+        getAccount();
+
+
+    /*
+       SECOND ACCESS CONTROL.
+
+       Even if someone manually calls the
+       JavaScript function, an account is still required.
+    */
+
+    if (!account) {
+
+        closeCheckout();
+
+        pendingAction =
+            "checkout";
+
+
+        openAccount(
+            "login",
+            "Please log in before placing your order."
+        );
+
+        return;
+
+    }
+
 
     const email =
         document.getElementById(
@@ -4083,16 +4608,22 @@ function placeOrder() {
             selectedProduct.category,
 
         value:
-            selectedValue,
+            Number(
+                selectedValue
+            ),
 
         price:
-            selectedPrice,
+            Number(
+                selectedPrice
+            ),
 
         discount:
-            selectedDiscount,
+            Number(
+                selectedDiscount
+            ),
 
         email:
-            email,
+            account.email,
 
         status:
             "Confirmed",
@@ -4119,22 +4650,13 @@ function placeOrder() {
     );
 
 
-    document.getElementById(
-        "checkoutOverlay"
-    ).style.display =
-        "none";
+    closeCheckout();
 
 
     document.getElementById(
         "orderId"
     ).textContent =
         newOrderId;
-
-
-    document.getElementById(
-        "email"
-    ).value =
-        "";
 
 
     openOverlay(
@@ -4145,12 +4667,50 @@ function placeOrder() {
 
 
 /* =====================================================
-   ORDERS
+   SUCCESS
+===================================================== */
+
+function closeSuccess() {
+
+    closeOverlay(
+        "successOverlay"
+    );
+
+}
+
+
+/* =====================================================
+   ORDERS — LOGIN REQUIRED
 ===================================================== */
 
 function openOrders() {
 
+    const account =
+        getAccount();
+
+
+    /*
+       Guests must not see the order list.
+    */
+
+    if (!account) {
+
+        pendingAction =
+            "orders";
+
+
+        openAccount(
+            "login",
+            "Please log in to view your orders."
+        );
+
+        return;
+
+    }
+
+
     loadOrders();
+
 
     openOverlay(
         "ordersOverlay"
@@ -4168,10 +4728,53 @@ function closeOrders() {
 }
 
 
+/* =====================================================
+   ACCOUNT-SPECIFIC ORDERS
+===================================================== */
+
+function getCurrentAccountOrders() {
+
+    const account =
+        getAccount();
+
+
+    if (!account) {
+        return [];
+    }
+
+
+    const accountEmail =
+        account.email
+        .trim()
+        .toLowerCase();
+
+
+    return getOrders().filter(
+        function(order) {
+
+            return (
+                String(
+                    order.email
+                )
+                .trim()
+                .toLowerCase() ===
+                accountEmail
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   LOAD ORDERS
+===================================================== */
+
 function loadOrders() {
 
     const orders =
-        getOrders();
+        getCurrentAccountOrders();
 
 
     const container =
@@ -4214,7 +4817,15 @@ function loadOrders() {
 
     container.innerHTML =
         orders.map(
-            function(order, index) {
+            function(order) {
+
+                const globalIndex =
+                    getOrders().findIndex(
+                        item =>
+                            item.id ===
+                            order.id
+                    );
+
 
                 return `
 
@@ -4234,7 +4845,8 @@ function loadOrders() {
 
 
                     <strong>
-                        ${money(order.value)} Gift Card
+                        ${money(order.value)}
+                        Gift Card
                     </strong>
 
 
@@ -4292,7 +4904,7 @@ function loadOrders() {
 
                     <button
                         class="order-action"
-                        onclick="openOrderDetail(${index})"
+                        onclick="openOrderDetailById('${escapeHTML(order.id)}')"
                     >
                         View Order Details
                     </button>
@@ -4311,14 +4923,40 @@ function loadOrders() {
    ORDER DETAIL
 ===================================================== */
 
-function openOrderDetail(index) {
+function openOrderDetailById(
+    orderId
+) {
+
+    const account =
+        getAccount();
+
+
+    if (!account) {
+
+        pendingAction =
+            "orders";
+
+
+        openAccount(
+            "login",
+            "Please log in to view order details."
+        );
+
+        return;
+
+    }
+
 
     const orders =
-        getOrders();
+        getCurrentAccountOrders();
 
 
     const order =
-        orders[index];
+        orders.find(
+            item =>
+                item.id ===
+                orderId
+        );
 
 
     if (!order) {
@@ -4402,13 +5040,38 @@ function closeOrderDetail() {
    ACCOUNT — BRICK 8
 ===================================================== */
 
-function openAccount() {
+function openAccount(
+    mode = "auto",
+    message = ""
+) {
 
     const account =
         getAccount();
 
 
-    if (account) {
+    document.getElementById(
+        "accountMessage"
+    ).style.display =
+        message
+        ? "block"
+        : "none";
+
+
+    document.getElementById(
+        "accountMessage"
+    ).textContent =
+        message;
+
+
+    /*
+       If an account exists and normal Account
+       is clicked, show the profile.
+    */
+
+    if (
+        account &&
+        mode === "auto"
+    ) {
 
         document.getElementById(
             "accountTitle"
@@ -4417,7 +5080,13 @@ function openAccount() {
 
 
         document.getElementById(
-            "accountForm"
+            "loginForm"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "signupForm"
         ).style.display =
             "none";
 
@@ -4426,6 +5095,18 @@ function openAccount() {
             "loggedInAccount"
         ).style.display =
             "block";
+
+
+        document.getElementById(
+            "loginTab"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "signupTab"
+        ).style.display =
+            "none";
 
 
         document.getElementById(
@@ -4446,19 +5127,34 @@ function openAccount() {
         document.getElementById(
             "accountTitle"
         ).textContent =
-            "Create Account";
-
-
-        document.getElementById(
-            "accountForm"
-        ).style.display =
-            "block";
+            mode === "signup"
+            ? "Create Account"
+            : "Login";
 
 
         document.getElementById(
             "loggedInAccount"
         ).style.display =
             "none";
+
+
+        document.getElementById(
+            "loginTab"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "signupTab"
+        ).style.display =
+            "block";
+
+
+        switchAccountMode(
+            mode === "signup"
+            ? "signup"
+            : "login"
+        );
 
     }
 
@@ -4470,27 +5166,175 @@ function openAccount() {
 }
 
 
-function closeAccount() {
+/* =====================================================
+   ACCOUNT MODE SWITCH
+===================================================== */
 
-    closeOverlay(
-        "accountOverlay"
+function switchAccountMode(
+    mode
+) {
+
+    document.getElementById(
+        "loginForm"
+    ).style.display =
+        mode === "login"
+        ? "block"
+        : "none";
+
+
+    document.getElementById(
+        "signupForm"
+    ).style.display =
+        mode === "signup"
+        ? "block"
+        : "none";
+
+
+    document.getElementById(
+        "loginTab"
+    ).classList.toggle(
+        "active",
+        mode === "login"
     );
+
+
+    document.getElementById(
+        "signupTab"
+    ).classList.toggle(
+        "active",
+        mode === "signup"
+    );
+
+
+    document.getElementById(
+        "accountTitle"
+    ).textContent =
+        mode === "login"
+        ? "Login"
+        : "Create Account";
+
+
+    document.getElementById(
+        "loginError"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "accountError"
+    ).style.display =
+        "none";
 
 }
 
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function loginAccount() {
+
+    const email =
+        document.getElementById(
+            "loginEmail"
+        ).value
+        .trim();
+
+
+    const error =
+        document.getElementById(
+            "loginError"
+        );
+
+
+    if (
+        !isValidEmail(email)
+    ) {
+
+        error.textContent =
+            "Please enter a valid email address.";
+
+        error.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    const account =
+        getAccount();
+
+
+    /*
+       This prototype has one local account.
+
+       A real system will use a backend,
+       database and secure authentication.
+    */
+
+    if (!account) {
+
+        error.textContent =
+            "No local account exists with this browser yet. Please create an account first.";
+
+        error.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    if (
+        account.email
+        .trim()
+        .toLowerCase() !==
+        email
+        .toLowerCase()
+    ) {
+
+        error.textContent =
+            "This email does not match the account saved on this browser.";
+
+        error.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    error.style.display =
+        "none";
+
+
+    closeAccount();
+
+
+    handlePendingAction();
+
+}
+
+
+/* =====================================================
+   CREATE ACCOUNT
+===================================================== */
 
 function createAccount() {
 
     const name =
         document.getElementById(
             "accountName"
-        ).value.trim();
+        ).value
+        .trim();
 
 
     const email =
         document.getElementById(
             "accountEmail"
-        ).value.trim();
+        ).value
+        .trim();
 
 
     const error =
@@ -4504,21 +5348,8 @@ function createAccount() {
         !isValidEmail(email)
     ) {
 
-        document.getElementById(
-            "accountName"
-        ).classList.toggle(
-            "error",
-            name.length < 2
-        );
-
-
-        document.getElementById(
-            "accountEmail"
-        ).classList.toggle(
-            "error",
-            !isValidEmail(email)
-        );
-
+        error.textContent =
+            "Please enter a valid name and email address.";
 
         error.style.display =
             "block";
@@ -4549,32 +5380,65 @@ function createAccount() {
     );
 
 
-    document.getElementById(
-        "accountName"
-    ).value =
-        "";
-
-
-    document.getElementById(
-        "accountEmail"
-    ).value =
-        "";
+    updateHeader();
 
 
     error.style.display =
         "none";
 
 
-    updateHeader();
-
-
     closeAccount();
 
 
-    openDashboard();
+    handlePendingAction();
 
 }
 
+
+/* =====================================================
+   PENDING ACTION
+===================================================== */
+
+function handlePendingAction() {
+
+    const action =
+        pendingAction;
+
+
+    pendingAction =
+        null;
+
+
+    if (
+        action ===
+        "checkout"
+    ) {
+
+        openCheckout();
+
+    }
+
+    else if (
+        action ===
+        "orders"
+    ) {
+
+        openOrders();
+
+    }
+
+    else {
+
+        openDashboard();
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
 
 function logout() {
 
@@ -4586,6 +5450,21 @@ function logout() {
 
 }
 
+
+function logoutFromDashboard() {
+
+    removeAccount();
+
+    updateHeader();
+
+    closeDashboard();
+
+}
+
+
+/* =====================================================
+   HEADER UPDATE
+===================================================== */
 
 function updateHeader() {
 
@@ -4610,6 +5489,7 @@ function updateHeader() {
         loginButton.style.display =
             "none";
 
+
         accountButton.style.display =
             "block";
 
@@ -4624,6 +5504,7 @@ function updateHeader() {
         loginButton.style.display =
             "block";
 
+
         accountButton.style.display =
             "none";
 
@@ -4633,7 +5514,7 @@ function updateHeader() {
 
 
 /* =====================================================
-   DASHBOARD — BRICK 9
+   DASHBOARD
 ===================================================== */
 
 function openDashboard() {
@@ -4644,9 +5525,14 @@ function openDashboard() {
 
     if (!account) {
 
-        closeAccount();
+        pendingAction =
+            "dashboard";
 
-        openAccount();
+
+        openAccount(
+            "login",
+            "Please log in to access your account."
+        );
 
         return;
 
@@ -4654,9 +5540,6 @@ function openDashboard() {
 
 
     updateDashboard();
-
-
-    closeAccount();
 
 
     openOverlay(
@@ -4687,7 +5570,7 @@ function updateDashboard() {
 
 
     const orders =
-        getOrders();
+        getCurrentAccountOrders();
 
 
     const totalSpent =
@@ -4695,7 +5578,9 @@ function updateDashboard() {
             function(total, order) {
 
                 return total +
-                    Number(order.price || 0);
+                    Number(
+                        order.price || 0
+                    );
 
             },
             0
@@ -4706,18 +5591,15 @@ function updateDashboard() {
         orders.reduce(
             function(total, order) {
 
-                const value =
-                    Number(
-                        order.value || 0
-                    );
-
-                const price =
-                    Number(
-                        order.price || 0
-                    );
-
                 return total +
-                    (value - price);
+                    (
+                        Number(
+                            order.value || 0
+                        ) -
+                        Number(
+                            order.price || 0
+                        )
+                    );
 
             },
             0
@@ -4746,13 +5628,17 @@ function updateDashboard() {
     document.getElementById(
         "statSpent"
     ).textContent =
-        money(totalSpent);
+        money(
+            totalSpent
+        );
 
 
     document.getElementById(
         "statSavings"
     ).textContent =
-        money(totalSavings);
+        money(
+            totalSavings
+        );
 
 
     const recent =
@@ -4790,7 +5676,10 @@ function updateDashboard() {
                 href="#products"
                 class="button"
                 onclick="closeDashboard()"
-                style="padding:10px 15px;font-size:12px;"
+                style="
+                    padding:10px 15px;
+                    font-size:12px;
+                "
             >
                 Explore Gift Cards
             </a>
@@ -4826,7 +5715,8 @@ function updateDashboard() {
 
 
                     <strong>
-                        ${money(order.value)} Gift Card
+                        ${money(order.value)}
+                        Gift Card
                     </strong>
 
 
@@ -4874,35 +5764,13 @@ function openOrdersFromDashboard() {
 }
 
 
-function logoutFromDashboard() {
-
-    removeAccount();
-
-    updateHeader();
-
-    closeDashboard();
-
-}
-
-
-/* =====================================================
-   SUCCESS
-===================================================== */
-
-function closeSuccess() {
-
-    closeOverlay(
-        "successOverlay"
-    );
-
-}
-
-
 /* =====================================================
    GENERIC OVERLAY CONTROL
 ===================================================== */
 
-function openOverlay(id) {
+function openOverlay(
+    id
+) {
 
     document.getElementById(
         id
@@ -4917,7 +5785,9 @@ function openOverlay(id) {
 }
 
 
-function closeOverlay(id) {
+function closeOverlay(
+    id
+) {
 
     document.getElementById(
         id
@@ -4925,16 +5795,13 @@ function closeOverlay(id) {
         "none";
 
 
-    const overlays =
-        document.querySelectorAll(
-            ".overlay"
-        );
+    let anyOpen =
+        false;
 
 
-    let anyOpen = false;
-
-
-    overlays.forEach(
+    document.querySelectorAll(
+        ".overlay"
+    ).forEach(
         function(overlay) {
 
             if (
@@ -4942,7 +5809,8 @@ function closeOverlay(id) {
                 "flex"
             ) {
 
-                anyOpen = true;
+                anyOpen =
+                    true;
 
             }
 
@@ -4992,48 +5860,58 @@ function closeCheckout() {
 }
 
 
-/* =====================================================
-   SEARCH / STORE
-===================================================== */
+function closeAccount() {
+
+    closeOverlay(
+        "accountOverlay"
+    );
+
+}
+
 
 function scrollToStore() {
 
     document.getElementById(
         "products"
     ).scrollIntoView({
-        behavior: "smooth"
+        behavior:
+            "smooth"
     });
 
 }
 
 
 /* =====================================================
-   HTML SAFETY HELPER
+   HTML SAFETY
 ===================================================== */
 
-function escapeHTML(value) {
+function escapeHTML(
+    value
+) {
 
-    return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+    return String(
+        value
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
 }
 
@@ -5046,28 +5924,26 @@ window.addEventListener(
     "click",
     function(event) {
 
-        const overlays =
-            document.querySelectorAll(
+        document
+            .querySelectorAll(
                 ".overlay"
-            );
+            )
+            .forEach(
+                function(overlay) {
 
+                    if (
+                        event.target ===
+                        overlay
+                    ) {
 
-        overlays.forEach(
-            function(overlay) {
+                        closeOverlay(
+                            overlay.id
+                        );
 
-                if (
-                    event.target ===
-                    overlay
-                ) {
-
-                    closeOverlay(
-                        overlay.id
-                    );
+                    }
 
                 }
-
-            }
-        );
+            );
 
     }
 );
@@ -5091,31 +5967,33 @@ window.addEventListener(
         }
 
 
-        document.querySelectorAll(
-            ".overlay"
-        ).forEach(
-            function(overlay) {
+        document
+            .querySelectorAll(
+                ".overlay"
+            )
+            .forEach(
+                function(overlay) {
 
-                if (
-                    overlay.style.display ===
-                    "flex"
-                ) {
+                    if (
+                        overlay.style.display ===
+                        "flex"
+                    ) {
 
-                    closeOverlay(
-                        overlay.id
-                    );
+                        closeOverlay(
+                            overlay.id
+                        );
+
+                    }
 
                 }
-
-            }
-        );
+            );
 
     }
 );
 
 
 /* =====================================================
-   INITIALISE STORE
+   INITIALISE
 ===================================================== */
 
 renderCategories();
@@ -5123,31 +6001,6 @@ renderCategories();
 renderProducts();
 
 updateHeader();
-
-
-/* =====================================================
-   ACCOUNT → CHECKOUT SYNC
-===================================================== */
-
-const account =
-    getAccount();
-
-
-if (account) {
-
-    const email =
-        document.getElementById(
-            "email"
-        );
-
-    if (email) {
-
-        email.value =
-            account.email;
-
-    }
-
-}
 
 </script>
 
