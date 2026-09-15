@@ -1,6 +1,6 @@
 /* =====================================================
-   GIFTCARDSTORE — ACCOUNT SYSTEM
-   Brick 14.1
+   GIFTCARDSTORE — ACCOUNT
+   BRICK 14
 ===================================================== */
 
 const ACCOUNT_KEY = "giftCardCustomer";
@@ -13,68 +13,82 @@ window.GCS = window.GCS || {};
 ===================================================== */
 
 function getCurrentUser() {
+
     return JSON.parse(
         localStorage.getItem(ACCOUNT_KEY) || "null"
     );
+
 }
 
 function isLoggedIn() {
+
     return !!getCurrentUser();
+
 }
 
 function saveUser(user) {
+
     localStorage.setItem(
         ACCOUNT_KEY,
         JSON.stringify(user)
     );
 
     updateAccountUI();
+
 }
 
 
 /* =====================================================
-   PREMIUM SITE NOTIFICATION
+   NOTICE
 ===================================================== */
 
 function createNoticeSystem() {
 
-    if (document.getElementById("siteNoticeOverlay")) {
+    if (
+        document.getElementById(
+            "siteNoticeOverlay"
+        )
+    ) {
         return;
     }
 
-    const overlay = document.createElement("div");
+    const overlay =
+        document.createElement("div");
 
-    overlay.id = "siteNoticeOverlay";
-    overlay.className = "site-notice-overlay";
+    overlay.id =
+        "siteNoticeOverlay";
+
+    overlay.className =
+        "site-notice-overlay";
 
     overlay.innerHTML = `
+
         <div class="site-notice">
 
-            <div class="site-notice-icon">
-                <span id="noticeIcon">✓</span>
+            <div
+                class="notice-icon"
+                id="noticeIcon">
+                ✓
             </div>
 
-            <div class="site-notice-content">
+            <div class="notice-content">
 
                 <div
-                    class="site-notice-title"
-                    id="noticeTitle"
-                >
+                    class="notice-title"
+                    id="noticeTitle">
                     GiftCardStore
                 </div>
 
                 <div
-                    class="site-notice-message"
-                    id="noticeMessage"
-                ></div>
+                    class="notice-message"
+                    id="noticeMessage">
+                </div>
 
             </div>
 
             <button
-                class="site-notice-close"
-                onclick="closeNotice()"
-                aria-label="Close"
-            >
+                class="notice-close"
+                onclick="closeNotice()">
                 ×
             </button>
 
@@ -83,16 +97,6 @@ function createNoticeSystem() {
 
     document.body.appendChild(overlay);
 
-    overlay.addEventListener(
-        "click",
-        function(event) {
-
-            if (event.target === overlay) {
-                closeNotice();
-            }
-
-        }
-    );
 }
 
 
@@ -124,28 +128,26 @@ function showNotice(
             "noticeIcon"
         );
 
-    titleElement.textContent = title;
+    titleElement.textContent =
+        title;
 
     messageElement.innerHTML =
-        String(message)
+        escapeHTML(message)
             .replace(/\n/g, "<br>");
 
     overlay.className =
-        "site-notice-overlay " +
-        "notice-" +
+        "site-notice-overlay notice-" +
         type;
 
-    if (type === "success") {
-        icon.textContent = "✓";
-    }
-    else if (type === "error") {
-        icon.textContent = "!";
-    }
-    else {
-        icon.textContent = "i";
-    }
+    icon.textContent =
+        type === "success"
+            ? "✓"
+            : type === "error"
+                ? "!"
+                : "i";
 
-    overlay.style.display = "flex";
+    overlay.style.display =
+        "flex";
 }
 
 
@@ -157,68 +159,10 @@ function closeNotice() {
         );
 
     if (overlay) {
-        overlay.style.display = "none";
-    }
-}
-
-
-/*
- * Important:
- * Brick 13 still uses alert() in a few validation
- * situations. Intercept it here so the browser's
- * ugly native alert never appears.
- */
-
-window.alert = function(message) {
-
-    let type = "info";
-
-    const text =
-        String(message).toLowerCase();
-
-    if (
-        text.includes("valid") ||
-        text.includes("select") ||
-        text.includes("please enter")
-    ) {
-        type = "error";
+        overlay.style.display =
+            "none";
     }
 
-    if (
-        text.includes("welcome") ||
-        text.includes("logged out") ||
-        text.includes("confirmed")
-    ) {
-        type = "success";
-    }
-
-    showNotice(
-        message,
-        "GiftCardStore",
-        type
-    );
-};
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-function logoutUser() {
-
-    localStorage.removeItem(
-        ACCOUNT_KEY
-    );
-
-    updateAccountUI();
-
-    closeAccountPanel();
-
-    showNotice(
-        "You have been logged out successfully.",
-        "Signed out",
-        "success"
-    );
 }
 
 
@@ -253,8 +197,7 @@ function updateAccountUI() {
         accountButton.style.display =
             "inline-flex";
 
-    }
-    else {
+    } else {
 
         loginButton.style.display =
             "inline-flex";
@@ -263,11 +206,12 @@ function updateAccountUI() {
             "none";
 
     }
+
 }
 
 
 /* =====================================================
-   ACCOUNT DASHBOARD
+   ACCOUNT MODAL
 ===================================================== */
 
 function createAccountModal() {
@@ -294,7 +238,7 @@ function createAccountModal() {
 
     overlay.innerHTML = `
 
-        <div class="modal account-modal">
+        <div class="modal">
 
             <div class="modal-header">
 
@@ -311,9 +255,8 @@ function createAccountModal() {
                 </div>
 
                 <button
-                    class="close-btn"
-                    onclick="closeAccountPanel()"
-                >
+                    class="close-button"
+                    onclick="closeAccountPanel()">
                     ×
                 </button>
 
@@ -333,9 +276,9 @@ function createAccountModal() {
                     </strong>
 
                     <div
-                        id="accountEmail"
                         class="account-email"
-                    ></div>
+                        id="accountEmail">
+                    </div>
 
                 </div>
 
@@ -345,105 +288,80 @@ function createAccountModal() {
             <div class="account-menu">
 
                 <button
-                    onclick="openProfileSection()"
-                >
+                    onclick="openProfileSection()">
 
                     <span>👤</span>
 
                     <div>
-
-                        <strong>
-                            Profile
-                        </strong>
+                        <strong>Profile</strong>
 
                         <small>
                             View your account information
                         </small>
-
                     </div>
 
                 </button>
 
 
                 <button
-                    onclick="openOrdersFromAccount()"
-                >
+                    onclick="openOrdersFromAccount()">
 
                     <span>📦</span>
 
                     <div>
-
-                        <strong>
-                            My Orders
-                        </strong>
+                        <strong>My Orders</strong>
 
                         <small>
                             View your previous orders
                         </small>
-
                     </div>
 
                 </button>
 
 
                 <button
-                    onclick="openPaymentSection()"
-                >
+                    onclick="openPaymentSection()">
 
                     <span>💳</span>
 
                     <div>
-
-                        <strong>
-                            Payment Methods
-                        </strong>
+                        <strong>Payment Methods</strong>
 
                         <small>
                             Manage payment options
                         </small>
-
                     </div>
 
                 </button>
 
 
                 <button
-                    onclick="openGiftCardsSection()"
-                >
+                    onclick="openGiftCardsSection()">
 
                     <span>🎁</span>
 
                     <div>
-
-                        <strong>
-                            My Gift Cards
-                        </strong>
+                        <strong>My Gift Cards</strong>
 
                         <small>
                             View your purchased gift cards
                         </small>
-
                     </div>
 
                 </button>
 
 
                 <button
-                    onclick="openSettingsSection()"
-                >
+                    onclick="openSettingsSection()">
 
                     <span>⚙️</span>
 
                     <div>
-
-                        <strong>
-                            Settings
-                        </strong>
+                        <strong>Settings</strong>
 
                         <small>
                             Account preferences
                         </small>
-
                     </div>
 
                 </button>
@@ -453,9 +371,10 @@ function createAccountModal() {
 
             <button
                 class="logout-button"
-                onclick="logoutUser()"
-            >
+                onclick="logoutUser()">
+
                 🔐 Logout
+
             </button>
 
         </div>
@@ -464,11 +383,244 @@ function createAccountModal() {
     document.body.appendChild(
         overlay
     );
+
 }
 
 
 /* =====================================================
-   OPEN / CLOSE ACCOUNT
+   LOGIN MODAL
+===================================================== */
+
+function createLoginModal() {
+
+    if (
+        document.getElementById(
+            "loginOverlay"
+        )
+    ) {
+        return;
+    }
+
+    const overlay =
+        document.createElement("div");
+
+    overlay.id =
+        "loginOverlay";
+
+    overlay.className =
+        "overlay";
+
+    overlay.style.display =
+        "none";
+
+    overlay.innerHTML = `
+
+        <div class="modal login-modal">
+
+            <button
+                class="close-button"
+                onclick="closeLoginPanel()"
+                style="float:right">
+                ×
+            </button>
+
+            <div class="login-icon">
+                👤
+            </div>
+
+            <h2>
+                Welcome back
+            </h2>
+
+            <p>
+                Sign in to access your account and orders.
+            </p>
+
+
+            <div class="field-label">
+                Your name
+            </div>
+
+            <input
+                class="login-input"
+                id="loginName"
+                type="text"
+                placeholder="Enter your name"
+                autocomplete="name">
+
+
+            <div class="field-label">
+                Email address
+            </div>
+
+            <input
+                class="login-input"
+                id="loginEmail"
+                type="email"
+                placeholder="you@example.com"
+                autocomplete="email">
+
+
+            <div
+                class="login-error"
+                id="loginError">
+            </div>
+
+
+            <button
+                class="wide-primary"
+                onclick="submitLogin()">
+
+                Continue
+
+            </button>
+
+        </div>
+    `;
+
+    document.body.appendChild(
+        overlay
+    );
+
+}
+
+
+/* =====================================================
+   OPEN LOGIN
+===================================================== */
+
+function openLoginPanel() {
+
+    createLoginModal();
+
+    document.getElementById(
+        "loginName"
+    ).value = "";
+
+    document.getElementById(
+        "loginEmail"
+    ).value = "";
+
+    document.getElementById(
+        "loginError"
+    ).style.display = "none";
+
+    document.getElementById(
+        "loginOverlay"
+    ).style.display = "flex";
+
+}
+
+
+function closeLoginPanel() {
+
+    const overlay =
+        document.getElementById(
+            "loginOverlay"
+        );
+
+    if (overlay) {
+        overlay.style.display =
+            "none";
+    }
+
+}
+
+
+function submitLogin() {
+
+    const name =
+        document.getElementById(
+            "loginName"
+        ).value.trim();
+
+    const email =
+        document.getElementById(
+            "loginEmail"
+        ).value.trim().toLowerCase();
+
+    const error =
+        document.getElementById(
+            "loginError"
+        );
+
+    if (!name) {
+
+        error.textContent =
+            "Please enter your name.";
+
+        error.style.display =
+            "block";
+
+        return;
+    }
+
+    if (
+        !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+            .test(email)
+    ) {
+
+        error.textContent =
+            "Please enter a valid email address.";
+
+        error.style.display =
+            "block";
+
+        return;
+    }
+
+
+    saveUser({
+
+        name:
+            name,
+
+        email:
+            email,
+
+        createdAt:
+            new Date().toISOString()
+
+    });
+
+
+    closeLoginPanel();
+
+    showNotice(
+        "Welcome, " + name + "!",
+        "Signed in",
+        "success"
+    );
+
+
+    if (
+        window.checkoutWaitingForLogin
+    ) {
+
+        window.checkoutWaitingForLogin =
+            false;
+
+        setTimeout(
+            function() {
+
+                if (
+                    typeof GCS.openCheckout ===
+                    "function"
+                ) {
+                    GCS.openCheckout();
+                }
+
+            },
+            180
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ACCOUNT OPEN / CLOSE
 ===================================================== */
 
 function openAccountPanel() {
@@ -480,40 +632,26 @@ function openAccountPanel() {
         return;
     }
 
+    createAccountModal();
+
     const user =
         getCurrentUser();
 
-    const name =
-        document.getElementById(
-            "accountName"
-        );
+    document.getElementById(
+        "accountName"
+    ).textContent =
+        user.name || "Customer";
 
-    const email =
-        document.getElementById(
-            "accountEmail"
-        );
+    document.getElementById(
+        "accountEmail"
+    ).textContent =
+        user.email || "";
 
-    if (name) {
-        name.textContent =
-            user.name ||
-            "Customer";
-    }
+    document.getElementById(
+        "accountOverlay"
+    ).style.display =
+        "flex";
 
-    if (email) {
-        email.textContent =
-            user.email ||
-            "";
-    }
-
-    const overlay =
-        document.getElementById(
-            "accountOverlay"
-        );
-
-    if (overlay) {
-        overlay.style.display =
-            "flex";
-    }
 }
 
 
@@ -528,6 +666,7 @@ function closeAccountPanel() {
         overlay.style.display =
             "none";
     }
+
 }
 
 
@@ -545,13 +684,14 @@ function openProfileSection() {
     }
 
     showNotice(
-        `
-        <strong>${escapeNotice(user.name || "Customer")}</strong><br>
-        ${escapeNotice(user.email || "No email provided")}
-        `,
+        "Name: " +
+        (user.name || "Not provided") +
+        "\nEmail: " +
+        (user.email || "Not provided"),
         "Your Profile",
         "info"
     );
+
 }
 
 
@@ -565,159 +705,64 @@ function openOrdersFromAccount() {
     ) {
         openOrders();
     }
+
 }
 
 
 function openPaymentSection() {
 
     showNotice(
-        `
-        Payment methods will be available here.<br><br>
-        <span class="notice-muted">
-        This prototype does not store real card
-        or bank details.
-        </span>
-        `,
+        "Payment methods will be available here.\n\n" +
+        "This prototype does not store real card or bank details.",
         "Payment Methods",
         "info"
     );
+
 }
 
 
 function openGiftCardsSection() {
 
     showNotice(
-        `
-        Your purchased gift cards will appear
-        here after an order is completed.
-        `,
+        "Purchased gift cards will appear here after an order is completed.",
         "My Gift Cards",
         "info"
     );
+
 }
 
 
 function openSettingsSection() {
 
     showNotice(
-        `
-        Account preferences will be available
-        here in a future version.
-        `,
+        "Account preferences will be added here.",
         "Settings",
         "info"
     );
+
 }
 
 
 /* =====================================================
-   SAFE NOTICE TEXT
+   LOGOUT
 ===================================================== */
 
-function escapeNotice(value) {
+function logoutUser() {
 
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
+    localStorage.removeItem(
+        ACCOUNT_KEY
+    );
 
+    updateAccountUI();
 
-/* =====================================================
-   LOGIN
-===================================================== */
-
-function openLoginPanel() {
-
-    const email =
-        prompt(
-            "Enter your email address:"
-        );
-
-    if (email === null) {
-        return;
-    }
-
-    const cleanEmail =
-        email
-            .trim()
-            .toLowerCase();
-
-    if (
-        !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
-            .test(cleanEmail)
-    ) {
-
-        showNotice(
-            "Please enter a valid email address.",
-            "Invalid email",
-            "error"
-        );
-
-        return;
-    }
-
-
-    const name =
-        prompt(
-            "Enter your name:"
-        );
-
-    if (
-        name === null ||
-        !name.trim()
-    ) {
-
-        showNotice(
-            "Please enter your name.",
-            "Name required",
-            "error"
-        );
-
-        return;
-    }
-
-
-    saveUser({
-
-        name:
-            name.trim(),
-
-        email:
-            cleanEmail,
-
-        createdAt:
-            new Date().toISOString()
-
-    });
-
+    closeAccountPanel();
 
     showNotice(
-        "Welcome, " +
-        escapeNotice(name.trim()) +
-        "!",
-        "Welcome",
+        "You have been logged out successfully.",
+        "Signed out",
         "success"
     );
 
-
-    if (
-        window.checkoutWaitingForLogin
-    ) {
-
-        window.checkoutWaitingForLogin =
-            false;
-
-        if (
-            typeof openCheckout ===
-            "function"
-        ) {
-            openCheckout();
-        }
-
-    }
 }
 
 
@@ -738,6 +783,23 @@ function requireLogin(action) {
         true;
 
     openLoginPanel();
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
 }
 
 
@@ -750,6 +812,8 @@ document.addEventListener(
     function() {
 
         createAccountModal();
+
+        createLoginModal();
 
         createNoticeSystem();
 
