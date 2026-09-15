@@ -54,7 +54,6 @@ nav a {
     margin-left: 25px;
     text-decoration: none;
     color: white;
-    font-weight: 500;
 }
 
 .login,
@@ -292,11 +291,6 @@ nav a {
     box-shadow: 0 20px 60px rgba(0,0,0,0.2);
 }
 
-
-/* =========================
-   PANEL HEADER
-========================= */
-
 .panel-header {
     display: flex;
     justify-content: space-between;
@@ -312,6 +306,144 @@ nav a {
     height: 35px;
     border-radius: 50%;
     font-size: 20px;
+    cursor: pointer;
+}
+
+
+/* =========================
+   PRODUCT CONFIGURATION
+========================= */
+
+.product-brand {
+    color: #7c3aed;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.product-name {
+    font-size: 27px;
+    font-weight: bold;
+    margin-bottom: 22px;
+}
+
+.mode-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.mode-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.mode-button {
+    flex: 1;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid #ddd6fe;
+    background: white;
+    color: #4c1d95;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.mode-button.active {
+    background: #7c3aed;
+    color: white;
+    border-color: #7c3aed;
+}
+
+
+/* =========================
+   FIXED VALUES
+========================= */
+
+.fixed-values {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.value-button {
+    padding: 14px;
+    border: 1px solid #ddd6fe;
+    background: #faf9ff;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.value-button.active {
+    background: #ede9fe;
+    border: 2px solid #7c3aed;
+    color: #6d28d9;
+}
+
+
+/* =========================
+   CUSTOM VALUE
+========================= */
+
+.custom-area {
+    display: none;
+}
+
+.custom-input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #d8d2ef;
+    border-radius: 10px;
+    font-size: 18px;
+    outline: none;
+}
+
+.range-text {
+    color: #777;
+    font-size: 13px;
+    margin-top: 7px;
+}
+
+
+/* =========================
+   LIVE PRICE
+========================= */
+
+.price-preview {
+    background: #f8f7ff;
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 20px;
+}
+
+.preview-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+}
+
+.preview-total {
+    font-size: 21px;
+    font-weight: bold;
+    color: #24104f;
+    border-top: 1px solid #ddd6fe;
+    margin-top: 8px;
+    padding-top: 13px;
+}
+
+.continue,
+.confirm {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 15px;
     cursor: pointer;
 }
 
@@ -342,20 +474,6 @@ nav a {
     font-size: 20px;
     font-weight: bold;
     color: #24104f;
-}
-
-.continue,
-.confirm {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #7c3aed, #2563eb);
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 15px;
-    cursor: pointer;
 }
 
 
@@ -542,9 +660,7 @@ footer {
 <body>
 
 
-<!-- =========================
-     HEADER
-========================= -->
+<!-- HEADER -->
 
 <header>
 
@@ -583,9 +699,7 @@ Login
 
 
 
-<!-- =========================
-     HERO
-========================= -->
+<!-- HERO -->
 
 <section class="hero">
 
@@ -606,9 +720,7 @@ Explore Gift Cards
 
 
 
-<!-- =========================
-     PRODUCTS
-========================= -->
+<!-- PRODUCTS -->
 
 <section class="products" id="products">
 
@@ -659,7 +771,7 @@ Popular Gift Cards
 </h2>
 
 <span class="sample">
-Sample products
+Prototype products
 </span>
 
 </div>
@@ -705,9 +817,9 @@ Save 3%
 
 <button
 class="buy"
-onclick="openOrder('Amazon','₹1,000','₹1,000','₹970')"
+onclick="openProduct('Amazon')"
 >
-Buy Now
+Select
 </button>
 
 </div>
@@ -750,9 +862,9 @@ Save 3.5%
 
 <button
 class="buy"
-onclick="openOrder('Flipkart','₹1,000','₹1,000','₹965')"
+onclick="openProduct('Flipkart')"
 >
-Buy Now
+Select
 </button>
 
 </div>
@@ -795,9 +907,9 @@ Save 5%
 
 <button
 class="buy"
-onclick="openOrder('Myntra','₹1,000','₹1,000','₹950')"
+onclick="openProduct('Myntra')"
 >
-Buy Now
+Select
 </button>
 
 </div>
@@ -840,9 +952,54 @@ Save 5%
 
 <button
 class="buy"
-onclick="openOrder('Croma','₹2,000','₹2,000','₹1,900')"
+onclick="openProduct('Croma')"
 >
-Buy Now
+Select
+</button>
+
+</div>
+
+
+
+<!-- DOMINO'S -->
+
+<div class="card">
+
+<div class="brand-box">
+
+<img
+class="brand-logo"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Domino%27s_pizza_logo.svg"
+alt="Domino's logo"
+>
+
+</div>
+
+<div class="brand">
+Domino's
+</div>
+
+<h3>
+Flexible Gift Card
+</h3>
+
+<p class="old-price">
+Choose your value
+</p>
+
+<p class="price">
+Up to your choice
+</p>
+
+<span class="discount">
+5%–15% savings
+</span>
+
+<button
+class="buy"
+onclick="openProduct('Domino')"
+>
+Select
 </button>
 
 </div>
@@ -854,9 +1011,197 @@ Buy Now
 
 
 
-<!-- =========================
-     ORDER SUMMARY
-========================= -->
+<!-- PRODUCT CONFIGURATION -->
+
+<div
+class="overlay"
+id="productOverlay"
+>
+
+<div class="panel">
+
+<div class="panel-header">
+
+<h2>
+Choose Gift Card
+</h2>
+
+<button
+class="close"
+onclick="closeProduct()"
+>
+×
+</button>
+
+</div>
+
+
+<div
+class="product-brand"
+id="productBrand"
+>
+Domino's
+</div>
+
+<div
+class="product-name"
+id="productName"
+>
+Gift Card
+</div>
+
+
+<p class="mode-title">
+Choose Type
+</p>
+
+
+<div class="mode-buttons">
+
+<button
+class="mode-button active"
+id="fixedMode"
+onclick="selectMode('fixed')"
+>
+Fixed Value
+</button>
+
+<button
+class="mode-button"
+id="customMode"
+onclick="selectMode('custom')"
+>
+Custom Value
+</button>
+
+</div>
+
+
+
+<!-- FIXED -->
+
+<div id="fixedArea">
+
+<div class="fixed-values">
+
+<button
+class="value-button active"
+onclick="selectFixed(500)"
+>
+₹500
+</button>
+
+<button
+class="value-button"
+onclick="selectFixed(1000)"
+>
+₹1,000
+</button>
+
+<button
+class="value-button"
+onclick="selectFixed(2000)"
+>
+₹2,000
+</button>
+
+<button
+class="value-button"
+onclick="selectFixed(5000)"
+>
+₹5,000
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- CUSTOM -->
+
+<div
+class="custom-area"
+id="customArea"
+>
+
+<input
+class="custom-input"
+id="customAmount"
+type="number"
+placeholder="Enter amount"
+oninput="updateCustomPrice()"
+>
+
+<p class="range-text">
+Custom value: ₹100 – ₹10,000
+</p>
+
+</div>
+
+
+
+<!-- PRICE -->
+
+<div class="price-preview">
+
+<div class="preview-row">
+
+<span>
+Gift Card Value
+</span>
+
+<strong id="previewValue">
+₹500
+</strong>
+
+</div>
+
+
+<div class="preview-row">
+
+<span>
+Discount
+</span>
+
+<strong id="previewDiscount">
+15%
+</strong>
+
+</div>
+
+
+<div class="preview-row preview-total">
+
+<span>
+You Pay
+</span>
+
+<strong id="previewPrice">
+₹425
+</strong>
+
+</div>
+
+</div>
+
+
+
+<button
+class="continue"
+onclick="continueProduct()"
+>
+Continue
+</button>
+
+
+</div>
+
+</div>
+
+
+
+<!-- ORDER SUMMARY -->
 
 <div
 class="overlay"
@@ -885,14 +1230,14 @@ onclick="closeOrder()"
 class="order-brand"
 id="orderBrand"
 >
-Amazon
+Domino's
 </div>
 
 <div
 class="order-value"
 id="orderValue"
 >
-₹1,000 Gift Card
+₹500 Gift Card
 </div>
 
 
@@ -903,7 +1248,20 @@ Gift Card Value
 </span>
 
 <span id="originalPrice">
-₹1,000
+₹500
+</span>
+
+</div>
+
+
+<div class="order-row">
+
+<span>
+Discount
+</span>
+
+<span id="orderDiscount">
+15%
 </span>
 
 </div>
@@ -916,7 +1274,7 @@ You Pay
 </span>
 
 <span id="finalPrice">
-₹970
+₹425
 </span>
 
 </div>
@@ -929,7 +1287,7 @@ Total
 </span>
 
 <span id="totalPrice">
-₹970
+₹425
 </span>
 
 </div>
@@ -948,9 +1306,7 @@ Continue
 
 
 
-<!-- =========================
-     CHECKOUT
-========================= -->
+<!-- CHECKOUT -->
 
 <div
 class="overlay"
@@ -982,11 +1338,11 @@ Gift Card
 </p>
 
 <strong id="checkoutBrand">
-Amazon
+Domino's
 </strong>
 
 <p id="checkoutValue">
-₹1,000 Gift Card
+₹500 Gift Card
 </p>
 
 <br>
@@ -996,7 +1352,7 @@ Total
 </p>
 
 <strong id="checkoutPrice">
-₹970
+₹425
 </strong>
 
 </div>
@@ -1032,9 +1388,7 @@ Prototype only. No real payment is processed.
 
 
 
-<!-- =========================
-     SUCCESS
-========================= -->
+<!-- SUCCESS -->
 
 <div
 class="overlay"
@@ -1079,9 +1433,7 @@ Done
 
 
 
-<!-- =========================
-     MY ORDERS
-========================= -->
+<!-- MY ORDERS -->
 
 <div
 class="overlay"
@@ -1115,9 +1467,7 @@ onclick="closeOrders()"
 
 
 
-<!-- =========================
-     FOOTER
-========================= -->
+<!-- FOOTER -->
 
 <footer id="footer">
 
@@ -1134,39 +1484,450 @@ onclick="closeOrders()"
    VARIABLES
 ========================= */
 
-let selectedBrand = "";
-let selectedValue = "";
-let selectedPrice = "";
+let selectedBrand = "Domino's";
+
+let selectedMode = "fixed";
+
+let selectedValue = 500;
+
+let selectedDiscount = 15;
+
+let selectedPrice = 425;
 
 
 
 /* =========================
-   OPEN ORDER
+   BRAND SETTINGS
 ========================= */
 
-function openOrder(brand, value, original, price) {
+const brandSettings = {
 
-selectedBrand = brand;
-selectedValue = value;
-selectedPrice = price;
+    "Domino": {
+        name: "Domino's",
+        fixedDiscount: 15,
+        customDiscount: 5
+    },
 
-document.getElementById("orderBrand").textContent =
-brand;
+    "Amazon": {
+        name: "Amazon",
+        fixedDiscount: 3,
+        customDiscount: 3
+    },
 
-document.getElementById("orderValue").textContent =
-value + " Gift Card";
+    "Flipkart": {
+        name: "Flipkart",
+        fixedDiscount: 3.5,
+        customDiscount: 3.5
+    },
 
-document.getElementById("originalPrice").textContent =
-original;
+    "Myntra": {
+        name: "Myntra",
+        fixedDiscount: 5,
+        customDiscount: 5
+    },
 
-document.getElementById("finalPrice").textContent =
-price;
+    "Croma": {
+        name: "Croma",
+        fixedDiscount: 5,
+        customDiscount: 5
+    }
 
-document.getElementById("totalPrice").textContent =
-price;
+};
 
-document.getElementById("orderOverlay").style.display =
-"flex";
+
+
+/* =========================
+   OPEN PRODUCT
+========================= */
+
+function openProduct(brand) {
+
+    let settings = brandSettings[brand];
+
+    selectedBrand = settings.name;
+
+    selectedMode = "fixed";
+
+    selectedDiscount = settings.fixedDiscount;
+
+    selectedValue = 500;
+
+    selectedPrice =
+        calculatePrice(
+            selectedValue,
+            selectedDiscount
+        );
+
+
+    document.getElementById("productBrand").textContent =
+        settings.name;
+
+    document.getElementById("productName").textContent =
+        "Gift Card";
+
+
+    document.getElementById("productOverlay").style.display =
+        "flex";
+
+
+    document.getElementById("fixedMode").classList.add("active");
+
+    document.getElementById("customMode").classList.remove("active");
+
+    document.getElementById("fixedArea").style.display =
+        "block";
+
+    document.getElementById("customArea").style.display =
+        "none";
+
+
+    document.getElementById("customAmount").value = "";
+
+
+    document.querySelectorAll(".value-button")
+        .forEach(function(button) {
+
+            button.classList.remove("active");
+
+        });
+
+
+    document.querySelector(".value-button")
+        .classList.add("active");
+
+
+    updatePreview();
+
+}
+
+
+
+/* =========================
+   CALCULATE PRICE
+========================= */
+
+function calculatePrice(amount, discount) {
+
+    return Math.round(
+        amount * (1 - discount / 100)
+    );
+
+}
+
+
+
+/* =========================
+   SELECT MODE
+========================= */
+
+function selectMode(mode) {
+
+    selectedMode = mode;
+
+
+    let settings =
+        Object.values(brandSettings)
+        .find(function(item) {
+
+            return item.name === selectedBrand;
+
+        });
+
+
+    if (mode === "fixed") {
+
+        selectedDiscount =
+            settings.fixedDiscount;
+
+        selectedValue = 500;
+
+
+        document.getElementById("fixedMode")
+            .classList.add("active");
+
+        document.getElementById("customMode")
+            .classList.remove("active");
+
+
+        document.getElementById("fixedArea")
+            .style.display = "block";
+
+        document.getElementById("customArea")
+            .style.display = "none";
+
+
+        selectedPrice =
+            calculatePrice(
+                selectedValue,
+                selectedDiscount
+            );
+
+    }
+
+
+    else {
+
+        selectedDiscount =
+            settings.customDiscount;
+
+
+        document.getElementById("fixedMode")
+            .classList.remove("active");
+
+        document.getElementById("customMode")
+            .classList.add("active");
+
+
+        document.getElementById("fixedArea")
+            .style.display = "none";
+
+        document.getElementById("customArea")
+            .style.display = "block";
+
+
+        let amount =
+            parseInt(
+                document.getElementById("customAmount").value
+            );
+
+
+        if (!amount) {
+
+            selectedValue = 0;
+            selectedPrice = 0;
+
+        }
+
+        else {
+
+            selectedValue = amount;
+
+            selectedPrice =
+                calculatePrice(
+                    amount,
+                    selectedDiscount
+                );
+
+        }
+
+    }
+
+
+    updatePreview();
+
+}
+
+
+
+/* =========================
+   SELECT FIXED VALUE
+========================= */
+
+function selectFixed(amount) {
+
+    selectedMode = "fixed";
+
+    selectedValue = amount;
+
+
+    let settings =
+        Object.values(brandSettings)
+        .find(function(item) {
+
+            return item.name === selectedBrand;
+
+        });
+
+
+    selectedDiscount =
+        settings.fixedDiscount;
+
+
+    selectedPrice =
+        calculatePrice(
+            amount,
+            selectedDiscount
+        );
+
+
+    document.querySelectorAll(".value-button")
+        .forEach(function(button) {
+
+            button.classList.remove("active");
+
+        });
+
+
+    event.target.classList.add("active");
+
+
+    updatePreview();
+
+}
+
+
+
+/* =========================
+   CUSTOM PRICE
+========================= */
+
+function updateCustomPrice() {
+
+    let amount =
+        parseInt(
+            document.getElementById("customAmount").value
+        );
+
+
+    let settings =
+        Object.values(brandSettings)
+        .find(function(item) {
+
+            return item.name === selectedBrand;
+
+        });
+
+
+    selectedDiscount =
+        settings.customDiscount;
+
+
+    if (!amount) {
+
+        selectedValue = 0;
+        selectedPrice = 0;
+
+    }
+
+    else {
+
+        selectedValue = amount;
+
+        selectedPrice =
+            calculatePrice(
+                amount,
+                selectedDiscount
+            );
+
+    }
+
+
+    updatePreview();
+
+}
+
+
+
+/* =========================
+   UPDATE PREVIEW
+========================= */
+
+function updatePreview() {
+
+    document.getElementById("previewValue").textContent =
+        "₹" + selectedValue.toLocaleString("en-IN");
+
+
+    document.getElementById("previewDiscount").textContent =
+        selectedDiscount + "%";
+
+
+    document.getElementById("previewPrice").textContent =
+        "₹" + selectedPrice.toLocaleString("en-IN");
+
+}
+
+
+
+/* =========================
+   CONTINUE PRODUCT
+========================= */
+
+function continueProduct() {
+
+    if (selectedMode === "custom") {
+
+        let amount =
+            parseInt(
+                document.getElementById("customAmount").value
+            );
+
+
+        if (!amount || amount < 100 || amount > 10000) {
+
+            alert(
+                "Please enter an amount between ₹100 and ₹10,000."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    if (selectedValue <= 0) {
+
+        alert("Please select a gift card value.");
+
+        return;
+
+    }
+
+
+    document.getElementById("productOverlay")
+        .style.display = "none";
+
+
+    document.getElementById("orderBrand")
+        .textContent = selectedBrand;
+
+
+    document.getElementById("orderValue")
+        .textContent =
+        "₹" +
+        selectedValue.toLocaleString("en-IN") +
+        " Gift Card";
+
+
+    document.getElementById("originalPrice")
+        .textContent =
+        "₹" +
+        selectedValue.toLocaleString("en-IN");
+
+
+    document.getElementById("orderDiscount")
+        .textContent =
+        selectedDiscount + "%";
+
+
+    document.getElementById("finalPrice")
+        .textContent =
+        "₹" +
+        selectedPrice.toLocaleString("en-IN");
+
+
+    document.getElementById("totalPrice")
+        .textContent =
+        "₹" +
+        selectedPrice.toLocaleString("en-IN");
+
+
+    document.getElementById("orderOverlay")
+        .style.display = "flex";
+
+}
+
+
+
+/* =========================
+   CLOSE PRODUCT
+========================= */
+
+function closeProduct() {
+
+    document.getElementById("productOverlay")
+        .style.display = "none";
 
 }
 
@@ -1178,8 +1939,8 @@ document.getElementById("orderOverlay").style.display =
 
 function closeOrder() {
 
-document.getElementById("orderOverlay").style.display =
-"none";
+    document.getElementById("orderOverlay")
+        .style.display = "none";
 
 }
 
@@ -1191,20 +1952,29 @@ document.getElementById("orderOverlay").style.display =
 
 function openCheckout() {
 
-document.getElementById("orderOverlay").style.display =
-"none";
+    document.getElementById("orderOverlay")
+        .style.display = "none";
 
-document.getElementById("checkoutBrand").textContent =
-selectedBrand;
 
-document.getElementById("checkoutValue").textContent =
-selectedValue + " Gift Card";
+    document.getElementById("checkoutBrand")
+        .textContent = selectedBrand;
 
-document.getElementById("checkoutPrice").textContent =
-selectedPrice;
 
-document.getElementById("checkoutOverlay").style.display =
-"flex";
+    document.getElementById("checkoutValue")
+        .textContent =
+        "₹" +
+        selectedValue.toLocaleString("en-IN") +
+        " Gift Card";
+
+
+    document.getElementById("checkoutPrice")
+        .textContent =
+        "₹" +
+        selectedPrice.toLocaleString("en-IN");
+
+
+    document.getElementById("checkoutOverlay")
+        .style.display = "flex";
 
 }
 
@@ -1216,8 +1986,8 @@ document.getElementById("checkoutOverlay").style.display =
 
 function closeCheckout() {
 
-document.getElementById("checkoutOverlay").style.display =
-"none";
+    document.getElementById("checkoutOverlay")
+        .style.display = "none";
 
 }
 
@@ -1229,113 +1999,128 @@ document.getElementById("checkoutOverlay").style.display =
 
 function placeOrder() {
 
-let email =
-document.getElementById("email").value.trim();
+    let email =
+        document.getElementById("email")
+        .value
+        .trim();
 
 
-if (email === "") {
+    if (email === "") {
 
-alert("Please enter your email address.");
+        alert(
+            "Please enter your email address."
+        );
 
-return;
+        return;
 
-}
-
-
-let randomNumber =
-Math.floor(100000 + Math.random() * 900000);
-
-let newOrderId =
-"GCS-" + randomNumber;
+    }
 
 
-let order = {
-
-id: newOrderId,
-
-brand: selectedBrand,
-
-value: selectedValue,
-
-price: selectedPrice,
-
-email: email,
-
-status: "Confirmed",
-
-date: new Date().toLocaleString()
-
-};
+    let randomNumber =
+        Math.floor(
+            100000 +
+            Math.random() * 900000
+        );
 
 
-let existingOrders =
-JSON.parse(localStorage.getItem("giftCardOrders")) || [];
+    let newOrderId =
+        "GCS-" + randomNumber;
 
 
-existingOrders.unshift(order);
+    let order = {
+
+        id: newOrderId,
+
+        brand: selectedBrand,
+
+        value:
+            "₹" +
+            selectedValue.toLocaleString("en-IN"),
+
+        price:
+            "₹" +
+            selectedPrice.toLocaleString("en-IN"),
+
+        discount:
+            selectedDiscount + "%",
+
+        email: email,
+
+        status: "Confirmed",
+
+        date:
+            new Date().toLocaleString()
+
+    };
 
 
-localStorage.setItem(
-"giftCardOrders",
-JSON.stringify(existingOrders)
-);
+    let existingOrders =
+        JSON.parse(
+            localStorage.getItem(
+                "giftCardOrders"
+            )
+        ) || [];
 
 
-document.getElementById("checkoutOverlay").style.display =
-"none";
+    existingOrders.unshift(order);
 
 
-document.getElementById("orderId").textContent =
-newOrderId;
+    localStorage.setItem(
+        "giftCardOrders",
+        JSON.stringify(existingOrders)
+    );
 
 
-document.getElementById("successOverlay").style.display =
-"flex";
+    document.getElementById("checkoutOverlay")
+        .style.display = "none";
 
 
-document.getElementById("email").value =
-"";
+    document.getElementById("orderId")
+        .textContent = newOrderId;
+
+
+    document.getElementById("successOverlay")
+        .style.display = "flex";
+
+
+    document.getElementById("email")
+        .value = "";
 
 }
 
 
 
 /* =========================
-   CLOSE SUCCESS
+   SUCCESS
 ========================= */
 
 function closeSuccess() {
 
-document.getElementById("successOverlay").style.display =
-"none";
+    document.getElementById("successOverlay")
+        .style.display = "none";
 
 }
 
 
 
 /* =========================
-   OPEN MY ORDERS
+   MY ORDERS
 ========================= */
 
 function openOrders() {
 
-loadOrders();
+    loadOrders();
 
-document.getElementById("ordersOverlay").style.display =
-"flex";
+    document.getElementById("ordersOverlay")
+        .style.display = "flex";
 
 }
 
 
-
-/* =========================
-   CLOSE MY ORDERS
-========================= */
-
 function closeOrders() {
 
-document.getElementById("ordersOverlay").style.display =
-"none";
+    document.getElementById("ordersOverlay")
+        .style.display = "none";
 
 }
 
@@ -1347,108 +2132,134 @@ document.getElementById("ordersOverlay").style.display =
 
 function loadOrders() {
 
-let orders =
-JSON.parse(localStorage.getItem("giftCardOrders")) || [];
+    let orders =
+        JSON.parse(
+            localStorage.getItem(
+                "giftCardOrders"
+            )
+        ) || [];
 
 
-let container =
-document.getElementById("ordersList");
+    let container =
+        document.getElementById(
+            "ordersList"
+        );
 
 
-if (orders.length === 0) {
+    if (orders.length === 0) {
 
-container.innerHTML = `
-<div class="empty-orders">
+        container.innerHTML = `
 
-<h3>No orders yet</h3>
+        <div class="empty-orders">
 
-<br>
+            <h3>No orders yet</h3>
 
-<p>
-Your completed prototype orders
-will appear here.
-</p>
+            <br>
 
-</div>
-`;
+            <p>
+            Your completed prototype orders
+            will appear here.
+            </p>
 
-return;
+        </div>
 
-}
+        `;
 
+        return;
 
-container.innerHTML = "";
-
-
-orders.forEach(function(order) {
-
-let card =
-document.createElement("div");
-
-card.className =
-"order-card";
+    }
 
 
-card.innerHTML = `
-
-<div class="order-card-top">
-
-<span class="order-card-brand">
-${order.brand}
-</span>
-
-<span class="status">
-${order.status}
-</span>
-
-</div>
-
-<strong>
-${order.value} Gift Card
-</strong>
-
-<div class="order-card-row">
-
-<span>
-Amount
-</span>
-
-<span>
-${order.price}
-</span>
-
-</div>
-
-<div class="order-card-row">
-
-<span>
-Order ID
-</span>
-
-<span class="order-id">
-${order.id}
-</span>
-
-</div>
-
-<div class="order-card-row">
-
-<span>
-Date
-</span>
-
-<span class="order-id">
-${order.date}
-</span>
-
-</div>
-
-`;
+    container.innerHTML = "";
 
 
-container.appendChild(card);
+    orders.forEach(function(order) {
 
-});
+        let card =
+            document.createElement("div");
+
+
+        card.className =
+            "order-card";
+
+
+        card.innerHTML = `
+
+        <div class="order-card-top">
+
+            <span class="order-card-brand">
+                ${order.brand}
+            </span>
+
+            <span class="status">
+                ${order.status}
+            </span>
+
+        </div>
+
+
+        <strong>
+            ${order.value} Gift Card
+        </strong>
+
+
+        <div class="order-card-row">
+
+            <span>
+                Amount
+            </span>
+
+            <span>
+                ${order.price}
+            </span>
+
+        </div>
+
+
+        <div class="order-card-row">
+
+            <span>
+                Discount
+            </span>
+
+            <span>
+                ${order.discount}
+            </span>
+
+        </div>
+
+
+        <div class="order-card-row">
+
+            <span>
+                Order ID
+            </span>
+
+            <span class="order-id">
+                ${order.id}
+            </span>
+
+        </div>
+
+
+        <div class="order-card-row">
+
+            <span>
+                Date
+            </span>
+
+            <span class="order-id">
+                ${order.date}
+            </span>
+
+        </div>
+
+        `;
+
+
+        container.appendChild(card);
+
+    });
 
 }
 
@@ -1460,32 +2271,37 @@ container.appendChild(card);
 
 function searchCards() {
 
-let input =
-document.getElementById("search").value.toLowerCase();
-
-let cards =
-document.querySelectorAll(".card");
-
-
-cards.forEach(function(card) {
-
-let text =
-card.textContent.toLowerCase();
+    let input =
+        document.getElementById("search")
+        .value
+        .toLowerCase();
 
 
-if (text.includes(input)) {
+    let cards =
+        document.querySelectorAll(".card");
 
-card.style.display = "block";
 
-}
+    cards.forEach(function(card) {
 
-else {
+        let text =
+            card.textContent.toLowerCase();
 
-card.style.display = "none";
 
-}
+        if (text.includes(input)) {
 
-});
+            card.style.display =
+                "block";
+
+        }
+
+        else {
+
+            card.style.display =
+                "none";
+
+        }
+
+    });
 
 }
 
@@ -1497,45 +2313,65 @@ card.style.display = "none";
 
 window.onclick = function(event) {
 
-let order =
-document.getElementById("orderOverlay");
+    let product =
+        document.getElementById(
+            "productOverlay"
+        );
 
-let checkout =
-document.getElementById("checkoutOverlay");
+    let order =
+        document.getElementById(
+            "orderOverlay"
+        );
 
-let success =
-document.getElementById("successOverlay");
+    let checkout =
+        document.getElementById(
+            "checkoutOverlay"
+        );
 
-let orders =
-document.getElementById("ordersOverlay");
+    let success =
+        document.getElementById(
+            "successOverlay"
+        );
 
-
-if (event.target === order) {
-
-closeOrder();
-
-}
-
-
-if (event.target === checkout) {
-
-closeCheckout();
-
-}
-
-
-if (event.target === success) {
-
-closeSuccess();
-
-}
+    let orders =
+        document.getElementById(
+            "ordersOverlay"
+        );
 
 
-if (event.target === orders) {
+    if (event.target === product) {
 
-closeOrders();
+        closeProduct();
 
-}
+    }
+
+
+    if (event.target === order) {
+
+        closeOrder();
+
+    }
+
+
+    if (event.target === checkout) {
+
+        closeCheckout();
+
+    }
+
+
+    if (event.target === success) {
+
+        closeSuccess();
+
+    }
+
+
+    if (event.target === orders) {
+
+        closeOrders();
+
+    }
 
 };
 
@@ -1544,4 +2380,4 @@ closeOrders();
 
 </body>
 
-</html>
+   </html>
