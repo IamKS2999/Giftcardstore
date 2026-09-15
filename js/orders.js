@@ -1,11 +1,6 @@
 /* =====================================================
-   GIFT CARD STORE — ORDERS
-   Brick 12
-===================================================== */
-
-
-/* =====================================================
-   STORAGE
+   GIFTCARDSTORE — ORDERS
+   BRICK 14
 ===================================================== */
 
 const ORDERS_STORAGE_KEY =
@@ -23,11 +18,9 @@ function getOrders() {
             ORDERS_STORAGE_KEY
         );
 
-
     if (!stored) {
         return [];
     }
-
 
     try {
 
@@ -53,34 +46,25 @@ function saveOrder(order) {
     const orders =
         getOrders();
 
-
     orders.unshift(
         order
     );
 
-
     localStorage.setItem(
         ORDERS_STORAGE_KEY,
-        JSON.stringify(
-            orders
-        )
+        JSON.stringify(orders)
     );
 
 }
 
 
 /* =====================================================
-   OPEN ORDERS
+   OPEN
 ===================================================== */
 
 function openOrders() {
 
-    /* Orders are private to logged-in
-       customers even in the prototype. */
-
-    if (
-        !isLoggedIn()
-    ) {
+    if (!isLoggedIn()) {
 
         window.checkoutWaitingForLogin =
             false;
@@ -88,37 +72,44 @@ function openOrders() {
         openLoginPanel();
 
         return;
-
     }
-
 
     loadOrders();
 
+    const overlay =
+        document.getElementById(
+            "ordersOverlay"
+        );
 
-    document.getElementById(
-        "ordersOverlay"
-    ).style.display =
-        "flex";
+    if (overlay) {
+        overlay.style.display =
+            "flex";
+    }
 
 }
 
 
 /* =====================================================
-   CLOSE ORDERS
+   CLOSE
 ===================================================== */
 
 function closeOrders() {
 
-    document.getElementById(
-        "ordersOverlay"
-    ).style.display =
-        "none";
+    const overlay =
+        document.getElementById(
+            "ordersOverlay"
+        );
+
+    if (overlay) {
+        overlay.style.display =
+            "none";
+    }
 
 }
 
 
 /* =====================================================
-   LOAD ORDERS
+   LOAD
 ===================================================== */
 
 function loadOrders() {
@@ -126,39 +117,27 @@ function loadOrders() {
     const user =
         getCurrentUser();
 
-
     const container =
         document.getElementById(
             "ordersList"
         );
 
-
-    if (
-        !container
-    ) {
-
+    if (!container) {
         return;
-
     }
 
+    if (!user) {
 
-    if (
-        !user
-    ) {
-
-        container.innerHTML = "";
+        container.innerHTML =
+            "";
 
         return;
-
     }
 
 
     const orders =
         getOrders();
 
-
-    /* Only show orders belonging
-       to the logged-in email. */
 
     const userOrders =
         orders.filter(
@@ -190,19 +169,15 @@ function loadOrders() {
                     No orders yet
                 </h3>
 
-                <br>
-
                 <p>
                     Your completed orders
                     will appear here.
                 </p>
 
             </div>
-
         `;
 
         return;
-
     }
 
 
@@ -218,7 +193,6 @@ function loadOrders() {
                     "div"
                 );
 
-
             card.className =
                 "order-card";
 
@@ -228,8 +202,7 @@ function loadOrders() {
                 <div class="order-card-top">
 
                     <span
-                        class="order-card-brand"
-                    >
+                        class="order-card-brand">
                         ${escapeHTML(
                             order.brand
                         )}
@@ -254,7 +227,7 @@ function loadOrders() {
                 <div class="order-card-row">
 
                     <span>
-                        Amount
+                        Amount Paid
                     </span>
 
                     <span>
@@ -315,9 +288,10 @@ function loadOrders() {
                     class="view-order-button"
                     onclick="viewOrderDetails('${escapeHTML(
                         order.id
-                    )}')"
-                >
+                    )}')">
+
                     View Order Details
+
                 </button>
 
             `;
@@ -334,21 +308,16 @@ function loadOrders() {
 
 
 /* =====================================================
-   ORDER DETAILS
+   DETAILS
 ===================================================== */
 
-function viewOrderDetails(
-    orderId
-) {
+function viewOrderDetails(orderId) {
 
-    if (
-        !isLoggedIn()
-    ) {
+    if (!isLoggedIn()) {
 
         openLoginPanel();
 
         return;
-
     }
 
 
@@ -373,46 +342,34 @@ function viewOrderDetails(
 
     if (!order) {
 
-        alert(
-            "Order could not be found."
+        showNotice(
+            "The requested order could not be found.",
+            "Order unavailable",
+            "error"
         );
 
         return;
-
     }
 
 
-    alert(
-
-        "Order Details\n\n" +
-
+    showNotice(
         "Brand: " +
         order.brand +
-        "\n" +
-
-        "Gift Card: " +
+        "\nGift Card: " +
         order.value +
-        "\n" +
-
-        "Amount Paid: " +
+        "\nAmount Paid: " +
         order.price +
-        "\n" +
-
-        "Discount: " +
+        "\nDiscount: " +
         order.discount +
-        "\n" +
-
-        "Order ID: " +
+        "\nOrder ID: " +
         order.id +
-        "\n" +
-
-        "Status: " +
+        "\nStatus: " +
         order.status +
-        "\n" +
+        "\nDate: " +
+        order.date,
 
-        "Date: " +
-        order.date
-
+        "Order Details",
+        "info"
     );
 
 }
@@ -422,40 +379,20 @@ function viewOrderDetails(
    HTML SAFETY
 ===================================================== */
 
-function escapeHTML(
-    value
-) {
+function escapeHTML(value) {
 
     if (
         value === null ||
         value === undefined
     ) {
-
         return "";
-
     }
 
-
     return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
-}
+           }
