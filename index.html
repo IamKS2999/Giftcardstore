@@ -2,1869 +2,52 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>GiftCardStore — Save on Every Purchase</title>
 
-<style>
-
-/* =====================================================
-   RESET
-===================================================== */
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        sans-serif;
-
-    background: #f7f7fc;
-    color: #17152b;
-    line-height: 1.5;
-}
-
-body.modal-open {
-    overflow: hidden;
-}
-
-button,
-input {
-    font: inherit;
-}
-
-button {
-    -webkit-tap-highlight-color: transparent;
-}
-
-
-/* =====================================================
-   HEADER
-===================================================== */
-
-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-
-    background: rgba(255,255,255,0.94);
-    backdrop-filter: blur(16px);
-
-    border-bottom: 1px solid #ebe9f4;
-
-    padding: 15px 7%;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-size: 23px;
-    font-weight: 800;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7c3aed,
-            #2563eb
-        );
-
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-
-    cursor: pointer;
-}
-
-nav {
-    display: flex;
-    align-items: center;
-}
-
-nav a {
-    margin-left: 25px;
-
-    text-decoration: none;
-    color: #504d62;
-
-    font-size: 14px;
-    font-weight: 650;
-}
-
-nav a:hover {
-    color: #6d28d9;
-}
-
-.login,
-.orders-button,
-.account-button {
-    border: none;
-
-    padding: 10px 15px;
-
-    border-radius: 10px;
-
-    font-weight: 750;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-.login {
-    background: #17152b;
-    color: white;
-    margin-left: 12px;
-}
-
-.orders-button {
-    background: #eee9ff;
-    color: #6d28d9;
-    margin-left: 12px;
-}
-
-.account-button {
-    background:
-        linear-gradient(
-            135deg,
-            #7c3aed,
-            #2563eb
-        );
-
-    color: white;
-    margin-left: 12px;
-}
-
-.login:hover,
-.orders-button:hover,
-.account-button:hover {
-    transform: translateY(-1px);
-}
-
-
-/* =====================================================
-   HERO
-===================================================== */
-
-.hero {
-    position: relative;
-    overflow: hidden;
-
-    background:
-        radial-gradient(
-            circle at 15% 20%,
-            rgba(124,58,237,0.18),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 85% 30%,
-            rgba(37,99,235,0.18),
-            transparent 30%
-        ),
-        linear-gradient(
-            135deg,
-            #faf9ff,
-            #eef4ff
-        );
-
-    text-align: center;
-
-    padding: 100px 20px 90px;
-}
-
-.hero-badge {
-    display: inline-block;
-
-    background: white;
-
-    border: 1px solid #e4defb;
-
-    color: #6d28d9;
-
-    padding: 8px 14px;
-
-    border-radius: 30px;
-
-    font-size: 13px;
-    font-weight: 700;
-
-    margin-bottom: 22px;
-
-    box-shadow:
-        0 6px 20px rgba(76,29,149,0.06);
-}
-
-.hero h1 {
-    font-size: clamp(40px, 7vw, 68px);
-
-    line-height: 1.05;
-
-    max-width: 850px;
-
-    margin: auto;
-
-    letter-spacing: -2px;
-
-    color: #18152d;
-}
-
-.hero h1 span {
-    background:
-        linear-gradient(
-            135deg,
-            #7c3aed,
-            #2563eb
-        );
-
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.hero p {
-    max-width: 620px;
-
-    margin: 24px auto 30px;
-
-    color: #69657a;
-
-    font-size: 18px;
-
-    line-height: 1.7;
-}
-
-.hero-buttons {
-    display: flex;
-
-    justify-content: center;
-
-    gap: 12px;
-
-    flex-wrap: wrap;
-}
-
-.button {
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7c3aed,
-            #2563eb
-        );
-
-    color: white;
-
-    padding: 15px 26px;
-
-    border-radius: 12px;
-
-    text-decoration: none;
-
-    font-weight: 750;
-
-    box-shadow:
-        0 12px 28px rgba(79,70,229,0.22);
-
-    transition:
-        transform 0.2s,
-        box-shadow 0.2s;
-}
-
-.button:hover {
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 16px 34px rgba(79,70,229,0.28);
-}
-
-.secondary-button {
-    display: inline-flex;
-
-    align-items: center;
-
-    padding: 15px 25px;
-
-    border-radius: 12px;
-
-    text-decoration: none;
-
-    color: #4c1d95;
-
-    background: white;
-
-    border: 1px solid #e2dcf7;
-
-    font-weight: 700;
-}
-
-
-/* =====================================================
-   TRUST STRIP
-===================================================== */
-
-.trust-strip {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 15px;
-
-    max-width: 900px;
-
-    margin: -28px auto 0;
-
-    padding: 0 20px;
-
-    position: relative;
-    z-index: 5;
-}
-
-.trust-item {
-    background: white;
-
-    border: 1px solid #ece9f5;
-
-    border-radius: 15px;
-
-    padding: 17px;
-
-    text-align: center;
-
-    box-shadow:
-        0 10px 30px rgba(30,20,70,0.06);
-}
-
-.trust-item strong {
-    display: block;
-
-    color: #251c4f;
-
-    font-size: 15px;
-}
-
-.trust-item span {
-    color: #858094;
-
-    font-size: 12px;
-}
-
-
-/* =====================================================
-   PRODUCTS
-===================================================== */
-
-.products {
-    padding: 75px 7%;
-}
-
-.section-heading {
-    margin-bottom: 25px;
-}
-
-.section-heading small {
-    color: #7c3aed;
-
-    font-weight: 800;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1px;
-
-    font-size: 12px;
-}
-
-.section-heading h2 {
-    font-size: 34px;
-
-    letter-spacing: -0.8px;
-
-    margin-top: 5px;
-}
-
-.section-heading p {
-    color: #777287;
-
-    margin-top: 7px;
-}
-
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-.search-wrap {
-    position: relative;
-
-    margin-bottom: 18px;
-}
-
-.search-icon {
-    position: absolute;
-
-    left: 18px;
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    color: #918ba3;
-
-    pointer-events: none;
-}
-
-.search {
-    width: 100%;
-
-    padding: 17px 20px 17px 48px;
-
-    border: 1px solid #e2dff0;
-
-    border-radius: 14px;
-
-    outline: none;
-
-    background: white;
-
-    color: #201b35;
-
-    box-shadow:
-        0 5px 20px rgba(40,25,80,0.03);
-}
-
-.search:focus {
-    border-color: #8b5cf6;
-
-    box-shadow:
-        0 0 0 4px rgba(124,58,237,0.08);
-}
-
-
-/* =====================================================
-   CATEGORIES
-===================================================== */
-
-.categories {
-    display: flex;
-
-    gap: 10px;
-
-    overflow-x: auto;
-
-    padding: 3px 0 18px;
-
-    scrollbar-width: none;
-}
-
-.categories::-webkit-scrollbar {
-    display: none;
-}
-
-.category {
-    flex-shrink: 0;
-
-    padding: 10px 19px;
-
-    border: 1px solid #e1deed;
-
-    background: white;
-
-    color: #5e596e;
-
-    border-radius: 30px;
-
-    font-size: 14px;
-
-    font-weight: 650;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-.category:hover {
-    border-color: #a78bfa;
-
-    color: #6d28d9;
-}
-
-.category.active {
-    background: #6d28d9;
-
-    color: white;
-
-    border-color: #6d28d9;
-
-    box-shadow:
-        0 7px 18px rgba(109,40,217,0.18);
-}
-
-
-/* =====================================================
-   PRODUCT GRID
-===================================================== */
-
-.cards {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(235px, 1fr)
-        );
-
-    gap: 22px;
-}
-
-.card {
-    background: white;
-
-    padding: 16px;
-
-    border-radius: 20px;
-
-    border: 1px solid #ebe8f4;
-
-    box-shadow:
-        0 10px 35px rgba(40,25,80,0.055);
-
-    transition:
-        transform 0.22s,
-        box-shadow 0.22s;
-
-    animation:
-        cardAppear 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-
-    box-shadow:
-        0 18px 45px rgba(40,25,80,0.10);
-}
-
-@keyframes cardAppear {
-
-    from {
-        opacity: 0;
-        transform: translateY(6px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-}
-
-.brand-box {
-    height: 115px;
-
-    background: #fafafd;
-
-    border-radius: 15px;
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    padding: 18px;
-
-    margin-bottom: 17px;
-
-    position: relative;
-}
-
-.brand-logo {
-    max-width: 85%;
-    max-height: 70px;
-
-    object-fit: contain;
-}
-
-.save-button {
-    position: absolute;
-
-    right: 9px;
-    top: 9px;
-
-    width: 34px;
-    height: 34px;
-
-    border-radius: 50%;
-
-    border: 1px solid #e4def2;
-
-    background: rgba(255,255,255,0.95);
-
-    color: #756d86;
-
-    font-size: 18px;
-
-    cursor: pointer;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    transition: 0.2s;
-
-    z-index: 2;
-}
-
-.save-button:hover {
-    transform: scale(1.05);
-
-    color: #7c3aed;
-
-    border-color: #c7b8f4;
-}
-
-.save-button.saved {
-    background: #eee8ff;
-
-    color: #6d28d9;
-
-    border-color: #c8b8f5;
-}
-
-.brand {
-    color: #6d28d9;
-
-    font-size: 13px;
-
-    font-weight: 800;
-
-    margin-bottom: 5px;
-}
-
-.card h3 {
-    font-size: 18px;
-
-    color: #211d35;
-
-    margin-bottom: 7px;
-}
-
-.old-price {
-    color: #aaa5b3;
-
-    text-decoration: line-through;
-
-    font-size: 14px;
-}
-
-.price {
-    font-size: 25px;
-
-    font-weight: 800;
-
-    color: #211a42;
-
-    margin-top: 1px;
-}
-
-.discount {
-    display: inline-block;
-
-    background: #e8fbf0;
-
-    color: #148344;
-
-    padding: 5px 9px;
-
-    border-radius: 7px;
-
-    font-size: 12px;
-
-    font-weight: 800;
-
-    margin: 8px 0 15px;
-}
-
-.buy {
-    width: 100%;
-
-    padding: 13px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7c3aed,
-            #2563eb
-        );
-
-    color: white;
-
-    font-size: 14px;
-
-    font-weight: 750;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-.buy:hover {
-    transform: translateY(-1px);
-}
-
-.no-products {
-    display: none;
-
-    grid-column: 1 / -1;
-
-    text-align: center;
-
-    padding: 45px 20px;
-
-    color: #777287;
-}
-
-
-/* =====================================================
-   OVERLAYS
-===================================================== */
-
-.overlay {
-    display: none;
-
-    position: fixed;
-
-    inset: 0;
-
-    background:
-        rgba(25,18,50,0.62);
-
-    backdrop-filter: blur(5px);
-
-    justify-content: center;
-    align-items: center;
-
-    padding: 18px;
-
-    z-index: 100;
-}
-
-.panel {
-    background: white;
-
-    width: 100%;
-
-    max-width: 470px;
-
-    max-height: 90vh;
-
-    overflow-y: auto;
-
-    border-radius: 24px;
-
-    padding: 28px;
-
-    box-shadow:
-        0 30px 90px rgba(20,10,50,0.25);
-
-    animation:
-        panelIn 0.2s ease-out;
-}
-
-.panel.large {
-    max-width: 700px;
-}
-
-@keyframes panelIn {
-
-    from {
-        opacity: 0;
-        transform: translateY(10px) scale(0.98);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-
-}
-
-.panel-header {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 25px;
-}
-
-.panel-header h2 {
-    font-size: 25px;
-
-    letter-spacing: -0.5px;
-}
-
-.close {
-    border: none;
-
-    background: #f1edff;
-
-    color: #6d28d9;
-
-    width: 38px;
-    height: 38px;
-
-    border-radius: 50%;
-
-    font-size: 21px;
-
-    cursor: pointer;
-}
-
-
-/* =====================================================
-   PRODUCT CONFIGURATION
-===================================================== */
-
-.product-brand {
-    color: #7c3aed;
-
-    font-size: 14px;
-
-    font-weight: 800;
-}
-
-.product-name {
-    font-size: 28px;
-
-    font-weight: 800;
-
-    margin: 4px 0 22px;
-}
-
-.mode-title {
-    font-size: 13px;
-
-    color: #686278;
-
-    font-weight: 700;
-
-    margin-bottom: 8px;
-}
-
-.mode-buttons {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 9px;
-
-    margin-bottom: 20px;
-}
-
-.mode-button {
-    padding: 13px;
-
-    border-radius: 11px;
-
-    border: 1px solid #dfdbee;
-
-    background: white;
-
-    color: #5a5569;
-
-    font-weight: 750;
-
-    cursor: pointer;
-}
-
-.mode-button.active {
-    background: #f0ebff;
-
-    color: #6d28d9;
-
-    border-color: #8b5cf6;
-}
-
-.fixed-values {
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
-    gap: 9px;
-
-    margin-bottom: 18px;
-}
-
-.value-button {
-    padding: 14px;
-
-    border: 1px solid #e1ddec;
-
-    background: #fbfaff;
-
-    color: #4d485b;
-
-    border-radius: 10px;
-
-    font-size: 15px;
-
-    font-weight: 750;
-
-    cursor: pointer;
-}
-
-.value-button.active {
-    background: #eee8ff;
-
-    border: 2px solid #7c3aed;
-
-    color: #6d28d9;
-}
-
-.custom-area {
-    display: none;
-}
-
-.custom-input {
-    width: 100%;
-
-    padding: 15px;
-
-    border: 1px solid #d9d4e7;
-
-    border-radius: 11px;
-
-    font-size: 18px;
-
-    outline: none;
-}
-
-.custom-input:focus {
-    border-color: #8b5cf6;
-
-    box-shadow:
-        0 0 0 4px rgba(124,58,237,0.08);
-}
-
-.range-text {
-    color: #858091;
-
-    font-size: 12px;
-
-    margin-top: 7px;
-}
-
-.price-preview {
-    background:
-        linear-gradient(
-            135deg,
-            #f7f3ff,
-            #f0f6ff
-        );
-
-    border: 1px solid #e6e0f7;
-
-    border-radius: 15px;
-
-    padding: 16px;
-
-    margin-top: 20px;
-}
-
-.preview-row {
-    display: flex;
-
-    justify-content: space-between;
-
-    padding: 6px 0;
-
-    color: #625d70;
-
-    font-size: 14px;
-}
-
-.preview-total {
-    border-top: 1px solid #ded8ed;
-
-    margin-top: 6px;
-
-    padding-top: 12px;
-
-    font-size: 19px;
-
-    font-weight: 800;
-
-    color: #251c4f;
-}
-
-.continue,
-.confirm {
-    width: 100%;
-
-    padding: 15px;
-
-    border: none;
-
-    border-radius: 11px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7c3aed,
-            #2563eb
-        );
-
-    color: white;
-
-    font-size: 15px;
-
-    font-weight: 800;
-
-    margin-top: 15px;
-
-    cursor: pointer;
-}
-
-
-/* =====================================================
-   ORDER SUMMARY
-===================================================== */
-
-.order-brand {
-    color: #7c3aed;
-
-    font-size: 14px;
-
-    font-weight: 800;
-}
-
-.order-value {
-    font-size: 27px;
-
-    font-weight: 800;
-
-    margin: 5px 0 20px;
-}
-
-.order-row {
-    display: flex;
-
-    justify-content: space-between;
-
-    gap: 20px;
-
-    padding: 13px 0;
-
-    border-bottom: 1px solid #eeeaf4;
-
-    color: #686276;
-}
-
-.order-row span:last-child {
-    color: #272139;
-
-    font-weight: 650;
-
-    text-align: right;
-}
-
-.total {
-    font-size: 20px;
-
-    font-weight: 800;
-
-    color: #251c4f !important;
-}
-
-
-/* =====================================================
-   CHECKOUT
-===================================================== */
-
-.checkout-card {
-    background: #f8f7ff;
-
-    border: 1px solid #e8e3f5;
-
-    padding: 18px;
-
-    border-radius: 14px;
-
-    margin-bottom: 21px;
-}
-
-.checkout-card p {
-    color: #858091;
-
-    font-size: 13px;
-}
-
-.checkout-card strong {
-    color: #6d28d9;
-
-    display: block;
-
-    font-size: 18px;
-
-    margin: 2px 0;
-}
-
-.checkout-total {
-    font-size: 24px !important;
-
-    color: #251c4f !important;
-
-    margin-top: 4px !important;
-}
-
-label {
-    display: block;
-
-    font-size: 14px;
-
-    font-weight: 750;
-
-    margin-bottom: 8px;
-}
-
-.email,
-.account-input {
-    width: 100%;
-
-    padding: 14px;
-
-    border: 1px solid #d8d2e7;
-
-    border-radius: 10px;
-
-    font-size: 16px;
-
-    outline: none;
-
-    background: white;
-}
-
-.email:focus,
-.account-input:focus {
-    border-color: #8b5cf6;
-
-    box-shadow:
-        0 0 0 4px rgba(124,58,237,0.08);
-}
-
-.email[readonly] {
-    background: #f8f7fc;
-    color: #5d586d;
-}
-
-.email.error,
-.account-input.error {
-    border-color: #ef4444;
-
-    background: #fff8f8;
-}
-
-.email-error,
-.account-error {
-    display: none;
-
-    color: #dc2626;
-
-    font-size: 12px;
-
-    margin-top: 7px;
-
-    margin-bottom: 10px;
-}
-
-.note {
-    font-size: 12px;
-
-    color: #858091;
-
-    margin-top: 11px;
-
-    line-height: 1.5;
-
-    text-align: center;
-}
-
-
-/* =====================================================
-   LOGIN / ACCOUNT
-===================================================== */
-
-.account-tabs {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 8px;
-
-    margin-bottom: 20px;
-}
-
-.account-tab {
-    border: 1px solid #dfd9ed;
-
-    background: white;
-
-    color: #686278;
-
-    border-radius: 10px;
-
-    padding: 11px;
-
-    font-weight: 750;
-
-    cursor: pointer;
-}
-
-.account-tab.active {
-    background: #f0ebff;
-
-    color: #6d28d9;
-
-    border-color: #8b5cf6;
-}
-
-.account-message {
-    display: none;
-
-    background: #f5f1ff;
-
-    color: #5c3b9e;
-
-    border: 1px solid #e4dbfa;
-
-    padding: 11px;
-
-    border-radius: 10px;
-
-    font-size: 13px;
-
-    margin-bottom: 15px;
-}
-
-.account-intro {
-    background:
-        linear-gradient(
-            135deg,
-            #f7f3ff,
-            #f0f6ff
-        );
-
-    border: 1px solid #e6e0f7;
-
-    border-radius: 15px;
-
-    padding: 17px;
-
-    margin-bottom: 20px;
-}
-
-.account-intro strong {
-    display: block;
-
-    font-size: 18px;
-
-    color: #251c4f;
-}
-
-.account-intro span {
-    display: block;
-
-    margin-top: 3px;
-
-    color: #777287;
-
-    font-size: 13px;
-
-    word-break: break-word;
-}
-
-.form-group {
-    margin-bottom: 17px;
-}
-
-.form-group label {
-    margin-bottom: 7px;
-}
-
-.form-note {
-    font-size: 12px;
-
-    color: #858091;
-
-    line-height: 1.5;
-
-    margin-top: 10px;
-}
-
-.logout-button {
-    width: 100%;
-
-    margin-top: 10px;
-
-    padding: 13px;
-
-    border-radius: 10px;
-
-    border: 1px solid #f0caca;
-
-    background: #fff7f7;
-
-    color: #c62828;
-
-    font-weight: 750;
-
-    cursor: pointer;
-}
-
-
-/* =====================================================
-   DASHBOARD
-===================================================== */
-
-.dashboard-welcome {
-    margin-bottom: 20px;
-}
-
-.dashboard-welcome small {
-    color: #7c3aed;
-
-    font-weight: 800;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1px;
-}
-
-.dashboard-welcome h3 {
-    font-size: 27px;
-
-    margin-top: 3px;
-}
-
-.dashboard-welcome p {
-    color: #777287;
-
-    font-size: 14px;
-
-    margin-top: 3px;
-}
-
-.stats-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 10px;
-
-    margin-bottom: 22px;
-}
-
-.stat-card {
-    background: #faf9ff;
-
-    border: 1px solid #e8e3f5;
-
-    border-radius: 14px;
-
-    padding: 14px;
-
-    text-align: center;
-}
-
-.stat-card strong {
-    display: block;
-
-    font-size: 20px;
-
-    color: #251c4f;
-}
-
-.stat-card span {
-    display: block;
-
-    margin-top: 2px;
-
-    color: #858091;
-
-    font-size: 11px;
-}
-
-.dashboard-section-title {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 11px;
-}
-
-.dashboard-section-title h4 {
-    font-size: 16px;
-}
-
-.text-button {
-    border: none;
-
-    background: transparent;
-
-    color: #6d28d9;
-
-    font-weight: 750;
-
-    cursor: pointer;
-
-    font-size: 12px;
-}
-
-
-/* =====================================================
-   ORDERS
-===================================================== */
-
-.empty-orders {
-    text-align: center;
-
-    padding: 30px 10px;
-
-    color: #777287;
-}
-
-.empty-orders-icon {
-    font-size: 35px;
-
-    margin-bottom: 10px;
-}
-
-.order-card {
-    background:
-        linear-gradient(
-            135deg,
-            #faf9ff,
-            #f4f7ff
-        );
-
-    border: 1px solid #e4def5;
-
-    border-radius: 15px;
-
-    padding: 17px;
-
-    margin-bottom: 13px;
-}
-
-.order-card-top {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    gap: 10px;
-
-    margin-bottom: 12px;
-}
-
-.order-card-brand {
-    font-weight: 800;
-
-    color: #6d28d9;
-
-    font-size: 18px;
-}
-
-.status {
-    background: #dcfce8;
-
-    color: #15803d;
-
-    padding: 5px 9px;
-
-    border-radius: 20px;
-
-    font-size: 11px;
-
-    font-weight: 800;
-
-    white-space: nowrap;
-}
-
-.order-card strong {
-    font-size: 16px;
-}
-
-.order-card-row {
-    display: flex;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    margin-top: 9px;
-
-    color: #656073;
-
-    font-size: 13px;
-}
-
-.order-card-row span:last-child {
-    text-align: right;
-
-    color: #363143;
-}
-
-.order-id {
-    font-size: 12px;
-
-    color: #80798e !important;
-
-    word-break: break-all;
-}
-
-.order-action {
-    width: 100%;
-
-    margin-top: 13px;
-
-    padding: 10px;
-
-    border: 1px solid #ddd5f2;
-
-    background: white;
-
-    color: #6d28d9;
-
-    border-radius: 9px;
-
-    font-size: 12px;
-
-    font-weight: 750;
-
-    cursor: pointer;
-}
-
-
-/* =====================================================
-   ORDER DETAIL
-===================================================== */
-
-.detail-brand {
-    color: #7c3aed;
-
-    font-weight: 800;
-
-    font-size: 14px;
-}
-
-.detail-title {
-    font-size: 27px;
-
-    font-weight: 800;
-
-    margin: 4px 0 20px;
-}
-
-.detail-status {
-    display: inline-block;
-
-    background: #dcfce8;
-
-    color: #15803d;
-
-    padding: 6px 10px;
-
-    border-radius: 20px;
-
-    font-size: 11px;
-
-    font-weight: 800;
-
-    margin-bottom: 18px;
-}
-
-.detail-box {
-    background: #faf9ff;
-
-    border: 1px solid #e7e1f2;
-
-    border-radius: 14px;
-
-    padding: 15px;
-
-    margin-bottom: 12px;
-}
-
-.detail-box-row {
-    display: flex;
-
-    justify-content: space-between;
-
-    gap: 20px;
-
-    padding: 8px 0;
-
-    color: #6d6878;
-
-    font-size: 13px;
-}
-
-.detail-box-row strong {
-    color: #282238;
-
-    text-align: right;
-
-    word-break: break-word;
-}
-
-
-/* =====================================================
-   FOOTER
-===================================================== */
-
-footer {
-    background: #17132b;
-
-    color: #aaa4b7;
-
-    padding: 45px 7%;
-
-    text-align: center;
-
-    margin-top: 20px;
-}
-
-.footer-logo {
-    color: white;
-
-    font-size: 20px;
-
-    font-weight: 800;
-
-    margin-bottom: 8px;
-}
-
-footer p {
-    font-size: 13px;
-}
-
-.footer-links {
-    margin-top: 17px;
-
-    display: flex;
-
-    justify-content: center;
-
-    gap: 20px;
-
-    flex-wrap: wrap;
-}
-
-.footer-links a {
-    color: #c7c2d2;
-
-    text-decoration: none;
-
-    font-size: 12px;
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width:700px) {
-
-    header {
-        padding: 13px 5%;
-    }
-
-    nav a,
-    .login {
-        display: none;
-    }
-
-    .orders-button {
-        display: block;
-
-        margin-left: 0;
-
-        padding: 10px 12px;
-    }
-
-    .account-button {
-        display: block;
-
-        margin-left: 7px;
-
-        padding: 10px 12px;
-
-        max-width: 120px;
-
-        overflow: hidden;
-
-        text-overflow: ellipsis;
-
-        white-space: nowrap;
-    }
-
-    .hero {
-        padding: 75px 20px 70px;
-    }
-
-    .hero h1 {
-        letter-spacing: -1.5px;
-    }
-
-    .hero p {
-        font-size: 16px;
-    }
-
-    .trust-strip {
-        grid-template-columns: 1fr;
-
-        margin-top: 15px;
-
-        padding: 0 20px;
-    }
-
-    .products {
-        padding: 55px 5%;
-    }
-
-    .section-heading h2 {
-        font-size: 29px;
-    }
-
-    .cards {
-        grid-template-columns: 1fr;
-    }
-
-    .panel {
-        padding: 23px;
-
-        border-radius: 21px;
-
-        max-height: 92vh;
-    }
-
-    .stats-grid {
-        grid-template-columns:
-            repeat(3, 1fr);
-
-        gap: 7px;
-    }
-
-    .stat-card {
-        padding: 11px 5px;
-    }
-
-    .stat-card strong {
-        font-size: 17px;
-    }
-
-    .stat-card span {
-        font-size: 10px;
-    }
-
-}
-
-</style>
-
+<link rel="stylesheet" href="css/style.css">
 </head>
-
 
 <body>
 
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
 <header>
 
-<div
-class="logo"
-onclick="scrollToStore()"
->
-GiftCardStore
-</div>
-
+<div class="logo">GiftCardStore</div>
 
 <nav>
 
-<a href="#">
-Home
-</a>
-
-<a href="#products">
-Gift Cards
-</a>
-
-<a href="#footer">
-How It Works
-</a>
+<a href="#">Home</a>
+<a href="#products">Gift Cards</a>
+<a href="#footer">How It Works</a>
 
 <button
-class="orders-button"
-onclick="openOrders()"
+    class="orders-button"
+    onclick="GCS.openOrders()"
 >
 My Orders
 </button>
 
 <button
-class="login"
-id="loginButton"
-onclick="openAccount('login')"
+    class="login"
+    id="loginButton"
 >
 Login
 </button>
 
 <button
-class="account-button"
-id="accountButton"
-onclick="openDashboard()"
-style="display:none;"
+    class="orders-button"
+    id="accountButton"
+    style="display:none"
 >
-Account
+My Account
 </button>
 
 </nav>
 
 </header>
 
-
-
-<!-- =====================================================
-     HERO
-===================================================== -->
 
 <section class="hero">
 
@@ -1885,17 +68,11 @@ for smarter shopping.
 
 <div class="hero-buttons">
 
-<a
-href="#products"
-class="button"
->
+<a href="#products" class="button">
 Explore Gift Cards
 </a>
 
-<a
-href="#products"
-class="secondary-button"
->
+<a href="#products" class="secondary-button">
 View Brands
 </a>
 
@@ -1904,73 +81,33 @@ View Brands
 </section>
 
 
-
-<!-- =====================================================
-     TRUST
-===================================================== -->
-
 <div class="trust-strip">
 
 <div class="trust-item">
-
-<strong>
-Instant selection
-</strong>
-
-<span>
-Choose your value
-</span>
-
+<strong>Instant selection</strong>
+<span>Choose your value</span>
 </div>
-
 
 <div class="trust-item">
-
-<strong>
-Transparent pricing
-</strong>
-
-<span>
-See your savings
-</span>
-
+<strong>Transparent pricing</strong>
+<span>See your savings</span>
 </div>
-
 
 <div class="trust-item">
-
-<strong>
-Simple checkout
-</strong>
-
-<span>
-Clear order summary
-</span>
-
+<strong>Simple checkout</strong>
+<span>Clear order summary</span>
 </div>
 
 </div>
 
 
-
-<!-- =====================================================
-     PRODUCTS
-===================================================== -->
-
-<section
-class="products"
-id="products"
->
+<section class="products" id="products">
 
 <div class="section-heading">
 
-<small>
-Gift Cards
-</small>
+<small>Gift Cards</small>
 
-<h2>
-Choose your favourite brand
-</h2>
+<h2>Choose your favourite brand</h2>
 
 <p>
 Select a card and choose the value that works for you.
@@ -1981,85 +118,52 @@ Select a card and choose the value that works for you.
 
 <div class="search-wrap">
 
-<span class="search-icon">
-⌕
-</span>
+<span class="search-icon">⌕</span>
 
 <input
-class="search"
-id="search"
-type="text"
-placeholder="Search gift cards..."
-oninput="renderProducts()"
+    class="search"
+    id="search"
+    type="text"
+    placeholder="Search gift cards..."
 >
 
 </div>
 
 
-<div
-class="categories"
-id="categories"
->
-</div>
+<div class="categories">
 
-
-<div
-class="cards"
-id="productGrid"
->
-</div>
-
-
-<div
-class="no-products"
-id="noProducts"
->
-
-<h3>
-No gift cards found
-</h3>
-
-<p>
-Try another brand, category or search term.
-</p>
+<button class="category active">All</button>
+<button class="category">Shopping</button>
+<button class="category">Fashion</button>
+<button class="category">Food</button>
+<button class="category">Electronics</button>
+<button class="category">Entertainment</button>
 
 </div>
+
+
+<div class="cards" id="cards"></div>
 
 </section>
 
 
+<!-- PRODUCT -->
 
-<!-- =====================================================
-     PRODUCT CONFIGURATION
-===================================================== -->
-
-<div
-class="overlay"
-id="productOverlay"
->
+<div class="overlay" id="productOverlay">
 
 <div class="panel">
 
 <div class="panel-header">
 
-<h2>
-Choose Gift Card
-</h2>
+<h2>Choose Gift Card</h2>
 
-<button
-class="close"
-onclick="closeProduct()"
->
+<button class="close" onclick="GCS.closeProduct()">
 ×
 </button>
 
 </div>
 
-
-<div
-class="product-brand"
-id="productBrand"
->
+<div class="product-brand" id="productBrand">
 Amazon
 </div>
 
@@ -2067,26 +171,24 @@ Amazon
 Select your value
 </div>
 
-
 <p class="mode-title">
 Gift Card Type
 </p>
 
-
 <div class="mode-buttons">
 
 <button
-class="mode-button active"
-id="fixedMode"
-onclick="selectMode('fixed')"
+    class="mode-button active"
+    id="fixedMode"
+    onclick="GCS.selectMode('fixed')"
 >
 Fixed Value
 </button>
 
 <button
-class="mode-button"
-id="customMode"
-onclick="selectMode('custom')"
+    class="mode-button"
+    id="customMode"
+    onclick="GCS.selectMode('custom')"
 >
 Custom Value
 </button>
@@ -2096,32 +198,25 @@ Custom Value
 
 <div id="fixedArea">
 
-<div
-class="fixed-values"
-id="fixedValues"
->
-</div>
+<div class="fixed-values" id="fixedValues"></div>
 
 </div>
 
 
-<div
-class="custom-area"
-id="customArea"
->
+<div class="custom-area" id="customArea">
 
 <input
-class="custom-input"
-id="customAmount"
-type="number"
-placeholder="Enter amount"
-oninput="updateCustomPrice()"
+    class="custom-input"
+    id="customAmount"
+    type="number"
+    min="100"
+    max="10000"
+    placeholder="Enter amount"
+    oninput="GCS.updateCustomPrice()"
 >
 
-<p
-class="range-text"
-id="rangeText"
->
+<p class="range-text">
+Enter an amount between ₹100 and ₹10,000.
 </p>
 
 </div>
@@ -2130,198 +225,210 @@ id="rangeText"
 <div class="price-preview">
 
 <div class="preview-row">
-
-<span>
-Gift Card Value
-</span>
-
-<strong id="previewValue">
-₹500
-</strong>
-
+<span>Gift Card Value</span>
+<strong id="previewValue">₹500</strong>
 </div>
-
 
 <div class="preview-row">
-
-<span>
-Your Discount
-</span>
-
-<strong id="previewDiscount">
-3%
-</strong>
-
+<span>Your Discount</span>
+<strong id="previewDiscount">15%</strong>
 </div>
 
-
 <div class="preview-row preview-total">
-
-<span>
-You Pay
-</span>
-
-<strong id="previewPrice">
-₹485
-</strong>
-
+<span>You Pay</span>
+<strong id="previewPrice">₹425</strong>
 </div>
 
 </div>
 
 
 <button
-class="continue"
-onclick="continueProduct()"
+    class="continue"
+    onclick="GCS.continueProduct()"
 >
 Continue
 </button>
 
 </div>
-
 </div>
 
 
+<!-- ORDER SUMMARY -->
 
-<!-- =====================================================
-     ORDER SUMMARY
-===================================================== -->
-
-<div
-class="overlay"
-id="orderOverlay"
->
+<div class="overlay" id="orderOverlay">
 
 <div class="panel">
 
 <div class="panel-header">
 
-<h2>
-Order Summary
-</h2>
+<h2>Order Summary</h2>
 
-<button
-class="close"
-onclick="closeOrder()"
->
+<button class="close" onclick="GCS.closeOrder()">
 ×
 </button>
 
 </div>
 
-
-<div
-class="order-brand"
-id="orderBrand"
->
+<div class="order-brand" id="orderBrand">
 Amazon
 </div>
 
-<div
-class="order-value"
-id="orderValue"
->
+<div class="order-value" id="orderValue">
 ₹500 Gift Card
 </div>
 
-
 <div class="order-row">
-
-<span>
-Gift Card Value
-</span>
-
-<span id="originalPrice">
-₹500
-</span>
-
+<span>Gift Card Value</span>
+<span id="originalPrice">₹500</span>
 </div>
 
-
 <div class="order-row">
-
-<span>
-Discount
-</span>
-
-<span id="orderDiscount">
-3%
-</span>
-
+<span>Discount</span>
+<span id="orderDiscount">3%</span>
 </div>
 
-
 <div class="order-row">
-
-<span>
-You Pay
-</span>
-
-<span id="finalPrice">
-₹485
-</span>
-
+<span>You Pay</span>
+<span id="finalPrice">₹485</span>
 </div>
-
 
 <div class="order-row total">
-
-<span>
-Total
-</span>
-
-<span id="totalPrice">
-₹485
-</span>
-
+<span>Total</span>
+<span id="totalPrice">₹485</span>
 </div>
 
-
 <button
-class="continue"
-onclick="openCheckout()"
+    class="continue"
+    onclick="GCS.openCheckout()"
 >
 Continue to Checkout
 </button>
 
 </div>
-
 </div>
 
 
+<!-- LOGIN -->
 
-<!-- =====================================================
-     CHECKOUT
-===================================================== -->
-
-<div
-class="overlay"
-id="checkoutOverlay"
->
+<div class="overlay" id="loginOverlay">
 
 <div class="panel">
 
 <div class="panel-header">
 
-<h2>
-Checkout
-</h2>
+<h2>Login</h2>
 
-<button
-class="close"
-onclick="closeCheckout()"
->
+<button class="close" onclick="GCS.closeLogin()">
 ×
 </button>
 
 </div>
 
+<p style="color:#777287;margin-bottom:20px">
+Login is required before checkout and to access your orders.
+</p>
+
+<label>Email Address</label>
+
+<input
+    class="account-input"
+    id="loginEmail"
+    type="email"
+    placeholder="you@example.com"
+>
+
+<p class="form-error" id="loginError">
+Please enter a valid email address.
+</p>
+
+<button
+    class="confirm"
+    onclick="GCS.submitLogin()"
+>
+Login
+</button>
+
+<button
+    class="account-action"
+    onclick="GCS.openSignup()"
+>
+Create an Account
+</button>
+
+</div>
+</div>
+
+
+<!-- SIGNUP -->
+
+<div class="overlay" id="signupOverlay">
+
+<div class="panel">
+
+<div class="panel-header">
+
+<h2>Create Account</h2>
+
+<button class="close" onclick="GCS.closeSignup()">
+×
+</button>
+
+</div>
+
+<label>Name</label>
+
+<input
+    class="account-input"
+    id="signupName"
+    type="text"
+    placeholder="Your name"
+>
+
+<br><br>
+
+<label>Email Address</label>
+
+<input
+    class="account-input"
+    id="signupEmail"
+    type="email"
+    placeholder="you@example.com"
+>
+
+<p class="form-error" id="signupError">
+Please enter your name and a valid email address.
+</p>
+
+<button
+    class="confirm"
+    onclick="GCS.submitSignup()"
+>
+Create Account
+</button>
+
+</div>
+</div>
+
+
+<!-- CHECKOUT -->
+
+<div class="overlay" id="checkoutOverlay">
+
+<div class="panel">
+
+<div class="panel-header">
+
+<h2>Checkout</h2>
+
+<button class="close" onclick="GCS.closeCheckout()">
+×
+</button>
+
+</div>
 
 <div class="checkout-card">
 
-<p>
-Gift Card
-</p>
+<p>Gift Card</p>
 
 <strong id="checkoutBrand">
 Amazon
@@ -2333,77 +440,58 @@ Amazon
 
 <br>
 
-<p>
-Total
-</p>
+<p>Total</p>
 
 <strong
-class="checkout-total"
-id="checkoutPrice"
+    class="checkout-total"
+    id="checkoutPrice"
 >
 ₹485
 </strong>
 
 </div>
 
-
 <label for="email">
-Delivery Email
+Email Address
 </label>
 
 <input
-class="email"
-id="email"
-type="email"
-readonly
-autocomplete="email"
-placeholder="Login required"
+    class="email"
+    id="email"
+    type="email"
+    autocomplete="email"
+    placeholder="you@example.com"
+    oninput="GCS.clearEmailError()"
 >
 
-<p
-class="email-error"
-id="emailError"
->
-Please log in with a valid email address before placing the order.
+<p class="email-error" id="emailError">
+Please enter a valid email address.
 </p>
 
-
 <button
-class="confirm"
-onclick="placeOrder()"
+    class="confirm"
+    onclick="GCS.createOrder()"
 >
 Confirm Order
 </button>
-
 
 <p class="note">
 Prototype checkout — no real payment is processed.
 </p>
 
 </div>
-
 </div>
 
 
+<!-- SUCCESS -->
 
-<!-- =====================================================
-     SUCCESS
-===================================================== -->
-
-<div
-class="overlay"
-id="successOverlay"
->
+<div class="overlay" id="successOverlay">
 
 <div class="panel success">
 
-<div class="success-icon">
-✓
-</div>
+<div class="success-icon">✓</div>
 
-<h2>
-Order Confirmed
-</h2>
+<h2>Order Confirmed</h2>
 
 <p>
 Your prototype order has been successfully created.
@@ -2411,575 +499,159 @@ Your prototype order has been successfully created.
 
 <br>
 
-<p>
-Order ID
-</p>
+<p>Order ID</p>
 
-<div
-class="order-id-display"
-id="orderId"
->
+<div class="order-id-display" id="orderId">
 GCS-000001
 </div>
 
 <br>
 
 <button
-class="confirm"
-onclick="closeSuccess()"
+    class="confirm"
+    onclick="GCS.closeSuccess()"
 >
 Done
 </button>
 
 </div>
-
 </div>
 
 
+<!-- ORDERS -->
 
-<!-- =====================================================
-     MY ORDERS
-===================================================== -->
-
-<div
-class="overlay"
-id="ordersOverlay"
->
-
-<div class="panel large">
-
-<div class="panel-header">
-
-<h2>
-My Orders
-</h2>
-
-<button
-class="close"
-onclick="closeOrders()"
->
-×
-</button>
-
-</div>
-
-
-<div id="ordersList">
-</div>
-
-</div>
-
-</div>
-
-
-
-<!-- =====================================================
-     ORDER DETAIL
-===================================================== -->
-
-<div
-class="overlay"
-id="orderDetailOverlay"
->
+<div class="overlay" id="ordersOverlay">
 
 <div class="panel">
 
 <div class="panel-header">
 
-<h2>
-Order Details
-</h2>
+<h2>My Orders</h2>
 
-<button
-class="close"
-onclick="closeOrderDetail()"
->
+<button class="close" onclick="GCS.closeOrders()">
 ×
 </button>
 
 </div>
 
+<div id="ordersList"></div>
 
-<div
-class="detail-brand"
-id="detailBrand"
->
+</div>
+</div>
+
+
+<!-- ORDER DETAILS -->
+
+<div class="overlay" id="detailsOverlay">
+
+<div class="panel">
+
+<div class="panel-header">
+
+<h2>Order Details</h2>
+
+<button class="close" onclick="GCS.closeDetails()">
+×
+</button>
+
+</div>
+
+<div class="order-card">
+
+<div class="order-card-top">
+<span class="order-card-brand" id="detailBrand">
 Amazon
-</div>
+</span>
 
-<div
-class="detail-title"
-id="detailTitle"
->
-₹1,000 Gift Card
-</div>
-
-
-<div
-class="detail-status"
-id="detailStatus"
->
+<span class="status">
 Confirmed
-</div>
-
-
-<div class="detail-box">
-
-<div class="detail-box-row">
-
-<span>
-Gift Card Value
 </span>
-
-<strong id="detailValue">
-₹1,000
-</strong>
-
 </div>
 
-
-<div class="detail-box-row">
-
-<span>
-Discount
-</span>
-
-<strong id="detailDiscount">
-3%
-</strong>
-
+<div class="order-card-row">
+<span>Gift Card Value</span>
+<strong id="detailValue">₹500</strong>
 </div>
 
-
-<div class="detail-box-row">
-
-<span>
-Amount Paid
-</span>
-
-<strong id="detailPrice">
-₹970
-</strong>
-
+<div class="order-card-row">
+<span>Amount Paid</span>
+<strong id="detailPrice">₹485</strong>
 </div>
 
-
-<div class="detail-box-row">
-
-<span>
-Email
-</span>
-
-<strong id="detailEmail">
-example@gmail.com
-</strong>
-
+<div class="order-card-row">
+<span>Discount</span>
+<strong id="detailDiscount">3%</strong>
 </div>
 
-
-<div class="detail-box-row">
-
-<span>
-Order ID
-</span>
-
-<strong id="detailId">
-GCS-000001
-</strong>
-
+<div class="order-card-row">
+<span>Order ID</span>
+<span class="order-id" id="detailId"></span>
 </div>
 
-
-<div class="detail-box-row">
-
-<span>
-Date
-</span>
-
-<strong id="detailDate">
--
-</strong>
-
+<div class="order-card-row">
+<span>Date</span>
+<span class="order-id" id="detailDate"></span>
 </div>
 
 </div>
 
-
-<button
-class="continue"
-onclick="closeOrderDetail()"
->
-Close
-</button>
-
 </div>
-
 </div>
 
 
+<!-- ACCOUNT -->
 
-<!-- =====================================================
-     ACCOUNT / LOGIN
-===================================================== -->
-
-<div
-class="overlay"
-id="accountOverlay"
->
+<div class="overlay" id="accountOverlay">
 
 <div class="panel">
 
 <div class="panel-header">
 
-<h2 id="accountTitle">
-Login
-</h2>
+<h2>My Account</h2>
 
-<button
-class="close"
-onclick="closeAccount()"
->
+<button class="close" onclick="GCS.closeAccount()">
 ×
 </button>
 
 </div>
 
+<div class="account-welcome">
 
-<div
-class="account-message"
-id="accountMessage"
->
-Please log in to continue.
+<div class="account-avatar" id="accountAvatar">
+A
 </div>
 
+<div class="account-name" id="accountName">
+Account
+</div>
 
-<div class="account-tabs">
+<div class="account-email" id="accountEmail">
+email@example.com
+</div>
+
+</div>
+
+<div class="account-actions">
 
 <button
-class="account-tab active"
-id="loginTab"
-onclick="switchAccountMode('login')"
+    class="account-action"
+    onclick="GCS.closeAccount();GCS.openOrders()"
 >
-Login
+My Orders
 </button>
 
 <button
-class="account-tab"
-id="signupTab"
-onclick="switchAccountMode('signup')"
+    class="account-action"
+    onclick="GCS.logout()"
 >
-Create Account
-</button>
-
-</div>
-
-
-
-<!-- LOGIN -->
-
-<div
-id="loginForm"
->
-
-<div class="account-intro">
-
-<strong>
-Welcome back
-</strong>
-
-<span>
-Log in to access your orders and continue checkout.
-</span>
-
-</div>
-
-
-<div class="form-group">
-
-<label for="loginEmail">
-Email Address
-</label>
-
-<input
-class="account-input"
-id="loginEmail"
-type="email"
-inputmode="email"
-autocomplete="email"
-placeholder="you@example.com"
->
-
-</div>
-
-
-<p
-class="account-error"
-id="loginError"
->
-</p>
-
-
-<button
-class="confirm"
-onclick="loginAccount()"
->
-Login
-</button>
-
-
-<p class="form-note">
-Prototype login — this version does not use passwords or real authentication.
-</p>
-
-</div>
-
-
-
-<!-- SIGN UP -->
-
-<div
-id="signupForm"
-style="display:none;"
->
-
-<div class="account-intro">
-
-<strong>
-Create your account
-</strong>
-
-<span>
-Your account keeps your prototype profile and orders organised.
-</span>
-
-</div>
-
-
-<div class="form-group">
-
-<label for="accountName">
-Your Name
-</label>
-
-<input
-class="account-input"
-id="accountName"
-type="text"
-autocomplete="name"
-placeholder="Enter your name"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label for="accountEmail">
-Email Address
-</label>
-
-<input
-class="account-input"
-id="accountEmail"
-type="email"
-inputmode="email"
-autocomplete="email"
-placeholder="you@example.com"
->
-
-</div>
-
-
-<p
-class="account-error"
-id="accountError"
->
-Please enter a valid name and email address.
-</p>
-
-
-<button
-class="confirm"
-onclick="createAccount()"
->
-Create Account
-</button>
-
-
-<p class="form-note">
-Prototype account only. No real password or authentication system is connected yet.
-</p>
-
-</div>
-
-
-
-<!-- LOGGED IN -->
-
-<div
-id="loggedInAccount"
-style="display:none;"
->
-
-<div class="account-intro">
-
-<strong id="profileName">
-Customer
-</strong>
-
-<span id="profileEmail">
-customer@example.com
-</span>
-
-</div>
-
-
-<button
-class="continue"
-onclick="openDashboard()"
->
-Open My Dashboard
-</button>
-
-
-<button
-class="logout-button"
-onclick="logout()"
->
-Log Out
+Logout
 </button>
 
 </div>
 
 </div>
-
 </div>
 
-
-
-<!-- =====================================================
-     CUSTOMER DASHBOARD
-===================================================== -->
-
-<div
-class="overlay"
-id="dashboardOverlay"
->
-
-<div class="panel large">
-
-<div class="panel-header">
-
-<h2>
-My Account
-</h2>
-
-<button
-class="close"
-onclick="closeDashboard()"
->
-×
-</button>
-
-</div>
-
-
-<div class="dashboard-welcome">
-
-<small>
-Customer Dashboard
-</small>
-
-<h3 id="dashboardName">
-Welcome
-</h3>
-
-<p id="dashboardEmail">
-customer@example.com
-</p>
-
-</div>
-
-
-<div class="stats-grid">
-
-<div class="stat-card">
-
-<strong id="statOrders">
-0
-</strong>
-
-<span>
-Orders
-</span>
-
-</div>
-
-
-<div class="stat-card">
-
-<strong id="statSpent">
-₹0
-</strong>
-
-<span>
-Spent
-</span>
-
-</div>
-
-
-<div class="stat-card">
-
-<strong id="statSavings">
-₹0
-</strong>
-
-<span>
-Saved
-</span>
-
-</div>
-
-</div>
-
-
-<div class="dashboard-section-title">
-
-<h4>
-Recent Orders
-</h4>
-
-<button
-class="text-button"
-onclick="openOrdersFromDashboard()"
->
-View All
-</button>
-
-</div>
-
-
-<div id="dashboardOrders">
-</div>
-
-
-<button
-class="logout-button"
-onclick="logoutFromDashboard()"
->
-Log Out
-</button>
-
-</div>
-
-</div>
-
-
-
-<!-- =====================================================
-     FOOTER
-===================================================== -->
 
 <footer id="footer">
 
@@ -2987,31 +659,7 @@ Log Out
 GiftCardStore
 </div>
 
-<p>
-Save more. Shop smarter.
-</p>
-
-<div class="footer-links">
-
-<a href="#products">
-Gift Cards
-</a>
-
-<a
-href="#"
-onclick="openOrders(); return false;"
->
-My Orders
-</a>
-
-<a
-href="#"
-onclick="openAccount('auto'); return false;"
->
-My Account
-</a>
-
-</div>
+<p>Save more. Shop smarter.</p>
 
 <br>
 
@@ -3022,2989 +670,12 @@ My Account
 </footer>
 
 
-
-<script>
-
-/* =====================================================
-   BRICK 10 — PRODUCT CATALOG
-===================================================== */
-
-const productCatalog = [
-
-    {
-        id: "amazon",
-        name: "Amazon",
-        category: "Shopping",
-
-        logo:
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Amazon_2024.svg",
-
-        fixedValues: [
-            500,
-            1000,
-            2000,
-            5000
-        ],
-
-        fixedDiscount: 3,
-        customDiscount: 3,
-
-        custom: true,
-        minCustom: 100,
-        maxCustom: 10000
-    },
-
-
-    {
-        id: "flipkart",
-        name: "Flipkart",
-        category: "Shopping",
-
-        logo:
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Flipkart_logo_(2026).svg",
-
-        fixedValues: [
-            500,
-            1000,
-            2000,
-            5000
-        ],
-
-        fixedDiscount: 3.5,
-        customDiscount: 3.5,
-
-        custom: true,
-        minCustom: 100,
-        maxCustom: 10000
-    },
-
-
-    {
-        id: "myntra",
-        name: "Myntra",
-        category: "Fashion",
-
-        logo:
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/65c5da9f878952603e370d03_Myntra-Logo_1.svg",
-
-        fixedValues: [
-            500,
-            1000,
-            2000,
-            5000
-        ],
-
-        fixedDiscount: 5,
-        customDiscount: 5,
-
-        custom: true,
-        minCustom: 100,
-        maxCustom: 10000
-    },
-
-
-    {
-        id: "croma",
-        name: "Croma",
-        category: "Electronics",
-
-        logo:
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Croma_logo.png",
-
-        fixedValues: [
-            500,
-            1000,
-            2000,
-            5000
-        ],
-
-        fixedDiscount: 5,
-        customDiscount: 5,
-
-        custom: true,
-        minCustom: 100,
-        maxCustom: 10000
-    },
-
-
-    {
-        id: "domino",
-        name: "Domino's",
-        category: "Food",
-
-        logo:
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Domino%27s_pizza_logo.svg",
-
-        fixedValues: [
-            500,
-            1000,
-            2000,
-            5000
-        ],
-
-        fixedDiscount: 15,
-        customDiscount: 5,
-
-        custom: true,
-        minCustom: 100,
-        maxCustom: 10000
-    }
-
-];
-
-
-/* =====================================================
-   STORAGE
-===================================================== */
-
-const ORDER_STORAGE_KEY =
-    "giftCardOrders";
-
-const ACCOUNT_STORAGE_KEY =
-    "giftCardAccount";
-
-const WISHLIST_STORAGE_KEY =
-    "giftCardWishlist";
-
-
-/* =====================================================
-   STATE
-===================================================== */
-
-let selectedProduct = null;
-
-let selectedMode = "fixed";
-
-let selectedValue = 500;
-
-let selectedDiscount = 0;
-
-let selectedPrice = 0;
-
-let activeCategory = "All";
-
-let pendingAction = null;
-
-
-/* =====================================================
-   MONEY HELPERS
-===================================================== */
-
-function money(amount) {
-
-    const number =
-        Number(amount);
-
-    if (
-        !Number.isFinite(number)
-    ) {
-
-        return "₹0";
-
-    }
-
-    return "₹" +
-        number.toLocaleString(
-            "en-IN"
-        );
-
-}
-
-
-/* =====================================================
-   LEGACY DATA FIX
-===================================================== */
-
-/*
-   Brick 7 stored some orders like:
-
-   value: "₹1,000"
-   price: "₹970"
-   discount: "3%"
-
-   Brick 10 expects numbers.
-
-   This converter makes old orders compatible
-   instead of producing NaN.
-*/
-
-function parseMoney(value) {
-
-    if (
-        typeof value ===
-        "number"
-    ) {
-
-        return Number.isFinite(value)
-            ? value
-            : 0;
-
-    }
-
-
-    const cleaned =
-        String(value ?? "")
-        .replace(
-            /₹/g,
-            ""
-        )
-        .replace(
-            /,/g,
-            ""
-        )
-        .trim();
-
-
-    const number =
-        parseFloat(
-            cleaned
-        );
-
-
-    return Number.isFinite(number)
-        ? number
-        : 0;
-
-}
-
-
-function parseDiscount(value) {
-
-    if (
-        typeof value ===
-        "number"
-    ) {
-
-        return Number.isFinite(value)
-            ? value
-            : 0;
-
-    }
-
-
-    const cleaned =
-        String(value ?? "")
-        .replace(
-            /%/g,
-            ""
-        )
-        .trim();
-
-
-    const number =
-        parseFloat(
-            cleaned
-        );
-
-
-    return Number.isFinite(number)
-        ? number
-        : 0;
-
-}
-
-
-function normalizeOrder(order) {
-
-    return {
-
-        id:
-            String(
-                order.id || ""
-            ),
-
-        productId:
-            order.productId ||
-            "",
-
-        brand:
-            String(
-                order.brand || ""
-            ),
-
-        category:
-            String(
-                order.category || ""
-            ),
-
-        value:
-            parseMoney(
-                order.value
-            ),
-
-        price:
-            parseMoney(
-                order.price
-            ),
-
-        discount:
-            parseDiscount(
-                order.discount
-            ),
-
-        email:
-            String(
-                order.email || ""
-            )
-            .trim(),
-
-        status:
-            String(
-                order.status ||
-                "Confirmed"
-            ),
-
-        date:
-            String(
-                order.date || ""
-            )
-
-    };
-
-}
-
-
-/* =====================================================
-   ORDERS STORAGE
-===================================================== */
-
-function getOrders() {
-
-    try {
-
-        const raw =
-            JSON.parse(
-                localStorage.getItem(
-                    ORDER_STORAGE_KEY
-                )
-            ) || [];
-
-
-        const normalized =
-            raw.map(
-                normalizeOrder
-            );
-
-
-        /*
-           Save the normalized format back.
-           This permanently fixes the old NaN
-           data on this browser.
-        */
-
-        localStorage.setItem(
-            ORDER_STORAGE_KEY,
-            JSON.stringify(
-                normalized
-            )
-        );
-
-
-        return normalized;
-
-    }
-
-    catch {
-
-        return [];
-
-    }
-
-}
-
-
-function saveOrders(orders) {
-
-    localStorage.setItem(
-        ORDER_STORAGE_KEY,
-        JSON.stringify(
-            orders.map(
-                normalizeOrder
-            )
-        )
-    );
-
-}
-
-
-/* =====================================================
-   ACCOUNT STORAGE
-===================================================== */
-
-function getAccount() {
-
-    try {
-
-        return JSON.parse(
-            localStorage.getItem(
-                ACCOUNT_STORAGE_KEY
-            )
-        );
-
-    }
-
-    catch {
-
-        return null;
-
-    }
-
-}
-
-
-function saveAccount(account) {
-
-    localStorage.setItem(
-        ACCOUNT_STORAGE_KEY,
-        JSON.stringify(
-            account
-        )
-    );
-
-}
-
-
-function removeAccount() {
-
-    localStorage.removeItem(
-        ACCOUNT_STORAGE_KEY
-    );
-
-}
-
-
-/* =====================================================
-   WISHLIST STORAGE — BRICK 11
-===================================================== */
-
-function getWishlist() {
-
-    try {
-
-        const wishlist =
-            JSON.parse(
-                localStorage.getItem(
-                    WISHLIST_STORAGE_KEY
-                )
-            );
-
-
-        return Array.isArray(wishlist)
-            ? wishlist
-            : [];
-
-    }
-
-    catch {
-
-        return [];
-
-    }
-
-}
-
-
-function saveWishlist(wishlist) {
-
-    localStorage.setItem(
-        WISHLIST_STORAGE_KEY,
-        JSON.stringify(
-            wishlist
-        )
-    );
-
-}
-
-
-function isWishlisted(productId) {
-
-    return getWishlist()
-        .includes(
-            productId
-        );
-
-}
-
-
-function toggleWishlist(
-    productId,
-    event
-) {
-
-    if (event) {
-
-        event.stopPropagation();
-
-    }
-
-
-    let wishlist =
-        getWishlist();
-
-
-    if (
-        wishlist.includes(
-            productId
-        )
-    ) {
-
-        wishlist =
-            wishlist.filter(
-                id =>
-                    id !== productId
-            );
-
-    }
-
-    else {
-
-        wishlist.push(
-            productId
-        );
-
-    }
-
-
-    saveWishlist(
-        wishlist
-    );
-
-
-    renderProducts();
-
-}
-
-
-/* =====================================================
-   PRICE CALCULATOR
-===================================================== */
-
-function calculatePrice(
-    amount,
-    discount
-) {
-
-    return Math.round(
-        Number(amount) *
-        (
-            1 -
-            Number(discount) /
-            100
-        )
-    );
-
-}
-
-
-/* =====================================================
-   CATEGORY RENDER
-===================================================== */
-
-function renderCategories() {
-
-    const container =
-        document.getElementById(
-            "categories"
-        );
-
-
-    const categories = [
-        "All",
-        ...new Set(
-            productCatalog.map(
-                product =>
-                    product.category
-            )
-        ),
-        "Saved"
-    ];
-
-
-    container.innerHTML =
-        categories.map(
-            function(category) {
-
-                return `
-
-                <button
-                    class="category ${
-                        activeCategory === category
-                        ? "active"
-                        : ""
-                    }"
-                    onclick="selectCategory('${category}')"
-                >
-                    ${
-                        category === "Saved"
-                        ? "♡ Saved"
-                        : category
-                    }
-                </button>
-
-                `;
-
-            }
-        ).join("");
-
-}
-
-
-function selectCategory(
-    category
-) {
-
-    activeCategory =
-        category;
-
-    renderCategories();
-
-    renderProducts();
-
-}
-
-
-/* =====================================================
-   PRODUCT RENDER
-===================================================== */
-
-function renderProducts() {
-
-    const grid =
-        document.getElementById(
-            "productGrid"
-        );
-
-    const noProducts =
-        document.getElementById(
-            "noProducts"
-        );
-
-    const search =
-        document.getElementById(
-            "search"
-        ).value
-        .trim()
-        .toLowerCase();
-
-
-    const wishlist =
-        getWishlist();
-
-
-    const filtered =
-        productCatalog.filter(
-            function(product) {
-
-                let matchesCategory;
-
-
-                if (
-                    activeCategory ===
-                    "All"
-                ) {
-
-                    matchesCategory =
-                        true;
-
-                }
-
-                else if (
-                    activeCategory ===
-                    "Saved"
-                ) {
-
-                    matchesCategory =
-                        wishlist.includes(
-                            product.id
-                        );
-
-                }
-
-                else {
-
-                    matchesCategory =
-                        product.category ===
-                        activeCategory;
-
-                }
-
-
-                const searchable =
-                    (
-                        product.name +
-                        " " +
-                        product.category
-                    )
-                    .toLowerCase();
-
-
-                const matchesSearch =
-                    searchable.includes(
-                        search
-                    );
-
-
-                return (
-                    matchesCategory &&
-                    matchesSearch
-                );
-
-            }
-        );
-
-
-    grid.innerHTML =
-        filtered.map(
-            function(product) {
-
-                const value =
-                    product.fixedValues[0];
-
-
-                const discount =
-                    product.fixedDiscount;
-
-
-                const price =
-                    calculatePrice(
-                        value,
-                        discount
-                    );
-
-
-                const saved =
-                    wishlist.includes(
-                        product.id
-                    );
-
-
-                return `
-
-                <div
-                    class="card"
-                    data-product-id="${product.id}"
-                >
-
-                    <div class="brand-box">
-
-                        <img
-                            class="brand-logo"
-                            src="${product.logo}"
-                            alt="${product.name} logo"
-                        >
-
-
-                        <button
-                            class="save-button ${
-                                saved ? "saved" : ""
-                            }"
-                            onclick="toggleWishlist('${product.id}', event)"
-                            aria-label="Save ${product.name}"
-                            title="${
-                                saved
-                                ? "Remove from saved"
-                                : "Save gift card"
-                            }"
-                        >
-                            ${
-                                saved
-                                ? "♥"
-                                : "♡"
-                            }
-                        </button>
-
-                    </div>
-
-
-                    <div class="brand">
-                        ${product.name}
-                    </div>
-
-
-                    <h3>
-                        ${money(value)}
-                        Gift Card
-                    </h3>
-
-
-                    <p class="old-price">
-                        ${money(value)}
-                    </p>
-
-
-                    <p class="price">
-                        ${money(price)}
-                    </p>
-
-
-                    <span class="discount">
-                        Save ${discount}%
-                    </span>
-
-
-                    <button
-                        class="buy"
-                        onclick="openProduct('${product.id}')"
-                    >
-                        Select Card
-                    </button>
-
-                </div>
-
-                `;
-
-            }
-        ).join("");
-
-
-    noProducts.style.display =
-        filtered.length === 0
-        ? "block"
-        : "none";
-
-}
-
-
-/* =====================================================
-   OPEN PRODUCT
-===================================================== */
-
-function openProduct(
-    productId
-) {
-
-    const product =
-        productCatalog.find(
-            item =>
-                item.id ===
-                productId
-        );
-
-
-    if (!product) {
-        return;
-    }
-
-
-    selectedProduct =
-        product;
-
-
-    selectedMode =
-        "fixed";
-
-
-    selectedValue =
-        product.fixedValues[0];
-
-
-    selectedDiscount =
-        product.fixedDiscount;
-
-
-    selectedPrice =
-        calculatePrice(
-            selectedValue,
-            selectedDiscount
-        );
-
-
-    document.getElementById(
-        "productBrand"
-    ).textContent =
-        product.name;
-
-
-    const fixedValues =
-        document.getElementById(
-            "fixedValues"
-        );
-
-
-    fixedValues.innerHTML =
-        product.fixedValues.map(
-            function(value, index) {
-
-                return `
-
-                <button
-                    class="value-button ${
-                        index === 0
-                        ? "active"
-                        : ""
-                    }"
-                    onclick="selectFixed(${value}, this)"
-                >
-                    ${money(value)}
-                </button>
-
-                `;
-
-            }
-        ).join("");
-
-
-    const customMode =
-        document.getElementById(
-            "customMode"
-        );
-
-
-    customMode.style.display =
-        product.custom
-        ? "block"
-        : "none";
-
-
-    document.getElementById(
-        "customAmount"
-    ).value =
-        "";
-
-
-    document.getElementById(
-        "rangeText"
-    ).textContent =
-        "Enter an amount between " +
-        money(product.minCustom) +
-        " and " +
-        money(product.maxCustom) +
-        ".";
-
-
-    document.getElementById(
-        "fixedMode"
-    ).classList.add(
-        "active"
-    );
-
-
-    customMode.classList.remove(
-        "active"
-    );
-
-
-    document.getElementById(
-        "fixedArea"
-    ).style.display =
-        "block";
-
-
-    document.getElementById(
-        "customArea"
-    ).style.display =
-        "none";
-
-
-    updatePreview();
-
-
-    openOverlay(
-        "productOverlay"
-    );
-
-}
-
-
-/* =====================================================
-   SELECT MODE
-===================================================== */
-
-function selectMode(
-    mode
-) {
-
-    if (!selectedProduct) {
-        return;
-    }
-
-
-    if (
-        mode === "custom" &&
-        !selectedProduct.custom
-    ) {
-
-        return;
-
-    }
-
-
-    selectedMode =
-        mode;
-
-
-    if (
-        mode === "fixed"
-    ) {
-
-        selectedDiscount =
-            selectedProduct.fixedDiscount;
-
-
-        selectedValue =
-            selectedProduct.fixedValues[0];
-
-
-        selectedPrice =
-            calculatePrice(
-                selectedValue,
-                selectedDiscount
-            );
-
-
-        document.getElementById(
-            "fixedMode"
-        ).classList.add(
-            "active"
-        );
-
-
-        document.getElementById(
-            "customMode"
-        ).classList.remove(
-            "active"
-        );
-
-
-        document.getElementById(
-            "fixedArea"
-        ).style.display =
-            "block";
-
-
-        document.getElementById(
-            "customArea"
-        ).style.display =
-            "none";
-
-
-        document.querySelectorAll(
-            ".value-button"
-        ).forEach(
-            function(button, index) {
-
-                button.classList.toggle(
-                    "active",
-                    index === 0
-                );
-
-            }
-        );
-
-    }
-
-    else {
-
-        selectedDiscount =
-            selectedProduct.customDiscount;
-
-
-        document.getElementById(
-            "fixedMode"
-        ).classList.remove(
-            "active"
-        );
-
-
-        document.getElementById(
-            "customMode"
-        ).classList.add(
-            "active"
-        );
-
-
-        document.getElementById(
-            "fixedArea"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "customArea"
-        ).style.display =
-            "block";
-
-
-        updateCustomPrice();
-
-    }
-
-
-    updatePreview();
-
-}
-
-
-/* =====================================================
-   FIXED VALUE
-===================================================== */
-
-function selectFixed(
-    amount,
-    button
-) {
-
-    if (!selectedProduct) {
-        return;
-    }
-
-
-    selectedMode =
-        "fixed";
-
-
-    selectedValue =
-        Number(amount);
-
-
-    selectedDiscount =
-        selectedProduct.fixedDiscount;
-
-
-    selectedPrice =
-        calculatePrice(
-            selectedValue,
-            selectedDiscount
-        );
-
-
-    document.querySelectorAll(
-        ".value-button"
-    ).forEach(
-        function(item) {
-
-            item.classList.remove(
-                "active"
-            );
-
-        }
-    );
-
-
-    if (button) {
-
-        button.classList.add(
-            "active"
-        );
-
-    }
-
-
-    updatePreview();
-
-}
-
-
-/* =====================================================
-   CUSTOM PRICE
-===================================================== */
-
-function updateCustomPrice() {
-
-    if (!selectedProduct) {
-        return;
-    }
-
-
-    const amount =
-        parseInt(
-            document.getElementById(
-                "customAmount"
-            ).value
-        );
-
-
-    selectedMode =
-        "custom";
-
-
-    selectedDiscount =
-        selectedProduct.customDiscount;
-
-
-    if (
-        Number.isNaN(amount)
-    ) {
-
-        selectedValue =
-            0;
-
-        selectedPrice =
-            0;
-
-    }
-
-    else {
-
-        selectedValue =
-            amount;
-
-        selectedPrice =
-            calculatePrice(
-                amount,
-                selectedDiscount
-            );
-
-    }
-
-
-    updatePreview();
-
-}
-
-
-/* =====================================================
-   PREVIEW
-===================================================== */
-
-function updatePreview() {
-
-    document.getElementById(
-        "previewValue"
-    ).textContent =
-        money(
-            selectedValue
-        );
-
-
-    document.getElementById(
-        "previewDiscount"
-    ).textContent =
-        selectedDiscount +
-        "%";
-
-
-    document.getElementById(
-        "previewPrice"
-    ).textContent =
-        money(
-            selectedPrice
-        );
-
-}
-
-
-/* =====================================================
-   CONTINUE PRODUCT
-===================================================== */
-
-function continueProduct() {
-
-    if (!selectedProduct) {
-        return;
-    }
-
-
-    if (
-        selectedMode ===
-        "custom"
-    ) {
-
-        const amount =
-            parseInt(
-                document.getElementById(
-                    "customAmount"
-                ).value
-            );
-
-
-        if (
-            Number.isNaN(amount) ||
-            amount <
-                selectedProduct.minCustom ||
-            amount >
-                selectedProduct.maxCustom
-        ) {
-
-            alert(
-                "Please enter an amount between " +
-                money(
-                    selectedProduct.minCustom
-                ) +
-                " and " +
-                money(
-                    selectedProduct.maxCustom
-                ) +
-                "."
-            );
-
-            return;
-
-        }
-
-    }
-
-
-    if (
-        selectedValue <= 0
-    ) {
-
-        alert(
-            "Please select a gift card value."
-        );
-
-        return;
-
-    }
-
-
-    closeProduct();
-
-
-    document.getElementById(
-        "orderBrand"
-    ).textContent =
-        selectedProduct.name;
-
-
-    document.getElementById(
-        "orderValue"
-    ).textContent =
-        money(
-            selectedValue
-        ) +
-        " Gift Card";
-
-
-    document.getElementById(
-        "originalPrice"
-    ).textContent =
-        money(
-            selectedValue
-        );
-
-
-    document.getElementById(
-        "orderDiscount"
-    ).textContent =
-        selectedDiscount +
-        "%";
-
-
-    document.getElementById(
-        "finalPrice"
-    ).textContent =
-        money(
-            selectedPrice
-        );
-
-
-    document.getElementById(
-        "totalPrice"
-    ).textContent =
-        money(
-            selectedPrice
-        );
-
-
-    openOverlay(
-        "orderOverlay"
-    );
-
-}
-
-
-/* =====================================================
-   CHECKOUT LOGIN GATE
-===================================================== */
-
-function openCheckout() {
-
-    const account =
-        getAccount();
-
-
-    /*
-       THIS IS THE IMPORTANT ACCESS CONTROL.
-
-       Guests can see the order summary,
-       but cannot enter checkout until logged in.
-    */
-
-    if (!account) {
-
-        closeOrder();
-
-        pendingAction =
-            "checkout";
-
-
-        openAccount(
-            "login",
-            "Please log in to continue to checkout."
-        );
-
-        return;
-
-    }
-
-
-    closeOrder();
-
-
-    document.getElementById(
-        "checkoutBrand"
-    ).textContent =
-        selectedProduct.name;
-
-
-    document.getElementById(
-        "checkoutValue"
-    ).textContent =
-        money(
-            selectedValue
-        ) +
-        " Gift Card";
-
-
-    document.getElementById(
-        "checkoutPrice"
-    ).textContent =
-        money(
-            selectedPrice
-        );
-
-
-    document.getElementById(
-        "email"
-    ).value =
-        account.email;
-
-
-    clearEmailError();
-
-
-    openOverlay(
-        "checkoutOverlay"
-    );
-
-}
-
-
-/* =====================================================
-   EMAIL VALIDATION
-===================================================== */
-
-function isValidEmail(
-    email
-) {
-
-    const pattern =
-        /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-
-    return pattern.test(
-        email
-    );
-
-}
-
-
-function clearEmailError() {
-
-    document.getElementById(
-        "email"
-    ).classList.remove(
-        "error"
-    );
-
-
-    document.getElementById(
-        "emailError"
-    ).style.display =
-        "none";
-
-}
-
-
-/* =====================================================
-   PLACE ORDER
-===================================================== */
-
-function placeOrder() {
-
-    const account =
-        getAccount();
-
-
-    /*
-       SECOND ACCESS CONTROL.
-
-       Even if someone manually calls the
-       JavaScript function, an account is still required.
-    */
-
-    if (!account) {
-
-        closeCheckout();
-
-        pendingAction =
-            "checkout";
-
-
-        openAccount(
-            "login",
-            "Please log in before placing your order."
-        );
-
-        return;
-
-    }
-
-
-    const email =
-        document.getElementById(
-            "email"
-        ).value.trim();
-
-
-    if (
-        !isValidEmail(email)
-    ) {
-
-        document.getElementById(
-            "email"
-        ).classList.add(
-            "error"
-        );
-
-
-        document.getElementById(
-            "emailError"
-        ).style.display =
-            "block";
-
-
-        return;
-
-    }
-
-
-    const randomNumber =
-        Math.floor(
-            100000 +
-            Math.random() *
-            900000
-        );
-
-
-    const newOrderId =
-        "GCS-" +
-        randomNumber;
-
-
-    const order = {
-
-        id:
-            newOrderId,
-
-        productId:
-            selectedProduct.id,
-
-        brand:
-            selectedProduct.name,
-
-        category:
-            selectedProduct.category,
-
-        value:
-            Number(
-                selectedValue
-            ),
-
-        price:
-            Number(
-                selectedPrice
-            ),
-
-        discount:
-            Number(
-                selectedDiscount
-            ),
-
-        email:
-            account.email,
-
-        status:
-            "Confirmed",
-
-        date:
-            new Date().toLocaleString(
-                "en-IN"
-            )
-
-    };
-
-
-    const orders =
-        getOrders();
-
-
-    orders.unshift(
-        order
-    );
-
-
-    saveOrders(
-        orders
-    );
-
-
-    closeCheckout();
-
-
-    document.getElementById(
-        "orderId"
-    ).textContent =
-        newOrderId;
-
-
-    openOverlay(
-        "successOverlay"
-    );
-
-}
-
-
-/* =====================================================
-   SUCCESS
-===================================================== */
-
-function closeSuccess() {
-
-    closeOverlay(
-        "successOverlay"
-    );
-
-}
-
-
-/* =====================================================
-   ORDERS — LOGIN REQUIRED
-===================================================== */
-
-function openOrders() {
-
-    const account =
-        getAccount();
-
-
-    /*
-       Guests must not see the order list.
-    */
-
-    if (!account) {
-
-        pendingAction =
-            "orders";
-
-
-        openAccount(
-            "login",
-            "Please log in to view your orders."
-        );
-
-        return;
-
-    }
-
-
-    loadOrders();
-
-
-    openOverlay(
-        "ordersOverlay"
-    );
-
-}
-
-
-function closeOrders() {
-
-    closeOverlay(
-        "ordersOverlay"
-    );
-
-}
-
-
-/* =====================================================
-   ACCOUNT-SPECIFIC ORDERS
-===================================================== */
-
-function getCurrentAccountOrders() {
-
-    const account =
-        getAccount();
-
-
-    if (!account) {
-        return [];
-    }
-
-
-    const accountEmail =
-        account.email
-        .trim()
-        .toLowerCase();
-
-
-    return getOrders().filter(
-        function(order) {
-
-            return (
-                String(
-                    order.email
-                )
-                .trim()
-                .toLowerCase() ===
-                accountEmail
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   LOAD ORDERS
-===================================================== */
-
-function loadOrders() {
-
-    const orders =
-        getCurrentAccountOrders();
-
-
-    const container =
-        document.getElementById(
-            "ordersList"
-        );
-
-
-    if (
-        orders.length === 0
-    ) {
-
-        container.innerHTML = `
-
-        <div class="empty-orders">
-
-            <div class="empty-orders-icon">
-                🛍️
-            </div>
-
-            <h3>
-                No orders yet
-            </h3>
-
-            <br>
-
-            <p>
-                Your completed orders
-                will appear here.
-            </p>
-
-        </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    container.innerHTML =
-        orders.map(
-            function(order) {
-
-                const globalIndex =
-                    getOrders().findIndex(
-                        item =>
-                            item.id ===
-                            order.id
-                    );
-
-
-                return `
-
-                <div class="order-card">
-
-                    <div class="order-card-top">
-
-                        <span class="order-card-brand">
-                            ${escapeHTML(order.brand)}
-                        </span>
-
-                        <span class="status">
-                            ${escapeHTML(order.status)}
-                        </span>
-
-                    </div>
-
-
-                    <strong>
-                        ${money(order.value)}
-                        Gift Card
-                    </strong>
-
-
-                    <div class="order-card-row">
-
-                        <span>
-                            Amount
-                        </span>
-
-                        <span>
-                            ${money(order.price)}
-                        </span>
-
-                    </div>
-
-
-                    <div class="order-card-row">
-
-                        <span>
-                            Discount
-                        </span>
-
-                        <span>
-                            ${order.discount}%
-                        </span>
-
-                    </div>
-
-
-                    <div class="order-card-row">
-
-                        <span>
-                            Order ID
-                        </span>
-
-                        <span class="order-id">
-                            ${escapeHTML(order.id)}
-                        </span>
-
-                    </div>
-
-
-                    <div class="order-card-row">
-
-                        <span>
-                            Date
-                        </span>
-
-                        <span class="order-id">
-                            ${escapeHTML(order.date)}
-                        </span>
-
-                    </div>
-
-
-                    <button
-                        class="order-action"
-                        onclick="openOrderDetailById('${escapeHTML(order.id)}')"
-                    >
-                        View Order Details
-                    </button>
-
-                </div>
-
-                `;
-
-            }
-        ).join("");
-
-}
-
-
-/* =====================================================
-   ORDER DETAIL
-===================================================== */
-
-function openOrderDetailById(
-    orderId
-) {
-
-    const account =
-        getAccount();
-
-
-    if (!account) {
-
-        pendingAction =
-            "orders";
-
-
-        openAccount(
-            "login",
-            "Please log in to view order details."
-        );
-
-        return;
-
-    }
-
-
-    const orders =
-        getCurrentAccountOrders();
-
-
-    const order =
-        orders.find(
-            item =>
-                item.id ===
-                orderId
-        );
-
-
-    if (!order) {
-        return;
-    }
-
-
-    document.getElementById(
-        "detailBrand"
-    ).textContent =
-        order.brand;
-
-
-    document.getElementById(
-        "detailTitle"
-    ).textContent =
-        money(order.value) +
-        " Gift Card";
-
-
-    document.getElementById(
-        "detailStatus"
-    ).textContent =
-        order.status;
-
-
-    document.getElementById(
-        "detailValue"
-    ).textContent =
-        money(order.value);
-
-
-    document.getElementById(
-        "detailDiscount"
-    ).textContent =
-        order.discount +
-        "%";
-
-
-    document.getElementById(
-        "detailPrice"
-    ).textContent =
-        money(order.price);
-
-
-    document.getElementById(
-        "detailEmail"
-    ).textContent =
-        order.email;
-
-
-    document.getElementById(
-        "detailId"
-    ).textContent =
-        order.id;
-
-
-    document.getElementById(
-        "detailDate"
-    ).textContent =
-        order.date;
-
-
-    openOverlay(
-        "orderDetailOverlay"
-    );
-
-}
-
-
-function closeOrderDetail() {
-
-    closeOverlay(
-        "orderDetailOverlay"
-    );
-
-}
-
-
-/* =====================================================
-   ACCOUNT — BRICK 8
-===================================================== */
-
-function openAccount(
-    mode = "auto",
-    message = ""
-) {
-
-    const account =
-        getAccount();
-
-
-    document.getElementById(
-        "accountMessage"
-    ).style.display =
-        message
-        ? "block"
-        : "none";
-
-
-    document.getElementById(
-        "accountMessage"
-    ).textContent =
-        message;
-
-
-    /*
-       If an account exists and normal Account
-       is clicked, show the profile.
-    */
-
-    if (
-        account &&
-        mode === "auto"
-    ) {
-
-        document.getElementById(
-            "accountTitle"
-        ).textContent =
-            "My Account";
-
-
-        document.getElementById(
-            "loginForm"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "signupForm"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "loggedInAccount"
-        ).style.display =
-            "block";
-
-
-        document.getElementById(
-            "loginTab"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "signupTab"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "profileName"
-        ).textContent =
-            account.name;
-
-
-        document.getElementById(
-            "profileEmail"
-        ).textContent =
-            account.email;
-
-    }
-
-    else {
-
-        document.getElementById(
-            "accountTitle"
-        ).textContent =
-            mode === "signup"
-            ? "Create Account"
-            : "Login";
-
-
-        document.getElementById(
-            "loggedInAccount"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "loginTab"
-        ).style.display =
-            "block";
-
-
-        document.getElementById(
-            "signupTab"
-        ).style.display =
-            "block";
-
-
-        switchAccountMode(
-            mode === "signup"
-            ? "signup"
-            : "login"
-        );
-
-    }
-
-
-    openOverlay(
-        "accountOverlay"
-    );
-
-}
-
-
-/* =====================================================
-   ACCOUNT MODE SWITCH
-===================================================== */
-
-function switchAccountMode(
-    mode
-) {
-
-    document.getElementById(
-        "loginForm"
-    ).style.display =
-        mode === "login"
-        ? "block"
-        : "none";
-
-
-    document.getElementById(
-        "signupForm"
-    ).style.display =
-        mode === "signup"
-        ? "block"
-        : "none";
-
-
-    document.getElementById(
-        "loginTab"
-    ).classList.toggle(
-        "active",
-        mode === "login"
-    );
-
-
-    document.getElementById(
-        "signupTab"
-    ).classList.toggle(
-        "active",
-        mode === "signup"
-    );
-
-
-    document.getElementById(
-        "accountTitle"
-    ).textContent =
-        mode === "login"
-        ? "Login"
-        : "Create Account";
-
-
-    document.getElementById(
-        "loginError"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "accountError"
-    ).style.display =
-        "none";
-
-}
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-function loginAccount() {
-
-    const email =
-        document.getElementById(
-            "loginEmail"
-        ).value
-        .trim();
-
-
-    const error =
-        document.getElementById(
-            "loginError"
-        );
-
-
-    if (
-        !isValidEmail(email)
-    ) {
-
-        error.textContent =
-            "Please enter a valid email address.";
-
-        error.style.display =
-            "block";
-
-        return;
-
-    }
-
-
-    const account =
-        getAccount();
-
-
-    /*
-       This prototype has one local account.
-
-       A real system will use a backend,
-       database and secure authentication.
-    */
-
-    if (!account) {
-
-        error.textContent =
-            "No local account exists with this browser yet. Please create an account first.";
-
-        error.style.display =
-            "block";
-
-        return;
-
-    }
-
-
-    if (
-        account.email
-        .trim()
-        .toLowerCase() !==
-        email
-        .toLowerCase()
-    ) {
-
-        error.textContent =
-            "This email does not match the account saved on this browser.";
-
-        error.style.display =
-            "block";
-
-        return;
-
-    }
-
-
-    error.style.display =
-        "none";
-
-
-    closeAccount();
-
-
-    handlePendingAction();
-
-}
-
-
-/* =====================================================
-   CREATE ACCOUNT
-===================================================== */
-
-function createAccount() {
-
-    const name =
-        document.getElementById(
-            "accountName"
-        ).value
-        .trim();
-
-
-    const email =
-        document.getElementById(
-            "accountEmail"
-        ).value
-        .trim();
-
-
-    const error =
-        document.getElementById(
-            "accountError"
-        );
-
-
-    if (
-        name.length < 2 ||
-        !isValidEmail(email)
-    ) {
-
-        error.textContent =
-            "Please enter a valid name and email address.";
-
-        error.style.display =
-            "block";
-
-        return;
-
-    }
-
-
-    const account = {
-
-        name:
-            name,
-
-        email:
-            email,
-
-        createdAt:
-            new Date().toLocaleString(
-                "en-IN"
-            )
-
-    };
-
-
-    saveAccount(
-        account
-    );
-
-
-    updateHeader();
-
-
-    error.style.display =
-        "none";
-
-
-    closeAccount();
-
-
-    handlePendingAction();
-
-}
-
-
-/* =====================================================
-   PENDING ACTION
-===================================================== */
-
-function handlePendingAction() {
-
-    const action =
-        pendingAction;
-
-
-    pendingAction =
-        null;
-
-
-    if (
-        action ===
-        "checkout"
-    ) {
-
-        openCheckout();
-
-    }
-
-    else if (
-        action ===
-        "orders"
-    ) {
-
-        openOrders();
-
-    }
-
-    else {
-
-        openDashboard();
-
-    }
-
-}
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-function logout() {
-
-    removeAccount();
-
-    updateHeader();
-
-    closeAccount();
-
-}
-
-
-function logoutFromDashboard() {
-
-    removeAccount();
-
-    updateHeader();
-
-    closeDashboard();
-
-}
-
-
-/* =====================================================
-   HEADER UPDATE
-===================================================== */
-
-function updateHeader() {
-
-    const account =
-        getAccount();
-
-
-    const loginButton =
-        document.getElementById(
-            "loginButton"
-        );
-
-
-    const accountButton =
-        document.getElementById(
-            "accountButton"
-        );
-
-
-    if (account) {
-
-        loginButton.style.display =
-            "none";
-
-
-        accountButton.style.display =
-            "block";
-
-
-        accountButton.textContent =
-            account.name;
-
-    }
-
-    else {
-
-        loginButton.style.display =
-            "block";
-
-
-        accountButton.style.display =
-            "none";
-
-    }
-
-}
-
-
-/* =====================================================
-   DASHBOARD
-===================================================== */
-
-function openDashboard() {
-
-    const account =
-        getAccount();
-
-
-    if (!account) {
-
-        pendingAction =
-            "dashboard";
-
-
-        openAccount(
-            "login",
-            "Please log in to access your account."
-        );
-
-        return;
-
-    }
-
-
-    updateDashboard();
-
-
-    openOverlay(
-        "dashboardOverlay"
-    );
-
-}
-
-
-function closeDashboard() {
-
-    closeOverlay(
-        "dashboardOverlay"
-    );
-
-}
-
-
-function updateDashboard() {
-
-    const account =
-        getAccount();
-
-
-    if (!account) {
-        return;
-    }
-
-
-    const orders =
-        getCurrentAccountOrders();
-
-
-    const totalSpent =
-        orders.reduce(
-            function(total, order) {
-
-                return total +
-                    Number(
-                        order.price || 0
-                    );
-
-            },
-            0
-        );
-
-
-    const totalSavings =
-        orders.reduce(
-            function(total, order) {
-
-                return total +
-                    (
-                        Number(
-                            order.value || 0
-                        ) -
-                        Number(
-                            order.price || 0
-                        )
-                    );
-
-            },
-            0
-        );
-
-
-    document.getElementById(
-        "dashboardName"
-    ).textContent =
-        "Welcome, " +
-        account.name;
-
-
-    document.getElementById(
-        "dashboardEmail"
-    ).textContent =
-        account.email;
-
-
-    document.getElementById(
-        "statOrders"
-    ).textContent =
-        orders.length;
-
-
-    document.getElementById(
-        "statSpent"
-    ).textContent =
-        money(
-            totalSpent
-        );
-
-
-    document.getElementById(
-        "statSavings"
-    ).textContent =
-        money(
-            totalSavings
-        );
-
-
-    const recent =
-        orders.slice(
-            0,
-            3
-        );
-
-
-    const container =
-        document.getElementById(
-            "dashboardOrders"
-        );
-
-
-    if (
-        recent.length === 0
-    ) {
-
-        container.innerHTML = `
-
-        <div class="empty-orders">
-
-            <div class="empty-orders-icon">
-                🛍️
-            </div>
-
-            <p>
-                No orders yet.
-            </p>
-
-            <br>
-
-            <a
-                href="#products"
-                class="button"
-                onclick="closeDashboard()"
-                style="
-                    padding:10px 15px;
-                    font-size:12px;
-                "
-            >
-                Explore Gift Cards
-            </a>
-
-        </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    container.innerHTML =
-        recent.map(
-            function(order) {
-
-                return `
-
-                <div class="order-card">
-
-                    <div class="order-card-top">
-
-                        <span class="order-card-brand">
-                            ${escapeHTML(order.brand)}
-                        </span>
-
-                        <span class="status">
-                            ${escapeHTML(order.status)}
-                        </span>
-
-                    </div>
-
-
-                    <strong>
-                        ${money(order.value)}
-                        Gift Card
-                    </strong>
-
-
-                    <div class="order-card-row">
-
-                        <span>
-                            Paid
-                        </span>
-
-                        <span>
-                            ${money(order.price)}
-                        </span>
-
-                    </div>
-
-
-                    <div class="order-card-row">
-
-                        <span>
-                            Order ID
-                        </span>
-
-                        <span class="order-id">
-                            ${escapeHTML(order.id)}
-                        </span>
-
-                    </div>
-
-                </div>
-
-                `;
-
-            }
-        ).join("");
-
-}
-
-
-function openOrdersFromDashboard() {
-
-    closeDashboard();
-
-    openOrders();
-
-}
-
-
-/* =====================================================
-   GENERIC OVERLAY CONTROL
-===================================================== */
-
-function openOverlay(
-    id
-) {
-
-    document.getElementById(
-        id
-    ).style.display =
-        "flex";
-
-
-    document.body.classList.add(
-        "modal-open"
-    );
-
-}
-
-
-function closeOverlay(
-    id
-) {
-
-    document.getElementById(
-        id
-    ).style.display =
-        "none";
-
-
-    let anyOpen =
-        false;
-
-
-    document.querySelectorAll(
-        ".overlay"
-    ).forEach(
-        function(overlay) {
-
-            if (
-                overlay.style.display ===
-                "flex"
-            ) {
-
-                anyOpen =
-                    true;
-
-            }
-
-        }
-    );
-
-
-    if (!anyOpen) {
-
-        document.body.classList.remove(
-            "modal-open"
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   SPECIFIC CLOSE FUNCTIONS
-===================================================== */
-
-function closeProduct() {
-
-    closeOverlay(
-        "productOverlay"
-    );
-
-}
-
-
-function closeOrder() {
-
-    closeOverlay(
-        "orderOverlay"
-    );
-
-}
-
-
-function closeCheckout() {
-
-    closeOverlay(
-        "checkoutOverlay"
-    );
-
-}
-
-
-function closeAccount() {
-
-    closeOverlay(
-        "accountOverlay"
-    );
-
-}
-
-
-function scrollToStore() {
-
-    document.getElementById(
-        "products"
-    ).scrollIntoView({
-        behavior:
-            "smooth"
-    });
-
-}
-
-
-/* =====================================================
-   HTML SAFETY
-===================================================== */
-
-function escapeHTML(
-    value
-) {
-
-    return String(
-        value
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
-
-}
-
-
-/* =====================================================
-   BACKDROP CLOSE
-===================================================== */
-
-window.addEventListener(
-    "click",
-    function(event) {
-
-        document
-            .querySelectorAll(
-                ".overlay"
-            )
-            .forEach(
-                function(overlay) {
-
-                    if (
-                        event.target ===
-                        overlay
-                    ) {
-
-                        closeOverlay(
-                            overlay.id
-                        );
-
-                    }
-
-                }
-            );
-
-    }
-);
-
-
-/* =====================================================
-   ESCAPE KEY
-===================================================== */
-
-window.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key !==
-            "Escape"
-        ) {
-
-            return;
-
-        }
-
-
-        document
-            .querySelectorAll(
-                ".overlay"
-            )
-            .forEach(
-                function(overlay) {
-
-                    if (
-                        overlay.style.display ===
-                        "flex"
-                    ) {
-
-                        closeOverlay(
-                            overlay.id
-                        );
-
-                    }
-
-                }
-            );
-
-    }
-);
-
-
-/* =====================================================
-   INITIALISE
-===================================================== */
-
-renderCategories();
-
-renderProducts();
-
-updateHeader();
-
-</script>
-
+<script src="js/brands.js"></script>
+<script src="js/products.js"></script>
+<script src="js/account.js"></script>
+<script src="js/orders.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
 
 </body>
-
-   </html>
+</html>
