@@ -1,799 +1,1177 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>GiftCardStore</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
+<title>GiftCardStore</title>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<style>
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f3ff;
-            color: #17132b;
-        }
+/* =========================
+   BASIC
+========================= */
 
-        /* HEADER */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        header {
-            background: linear-gradient(135deg, #6d28d9, #2563eb);
-            padding: 18px 7%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f3ff;
+    color: #17132b;
+}
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
 
-        nav a {
-            margin-left: 25px;
-            text-decoration: none;
-            color: white;
-            font-weight: 500;
-        }
+/* =========================
+   HEADER
+========================= */
 
-        .login {
-            background: white;
-            color: #4c1d95;
-            border: none;
-            padding: 11px 20px;
-            border-radius: 9px;
-            font-size: 15px;
-            font-weight: bold;
-            margin-left: 20px;
-        }
+header {
+    background: linear-gradient(135deg, #6d28d9, #2563eb);
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
 
-        /* HERO */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
 
-        .hero {
-            background: linear-gradient(135deg, #ede9fe, #dbeafe);
-            text-align: center;
-            padding: 80px 20px;
-        }
+nav a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: white;
+}
 
-        .hero h1 {
-            font-size: 46px;
-            max-width: 700px;
-            margin: auto;
-            color: #24104f;
-        }
+.login {
+    background: white;
+    color: #4c1d95;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 9px;
+    font-weight: bold;
+    margin-left: 20px;
+}
 
-        .hero p {
-            margin: 20px auto;
-            max-width: 600px;
-            font-size: 18px;
-            color: #5b556f;
-            line-height: 1.6;
-        }
 
-        .button {
-            display: inline-block;
-            background: linear-gradient(135deg, #7c3aed, #2563eb);
-            color: white;
-            padding: 15px 28px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
-        }
+/* =========================
+   HERO
+========================= */
 
-        /* PRODUCTS SECTION */
+.hero {
+    background: linear-gradient(135deg, #ede9fe, #dbeafe);
+    text-align: center;
+    padding: 80px 20px;
+}
 
-        .products {
-            padding: 55px 7%;
-        }
+.hero h1 {
+    font-size: 46px;
+    max-width: 700px;
+    margin: auto;
+    color: #24104f;
+}
 
-        .search {
-            width: 100%;
-            padding: 18px 20px;
-            border: 1px solid #ddd6fe;
-            border-radius: 14px;
-            font-size: 17px;
-            outline: none;
-            margin-bottom: 25px;
-            background: white;
-        }
+.hero p {
+    margin: 20px auto;
+    max-width: 600px;
+    font-size: 18px;
+    color: #5b556f;
+    line-height: 1.6;
+}
 
-        .search:focus {
-            border-color: #7c3aed;
-        }
+.button {
+    display: inline-block;
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    color: white;
+    padding: 15px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-        /* CATEGORIES */
 
-        .categories {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            padding-bottom: 15px;
-            margin-bottom: 35px;
-        }
+/* =========================
+   PRODUCTS
+========================= */
 
-        .category {
-            flex-shrink: 0;
-            padding: 12px 23px;
-            border: 1px solid #ddd6fe;
-            background: white;
-            border-radius: 30px;
-            font-size: 15px;
-            cursor: pointer;
-        }
+.products {
+    padding: 55px 7%;
+}
 
-        .category.active {
-            background: #7c3aed;
-            color: white;
-            border-color: #7c3aed;
-        }
+.search {
+    width: 100%;
+    padding: 18px 20px;
+    border: 1px solid #ddd6fe;
+    border-radius: 14px;
+    font-size: 17px;
+    outline: none;
+    margin-bottom: 25px;
+    background: white;
+}
 
-        .products-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
+.categories {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 15px;
+    margin-bottom: 35px;
+}
 
-        .products-title h2 {
-            font-size: 30px;
-        }
+.category {
+    flex-shrink: 0;
+    padding: 12px 23px;
+    border: 1px solid #ddd6fe;
+    background: white;
+    border-radius: 30px;
+    font-size: 15px;
+}
 
-        .sample {
-            color: #7c3aed;
-            font-size: 15px;
-        }
+.category.active {
+    background: #7c3aed;
+    color: white;
+    border-color: #7c3aed;
+}
 
-        /* CARDS */
+.products-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
 
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 22px;
-        }
+.products-title h2 {
+    font-size: 30px;
+}
 
-        .card {
-            background: white;
-            padding: 22px;
-            border-radius: 18px;
-            border: 1px solid #e9e4ff;
-            box-shadow: 0 8px 25px rgba(76, 29, 149, 0.08);
-            transition: transform 0.2s;
-        }
+.sample {
+    color: #7c3aed;
+}
 
-        .card:hover {
-            transform: translateY(-4px);
-        }
 
-        .brand-box {
-            height: 90px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 25px;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 20px;
-        }
+/* =========================
+   CARDS
+========================= */
 
-        .amazon {
-            background: linear-gradient(135deg, #ff9900, #ffb84d);
-        }
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 22px;
+}
 
-        .flipkart {
-            background: linear-gradient(135deg, #2874f0, #60a5fa);
-        }
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 18px;
+    border: 1px solid #e9e4ff;
+    box-shadow: 0 8px 25px rgba(76,29,149,0.08);
+}
 
-        .myntra {
-            background: linear-gradient(135deg, #ec4899, #f97316);
-        }
+.brand-box {
+    height: 100px;
+    background: #fafafa;
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px;
+}
 
-        .croma {
-            background: linear-gradient(135deg, #16a34a, #22c55e);
-        }
+.brand-logo {
+    max-width: 80%;
+    max-height: 65px;
+    object-fit: contain;
+}
 
-        .brand {
-            color: #6d28d9;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
+.brand {
+    color: #6d28d9;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
 
-        .card h3 {
-            margin-bottom: 8px;
-        }
+.card h3 {
+    margin-bottom: 8px;
+}
 
-        .old-price {
-            color: #999;
-            text-decoration: line-through;
-            margin-top: 8px;
-        }
+.old-price {
+    color: #999;
+    text-decoration: line-through;
+}
 
-        .price {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 5px 0;
-            color: #24104f;
-        }
+.price {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 5px 0;
+    color: #24104f;
+}
 
-        .discount {
-            display: inline-block;
-            background: #dcfce7;
-            color: #15803d;
-            padding: 5px 9px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: bold;
-            margin: 5px 0 18px;
-        }
+.discount {
+    display: inline-block;
+    background: #dcfce7;
+    color: #15803d;
+    padding: 5px 9px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 5px 0 18px;
+}
 
-        .buy {
-            width: 100%;
-            padding: 13px;
-            border: none;
-            border-radius: 9px;
-            background: linear-gradient(135deg, #7c3aed, #2563eb);
-            color: white;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.buy {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
 
-        /* ORDER PANEL */
 
-        .overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(30, 20, 60, 0.55);
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            z-index: 100;
-        }
+/* =========================
+   POPUP
+========================= */
 
-        .order-panel {
-            background: white;
-            width: 100%;
-            max-width: 430px;
-            border-radius: 20px;
-            padding: 28px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-        }
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(30,20,60,0.55);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 100;
+}
 
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
+.panel {
+    background: white;
+    width: 100%;
+    max-width: 440px;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
 
-        .close {
-            border: none;
-            background: #f3f0ff;
-            color: #6d28d9;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-        }
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
 
-        .order-brand {
-            color: #7c3aed;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
+.close {
+    border: none;
+    background: #f3f0ff;
+    color: #6d28d9;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 20px;
+}
 
-        .order-value {
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
+.order-brand {
+    color: #7c3aed;
+    font-weight: bold;
+}
 
-        .order-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 13px 0;
-            border-bottom: 1px solid #eee;
-        }
+.order-value {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 8px 0 20px;
+}
 
-        .total {
-            font-size: 20px;
-            font-weight: bold;
-            color: #24104f;
-            border-bottom: none;
-        }
+.order-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 0;
+    border-bottom: 1px solid #eee;
+}
 
-        .continue {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #7c3aed, #2563eb);
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 15px;
-        }
+.total {
+    font-size: 20px;
+    font-weight: bold;
+    color: #24104f;
+}
 
-        /* FOOTER */
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #6b6580;
-            background: #ede9fe;
-            margin-top: 30px;
-        }
+/* =========================
+   CHECKOUT
+========================= */
 
-        /* MOBILE */
+.checkout-title {
+    margin-bottom: 20px;
+}
 
-        @media (max-width: 700px) {
+.checkout-card {
+    background: #f8f7ff;
+    padding: 18px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
 
-            header {
-                padding: 16px 5%;
-            }
+.checkout-card strong {
+    color: #6d28d9;
+}
 
-            nav {
-                display: none;
-            }
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
 
-            .hero {
-                padding: 65px 20px;
-            }
+.email {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #d8d2ef;
+    border-radius: 9px;
+    font-size: 16px;
+    margin-bottom: 18px;
+}
 
-            .hero h1 {
-                font-size: 38px;
-            }
+.continue,
+.confirm {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
 
-            .products {
-                padding: 45px 5%;
-            }
+.note {
+    font-size: 13px;
+    color: #777;
+    margin-top: 12px;
+    line-height: 1.5;
+}
 
-            .products-title h2 {
-                font-size: 26px;
-            }
 
-            .cards {
-                grid-template-columns: 1fr;
-            }
-        }
+/* =========================
+   SUCCESS
+========================= */
 
-    </style>
+.success {
+    text-align: center;
+}
+
+.success-icon {
+    width: 70px;
+    height: 70px;
+    background: #dcfce7;
+    color: #16a34a;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    margin: 0 auto 20px;
+}
+
+.success h2 {
+    margin-bottom: 10px;
+}
+
+.success p {
+    color: #666;
+    line-height: 1.5;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #6b6580;
+    background: #ede9fe;
+    margin-top: 30px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width:700px) {
+
+    header {
+        padding: 16px 5%;
+    }
+
+    nav {
+        display: none;
+    }
+
+    .hero {
+        padding: 65px 20px;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+
+    .products {
+        padding: 45px 5%;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
-    <!-- HEADER -->
 
-    <header>
+<!-- HEADER -->
 
-        <div class="logo">
-            GiftCardStore
-        </div>
+<header>
 
-        <nav>
-            <a href="#">Home</a>
-            <a href="#products">Gift Cards</a>
-            <a href="#footer">How It Works</a>
+<div class="logo">
+GiftCardStore
+</div>
 
-            <button class="login">
-                Login
-            </button>
-        </nav>
+<nav>
 
-    </header>
+<a href="#">
+Home
+</a>
 
+<a href="#products">
+Gift Cards
+</a>
 
-    <!-- HERO -->
+<a href="#footer">
+How It Works
+</a>
 
-    <section class="hero">
+<button class="login">
+Login
+</button>
 
-        <h1>
-            Save More on the Brands You Love.
-        </h1>
+</nav>
 
-        <p>
-            Get gift cards from popular brands at better
-            prices. Simple, secure and convenient.
-        </p>
+</header>
 
-        <a href="#products" class="button">
-            Explore Gift Cards
-        </a>
 
-    </section>
 
+<!-- HERO -->
 
-    <!-- PRODUCTS -->
+<section class="hero">
 
-    <section class="products" id="products">
+<h1>
+Save More on the Brands You Love.
+</h1>
 
-        <input
-            class="search"
-            type="text"
-            id="search"
-            placeholder="Search gift cards..."
-            onkeyup="searchCards()"
-        >
+<p>
+Get gift cards from popular brands at better
+prices. Simple, secure and convenient.
+</p>
 
+<a href="#products" class="button">
+Explore Gift Cards
+</a>
 
-        <div class="categories">
+</section>
 
-            <button class="category active">
-                All
-            </button>
 
-            <button class="category">
-                Shopping
-            </button>
 
-            <button class="category">
-                Fashion
-            </button>
+<!-- PRODUCTS -->
 
-            <button class="category">
-                Food
-            </button>
+<section class="products" id="products">
 
-            <button class="category">
-                Electronics
-            </button>
 
-            <button class="category">
-                Entertainment
-            </button>
+<input
+class="search"
+id="search"
+type="text"
+placeholder="Search gift cards..."
+onkeyup="searchCards()"
+>
 
-        </div>
 
+<div class="categories">
 
-        <div class="products-title">
+<button class="category active">
+All
+</button>
 
-            <h2>
-                Popular Gift Cards
-            </h2>
+<button class="category">
+Shopping
+</button>
 
-            <span class="sample">
-                Sample products
-            </span>
+<button class="category">
+Fashion
+</button>
 
-        </div>
+<button class="category">
+Food
+</button>
 
+<button class="category">
+Electronics
+</button>
 
-        <div class="cards" id="cardContainer">
+<button class="category">
+Entertainment
+</button>
 
+</div>
 
-            <!-- AMAZON -->
 
-            <div class="card">
 
-                <div class="brand-box amazon">
-                    AMAZON
-                </div>
+<div class="products-title">
 
-                <div class="brand">
-                    Amazon
-                </div>
+<h2>
+Popular Gift Cards
+</h2>
 
-                <h3>
-                    ₹1,000 Gift Card
-                </h3>
+<span class="sample">
+Sample products
+</span>
 
-                <p class="old-price">
-                    ₹1,000
-                </p>
+</div>
 
-                <p class="price">
-                    ₹970
-                </p>
 
-                <span class="discount">
-                    Save 3%
-                </span>
 
-                <button
-                    class="buy"
-                    onclick="openOrder('Amazon', '₹1,000', '₹1,000', '₹970')">
-                    Buy Now
-                </button>
+<div class="cards" id="cardContainer">
 
-            </div>
 
+<!-- AMAZON -->
 
-            <!-- FLIPKART -->
+<div class="card">
 
-            <div class="card">
+<div class="brand-box">
 
-                <div class="brand-box flipkart">
-                    FLIPKART
-                </div>
+<img
+class="brand-logo"
+src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"
+alt="Amazon logo"
+>
 
-                <div class="brand">
-                    Flipkart
-                </div>
+</div>
 
-                <h3>
-                    ₹1,000 Gift Card
-                </h3>
+<div class="brand">
+Amazon
+</div>
 
-                <p class="old-price">
-                    ₹1,000
-                </p>
+<h3>
+₹1,000 Gift Card
+</h3>
 
-                <p class="price">
-                    ₹965
-                </p>
+<p class="old-price">
+₹1,000
+</p>
 
-                <span class="discount">
-                    Save 3.5%
-                </span>
+<p class="price">
+₹970
+</p>
 
-                <button
-                    class="buy"
-                    onclick="openOrder('Flipkart', '₹1,000', '₹1,000', '₹965')">
-                    Buy Now
-                </button>
+<span class="discount">
+Save 3%
+</span>
 
-            </div>
+<button
+class="buy"
+onclick="openOrder('Amazon','₹1,000','₹1,000','₹970')"
+>
+Buy Now
+</button>
 
+</div>
 
-            <!-- MYNTRA -->
 
-            <div class="card">
 
-                <div class="brand-box myntra">
-                    MYNTRA
-                </div>
+<!-- FLIPKART -->
 
-                <div class="brand">
-                    Myntra
-                </div>
+<div class="card">
 
-                <h3>
-                    ₹1,000 Gift Card
-                </h3>
+<div class="brand-box">
 
-                <p class="old-price">
-                    ₹1,000
-                </p>
+<img
+class="brand-logo"
+src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Flipkart_logo.svg"
+alt="Flipkart logo"
+>
 
-                <p class="price">
-                    ₹950
-                </p>
+</div>
 
-                <span class="discount">
-                    Save 5%
-                </span>
+<div class="brand">
+Flipkart
+</div>
 
-                <button
-                    class="buy"
-                    onclick="openOrder('Myntra', '₹1,000', '₹1,000', '₹950')">
-                    Buy Now
-                </button>
+<h3>
+₹1,000 Gift Card
+</h3>
 
-            </div>
+<p class="old-price">
+₹1,000
+</p>
 
+<p class="price">
+₹965
+</p>
 
-            <!-- CROMA -->
+<span class="discount">
+Save 3.5%
+</span>
 
-            <div class="card">
+<button
+class="buy"
+onclick="openOrder('Flipkart','₹1,000','₹1,000','₹965')"
+>
+Buy Now
+</button>
 
-                <div class="brand-box croma">
-                    CROMA
-                </div>
+</div>
 
-                <div class="brand">
-                    Croma
-                </div>
 
-                <h3>
-                    ₹2,000 Gift Card
-                </h3>
 
-                <p class="old-price">
-                    ₹2,000
-                </p>
+<!-- MYNTRA -->
 
-                <p class="price">
-                    ₹1,900
-                </p>
+<div class="card">
 
-                <span class="discount">
-                    Save 5%
-                </span>
+<div class="brand-box">
 
-                <button
-                    class="buy"
-                    onclick="openOrder('Croma', '₹2,000', '₹2,000', '₹1,900')">
-                    Buy Now
-                </button>
+<img
+class="brand-logo"
+src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Myntra_logo.png"
+alt="Myntra logo"
+>
 
-            </div>
+</div>
 
+<div class="brand">
+Myntra
+</div>
 
-        </div>
+<h3>
+₹1,000 Gift Card
+</h3>
 
-    </section>
+<p class="old-price">
+₹1,000
+</p>
 
+<p class="price">
+₹950
+</p>
 
-    <!-- ORDER PANEL -->
+<span class="discount">
+Save 5%
+</span>
 
-    <div class="overlay" id="orderOverlay">
+<button
+class="buy"
+onclick="openOrder('Myntra','₹1,000','₹1,000','₹950')"
+>
+Buy Now
+</button>
 
-        <div class="order-panel">
+</div>
 
-            <div class="order-header">
 
-                <h2>
-                    Order Summary
-                </h2>
 
-                <button
-                    class="close"
-                    onclick="closeOrder()">
-                    ×
-                </button>
+<!-- CROMA -->
 
-            </div>
+<div class="card">
 
+<div class="brand-box">
 
-            <div class="order-brand" id="orderBrand">
-                Amazon
-            </div>
+<img
+class="brand-logo"
+src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Croma_Logo.png"
+alt="Croma logo"
+>
 
-            <div class="order-value" id="orderValue">
-                ₹1,000 Gift Card
-            </div>
+</div>
 
+<div class="brand">
+Croma
+</div>
 
-            <div class="order-row">
+<h3>
+₹2,000 Gift Card
+</h3>
 
-                <span>
-                    Gift Card Value
-                </span>
+<p class="old-price">
+₹2,000
+</p>
 
-                <span id="originalPrice">
-                    ₹1,000
-                </span>
+<p class="price">
+₹1,900
+</p>
 
-            </div>
+<span class="discount">
+Save 5%
+</span>
 
+<button
+class="buy"
+onclick="openOrder('Croma','₹2,000','₹2,000','₹1,900')"
+>
+Buy Now
+</button>
 
-            <div class="order-row">
+</div>
 
-                <span>
-                    Your Price
-                </span>
 
-                <span id="finalPrice">
-                    ₹970
-                </span>
+</div>
 
-            </div>
+</section>
 
 
-            <div class="order-row total">
 
-                <span>
-                    Total
-                </span>
+<!-- ORDER POPUP -->
 
-                <span id="totalPrice">
-                    ₹970
-                </span>
+<div class="overlay" id="orderOverlay">
 
-            </div>
+<div class="panel">
 
 
-            <button class="continue" onclick="continueOrder()">
-                Continue
-            </button>
+<div class="panel-header">
 
-        </div>
+<h2>
+Order Summary
+</h2>
 
-    </div>
+<button
+class="close"
+onclick="closeOrder()"
+>
+×
+</button>
 
+</div>
 
-    <!-- FOOTER -->
 
-    <footer id="footer">
+<div class="order-brand" id="orderBrand">
+Amazon
+</div>
 
-        © 2026 GiftCardStore
+<div class="order-value" id="orderValue">
+₹1,000 Gift Card
+</div>
 
-    </footer>
 
+<div class="order-row">
 
-    <!-- JAVASCRIPT -->
+<span>
+Gift Card Value
+</span>
 
-    <script>
+<span id="originalPrice">
+₹1,000
+</span>
 
-        function openOrder(brand, value, original, price) {
+</div>
 
-            document.getElementById("orderBrand").textContent = brand;
 
-            document.getElementById("orderValue").textContent =
-                value + " Gift Card";
+<div class="order-row">
 
-            document.getElementById("originalPrice").textContent =
-                original;
+<span>
+You Pay
+</span>
 
-            document.getElementById("finalPrice").textContent =
-                price;
+<span id="finalPrice">
+₹970
+</span>
 
-            document.getElementById("totalPrice").textContent =
-                price;
+</div>
 
-            document.getElementById("orderOverlay").style.display =
-                "flex";
-        }
 
+<div class="order-row total">
 
-        function closeOrder() {
+<span>
+Total
+</span>
 
-            document.getElementById("orderOverlay").style.display =
-                "none";
-        }
+<span id="totalPrice">
+₹970
+</span>
 
+</div>
 
-        function continueOrder() {
 
-            alert(
-                "This is a prototype. Checkout will be added in a later brick."
-            );
+<button
+class="continue"
+onclick="openCheckout()"
+>
+Continue
+</button>
 
-        }
 
+</div>
 
-        function searchCards() {
+</div>
 
-            let input =
-                document.getElementById("search").value.toLowerCase();
 
-            let cards =
-                document.querySelectorAll(".card");
 
-            cards.forEach(function(card) {
+<!-- CHECKOUT POPUP -->
 
-                let text =
-                    card.textContent.toLowerCase();
+<div class="overlay" id="checkoutOverlay">
 
-                if (text.includes(input)) {
+<div class="panel">
 
-                    card.style.display = "block";
 
-                } else {
+<div class="panel-header">
 
-                    card.style.display = "none";
+<h2 class="checkout-title">
+Checkout
+</h2>
 
-                }
+<button
+class="close"
+onclick="closeCheckout()"
+>
+×
+</button>
 
-            });
+</div>
 
-        }
 
+<div class="checkout-card">
 
-        window.onclick = function(event) {
+<p>
+Gift Card
+</p>
 
-            let overlay =
-                document.getElementById("orderOverlay");
+<strong id="checkoutBrand">
+Amazon
+</strong>
 
-            if (event.target === overlay) {
+<p id="checkoutValue">
+₹1,000 Gift Card
+</p>
 
-                closeOrder();
+<br>
 
-            }
+<p>
+Total
+</p>
 
-        };
+<strong id="checkoutPrice">
+₹970
+</strong>
 
-    </script>
+</div>
+
+
+<label>
+Email Address
+</label>
+
+<input
+class="email"
+id="email"
+type="email"
+placeholder="Enter your email"
+>
+
+
+<button
+class="confirm"
+onclick="placeOrder()"
+>
+Confirm Order
+</button>
+
+
+<p class="note">
+Prototype only. No real payment is processed.
+</p>
+
+
+</div>
+
+</div>
+
+
+
+<!-- SUCCESS POPUP -->
+
+<div class="overlay" id="successOverlay">
+
+<div class="panel success">
+
+
+<div class="success-icon">
+✓
+</div>
+
+<h2>
+Order Confirmed
+</h2>
+
+<p>
+Your prototype order has been successfully created.
+</p>
+
+<br>
+
+<p>
+Order ID:
+<strong id="orderId">
+GCS-000001
+</strong>
+</p>
+
+<br>
+
+<button
+class="confirm"
+onclick="closeSuccess()"
+>
+Done
+</button>
+
+
+</div>
+
+</div>
+
+
+
+<!-- FOOTER -->
+
+<footer id="footer">
+
+© 2026 GiftCardStore
+
+</footer>
+
+
+
+<script>
+
+
+let selectedBrand = "";
+let selectedValue = "";
+let selectedPrice = "";
+
+
+/* =========================
+   OPEN ORDER
+========================= */
+
+function openOrder(brand, value, original, price) {
+
+selectedBrand = brand;
+selectedValue = value;
+selectedPrice = price;
+
+
+document.getElementById("orderBrand").textContent =
+brand;
+
+document.getElementById("orderValue").textContent =
+value + " Gift Card";
+
+document.getElementById("originalPrice").textContent =
+original;
+
+document.getElementById("finalPrice").textContent =
+price;
+
+document.getElementById("totalPrice").textContent =
+price;
+
+document.getElementById("orderOverlay").style.display =
+"flex";
+
+}
+
+
+/* =========================
+   CLOSE ORDER
+========================= */
+
+function closeOrder() {
+
+document.getElementById("orderOverlay").style.display =
+"none";
+
+}
+
+
+/* =========================
+   OPEN CHECKOUT
+========================= */
+
+function openCheckout() {
+
+document.getElementById("orderOverlay").style.display =
+"none";
+
+document.getElementById("checkoutBrand").textContent =
+selectedBrand;
+
+document.getElementById("checkoutValue").textContent =
+selectedValue + " Gift Card";
+
+document.getElementById("checkoutPrice").textContent =
+selectedPrice;
+
+document.getElementById("checkoutOverlay").style.display =
+"flex";
+
+}
+
+
+/* =========================
+   CLOSE CHECKOUT
+========================= */
+
+function closeCheckout() {
+
+document.getElementById("checkoutOverlay").style.display =
+"none";
+
+}
+
+
+/* =========================
+   PLACE ORDER
+========================= */
+
+function placeOrder() {
+
+let email =
+document.getElementById("email").value.trim();
+
+
+if (email === "") {
+
+alert("Please enter your email address.");
+
+return;
+
+}
+
+
+document.getElementById("checkoutOverlay").style.display =
+"none";
+
+
+let randomNumber =
+Math.floor(100000 + Math.random() * 900000);
+
+document.getElementById("orderId").textContent =
+"GCS-" + randomNumber;
+
+
+document.getElementById("successOverlay").style.display =
+"flex";
+
+}
+
+
+/* =========================
+   CLOSE SUCCESS
+========================= */
+
+function closeSuccess() {
+
+document.getElementById("successOverlay").style.display =
+"none";
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchCards() {
+
+let input =
+document.getElementById("search").value.toLowerCase();
+
+let cards =
+document.querySelectorAll(".card");
+
+
+cards.forEach(function(card) {
+
+let text =
+card.textContent.toLowerCase();
+
+
+if (text.includes(input)) {
+
+card.style.display = "block";
+
+}
+
+else {
+
+card.style.display = "none";
+
+}
+
+});
+
+}
+
+
+/* =========================
+   CLOSE POPUPS
+========================= */
+
+window.onclick = function(event) {
+
+let order =
+document.getElementById("orderOverlay");
+
+let checkout =
+document.getElementById("checkoutOverlay");
+
+let success =
+document.getElementById("successOverlay");
+
+
+if (event.target === order) {
+
+closeOrder();
+
+}
+
+
+if (event.target === checkout) {
+
+closeCheckout();
+
+}
+
+
+if (event.target === success) {
+
+closeSuccess();
+
+}
+
+};
+
+</script>
+
 
 </body>
+
     </html>
