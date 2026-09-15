@@ -1,609 +1,279 @@
-/* =====================================================
-   GIFT CARD STORE — CUSTOMER ACCOUNT
-   Brick 12
-   Prototype-only local account system
-===================================================== */
-
-
-/* =====================================================
-   STORAGE
-===================================================== */
-
-const ACCOUNT_STORAGE_KEY =
-    "giftCardCustomer";
-
-
-/* =====================================================
-   ACCOUNT STATE
-===================================================== */
+const ACCOUNT_KEY = "giftCardCustomer";
 
 function getCurrentUser() {
-
-    const stored =
-        localStorage.getItem(
-            ACCOUNT_STORAGE_KEY
-        );
-
-    if (!stored) {
-        return null;
-    }
-
-    try {
-
-        return JSON.parse(stored);
-
-    } catch (error) {
-
-        localStorage.removeItem(
-            ACCOUNT_STORAGE_KEY
-        );
-
-        return null;
-
-    }
-
+    return JSON.parse(localStorage.getItem(ACCOUNT_KEY) || "null");
 }
-
 
 function isLoggedIn() {
-
-    return getCurrentUser() !== null;
-
+    return !!getCurrentUser();
 }
-
-
-/* =====================================================
-   SAVE / LOGOUT
-===================================================== */
 
 function saveUser(user) {
-
-    localStorage.setItem(
-        ACCOUNT_STORAGE_KEY,
-        JSON.stringify(user)
-    );
-
+    localStorage.setItem(ACCOUNT_KEY, JSON.stringify(user));
     updateAccountUI();
-
 }
-
 
 function logoutUser() {
-
-    localStorage.removeItem(
-        ACCOUNT_STORAGE_KEY
-    );
-
+    localStorage.removeItem(ACCOUNT_KEY);
     updateAccountUI();
-
-    alert(
-        "You have been logged out."
-    );
-
+    closeAccountPanel();
+    alert("You have been logged out.");
 }
 
-
-/* =====================================================
-   ACCOUNT UI
-===================================================== */
+/* =========================
+   HEADER
+========================= */
 
 function updateAccountUI() {
+    const loginButton = document.getElementById("loginButton");
+    const accountButton = document.getElementById("accountButton");
 
-    const loginButton =
-        document.querySelector(
-            ".login"
-        );
+    if (!loginButton || !accountButton) return;
 
-    if (!loginButton) {
-        return;
+    if (isLoggedIn()) {
+        loginButton.style.display = "none";
+        accountButton.style.display = "inline-flex";
+    } else {
+        loginButton.style.display = "inline-flex";
+        accountButton.style.display = "none";
     }
-
-
-    const user =
-        getCurrentUser();
-
-
-    if (user) {
-
-        loginButton.textContent =
-            "Account";
-
-        loginButton.onclick =
-            function() {
-
-                openAccountPanel();
-
-            };
-
-    }
-
-    else {
-
-        loginButton.textContent =
-            "Login";
-
-        loginButton.onclick =
-            function() {
-
-                openLoginPanel();
-
-            };
-
-    }
-
 }
 
-
-/* =====================================================
-   CREATE ACCOUNT MODAL
-===================================================== */
+/* =========================
+   ACCOUNT DASHBOARD
+========================= */
 
 function createAccountModal() {
 
-    if (
-        document.getElementById(
-            "accountOverlay"
-        )
-    ) {
+    if (document.getElementById("accountOverlay")) return;
 
-        return;
-
-    }
-
-
-    const overlay =
-        document.createElement(
-            "div"
-        );
-
-
-    overlay.id =
-        "accountOverlay";
-
-    overlay.className =
-        "overlay";
-
+    const overlay = document.createElement("div");
+    overlay.id = "accountOverlay";
+    overlay.className = "overlay";
+    overlay.style.display = "none";
 
     overlay.innerHTML = `
+        <div class="modal account-modal">
 
-        <div class="panel">
-
-            <div class="panel-header">
-
-                <h2 id="accountTitle">
-                    Login
-                </h2>
-
-                <button
-                    class="close"
-                    onclick="closeAccountPanel()"
-                >
-                    ×
-                </button>
-
-            </div>
-
-
-            <div id="loginArea">
-
-                <p class="account-description">
-                    Login to continue your purchase
-                    and access your orders.
-                </p>
-
-
-                <label for="accountEmail">
-                    Email Address
-                </label>
-
-                <input
-                    class="email"
-                    id="accountEmail"
-                    type="email"
-                    inputmode="email"
-                    autocomplete="email"
-                    placeholder="you@example.com"
-                >
-
-
-                <p
-                    class="email-error"
-                    id="accountEmailError"
-                >
-                    Please enter a valid email address.
-                </p>
-
-
-                <button
-                    class="confirm"
-                    onclick="loginCustomer()"
-                >
-                    Continue with Email
-                </button>
-
-
-                <p class="note">
-                    Prototype account system.
-                    No real authentication is used.
-                </p>
-
-            </div>
-
-
-            <div
-                id="accountArea"
-                style="display:none;"
-            >
-
-                <div class="account-profile">
-
-                    <div class="account-avatar">
-                        👤
+            <div class="modal-header">
+                <div>
+                    <div class="modal-title">My Account</div>
+                    <div class="modal-subtitle">
+                        Manage your GiftCardStore account
                     </div>
-
-                    <h3 id="accountName">
-                        Customer
-                    </h3>
-
-                    <p id="accountEmailDisplay">
-                        customer@example.com
-                    </p>
-
                 </div>
 
+                <button class="close-btn"
+                    onclick="closeAccountPanel()">×</button>
+            </div>
 
-                <button
-                    class="confirm"
-                    onclick="openOrdersFromAccount()"
-                >
-                    View My Orders
+            <div class="account-profile">
+                <div class="account-avatar">👤</div>
+
+                <div>
+                    <strong id="accountName">Customer</strong>
+                    <div id="accountEmail" class="account-email"></div>
+                </div>
+            </div>
+
+            <div class="account-menu">
+
+                <button onclick="openProfileSection()">
+                    <span>👤</span>
+                    <div>
+                        <strong>Profile</strong>
+                        <small>View your account information</small>
+                    </div>
                 </button>
 
+                <button onclick="openOrdersFromAccount()">
+                    <span>📦</span>
+                    <div>
+                        <strong>My Orders</strong>
+                        <small>View your previous orders</small>
+                    </div>
+                </button>
 
-                <button
-                    class="account-logout"
-                    onclick="logoutUser()"
-                >
-                    Logout
+                <button onclick="openPaymentSection()">
+                    <span>💳</span>
+                    <div>
+                        <strong>Payment Methods</strong>
+                        <small>Manage payment options</small>
+                    </div>
+                </button>
+
+                <button onclick="openGiftCardsSection()">
+                    <span>🎁</span>
+                    <div>
+                        <strong>My Gift Cards</strong>
+                        <small>View your purchased gift cards</small>
+                    </div>
+                </button>
+
+                <button onclick="openSettingsSection()">
+                    <span>⚙️</span>
+                    <div>
+                        <strong>Settings</strong>
+                        <small>Account preferences</small>
+                    </div>
                 </button>
 
             </div>
 
-        </div>
+            <button class="logout-button" onclick="logoutUser()">
+                🔐 Logout
+            </button>
 
+        </div>
     `;
 
-
-    document.body.appendChild(
-        overlay
-    );
-
-
-    overlay.addEventListener(
-        "click",
-        function(event) {
-
-            if (
-                event.target ===
-                overlay
-            ) {
-
-                closeAccountPanel();
-
-            }
-
-        }
-    );
-
+    document.body.appendChild(overlay);
 }
 
-
-/* =====================================================
-   OPEN LOGIN
-===================================================== */
-
-function openLoginPanel() {
-
-    createAccountModal();
-
-
-    const overlay =
-        document.getElementById(
-            "accountOverlay"
-        );
-
-
-    const loginArea =
-        document.getElementById(
-            "loginArea"
-        );
-
-
-    const accountArea =
-        document.getElementById(
-            "accountArea"
-        );
-
-
-    document.getElementById(
-        "accountTitle"
-    ).textContent =
-        "Login";
-
-
-    loginArea.style.display =
-        "block";
-
-
-    accountArea.style.display =
-        "none";
-
-
-    overlay.style.display =
-        "flex";
-
-
-    setTimeout(
-        function() {
-
-            document.getElementById(
-                "accountEmail"
-            ).focus();
-
-        },
-        100
-    );
-
-}
-
-
-/* =====================================================
-   ACCOUNT PANEL
-===================================================== */
+/* =========================
+   OPEN / CLOSE
+========================= */
 
 function openAccountPanel() {
 
-    createAccountModal();
-
-
-    const user =
-        getCurrentUser();
-
-
-    if (!user) {
-
+    if (!isLoggedIn()) {
         openLoginPanel();
-
         return;
-
     }
 
+    const user = getCurrentUser();
 
-    const overlay =
-        document.getElementById(
-            "accountOverlay"
-        );
+    document.getElementById("accountName").textContent =
+        user.name || "Customer";
 
+    document.getElementById("accountEmail").textContent =
+        user.email || "";
 
-    document.getElementById(
-        "accountTitle"
-    ).textContent =
-        "My Account";
-
-
-    document.getElementById(
-        "loginArea"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "accountArea"
-    ).style.display =
-        "block";
-
-
-    document.getElementById(
-        "accountName"
-    ).textContent =
-        user.name ||
-        "Customer";
-
-
-    document.getElementById(
-        "accountEmailDisplay"
-    ).textContent =
-        user.email;
-
-
-    overlay.style.display =
-        "flex";
-
+    document.getElementById("accountOverlay").style.display = "flex";
 }
-
-
-/* =====================================================
-   CLOSE ACCOUNT
-===================================================== */
 
 function closeAccountPanel() {
-
-    const overlay =
-        document.getElementById(
-            "accountOverlay"
-        );
-
+    const overlay = document.getElementById("accountOverlay");
 
     if (overlay) {
-
-        overlay.style.display =
-            "none";
-
+        overlay.style.display = "none";
     }
-
 }
 
+/* =========================
+   ACCOUNT SECTIONS
+========================= */
 
-/* =====================================================
-   LOGIN CUSTOMER
-===================================================== */
+function openProfileSection() {
 
-function loginCustomer() {
+    const user = getCurrentUser();
 
-    const input =
-        document.getElementById(
-            "accountEmail"
-        );
-
-
-    const error =
-        document.getElementById(
-            "accountEmailError"
-        );
-
-
-    const email =
-        input.value.trim();
-
-
-    const pattern =
-        /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-
-    if (
-        !pattern.test(email)
-    ) {
-
-        input.classList.add(
-            "error"
-        );
-
-        error.style.display =
-            "block";
-
-        return;
-
-    }
-
-
-    input.classList.remove(
-        "error"
-    );
-
-
-    error.style.display =
-        "none";
-
-
-    const existingUser =
-        getCurrentUser();
-
-
-    const user = {
-
-        name:
-            existingUser?.name ||
-            email.split("@")[0],
-
-        email:
-            email,
-
-        loginDate:
-            new Date().toISOString()
-
-    };
-
-
-    saveUser(user);
-
-
-    closeAccountPanel();
-
+    if (!user) return;
 
     alert(
-        "Login successful."
+        "PROFILE\n\n" +
+        "Name: " + (user.name || "Not provided") + "\n" +
+        "Email: " + (user.email || "Not provided")
     );
-
-
-    /* If checkout was waiting for login,
-       continue directly to checkout. */
-
-    if (
-        window.checkoutWaitingForLogin
-    ) {
-
-        window.checkoutWaitingForLogin =
-            false;
-
-        openCheckout();
-
-    }
-
 }
-
-
-/* =====================================================
-   LOGIN REQUIRED
-===================================================== */
-
-function requireLogin(
-    action
-) {
-
-    if (
-        isLoggedIn()
-    ) {
-
-        if (
-            typeof action ===
-            "function"
-        ) {
-
-            action();
-
-        }
-
-        return true;
-
-    }
-
-
-    window.checkoutWaitingForLogin =
-        true;
-
-
-    openLoginPanel();
-
-
-    return false;
-
-}
-
-
-/* =====================================================
-   ORDERS FROM ACCOUNT
-===================================================== */
 
 function openOrdersFromAccount() {
 
     closeAccountPanel();
 
-    openOrders();
-
+    if (typeof openOrders === "function") {
+        openOrders();
+    }
 }
 
+function openPaymentSection() {
 
-/* =====================================================
-   STARTUP
-===================================================== */
+    alert(
+        "PAYMENT METHODS\n\n" +
+        "Payment methods will be available here.\n\n" +
+        "This prototype does not store real card or bank details."
+    );
+}
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
+function openGiftCardsSection() {
 
-        createAccountModal();
+    alert(
+        "MY GIFT CARDS\n\n" +
+        "Purchased gift cards will appear here."
+    );
+}
 
-        updateAccountUI();
+function openSettingsSection() {
 
+    alert(
+        "SETTINGS\n\n" +
+        "Account settings will be added here."
+    );
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+function openLoginPanel() {
+
+    const email = prompt("Enter your email address:");
+
+    if (email === null) return;
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(cleanEmail)) {
+        alert("Please enter a valid email address.");
+        return;
     }
-);
+
+    const name = prompt("Enter your name:");
+
+    if (name === null || !name.trim()) {
+        alert("Please enter your name.");
+        return;
+    }
+
+    saveUser({
+        name: name.trim(),
+        email: cleanEmail,
+        createdAt: new Date().toISOString()
+    });
+
+    alert("Welcome, " + name.trim() + "!");
+
+    if (window.checkoutWaitingForLogin) {
+        window.checkoutWaitingForLogin = false;
+
+        if (typeof openCheckout === "function") {
+            openCheckout();
+        }
+    }
+}
+
+/* =========================
+   CHECKOUT LOGIN GATE
+========================= */
+
+function requireLogin(action) {
+
+    if (isLoggedIn()) {
+        action();
+        return;
+    }
+
+    window.checkoutWaitingForLogin = true;
+    openLoginPanel();
+}
+
+/* =========================
+   STARTUP
+========================= */
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    createAccountModal();
+    updateAccountUI();
+
+});
