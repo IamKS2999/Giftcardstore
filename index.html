@@ -1,41 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GiftCardStore — Save on Every Purchase</title>
+<title>GiftCardStore — Smart Gift Cards</title>
 
 <link rel="stylesheet" href="css/style.css">
+
 </head>
 
 <body>
 
-<!-- ================= HEADER ================= -->
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-<header>
-    <div class="logo">GiftCardStore</div>
+<header class="site-header">
+
+    <div class="logo">
+        GiftCardStore
+    </div>
 
     <nav>
-        <a href="#">Home</a>
-        <a href="#products">Gift Cards</a>
-        <a href="#footer">How It Works</a>
 
-        <button class="login" id="loginButton"
-            onclick="GCS.openLogin()">
+        <a href="#">
+            Home
+        </a>
+
+        <a href="#products">
+            Gift Cards
+        </a>
+
+        <a href="#footer">
+            How It Works
+        </a>
+
+        <button
+            class="header-action"
+            id="loginButton">
             Login
         </button>
 
-        <button class="account-button" id="accountButton"
-            style="display:none"
-            onclick="GCS.openAccount()">
+        <button
+            class="header-action account-button"
+            id="accountButton"
+            style="display:none">
             Account
         </button>
+
     </nav>
+
 </header>
 
 
-<!-- ================= HERO ================= -->
+<!-- =====================================================
+     HERO
+===================================================== -->
 
 <section class="hero">
 
@@ -49,108 +71,188 @@
     </h1>
 
     <p>
-        Buy gift cards at better prices and keep more
-        of your money. Simple, convenient and built
-        for smarter shopping.
+        Choose a gift card, select your value,
+        see your savings instantly and continue
+        through a simple checkout experience.
     </p>
 
-    <div class="hero-buttons">
-        <a href="#products" class="button">
+    <div class="hero-actions">
+
+        <a
+            href="#products"
+            class="primary-button">
             Explore Gift Cards
         </a>
 
-        <a href="#products" class="secondary-button">
+        <a
+            href="#products"
+            class="secondary-button">
             View Brands
         </a>
+
     </div>
 
 </section>
 
 
-<!-- ================= TRUST ================= -->
+<!-- =====================================================
+     TRUST STRIP
+===================================================== -->
 
-<div class="trust-strip">
+<section class="trust-strip">
 
     <div class="trust-item">
-        <strong>Instant selection</strong>
-        <span>Choose your value</span>
+        <div class="trust-icon">✦</div>
+        <div>
+            <strong>Simple selection</strong>
+            <span>Choose your preferred value</span>
+        </div>
     </div>
 
     <div class="trust-item">
-        <strong>Transparent pricing</strong>
-        <span>See your savings</span>
+        <div class="trust-icon">%</div>
+        <div>
+            <strong>Transparent savings</strong>
+            <span>See the discount before checkout</span>
+        </div>
     </div>
 
     <div class="trust-item">
-        <strong>Simple checkout</strong>
-        <span>Clear order summary</span>
+        <div class="trust-icon">✓</div>
+        <div>
+            <strong>Clear checkout</strong>
+            <span>Review everything before confirming</span>
+        </div>
     </div>
 
-</div>
+</section>
 
 
-<!-- ================= PRODUCTS ================= -->
+<!-- =====================================================
+     PRODUCTS
+===================================================== -->
 
-<section class="products" id="products">
+<section
+    class="products"
+    id="products">
 
     <div class="section-heading">
 
-        <small>Gift Cards</small>
+        <div class="section-eyebrow">
+            Gift Cards
+        </div>
 
-        <h2>Choose your favourite brand</h2>
+        <h2>
+            Choose your favourite brand
+        </h2>
 
         <p>
-            Select a card and choose the value that works for you.
+            Select a brand and find the gift card
+            value that works for you.
         </p>
 
     </div>
 
 
-    <div class="search-wrap">
+    <!-- SEARCH -->
 
-        <span class="search-icon">⌕</span>
+    <div class="search-box">
+
+        <span class="search-symbol">
+            ⌕
+        </span>
 
         <input
-            class="search"
             id="search"
             type="text"
             placeholder="Search gift cards..."
-        >
+            autocomplete="off">
 
     </div>
 
+
+    <!-- CATEGORIES -->
 
     <div class="categories">
 
-        <button class="category active">All</button>
-        <button class="category">Shopping</button>
-        <button class="category">Fashion</button>
-        <button class="category">Food</button>
-        <button class="category">Electronics</button>
-        <button class="category">Entertainment</button>
+        <button
+            class="category active"
+            onclick="GCS.filterCategory('All', this)">
+            All
+        </button>
+
+        <button
+            class="category"
+            onclick="GCS.filterCategory('Shopping', this)">
+            Shopping
+        </button>
+
+        <button
+            class="category"
+            onclick="GCS.filterCategory('Fashion', this)">
+            Fashion
+        </button>
+
+        <button
+            class="category"
+            onclick="GCS.filterCategory('Food', this)">
+            Food
+        </button>
+
+        <button
+            class="category"
+            onclick="GCS.filterCategory('Electronics', this)">
+            Electronics
+        </button>
+
+        <button
+            class="category"
+            onclick="GCS.filterCategory('Entertainment', this)">
+            Entertainment
+        </button>
 
     </div>
 
 
-    <div class="cards" id="cards"></div>
+    <!-- BRAND CARDS -->
+
+    <div
+        class="cards"
+        id="cards">
+    </div>
 
 </section>
 
 
-<!-- ================= PRODUCT MODAL ================= -->
+<!-- =====================================================
+     PRODUCT MODAL
+===================================================== -->
 
-<div class="overlay" id="productOverlay">
+<div
+    class="overlay"
+    id="productOverlay">
 
-    <div class="panel">
+    <div class="panel product-panel">
 
         <div class="panel-header">
 
             <div>
-                <h2>Choose Gift Card</h2>
-                <p>Select your preferred value.</p>
+                <div class="panel-eyebrow">
+                    Gift Card
+                </div>
+
+                <h2>
+                    Choose your value
+                </h2>
+
+                <p>
+                    Select a denomination or enter
+                    your own amount.
+                </p>
             </div>
 
-            <button class="close"
+            <button
+                class="close-button"
                 onclick="GCS.closeProduct()">
                 ×
             </button>
@@ -158,29 +260,41 @@
         </div>
 
 
-        <div class="product-brand-row">
+        <!-- BRAND -->
 
-            <div class="product-brand-logo">
-                <img id="productLogo" src="" alt="">
+        <div class="selected-brand">
+
+            <div class="selected-brand-logo">
+
+                <img
+                    id="productLogo"
+                    src=""
+                    alt="">
+
             </div>
 
             <div>
-                <div class="product-brand" id="productBrand">
+
+                <div
+                    class="selected-brand-name"
+                    id="productBrand">
                     Amazon
                 </div>
 
-                <div class="product-name">
-                    Select your value
+                <div class="selected-brand-subtitle">
+                    Gift Card
                 </div>
+
             </div>
 
         </div>
 
 
-        <p class="mode-title">
-            Gift Card Type
-        </p>
+        <!-- MODE -->
 
+        <div class="field-label">
+            Gift Card Type
+        </div>
 
         <div class="mode-buttons">
 
@@ -188,18 +302,36 @@
                 class="mode-button active"
                 id="fixedMode"
                 onclick="GCS.selectMode('fixed')">
-                Fixed Value
+
+                <strong>
+                    Fixed Value
+                </strong>
+
+                <small>
+                    Choose a preset
+                </small>
+
             </button>
 
             <button
                 class="mode-button"
                 id="customMode"
                 onclick="GCS.selectMode('custom')">
-                Custom Value
+
+                <strong>
+                    Custom Value
+                </strong>
+
+                <small>
+                    Enter your amount
+                </small>
+
             </button>
 
         </div>
 
+
+        <!-- FIXED -->
 
         <div id="fixedArea">
 
@@ -211,54 +343,93 @@
         </div>
 
 
+        <!-- CUSTOM -->
+
         <div
-            class="custom-area"
             id="customArea"
+            class="custom-area"
             style="display:none">
 
-            <div class="input-prefix">
-                ₹
+            <div class="amount-input">
+
+                <span>
+                    ₹
+                </span>
+
                 <input
-                    class="custom-input"
                     id="customAmount"
+                    class="custom-input"
                     type="number"
                     min="100"
                     max="10000"
                     placeholder="Enter amount"
                     oninput="GCS.updateCustomPrice()">
+
             </div>
 
-            <p class="range-text">
-                Enter an amount between ₹100 and ₹10,000.
-            </p>
+            <div class="input-hint">
+                Minimum ₹100 · Maximum ₹10,000
+            </div>
 
         </div>
 
 
+        <!-- PREVIEW -->
+
         <div class="price-preview">
 
             <div class="preview-row">
-                <span>Gift Card Value</span>
-                <strong id="previewValue">₹500</strong>
+
+                <span>
+                    Gift Card Value
+                </span>
+
+                <strong id="previewValue">
+                    —
+                </strong>
+
             </div>
+
 
             <div class="preview-row">
-                <span>Your Discount</span>
-                <strong id="previewDiscount">3%</strong>
+
+                <span>
+                    Your Discount
+                </span>
+
+                <strong
+                    class="discount-text"
+                    id="previewDiscount">
+                    3%
+                </strong>
+
             </div>
 
+
+            <div class="preview-divider"></div>
+
+
             <div class="preview-row preview-total">
-                <span>You Pay</span>
-                <strong id="previewPrice">₹485</strong>
+
+                <span>
+                    You Pay
+                </span>
+
+                <strong id="previewPrice">
+                    —
+                </strong>
+
             </div>
 
         </div>
 
 
         <button
-            class="continue"
+            class="wide-primary"
             onclick="GCS.continueProduct()">
+
             Continue
+
         </button>
 
     </div>
@@ -266,20 +437,34 @@
 </div>
 
 
-<!-- ================= ORDER SUMMARY ================= -->
+<!-- =====================================================
+     ORDER SUMMARY
+===================================================== -->
 
-<div class="overlay" id="orderOverlay">
+<div
+    class="overlay"
+    id="orderOverlay">
 
     <div class="panel">
 
         <div class="panel-header">
 
             <div>
-                <h2>Order Summary</h2>
-                <p>Review your gift card.</p>
+                <div class="panel-eyebrow">
+                    Review
+                </div>
+
+                <h2>
+                    Order Summary
+                </h2>
+
+                <p>
+                    Check your gift card before checkout.
+                </p>
             </div>
 
-            <button class="close"
+            <button
+                class="close-button"
                 onclick="GCS.closeOrder()">
                 ×
             </button>
@@ -287,48 +472,99 @@
         </div>
 
 
-        <div class="order-brand" id="orderBrand">
-            Amazon
+        <div class="summary-brand">
+
+            <div
+                class="summary-brand-name"
+                id="orderBrand">
+                Amazon
+            </div>
+
+            <div
+                class="summary-value"
+                id="orderValue">
+                ₹500 Gift Card
+            </div>
+
         </div>
 
-        <div class="order-value" id="orderValue">
-            ₹500 Gift Card
-        </div>
 
+        <div class="summary-card">
 
-        <div class="order-summary-box">
+            <div class="summary-row">
 
-            <div class="order-row">
-                <span>Gift Card Value</span>
-                <span id="originalPrice">₹500</span>
+                <span>
+                    Gift Card Value
+                </span>
+
+                <strong id="originalPrice">
+                    ₹500
+                </strong>
+
             </div>
 
-            <div class="order-row">
-                <span>Discount</span>
-                <span id="orderDiscount">3%</span>
+
+            <div class="summary-row">
+
+                <span>
+                    Discount
+                </span>
+
+                <strong
+                    class="discount-text"
+                    id="orderDiscount">
+                    3%
+                </strong>
+
             </div>
 
-            <div class="order-row">
-                <span>You Pay</span>
-                <strong id="finalPrice">₹485</strong>
+
+            <div class="summary-row">
+
+                <span>
+                    You Pay
+                </span>
+
+                <strong id="finalPrice">
+                    ₹485
+                </strong>
+
             </div>
 
-            <div class="order-saving" id="orderSaving">
+
+            <div
+                class="saving-banner"
+                id="orderSaving">
+
                 You save ₹15
+
             </div>
 
-            <div class="order-row total">
-                <span>Total</span>
-                <strong id="totalPrice">₹485</strong>
+
+            <div class="summary-divider"></div>
+
+
+            <div class="summary-row summary-total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong id="totalPrice">
+                    ₹485
+                </strong>
+
             </div>
 
         </div>
 
 
         <button
-            class="continue"
+            class="wide-primary"
             onclick="GCS.openCheckout()">
+
             Continue to Checkout
+
         </button>
 
     </div>
@@ -336,20 +572,34 @@
 </div>
 
 
-<!-- ================= CHECKOUT ================= -->
+<!-- =====================================================
+     CHECKOUT
+===================================================== -->
 
-<div class="overlay" id="checkoutOverlay">
+<div
+    class="overlay"
+    id="checkoutOverlay">
 
     <div class="panel">
 
         <div class="panel-header">
 
             <div>
-                <h2>Checkout</h2>
-                <p>Complete your prototype order.</p>
+                <div class="panel-eyebrow">
+                    Checkout
+                </div>
+
+                <h2>
+                    Complete your order
+                </h2>
+
+                <p>
+                    Confirm your email for this prototype order.
+                </p>
             </div>
 
-            <button class="close"
+            <button
+                class="close-button"
                 onclick="GCS.closeCheckout()">
                 ×
             </button>
@@ -359,99 +609,116 @@
 
         <div class="checkout-card">
 
-            <div class="checkout-label">
-                Gift Card
+            <div class="checkout-brand">
+                <span>
+                    Gift Card
+                </span>
+
+                <strong id="checkoutBrand">
+                    Amazon
+                </strong>
             </div>
 
-            <strong id="checkoutBrand">
-                Amazon
-            </strong>
 
-            <p id="checkoutValue">
-                ₹500 Gift Card
-            </p>
+            <div class="checkout-value">
+                <span id="checkoutValue">
+                    ₹500 Gift Card
+                </span>
 
-            <div class="checkout-divider"></div>
-
-            <div class="checkout-label">
-                Total
+                <strong id="checkoutPrice">
+                    ₹485
+                </strong>
             </div>
-
-            <strong
-                class="checkout-total"
-                id="checkoutPrice">
-                ₹485
-            </strong>
 
         </div>
 
 
-        <label for="email">
+        <label
+            class="field-label"
+            for="email">
             Email Address
         </label>
 
         <input
-            class="email"
             id="email"
+            class="email"
             type="email"
             autocomplete="email"
             placeholder="you@example.com"
-            oninput="GCS.clearEmailError()"
-        >
+            oninput="GCS.clearEmailError()">
 
-        <p
+
+        <div
             class="email-error"
             id="emailError">
             Please enter a valid email address.
-        </p>
+        </div>
 
 
         <button
-            class="confirm"
+            class="wide-primary"
             onclick="GCS.createOrder()">
+
             Confirm Order
+
         </button>
 
 
-        <p class="note">
-            Prototype checkout — no real payment is processed.
-        </p>
+        <div class="prototype-note">
+            Prototype checkout · No real payment is processed.
+        </div>
 
     </div>
 
 </div>
 
 
-<!-- ================= SUCCESS ================= -->
+<!-- =====================================================
+     SUCCESS
+===================================================== -->
 
-<div class="overlay" id="successOverlay">
+<div
+    class="overlay"
+    id="successOverlay">
 
-    <div class="panel success">
+    <div class="panel success-panel">
 
-        <div class="success-icon">
+        <div class="success-mark">
             ✓
         </div>
 
-        <h2>Order Confirmed</h2>
+        <div class="panel-eyebrow">
+            Completed
+        </div>
+
+        <h2>
+            Order Confirmed
+        </h2>
 
         <p>
-            Your prototype order has been successfully created.
+            Your prototype order has been created successfully.
         </p>
 
-        <div class="success-order-label">
-            Order ID
+
+        <div class="success-order">
+
+            <span>
+                Order ID
+            </span>
+
+            <strong id="orderId">
+                GCS-000001
+            </strong>
+
         </div>
 
-        <div
-            class="order-id-display"
-            id="orderId">
-            GCS-000001
-        </div>
 
         <button
-            class="confirm"
+            class="wide-primary"
             onclick="GCS.closeSuccess()">
+
             Done
+
         </button>
 
     </div>
@@ -459,25 +726,40 @@
 </div>
 
 
-<!-- ================= ORDERS ================= -->
+<!-- =====================================================
+     ORDERS
+===================================================== -->
 
-<div class="overlay" id="ordersOverlay">
+<div
+    class="overlay"
+    id="ordersOverlay">
 
     <div class="panel orders-panel">
 
         <div class="panel-header">
 
             <div>
-                <h2>My Orders</h2>
-                <p>Your prototype order history.</p>
+                <div class="panel-eyebrow">
+                    Account
+                </div>
+
+                <h2>
+                    My Orders
+                </h2>
+
+                <p>
+                    Your previous prototype orders.
+                </p>
             </div>
 
-            <button class="close"
+            <button
+                class="close-button"
                 onclick="GCS.closeOrders()">
                 ×
             </button>
 
         </div>
+
 
         <div id="ordersList"></div>
 
@@ -486,26 +768,34 @@
 </div>
 
 
-<!-- ================= FOOTER ================= -->
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 
 <footer id="footer">
 
-    <div class="footer-logo">
-        GiftCardStore
+    <div class="footer-inner">
+
+        <div class="footer-brand">
+            GiftCardStore
+        </div>
+
+        <p>
+            Save more. Shop smarter.
+        </p>
+
+        <small>
+            © 2026 GiftCardStore · Prototype
+        </small>
+
     </div>
-
-    <p>
-        Save more. Shop smarter.
-    </p>
-
-    <p class="footer-copy">
-        © 2026 GiftCardStore · Prototype
-    </p>
 
 </footer>
 
 
-<!-- ================= JAVASCRIPT ================= -->
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
 <script src="js/brands.js"></script>
 <script src="js/products.js"></script>
