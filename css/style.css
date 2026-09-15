@@ -1137,3 +1137,152 @@ footer p {
     }
 
    }
+
+
+/* =====================================================
+   PREMIUM SITE NOTIFICATIONS
+===================================================== */
+
+.site-notice-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(20, 16, 30, .58);
+
+    backdrop-filter: blur(9px);
+}
+
+.site-notice {
+    width: min(430px, 100%);
+
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+
+    padding: 20px;
+
+    background: rgba(255,255,255,.97);
+
+    border: 1px solid #e5dfef;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 30px 80px rgba(20,10,50,.25);
+
+    animation: noticeIn .18s ease;
+}
+
+@keyframes noticeIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+
+}
+
+.site-notice-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #f0eaff;
+
+    color: #7139df;
+
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.site-notice-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.site-notice-title {
+    margin-bottom: 5px;
+
+    color: #211d35;
+
+    font-size: 16px;
+    font-weight: 850;
+}
+
+.site-notice-message {
+    color: #6f687b;
+
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.site-notice-close {
+    width: 32px;
+    height: 32px;
+
+    flex-shrink: 0;
+
+    border: 0;
+    border-radius: 9px;
+
+    background: #f5f2f9;
+
+    color: #716a7c;
+
+    font-size: 21px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.site-notice-close:hover {
+    background: #ebe6f2;
+}
+
+.notice-success .site-notice-icon {
+    background: #e8fbf0;
+    color: #148344;
+}
+
+.notice-error .site-notice-icon {
+    background: #fff0f0;
+    color: #d12f3d;
+}
+
+.notice-info .site-notice-icon {
+    background: #eee9ff;
+    color: #7139df;
+}
+
+.notice-muted {
+    color: #91899b;
+    font-size: 12px;
+}
+
+@media(max-width:560px) {
+
+    .site-notice {
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+}
