@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>GiftCardStore</title>
+    <title>GiftCardStore | Gift Cards at Better Prices</title>
 
     <style>
         * {
@@ -15,195 +15,535 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: #f7f7f8;
-            color: #171717;
+            background: #f6f7f9;
+            color: #151515;
         }
+
+        /* HEADER */
 
         header {
             background: white;
-            padding: 20px 7%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             border-bottom: 1px solid #e5e5e5;
+            padding: 18px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo {
             font-size: 24px;
-            font-weight: bold;
+            font-weight: 800;
+        }
+
+        nav {
+            display: flex;
+            gap: 28px;
         }
 
         nav a {
-            margin-left: 25px;
             text-decoration: none;
-            color: #333;
+            color: #444;
+            font-size: 15px;
         }
+
+        .account {
+            background: #151515;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+        /* HERO */
 
         .hero {
             background: white;
+            padding: 70px 6%;
             text-align: center;
-            padding: 90px 20px;
         }
 
         .hero h1 {
-            font-size: 48px;
-            max-width: 700px;
+            font-size: clamp(35px, 7vw, 60px);
+            max-width: 800px;
             margin: auto;
+            line-height: 1.05;
         }
 
         .hero p {
-            margin: 20px auto;
-            max-width: 550px;
-            font-size: 18px;
             color: #666;
+            font-size: 18px;
+            max-width: 600px;
+            margin: 22px auto 30px;
             line-height: 1.6;
         }
 
-        .button {
+        .hero-button {
             display: inline-block;
-            background: #171717;
+            background: #151515;
             color: white;
-            padding: 14px 25px;
-            border-radius: 8px;
             text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 9px;
+            font-weight: 600;
         }
+
+        /* SEARCH */
+
+        .search-section {
+            padding: 35px 6% 10px;
+        }
+
+        .search {
+            width: 100%;
+            max-width: 650px;
+            margin: auto;
+            display: block;
+            padding: 16px 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        /* CATEGORIES */
+
+        .categories {
+            padding: 25px 6%;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .category {
+            white-space: nowrap;
+            border: 1px solid #ddd;
+            background: white;
+            padding: 10px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        .category:hover {
+            background: #151515;
+            color: white;
+        }
+
+        /* PRODUCTS */
 
         .products {
-            padding: 60px 7%;
+            padding: 30px 6% 70px;
         }
 
-        .products h2 {
-            margin-bottom: 30px;
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .products-header h2 {
+            font-size: 28px;
+        }
+
+        .products-header span {
+            color: #777;
+            font-size: 14px;
         }
 
         .cards {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
             gap: 20px;
-            flex-wrap: wrap;
         }
 
         .card {
             background: white;
-            padding: 25px;
             border-radius: 15px;
-            width: 250px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            padding: 24px;
+            border: 1px solid #e8e8e8;
+            transition: 0.2s;
         }
 
-        .brand {
-            color: #777;
-            font-weight: bold;
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .brand-logo {
+            height: 70px;
+            border-radius: 10px;
+            background: #f1f1f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 21px;
+            font-weight: 800;
             margin-bottom: 20px;
         }
 
-        .old-price {
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .value {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .price-row {
+            margin-top: 15px;
+        }
+
+        .original {
             color: #999;
             text-decoration: line-through;
-            margin-top: 10px;
+            font-size: 14px;
         }
 
         .price {
             font-size: 24px;
-            font-weight: bold;
-            margin: 5px 0 20px;
+            font-weight: 800;
+            margin-top: 3px;
+        }
+
+        .discount {
+            display: inline-block;
+            margin-top: 8px;
+            background: #e9f7ee;
+            color: #16833d;
+            padding: 5px 9px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
         }
 
         .buy {
             width: 100%;
+            margin-top: 20px;
             padding: 12px;
             border: none;
-            border-radius: 7px;
-            background: #171717;
+            border-radius: 8px;
+            background: #151515;
             color: white;
             font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
+        .buy:hover {
+            background: #333;
+        }
+
+        /* FOOTER */
+
         footer {
+            background: #151515;
+            color: #aaa;
             text-align: center;
-            padding: 30px;
-            color: #777;
+            padding: 35px;
+            font-size: 14px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 15px 5%;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 55px 5%;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .products {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .brand-logo {
+                height: 55px;
+                font-size: 16px;
+            }
+
+            .card h3 {
+                font-size: 15px;
+            }
+
+            .price {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 400px) {
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <header>
-        <div class="logo">GiftCardStore</div>
+<header>
 
-        <nav>
-            <a href="#">Home</a>
-            <a href="#">Gift Cards</a>
-            <a href="#">How It Works</a>
-        </nav>
-    </header>
+    <div class="logo">
+        GiftCardStore
+    </div>
 
-    <section class="hero">
+    <nav>
+        <a href="#">Home</a>
+        <a href="#products">Gift Cards</a>
+        <a href="#">How It Works</a>
+    </nav>
 
-        <h1>Save More on the Brands You Love.</h1>
+    <button class="account">
+        Login
+    </button>
 
-        <p>
-            Buy gift cards from your favourite brands
-            at better prices.
-        </p>
+</header>
 
-        <a href="#products" class="button">
-            Explore Gift Cards
-        </a>
 
-    </section>
+<section class="hero">
 
-    <section class="products" id="products">
+    <h1>
+        Save More on the Brands You Love.
+    </h1>
+
+    <p>
+        Get gift cards from popular brands at better prices.
+        Simple, secure and convenient.
+    </p>
+
+    <a href="#products" class="hero-button">
+        Explore Gift Cards
+    </a>
+
+</section>
+
+
+<section class="search-section">
+
+    <input
+        class="search"
+        type="text"
+        placeholder="Search gift cards..."
+    >
+
+</section>
+
+
+<div class="categories">
+
+    <button class="category">All</button>
+    <button class="category">Shopping</button>
+    <button class="category">Fashion</button>
+    <button class="category">Food</button>
+    <button class="category">Electronics</button>
+    <button class="category">Entertainment</button>
+
+</div>
+
+
+<section class="products" id="products">
+
+    <div class="products-header">
 
         <h2>Popular Gift Cards</h2>
 
-        <div class="cards">
+        <span>Sample products</span>
 
-            <div class="card">
-                <div class="brand">BRAND</div>
+    </div>
 
-                <h3>₹500 Gift Card</h3>
 
-                <p class="old-price">₹500</p>
+    <div class="cards">
 
-                <p class="price">₹485</p>
 
-                <button class="buy">Buy Now</button>
+        <!-- AMAZON -->
+
+        <div class="card">
+
+            <div class="brand-logo">
+                AMAZON
             </div>
 
+            <h3>Amazon Gift Card</h3>
 
-            <div class="card">
-                <div class="brand">BRAND</div>
+            <p class="value">
+                Gift value: ₹1,000
+            </p>
 
-                <h3>₹1,000 Gift Card</h3>
+            <div class="price-row">
 
-                <p class="old-price">₹1,000</p>
+                <div class="original">
+                    ₹1,000
+                </div>
 
-                <p class="price">₹970</p>
+                <div class="price">
+                    ₹970
+                </div>
 
-                <button class="buy">Buy Now</button>
+                <span class="discount">
+                    Save 3%
+                </span>
+
             </div>
 
-
-            <div class="card">
-                <div class="brand">BRAND</div>
-
-                <h3>₹2,000 Gift Card</h3>
-
-                <p class="old-price">₹2,000</p>
-
-                <p class="price">₹1,940</p>
-
-                <button class="buy">Buy Now</button>
-            </div>
+            <button class="buy">
+                Buy Now
+            </button>
 
         </div>
 
-    </section>
 
-    <footer>
-        © 2026 GiftCardStore
-    </footer>
+        <!-- FLIPKART -->
+
+        <div class="card">
+
+            <div class="brand-logo">
+                FLIPKART
+            </div>
+
+            <h3>Flipkart Gift Card</h3>
+
+            <p class="value">
+                Gift value: ₹1,000
+            </p>
+
+            <div class="price-row">
+
+                <div class="original">
+                    ₹1,000
+                </div>
+
+                <div class="price">
+                    ₹965
+                </div>
+
+                <span class="discount">
+                    Save 3.5%
+                </span>
+
+            </div>
+
+            <button class="buy">
+                Buy Now
+            </button>
+
+        </div>
+
+
+        <!-- MYNTRA -->
+
+        <div class="card">
+
+            <div class="brand-logo">
+                MYNTRA
+            </div>
+
+            <h3>Myntra Gift Card</h3>
+
+            <p class="value">
+                Gift value: ₹1,000
+            </p>
+
+            <div class="price-row">
+
+                <div class="original">
+                    ₹1,000
+                </div>
+
+                <div class="price">
+                    ₹950
+                </div>
+
+                <span class="discount">
+                    Save 5%
+                </span>
+
+            </div>
+
+            <button class="buy">
+                Buy Now
+            </button>
+
+        </div>
+
+
+        <!-- CROMA -->
+
+        <div class="card">
+
+            <div class="brand-logo">
+                CROMA
+            </div>
+
+            <h3>Croma Gift Card</h3>
+
+            <p class="value">
+                Gift value: ₹2,000
+            </p>
+
+            <div class="price-row">
+
+                <div class="original">
+                    ₹2,000
+                </div>
+
+                <div class="price">
+                    ₹1,900
+                </div>
+
+                <span class="discount">
+                    Save 5%
+                </span>
+
+            </div>
+
+            <button class="buy">
+                Buy Now
+            </button>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    © 2026 GiftCardStore
+
+</footer>
+
 
 </body>
 </html>
