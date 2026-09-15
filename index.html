@@ -45,20 +45,36 @@ header {
     font-weight: bold;
 }
 
+nav {
+    display: flex;
+    align-items: center;
+}
+
 nav a {
     margin-left: 25px;
     text-decoration: none;
     color: white;
+    font-weight: 500;
+}
+
+.login,
+.orders-button {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 9px;
+    font-weight: bold;
+    margin-left: 15px;
+    cursor: pointer;
 }
 
 .login {
     background: white;
     color: #4c1d95;
-    border: none;
-    padding: 11px 20px;
-    border-radius: 9px;
-    font-weight: bold;
-    margin-left: 20px;
+}
+
+.orders-button {
+    background: #4c1d95;
+    color: white;
 }
 
 
@@ -117,6 +133,10 @@ nav a {
     background: white;
 }
 
+.search:focus {
+    border-color: #7c3aed;
+}
+
 .categories {
     display: flex;
     gap: 12px;
@@ -132,6 +152,7 @@ nav a {
     background: white;
     border-radius: 30px;
     font-size: 15px;
+    cursor: pointer;
 }
 
 .category.active {
@@ -172,6 +193,11 @@ nav a {
     border-radius: 18px;
     border: 1px solid #e9e4ff;
     box-shadow: 0 8px 25px rgba(76,29,149,0.08);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
 }
 
 .brand-box {
@@ -182,12 +208,14 @@ nav a {
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
-    padding: 20px;
+    padding: 18px;
 }
 
 .brand-logo {
-    max-width: 80%;
-    max-height: 65px;
+    max-width: 85%;
+    max-height: 70px;
+    width: auto;
+    height: auto;
     object-fit: contain;
 }
 
@@ -204,6 +232,7 @@ nav a {
 .old-price {
     color: #999;
     text-decoration: line-through;
+    margin-top: 8px;
 }
 
 .price {
@@ -233,11 +262,12 @@ nav a {
     color: white;
     font-size: 15px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 
 /* =========================
-   POPUP
+   OVERLAY
 ========================= */
 
 .overlay {
@@ -255,10 +285,17 @@ nav a {
     background: white;
     width: 100%;
     max-width: 440px;
+    max-height: 90vh;
+    overflow-y: auto;
     border-radius: 20px;
     padding: 28px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.2);
 }
+
+
+/* =========================
+   PANEL HEADER
+========================= */
 
 .panel-header {
     display: flex;
@@ -275,7 +312,13 @@ nav a {
     height: 35px;
     border-radius: 50%;
     font-size: 20px;
+    cursor: pointer;
 }
+
+
+/* =========================
+   ORDER SUMMARY
+========================= */
 
 .order-brand {
     color: #7c3aed;
@@ -301,14 +344,24 @@ nav a {
     color: #24104f;
 }
 
+.continue,
+.confirm {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
 
 /* =========================
    CHECKOUT
 ========================= */
-
-.checkout-title {
-    margin-bottom: 20px;
-}
 
 .checkout-card {
     background: #f8f7ff;
@@ -333,19 +386,6 @@ label {
     border: 1px solid #d8d2ef;
     border-radius: 9px;
     font-size: 16px;
-    margin-bottom: 18px;
-}
-
-.continue,
-.confirm {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #7c3aed, #2563eb);
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
 }
 
 .note {
@@ -388,6 +428,59 @@ label {
 
 
 /* =========================
+   MY ORDERS
+========================= */
+
+.empty-orders {
+    text-align: center;
+    padding: 30px 10px;
+    color: #777;
+}
+
+.order-card {
+    background: #f8f7ff;
+    border: 1px solid #e3dcff;
+    border-radius: 14px;
+    padding: 17px;
+    margin-bottom: 15px;
+}
+
+.order-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.order-card-brand {
+    font-weight: bold;
+    color: #6d28d9;
+    font-size: 18px;
+}
+
+.status {
+    background: #dcfce7;
+    color: #15803d;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.order-card-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    color: #555;
+}
+
+.order-id {
+    font-size: 13px;
+    color: #777;
+}
+
+
+/* =========================
    FOOTER
 ========================= */
 
@@ -410,8 +503,13 @@ footer {
         padding: 16px 5%;
     }
 
-    nav {
+    nav a,
+    .login {
         display: none;
+    }
+
+    .orders-button {
+        display: block;
     }
 
     .hero {
@@ -424,6 +522,10 @@ footer {
 
     .products {
         padding: 45px 5%;
+    }
+
+    .products-title h2 {
+        font-size: 26px;
     }
 
     .cards {
@@ -440,7 +542,9 @@ footer {
 <body>
 
 
-<!-- HEADER -->
+<!-- =========================
+     HEADER
+========================= -->
 
 <header>
 
@@ -462,6 +566,13 @@ Gift Cards
 How It Works
 </a>
 
+<button
+class="orders-button"
+onclick="openOrders()"
+>
+My Orders
+</button>
+
 <button class="login">
 Login
 </button>
@@ -472,7 +583,9 @@ Login
 
 
 
-<!-- HERO -->
+<!-- =========================
+     HERO
+========================= -->
 
 <section class="hero">
 
@@ -493,7 +606,9 @@ Explore Gift Cards
 
 
 
-<!-- PRODUCTS -->
+<!-- =========================
+     PRODUCTS
+========================= -->
 
 <section class="products" id="products">
 
@@ -551,7 +666,7 @@ Sample products
 
 
 
-<div class="cards" id="cardContainer">
+<div class="cards">
 
 
 <!-- AMAZON -->
@@ -562,7 +677,7 @@ Sample products
 
 <img
 class="brand-logo"
-src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Amazon_2024.svg"
 alt="Amazon logo"
 >
 
@@ -607,7 +722,7 @@ Buy Now
 
 <img
 class="brand-logo"
-src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Flipkart_logo_%282026%29.svg"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Flipkart_logo_(2026).svg"
 alt="Flipkart logo"
 >
 
@@ -652,7 +767,7 @@ Buy Now
 
 <img
 class="brand-logo"
-src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Myntra_logo.png"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/65c5da9f878952603e370d03_Myntra-Logo_1.svg"
 alt="Myntra logo"
 >
 
@@ -697,7 +812,7 @@ Buy Now
 
 <img
 class="brand-logo"
-src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Croma_Logo.png"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Croma_logo.png"
 alt="Croma logo"
 >
 
@@ -739,12 +854,16 @@ Buy Now
 
 
 
-<!-- ORDER POPUP -->
+<!-- =========================
+     ORDER SUMMARY
+========================= -->
 
-<div class="overlay" id="orderOverlay">
+<div
+class="overlay"
+id="orderOverlay"
+>
 
 <div class="panel">
-
 
 <div class="panel-header">
 
@@ -762,11 +881,17 @@ onclick="closeOrder()"
 </div>
 
 
-<div class="order-brand" id="orderBrand">
+<div
+class="order-brand"
+id="orderBrand"
+>
 Amazon
 </div>
 
-<div class="order-value" id="orderValue">
+<div
+class="order-value"
+id="orderValue"
+>
 ₹1,000 Gift Card
 </div>
 
@@ -817,23 +942,26 @@ onclick="openCheckout()"
 Continue
 </button>
 
-
 </div>
 
 </div>
 
 
 
-<!-- CHECKOUT POPUP -->
+<!-- =========================
+     CHECKOUT
+========================= -->
 
-<div class="overlay" id="checkoutOverlay">
+<div
+class="overlay"
+id="checkoutOverlay"
+>
 
 <div class="panel">
 
-
 <div class="panel-header">
 
-<h2 class="checkout-title">
+<h2>
 Checkout
 </h2>
 
@@ -898,19 +1026,22 @@ Confirm Order
 Prototype only. No real payment is processed.
 </p>
 
-
 </div>
 
 </div>
 
 
 
-<!-- SUCCESS POPUP -->
+<!-- =========================
+     SUCCESS
+========================= -->
 
-<div class="overlay" id="successOverlay">
+<div
+class="overlay"
+id="successOverlay"
+>
 
 <div class="panel success">
-
 
 <div class="success-icon">
 ✓
@@ -942,14 +1073,51 @@ onclick="closeSuccess()"
 Done
 </button>
 
-
 </div>
 
 </div>
 
 
 
-<!-- FOOTER -->
+<!-- =========================
+     MY ORDERS
+========================= -->
+
+<div
+class="overlay"
+id="ordersOverlay"
+>
+
+<div class="panel">
+
+<div class="panel-header">
+
+<h2>
+My Orders
+</h2>
+
+<button
+class="close"
+onclick="closeOrders()"
+>
+×
+</button>
+
+</div>
+
+
+<div id="ordersList">
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer id="footer">
 
@@ -962,9 +1130,14 @@ Done
 <script>
 
 
+/* =========================
+   VARIABLES
+========================= */
+
 let selectedBrand = "";
 let selectedValue = "";
 let selectedPrice = "";
+
 
 
 /* =========================
@@ -976,7 +1149,6 @@ function openOrder(brand, value, original, price) {
 selectedBrand = brand;
 selectedValue = value;
 selectedPrice = price;
-
 
 document.getElementById("orderBrand").textContent =
 brand;
@@ -999,6 +1171,7 @@ document.getElementById("orderOverlay").style.display =
 }
 
 
+
 /* =========================
    CLOSE ORDER
 ========================= */
@@ -1009,6 +1182,7 @@ document.getElementById("orderOverlay").style.display =
 "none";
 
 }
+
 
 
 /* =========================
@@ -1035,6 +1209,7 @@ document.getElementById("checkoutOverlay").style.display =
 }
 
 
+
 /* =========================
    CLOSE CHECKOUT
 ========================= */
@@ -1045,6 +1220,7 @@ document.getElementById("checkoutOverlay").style.display =
 "none";
 
 }
+
 
 
 /* =========================
@@ -1066,21 +1242,62 @@ return;
 }
 
 
+let randomNumber =
+Math.floor(100000 + Math.random() * 900000);
+
+let newOrderId =
+"GCS-" + randomNumber;
+
+
+let order = {
+
+id: newOrderId,
+
+brand: selectedBrand,
+
+value: selectedValue,
+
+price: selectedPrice,
+
+email: email,
+
+status: "Confirmed",
+
+date: new Date().toLocaleString()
+
+};
+
+
+let existingOrders =
+JSON.parse(localStorage.getItem("giftCardOrders")) || [];
+
+
+existingOrders.unshift(order);
+
+
+localStorage.setItem(
+"giftCardOrders",
+JSON.stringify(existingOrders)
+);
+
+
 document.getElementById("checkoutOverlay").style.display =
 "none";
 
 
-let randomNumber =
-Math.floor(100000 + Math.random() * 900000);
-
 document.getElementById("orderId").textContent =
-"GCS-" + randomNumber;
+newOrderId;
 
 
 document.getElementById("successOverlay").style.display =
 "flex";
 
+
+document.getElementById("email").value =
+"";
+
 }
+
 
 
 /* =========================
@@ -1093,6 +1310,148 @@ document.getElementById("successOverlay").style.display =
 "none";
 
 }
+
+
+
+/* =========================
+   OPEN MY ORDERS
+========================= */
+
+function openOrders() {
+
+loadOrders();
+
+document.getElementById("ordersOverlay").style.display =
+"flex";
+
+}
+
+
+
+/* =========================
+   CLOSE MY ORDERS
+========================= */
+
+function closeOrders() {
+
+document.getElementById("ordersOverlay").style.display =
+"none";
+
+}
+
+
+
+/* =========================
+   LOAD ORDERS
+========================= */
+
+function loadOrders() {
+
+let orders =
+JSON.parse(localStorage.getItem("giftCardOrders")) || [];
+
+
+let container =
+document.getElementById("ordersList");
+
+
+if (orders.length === 0) {
+
+container.innerHTML = `
+<div class="empty-orders">
+
+<h3>No orders yet</h3>
+
+<br>
+
+<p>
+Your completed prototype orders
+will appear here.
+</p>
+
+</div>
+`;
+
+return;
+
+}
+
+
+container.innerHTML = "";
+
+
+orders.forEach(function(order) {
+
+let card =
+document.createElement("div");
+
+card.className =
+"order-card";
+
+
+card.innerHTML = `
+
+<div class="order-card-top">
+
+<span class="order-card-brand">
+${order.brand}
+</span>
+
+<span class="status">
+${order.status}
+</span>
+
+</div>
+
+<strong>
+${order.value} Gift Card
+</strong>
+
+<div class="order-card-row">
+
+<span>
+Amount
+</span>
+
+<span>
+${order.price}
+</span>
+
+</div>
+
+<div class="order-card-row">
+
+<span>
+Order ID
+</span>
+
+<span class="order-id">
+${order.id}
+</span>
+
+</div>
+
+<div class="order-card-row">
+
+<span>
+Date
+</span>
+
+<span class="order-id">
+${order.date}
+</span>
+
+</div>
+
+`;
+
+
+container.appendChild(card);
+
+});
+
+}
+
 
 
 /* =========================
@@ -1131,8 +1490,9 @@ card.style.display = "none";
 }
 
 
+
 /* =========================
-   CLOSE POPUPS
+   CLOSE OVERLAYS
 ========================= */
 
 window.onclick = function(event) {
@@ -1145,6 +1505,9 @@ document.getElementById("checkoutOverlay");
 
 let success =
 document.getElementById("successOverlay");
+
+let orders =
+document.getElementById("ordersOverlay");
 
 
 if (event.target === order) {
@@ -1167,6 +1530,13 @@ closeSuccess();
 
 }
 
+
+if (event.target === orders) {
+
+closeOrders();
+
+}
+
 };
 
 </script>
@@ -1174,4 +1544,4 @@ closeSuccess();
 
 </body>
 
-    </html>
+</html>
