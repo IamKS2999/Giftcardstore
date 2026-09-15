@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>GiftCardStore | Gift Cards at Better Prices</title>
+    <title>GiftCardStore</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -15,237 +16,322 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: #f6f7f9;
-            color: #151515;
+            background: #f5f3ff;
+            color: #17132b;
         }
 
         /* HEADER */
 
         header {
-            background: white;
-            border-bottom: 1px solid #e5e5e5;
-            padding: 18px 6%;
+            background: linear-gradient(135deg, #6d28d9, #2563eb);
+            padding: 18px 7%;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            align-items: center;
+            color: white;
         }
 
         .logo {
             font-size: 24px;
-            font-weight: 800;
-        }
-
-        nav {
-            display: flex;
-            gap: 28px;
+            font-weight: bold;
         }
 
         nav a {
+            margin-left: 25px;
             text-decoration: none;
-            color: #444;
-            font-size: 15px;
+            color: white;
+            font-weight: 500;
         }
 
-        .account {
-            background: #151515;
-            color: white;
+        .login {
+            background: white;
+            color: #4c1d95;
             border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
+            padding: 11px 20px;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: bold;
+            margin-left: 20px;
         }
 
         /* HERO */
 
         .hero {
-            background: white;
-            padding: 70px 6%;
+            background: linear-gradient(135deg, #ede9fe, #dbeafe);
             text-align: center;
+            padding: 80px 20px;
         }
 
         .hero h1 {
-            font-size: clamp(35px, 7vw, 60px);
-            max-width: 800px;
+            font-size: 46px;
+            max-width: 700px;
             margin: auto;
-            line-height: 1.05;
+            color: #24104f;
         }
 
         .hero p {
-            color: #666;
-            font-size: 18px;
+            margin: 20px auto;
             max-width: 600px;
-            margin: 22px auto 30px;
+            font-size: 18px;
+            color: #5b556f;
             line-height: 1.6;
         }
 
-        .hero-button {
+        .button {
             display: inline-block;
-            background: #151515;
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
             color: white;
+            padding: 15px 28px;
+            border-radius: 10px;
             text-decoration: none;
-            padding: 14px 24px;
-            border-radius: 9px;
-            font-weight: 600;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
         }
 
-        /* SEARCH */
+        /* PRODUCTS SECTION */
 
-        .search-section {
-            padding: 35px 6% 10px;
+        .products {
+            padding: 55px 7%;
         }
 
         .search {
             width: 100%;
-            max-width: 650px;
-            margin: auto;
-            display: block;
-            padding: 16px 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
+            padding: 18px 20px;
+            border: 1px solid #ddd6fe;
+            border-radius: 14px;
+            font-size: 17px;
             outline: none;
+            margin-bottom: 25px;
+            background: white;
+        }
+
+        .search:focus {
+            border-color: #7c3aed;
         }
 
         /* CATEGORIES */
 
         .categories {
-            padding: 25px 6%;
             display: flex;
-            gap: 10px;
+            gap: 12px;
             overflow-x: auto;
+            padding-bottom: 15px;
+            margin-bottom: 35px;
         }
 
         .category {
-            white-space: nowrap;
-            border: 1px solid #ddd;
+            flex-shrink: 0;
+            padding: 12px 23px;
+            border: 1px solid #ddd6fe;
             background: white;
-            padding: 10px 18px;
             border-radius: 30px;
+            font-size: 15px;
             cursor: pointer;
         }
 
-        .category:hover {
-            background: #151515;
+        .category.active {
+            background: #7c3aed;
             color: white;
+            border-color: #7c3aed;
         }
 
-        /* PRODUCTS */
-
-        .products {
-            padding: 30px 6% 70px;
-        }
-
-        .products-header {
+        .products-title {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
         }
 
-        .products-header h2 {
-            font-size: 28px;
+        .products-title h2 {
+            font-size: 30px;
         }
 
-        .products-header span {
-            color: #777;
-            font-size: 14px;
+        .sample {
+            color: #7c3aed;
+            font-size: 15px;
         }
+
+        /* CARDS */
 
         .cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 20px;
+            gap: 22px;
         }
 
         .card {
             background: white;
-            border-radius: 15px;
-            padding: 24px;
-            border: 1px solid #e8e8e8;
-            transition: 0.2s;
+            padding: 22px;
+            border-radius: 18px;
+            border: 1px solid #e9e4ff;
+            box-shadow: 0 8px 25px rgba(76, 29, 149, 0.08);
+            transition: transform 0.2s;
         }
 
         .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transform: translateY(-4px);
         }
 
-        .brand-logo {
-            height: 70px;
-            border-radius: 10px;
-            background: #f1f1f1;
+        .brand-box {
+            height: 90px;
+            border-radius: 14px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            font-size: 21px;
-            font-weight: 800;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: bold;
+            color: white;
             margin-bottom: 20px;
         }
 
+        .amazon {
+            background: linear-gradient(135deg, #ff9900, #ffb84d);
+        }
+
+        .flipkart {
+            background: linear-gradient(135deg, #2874f0, #60a5fa);
+        }
+
+        .myntra {
+            background: linear-gradient(135deg, #ec4899, #f97316);
+        }
+
+        .croma {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+        }
+
+        .brand {
+            color: #6d28d9;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
         .card h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
-        .value {
-            color: #777;
-            font-size: 14px;
-        }
-
-        .price-row {
-            margin-top: 15px;
-        }
-
-        .original {
+        .old-price {
             color: #999;
             text-decoration: line-through;
-            font-size: 14px;
+            margin-top: 8px;
         }
 
         .price {
             font-size: 24px;
-            font-weight: 800;
-            margin-top: 3px;
+            font-weight: bold;
+            margin: 5px 0;
+            color: #24104f;
         }
 
         .discount {
             display: inline-block;
-            margin-top: 8px;
-            background: #e9f7ee;
-            color: #16833d;
+            background: #dcfce7;
+            color: #15803d;
             padding: 5px 9px;
             border-radius: 6px;
             font-size: 13px;
-            font-weight: 700;
+            font-weight: bold;
+            margin: 5px 0 18px;
         }
 
         .buy {
             width: 100%;
-            margin-top: 20px;
-            padding: 12px;
+            padding: 13px;
             border: none;
-            border-radius: 8px;
-            background: #151515;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
             color: white;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: bold;
             cursor: pointer;
         }
 
-        .buy:hover {
-            background: #333;
+        /* ORDER PANEL */
+
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(30, 20, 60, 0.55);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .order-panel {
+            background: white;
+            width: 100%;
+            max-width: 430px;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .close {
+            border: none;
+            background: #f3f0ff;
+            color: #6d28d9;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .order-brand {
+            color: #7c3aed;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .order-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .order-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 13px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #24104f;
+            border-bottom: none;
+        }
+
+        .continue {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
         }
 
         /* FOOTER */
 
         footer {
-            background: #151515;
-            color: #aaa;
             text-align: center;
-            padding: 35px;
-            font-size: 14px;
+            padding: 30px;
+            color: #6b6580;
+            background: #ede9fe;
+            margin-top: 30px;
         }
 
         /* MOBILE */
@@ -253,7 +339,7 @@
         @media (max-width: 700px) {
 
             header {
-                padding: 15px 5%;
+                padding: 16px 5%;
             }
 
             nav {
@@ -261,289 +347,453 @@
             }
 
             .hero {
-                padding: 55px 5%;
+                padding: 65px 20px;
             }
 
             .hero h1 {
                 font-size: 38px;
             }
 
-            .hero p {
-                font-size: 16px;
-            }
-
             .products {
-                padding-left: 5%;
-                padding-right: 5%;
+                padding: 45px 5%;
             }
 
-            .cards {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
+            .products-title h2 {
+                font-size: 26px;
             }
-
-            .card {
-                padding: 15px;
-            }
-
-            .brand-logo {
-                height: 55px;
-                font-size: 16px;
-            }
-
-            .card h3 {
-                font-size: 15px;
-            }
-
-            .price {
-                font-size: 20px;
-            }
-        }
-
-        @media (max-width: 400px) {
 
             .cards {
                 grid-template-columns: 1fr;
             }
         }
+
     </style>
 </head>
 
 <body>
 
-<header>
+    <!-- HEADER -->
 
-    <div class="logo">
-        GiftCardStore
-    </div>
+    <header>
 
-    <nav>
-        <a href="#">Home</a>
-        <a href="#products">Gift Cards</a>
-        <a href="#">How It Works</a>
-    </nav>
+        <div class="logo">
+            GiftCardStore
+        </div>
 
-    <button class="account">
-        Login
-    </button>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#products">Gift Cards</a>
+            <a href="#footer">How It Works</a>
 
-</header>
+            <button class="login">
+                Login
+            </button>
+        </nav>
 
-
-<section class="hero">
-
-    <h1>
-        Save More on the Brands You Love.
-    </h1>
-
-    <p>
-        Get gift cards from popular brands at better prices.
-        Simple, secure and convenient.
-    </p>
-
-    <a href="#products" class="hero-button">
-        Explore Gift Cards
-    </a>
-
-</section>
+    </header>
 
 
-<section class="search-section">
+    <!-- HERO -->
 
-    <input
-        class="search"
-        type="text"
-        placeholder="Search gift cards..."
-    >
+    <section class="hero">
 
-</section>
+        <h1>
+            Save More on the Brands You Love.
+        </h1>
 
+        <p>
+            Get gift cards from popular brands at better
+            prices. Simple, secure and convenient.
+        </p>
 
-<div class="categories">
+        <a href="#products" class="button">
+            Explore Gift Cards
+        </a>
 
-    <button class="category">All</button>
-    <button class="category">Shopping</button>
-    <button class="category">Fashion</button>
-    <button class="category">Food</button>
-    <button class="category">Electronics</button>
-    <button class="category">Entertainment</button>
-
-</div>
+    </section>
 
 
-<section class="products" id="products">
+    <!-- PRODUCTS -->
 
-    <div class="products-header">
+    <section class="products" id="products">
 
-        <h2>Popular Gift Cards</h2>
+        <input
+            class="search"
+            type="text"
+            id="search"
+            placeholder="Search gift cards..."
+            onkeyup="searchCards()"
+        >
 
-        <span>Sample products</span>
 
-    </div>
+        <div class="categories">
+
+            <button class="category active">
+                All
+            </button>
+
+            <button class="category">
+                Shopping
+            </button>
+
+            <button class="category">
+                Fashion
+            </button>
+
+            <button class="category">
+                Food
+            </button>
+
+            <button class="category">
+                Electronics
+            </button>
+
+            <button class="category">
+                Entertainment
+            </button>
+
+        </div>
 
 
-    <div class="cards">
+        <div class="products-title">
+
+            <h2>
+                Popular Gift Cards
+            </h2>
+
+            <span class="sample">
+                Sample products
+            </span>
+
+        </div>
 
 
-        <!-- AMAZON -->
+        <div class="cards" id="cardContainer">
 
-        <div class="card">
 
-            <div class="brand-logo">
-                AMAZON
-            </div>
+            <!-- AMAZON -->
 
-            <h3>Amazon Gift Card</h3>
+            <div class="card">
 
-            <p class="value">
-                Gift value: ₹1,000
-            </p>
+                <div class="brand-box amazon">
+                    AMAZON
+                </div>
 
-            <div class="price-row">
+                <div class="brand">
+                    Amazon
+                </div>
 
-                <div class="original">
+                <h3>
+                    ₹1,000 Gift Card
+                </h3>
+
+                <p class="old-price">
                     ₹1,000
-                </div>
+                </p>
 
-                <div class="price">
+                <p class="price">
                     ₹970
-                </div>
+                </p>
 
                 <span class="discount">
                     Save 3%
                 </span>
 
+                <button
+                    class="buy"
+                    onclick="openOrder('Amazon', '₹1,000', '₹1,000', '₹970')">
+                    Buy Now
+                </button>
+
             </div>
 
-            <button class="buy">
-                Buy Now
-            </button>
 
-        </div>
+            <!-- FLIPKART -->
 
+            <div class="card">
 
-        <!-- FLIPKART -->
+                <div class="brand-box flipkart">
+                    FLIPKART
+                </div>
 
-        <div class="card">
+                <div class="brand">
+                    Flipkart
+                </div>
 
-            <div class="brand-logo">
-                FLIPKART
-            </div>
+                <h3>
+                    ₹1,000 Gift Card
+                </h3>
 
-            <h3>Flipkart Gift Card</h3>
-
-            <p class="value">
-                Gift value: ₹1,000
-            </p>
-
-            <div class="price-row">
-
-                <div class="original">
+                <p class="old-price">
                     ₹1,000
-                </div>
+                </p>
 
-                <div class="price">
+                <p class="price">
                     ₹965
-                </div>
+                </p>
 
                 <span class="discount">
                     Save 3.5%
                 </span>
 
+                <button
+                    class="buy"
+                    onclick="openOrder('Flipkart', '₹1,000', '₹1,000', '₹965')">
+                    Buy Now
+                </button>
+
             </div>
 
-            <button class="buy">
-                Buy Now
-            </button>
 
-        </div>
+            <!-- MYNTRA -->
 
+            <div class="card">
 
-        <!-- MYNTRA -->
+                <div class="brand-box myntra">
+                    MYNTRA
+                </div>
 
-        <div class="card">
+                <div class="brand">
+                    Myntra
+                </div>
 
-            <div class="brand-logo">
-                MYNTRA
-            </div>
+                <h3>
+                    ₹1,000 Gift Card
+                </h3>
 
-            <h3>Myntra Gift Card</h3>
-
-            <p class="value">
-                Gift value: ₹1,000
-            </p>
-
-            <div class="price-row">
-
-                <div class="original">
+                <p class="old-price">
                     ₹1,000
-                </div>
+                </p>
 
-                <div class="price">
+                <p class="price">
                     ₹950
-                </div>
+                </p>
 
                 <span class="discount">
                     Save 5%
                 </span>
 
+                <button
+                    class="buy"
+                    onclick="openOrder('Myntra', '₹1,000', '₹1,000', '₹950')">
+                    Buy Now
+                </button>
+
             </div>
 
-            <button class="buy">
-                Buy Now
-            </button>
 
-        </div>
+            <!-- CROMA -->
 
+            <div class="card">
 
-        <!-- CROMA -->
+                <div class="brand-box croma">
+                    CROMA
+                </div>
 
-        <div class="card">
+                <div class="brand">
+                    Croma
+                </div>
 
-            <div class="brand-logo">
-                CROMA
-            </div>
+                <h3>
+                    ₹2,000 Gift Card
+                </h3>
 
-            <h3>Croma Gift Card</h3>
-
-            <p class="value">
-                Gift value: ₹2,000
-            </p>
-
-            <div class="price-row">
-
-                <div class="original">
+                <p class="old-price">
                     ₹2,000
-                </div>
+                </p>
 
-                <div class="price">
+                <p class="price">
                     ₹1,900
-                </div>
+                </p>
 
                 <span class="discount">
                     Save 5%
                 </span>
 
+                <button
+                    class="buy"
+                    onclick="openOrder('Croma', '₹2,000', '₹2,000', '₹1,900')">
+                    Buy Now
+                </button>
+
             </div>
 
-            <button class="buy">
-                Buy Now
-            </button>
 
         </div>
 
+    </section>
+
+
+    <!-- ORDER PANEL -->
+
+    <div class="overlay" id="orderOverlay">
+
+        <div class="order-panel">
+
+            <div class="order-header">
+
+                <h2>
+                    Order Summary
+                </h2>
+
+                <button
+                    class="close"
+                    onclick="closeOrder()">
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="order-brand" id="orderBrand">
+                Amazon
+            </div>
+
+            <div class="order-value" id="orderValue">
+                ₹1,000 Gift Card
+            </div>
+
+
+            <div class="order-row">
+
+                <span>
+                    Gift Card Value
+                </span>
+
+                <span id="originalPrice">
+                    ₹1,000
+                </span>
+
+            </div>
+
+
+            <div class="order-row">
+
+                <span>
+                    Your Price
+                </span>
+
+                <span id="finalPrice">
+                    ₹970
+                </span>
+
+            </div>
+
+
+            <div class="order-row total">
+
+                <span>
+                    Total
+                </span>
+
+                <span id="totalPrice">
+                    ₹970
+                </span>
+
+            </div>
+
+
+            <button class="continue" onclick="continueOrder()">
+                Continue
+            </button>
+
+        </div>
 
     </div>
 
-</section>
+
+    <!-- FOOTER -->
+
+    <footer id="footer">
+
+        © 2026 GiftCardStore
+
+    </footer>
 
 
-<footer>
+    <!-- JAVASCRIPT -->
 
-    © 2026 GiftCardStore
+    <script>
 
-</footer>
+        function openOrder(brand, value, original, price) {
 
+            document.getElementById("orderBrand").textContent = brand;
+
+            document.getElementById("orderValue").textContent =
+                value + " Gift Card";
+
+            document.getElementById("originalPrice").textContent =
+                original;
+
+            document.getElementById("finalPrice").textContent =
+                price;
+
+            document.getElementById("totalPrice").textContent =
+                price;
+
+            document.getElementById("orderOverlay").style.display =
+                "flex";
+        }
+
+
+        function closeOrder() {
+
+            document.getElementById("orderOverlay").style.display =
+                "none";
+        }
+
+
+        function continueOrder() {
+
+            alert(
+                "This is a prototype. Checkout will be added in a later brick."
+            );
+
+        }
+
+
+        function searchCards() {
+
+            let input =
+                document.getElementById("search").value.toLowerCase();
+
+            let cards =
+                document.querySelectorAll(".card");
+
+            cards.forEach(function(card) {
+
+                let text =
+                    card.textContent.toLowerCase();
+
+                if (text.includes(input)) {
+
+                    card.style.display = "block";
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+
+        window.onclick = function(event) {
+
+            let overlay =
+                document.getElementById("orderOverlay");
+
+            if (event.target === overlay) {
+
+                closeOrder();
+
+            }
+
+        };
+
+    </script>
 
 </body>
-</html>
+    </html>
