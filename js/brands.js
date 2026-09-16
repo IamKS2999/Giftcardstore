@@ -1,11 +1,27 @@
 /* =====================================================
    GIFT CARD STORE — BRAND DATABASE
    Full Catalog + Stable Logo Sources
+   VERSION: 2026-09-16-18
 ===================================================== */
 
-const LOGO = "https://commons.wikimedia.org/wiki/Special:Redirect/file/";
+
+/* =====================================================
+   LOGO SOURCE
+===================================================== */
+
+const LOGO =
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/";
+
+
+/* =====================================================
+   VERIFIED LOGO DATABASE
+===================================================== */
 
 const BRAND_LOGOS = {
+
+    /* =========================
+       SHOPPING
+    ========================= */
 
     Amazon:
         LOGO + "Amazon_2024.svg",
@@ -14,10 +30,15 @@ const BRAND_LOGOS = {
         LOGO + "Flipkart_logo_(2026).svg",
 
     TataCLiQ:
-        LOGO + "TATA_Cliq_Logo.jpg",
+        LOGO + "Tata_Cliq_Logo.jpg",
 
     Meesho:
         LOGO + "Meesho_logo.png",
+
+
+    /* =========================
+       FASHION
+    ========================= */
 
     Myntra:
         LOGO + "65c5da9f878952603e370d03_Myntra-Logo_1.svg",
@@ -37,6 +58,23 @@ const BRAND_LOGOS = {
     FirstCry:
         LOGO + "FirstCry_logo.svg",
 
+    PeterEngland:
+        LOGO + "Peter_England_logo.svg",
+
+    MarksAndSpencer:
+        LOGO + "Marks_%26_Spencer_logo.svg",
+
+    VanHeusen:
+        LOGO + "Van_Heusen.svg",
+
+    AllenSolly:
+        LOGO + "Allen_Solly_logo.svg",
+
+
+    /* =========================
+       ELECTRONICS / HOME
+    ========================= */
+
     Croma:
         LOGO + "Croma_logo.png",
 
@@ -52,6 +90,11 @@ const BRAND_LOGOS = {
     Pepperfry:
         LOGO + "Pepperfry_logo.jpg",
 
+
+    /* =========================
+       FOOD
+    ========================= */
+
     Domino:
         LOGO + "Domino%27s_2025.svg",
 
@@ -61,6 +104,14 @@ const BRAND_LOGOS = {
     Swiggy:
         LOGO + "Swiggy_logo.png",
 
+    Haldirams:
+        LOGO + "Haldiram%27s_logo.svg",
+
+
+    /* =========================
+       GROCERY
+    ========================= */
+
     BigBasket:
         LOGO + "BigBasket_Logo.png",
 
@@ -69,6 +120,11 @@ const BRAND_LOGOS = {
 
     Zepto:
         LOGO + "Zepto_Logo.svg",
+
+
+    /* =========================
+       ENTERTAINMENT
+    ========================= */
 
     BookMyShow:
         LOGO + "Bookmyshow-logoid.png",
@@ -85,6 +141,11 @@ const BRAND_LOGOS = {
     ZEE5:
         LOGO + "ZEE5_2025.svg",
 
+
+    /* =========================
+       TRAVEL
+    ========================= */
+
     Uber:
         LOGO + "Uber_logo_2018.svg",
 
@@ -97,55 +158,118 @@ const BRAND_LOGOS = {
     EaseMyTrip:
         LOGO + "EaseMyTrip_Logo.svg",
 
+
+    /* =========================
+       BEAUTY / HEALTH
+    ========================= */
+
     Nykaa:
         LOGO + "Nykaa_New_Logo.svg",
 
-    PeterEngland:
-        LOGO + "Peter_England_logo.svg"
+    Tata1mg:
+        LOGO + "TATA_1mg_Logo.svg",
+
+
+    /* =========================
+       JEWELLERY / WATCHES
+    ========================= */
+
+    Fastrack:
+        LOGO + "Fastrack_logo.svg",
+
+    Titan:
+        LOGO + "Titan_logo.png",
+
+
+    /* =========================
+       GIFTS
+    ========================= */
+
+    Archies:
+        LOGO + "Archies_logo.svg",
+
+    Hamleys:
+        LOGO + "Hamleys_logo.png",
+
+
+    /* =========================
+       BOOKS
+    ========================= */
+
+    Crossword:
+        LOGO + "Crossword_logo.svg"
 };
 
 
 /* =====================================================
-   FALLBACK — OFFICIAL DOMAIN ICON
+   OFFICIAL DOMAIN FALLBACKS
+   Used only where a verified Wikimedia logo is
+   not available in this database.
 ===================================================== */
 
 const DOMAIN_LOGOS = {
 
-    AJIO: "ajio.com",
-    Westside: "westside.com",
-    Lifestyle: "lifestylestores.com",
-    Pantaloons: "pantaloons.com",
-    Haldirams: "haldirams.com",
-    PVR: "pvrcinemas.com",
-    AirIndia: "airindia.com",
-    Tira: "tirabeauty.com",
-    TheBodyShop: "thebodyshop.in",
-    Tata1mg: "1mg.com",
-    Netmeds: "netmeds.com",
-    CultFit: "cult.fit",
-    Fastrack: "fastrack.in",
-    Titan: "titan.co.in",
-    CaratLane: "caratlane.com",
-    MiaByTanishq: "mia.tanishq.co.in",
-    Archies: "archiesonline.com",
-    Hamleys: "hamleys.in",
-    Crossword: "crossword.in",
-    MarksAndSpencer: "marksandspencer.in",
-    VanHeusen: "vanheusenindia.com",
-    AllenSolly: "allensolly.com"
+    AJIO:
+        "ajio.com",
+
+    Westside:
+        "westside.com",
+
+    Lifestyle:
+        "lifestylestores.com",
+
+    Pantaloons:
+        "pantaloons.com",
+
+    Haldirams:
+        "haldirams.com",
+
+    PVR:
+        "pvrcinemas.com",
+
+    AirIndia:
+        "airindia.com",
+
+    Tira:
+        "tirabeauty.com",
+
+    TheBodyShop:
+        "thebodyshop.in",
+
+    Netmeds:
+        "netmeds.com",
+
+    CultFit:
+        "cult.fit",
+
+    CaratLane:
+        "caratlane.com",
+
+    MiaByTanishq:
+        "mia.tanishq.co.in"
 };
 
 
+/* =====================================================
+   GET LOGO
+===================================================== */
+
 function getLogo(brandId) {
 
+    /* Verified logo first */
     if (BRAND_LOGOS[brandId]) {
         return BRAND_LOGOS[brandId];
     }
 
+    /* Official domain fallback */
     if (DOMAIN_LOGOS[brandId]) {
-        return "https://www.google.com/s2/favicons?domain=" +
+
+        return (
+            "https://www.google.com/s2/favicons" +
+            "?domain=" +
             DOMAIN_LOGOS[brandId] +
-            "&sz=256";
+            "&sz=256"
+        );
     }
 
     return "";
@@ -166,17 +290,29 @@ function createBrand(
 ) {
 
     return {
+
         id: id,
+
         name: name,
+
         category: category,
+
         logo: getLogo(id),
+
         fixedDiscount: fixedDiscount,
+
         customDiscount: customDiscount,
+
         fixedValues: fixedValues,
+
         custom: {
+
             enabled: true,
+
             min: 100,
+
             max: 10000
+
         }
     };
 }
@@ -188,167 +324,459 @@ function createBrand(
 
 const BRANDS = {
 
+
+    /* ==================================================
+       SHOPPING
+    ================================================== */
+
     Amazon:
-        createBrand("Amazon", "Amazon", "Shopping", 3, 3),
+        createBrand(
+            "Amazon",
+            "Amazon",
+            "Shopping",
+            3,
+            3
+        ),
 
     Flipkart:
-        createBrand("Flipkart", "Flipkart", "Shopping", 3.5, 3.5),
+        createBrand(
+            "Flipkart",
+            "Flipkart",
+            "Shopping",
+            3.5,
+            3.5
+        ),
 
     TataCLiQ:
-        createBrand("TataCLiQ", "Tata CLiQ", "Shopping"),
+        createBrand(
+            "TataCLiQ",
+            "Tata CLiQ",
+            "Shopping"
+        ),
 
     Meesho:
-        createBrand("Meesho", "Meesho", "Shopping"),
+        createBrand(
+            "Meesho",
+            "Meesho",
+            "Shopping"
+        ),
+
+
+    /* ==================================================
+       FASHION
+    ================================================== */
 
     Myntra:
-        createBrand("Myntra", "Myntra", "Fashion"),
+        createBrand(
+            "Myntra",
+            "Myntra",
+            "Fashion"
+        ),
 
     AJIO:
-        createBrand("AJIO", "AJIO", "Fashion"),
+        createBrand(
+            "AJIO",
+            "AJIO",
+            "Fashion"
+        ),
 
     Westside:
-        createBrand("Westside", "Westside", "Fashion"),
+        createBrand(
+            "Westside",
+            "Westside",
+            "Fashion"
+        ),
 
     MaxFashion:
-        createBrand("MaxFashion", "Max Fashion", "Fashion"),
+        createBrand(
+            "MaxFashion",
+            "Max Fashion",
+            "Fashion"
+        ),
 
     Lifestyle:
-        createBrand("Lifestyle", "Lifestyle", "Fashion"),
+        createBrand(
+            "Lifestyle",
+            "Lifestyle",
+            "Fashion"
+        ),
 
     ShoppersStop:
-        createBrand("ShoppersStop", "Shoppers Stop", "Fashion"),
+        createBrand(
+            "ShoppersStop",
+            "Shoppers Stop",
+            "Fashion"
+        ),
 
     Pantaloons:
-        createBrand("Pantaloons", "Pantaloons", "Fashion"),
+        createBrand(
+            "Pantaloons",
+            "Pantaloons",
+            "Fashion"
+        ),
 
     Levis:
-        createBrand("Levis", "Levi's", "Fashion"),
+        createBrand(
+            "Levis",
+            "Levi's",
+            "Fashion"
+        ),
 
     Decathlon:
-        createBrand("Decathlon", "Decathlon", "Fashion"),
+        createBrand(
+            "Decathlon",
+            "Decathlon",
+            "Fashion"
+        ),
 
     FirstCry:
-        createBrand("FirstCry", "FirstCry", "Fashion"),
+        createBrand(
+            "FirstCry",
+            "FirstCry",
+            "Fashion"
+        ),
+
+
+    /* ==================================================
+       ELECTRONICS
+    ================================================== */
 
     Croma:
-        createBrand("Croma", "Croma", "Electronics"),
+        createBrand(
+            "Croma",
+            "Croma",
+            "Electronics"
+        ),
 
     RelianceDigital:
-        createBrand("RelianceDigital", "Reliance Digital", "Electronics"),
+        createBrand(
+            "RelianceDigital",
+            "Reliance Digital",
+            "Electronics"
+        ),
 
     VijaySales:
-        createBrand("VijaySales", "Vijay Sales", "Electronics"),
+        createBrand(
+            "VijaySales",
+            "Vijay Sales",
+            "Electronics"
+        ),
+
+
+    /* ==================================================
+       HOME
+    ================================================== */
 
     IKEA:
-        createBrand("IKEA", "IKEA", "Home"),
+        createBrand(
+            "IKEA",
+            "IKEA",
+            "Home"
+        ),
 
     Pepperfry:
-        createBrand("Pepperfry", "Pepperfry", "Home"),
+        createBrand(
+            "Pepperfry",
+            "Pepperfry",
+            "Home"
+        ),
+
+
+    /* ==================================================
+       FOOD
+    ================================================== */
 
     Domino:
-        createBrand("Domino", "Domino's", "Food", 15, 5),
+        createBrand(
+            "Domino",
+            "Domino's",
+            "Food",
+            15,
+            5
+        ),
 
     Zomato:
-        createBrand("Zomato", "Zomato", "Food"),
+        createBrand(
+            "Zomato",
+            "Zomato",
+            "Food"
+        ),
 
     Swiggy:
-        createBrand("Swiggy", "Swiggy", "Food"),
+        createBrand(
+            "Swiggy",
+            "Swiggy",
+            "Food"
+        ),
 
     Haldirams:
-        createBrand("Haldirams", "Haldiram's", "Food"),
+        createBrand(
+            "Haldirams",
+            "Haldiram's",
+            "Food"
+        ),
+
+
+    /* ==================================================
+       GROCERY
+    ================================================== */
 
     BigBasket:
-        createBrand("BigBasket", "bigbasket", "Grocery"),
+        createBrand(
+            "BigBasket",
+            "bigbasket",
+            "Grocery"
+        ),
 
     Blinkit:
-        createBrand("Blinkit", "Blinkit", "Grocery"),
+        createBrand(
+            "Blinkit",
+            "Blinkit",
+            "Grocery"
+        ),
 
     Zepto:
-        createBrand("Zepto", "Zepto", "Grocery"),
+        createBrand(
+            "Zepto",
+            "Zepto",
+            "Grocery"
+        ),
+
+
+    /* ==================================================
+       ENTERTAINMENT
+    ================================================== */
 
     BookMyShow:
-        createBrand("BookMyShow", "BookMyShow", "Entertainment"),
+        createBrand(
+            "BookMyShow",
+            "BookMyShow",
+            "Entertainment"
+        ),
 
     PVR:
-        createBrand("PVR", "PVR", "Entertainment"),
+        createBrand(
+            "PVR",
+            "PVR",
+            "Entertainment"
+        ),
 
     Spotify:
-        createBrand("Spotify", "Spotify", "Entertainment"),
+        createBrand(
+            "Spotify",
+            "Spotify",
+            "Entertainment"
+        ),
 
     Netflix:
-        createBrand("Netflix", "Netflix", "Entertainment"),
+        createBrand(
+            "Netflix",
+            "Netflix",
+            "Entertainment"
+        ),
 
     SonyLIV:
-        createBrand("SonyLIV", "Sony LIV", "Entertainment"),
+        createBrand(
+            "SonyLIV",
+            "Sony LIV",
+            "Entertainment"
+        ),
 
     ZEE5:
-        createBrand("ZEE5", "ZEE5", "Entertainment"),
+        createBrand(
+            "ZEE5",
+            "ZEE5",
+            "Entertainment"
+        ),
+
+
+    /* ==================================================
+       TRAVEL
+    ================================================== */
 
     Uber:
-        createBrand("Uber", "Uber", "Travel"),
+        createBrand(
+            "Uber",
+            "Uber",
+            "Travel"
+        ),
 
     MakeMyTrip:
-        createBrand("MakeMyTrip", "MakeMyTrip", "Travel"),
+        createBrand(
+            "MakeMyTrip",
+            "MakeMyTrip",
+            "Travel"
+        ),
 
     Cleartrip:
-        createBrand("Cleartrip", "Cleartrip", "Travel"),
+        createBrand(
+            "Cleartrip",
+            "Cleartrip",
+            "Travel"
+        ),
 
     EaseMyTrip:
-        createBrand("EaseMyTrip", "EaseMyTrip", "Travel"),
+        createBrand(
+            "EaseMyTrip",
+            "EaseMyTrip",
+            "Travel"
+        ),
 
     AirIndia:
-        createBrand("AirIndia", "Air India", "Travel"),
+        createBrand(
+            "AirIndia",
+            "Air India",
+            "Travel"
+        ),
+
+
+    /* ==================================================
+       BEAUTY
+    ================================================== */
 
     Nykaa:
-        createBrand("Nykaa", "Nykaa", "Beauty"),
+        createBrand(
+            "Nykaa",
+            "Nykaa",
+            "Beauty"
+        ),
 
     Tira:
-        createBrand("Tira", "Tira", "Beauty"),
+        createBrand(
+            "Tira",
+            "Tira",
+            "Beauty"
+        ),
 
     TheBodyShop:
-        createBrand("TheBodyShop", "The Body Shop", "Beauty"),
+        createBrand(
+            "TheBodyShop",
+            "The Body Shop",
+            "Beauty"
+        ),
+
+
+    /* ==================================================
+       HEALTH
+    ================================================== */
 
     Tata1mg:
-        createBrand("Tata1mg", "Tata 1mg", "Health"),
+        createBrand(
+            "Tata1mg",
+            "Tata 1mg",
+            "Health"
+        ),
 
     Netmeds:
-        createBrand("Netmeds", "Netmeds", "Health"),
+        createBrand(
+            "Netmeds",
+            "Netmeds",
+            "Health"
+        ),
 
     CultFit:
-        createBrand("CultFit", "Cult.fit", "Health"),
+        createBrand(
+            "CultFit",
+            "Cult.fit",
+            "Health"
+        ),
+
+
+    /* ==================================================
+       JEWELLERY
+    ================================================== */
 
     Fastrack:
-        createBrand("Fastrack", "Fastrack", "Jewellery"),
+        createBrand(
+            "Fastrack",
+            "Fastrack",
+            "Jewellery"
+        ),
 
     Titan:
-        createBrand("Titan", "Titan", "Jewellery"),
+        createBrand(
+            "Titan",
+            "Titan",
+            "Jewellery"
+        ),
 
     CaratLane:
-        createBrand("CaratLane", "CaratLane", "Jewellery"),
+        createBrand(
+            "CaratLane",
+            "CaratLane",
+            "Jewellery"
+        ),
 
     MiaByTanishq:
-        createBrand("MiaByTanishq", "Mia by Tanishq", "Jewellery"),
+        createBrand(
+            "MiaByTanishq",
+            "Mia by Tanishq",
+            "Jewellery"
+        ),
+
+
+    /* ==================================================
+       GIFTS
+    ================================================== */
 
     Archies:
-        createBrand("Archies", "Archies", "Gifts"),
+        createBrand(
+            "Archies",
+            "Archies",
+            "Gifts"
+        ),
 
     Hamleys:
-        createBrand("Hamleys", "Hamleys", "Gifts"),
+        createBrand(
+            "Hamleys",
+            "Hamleys",
+            "Gifts"
+        ),
+
+
+    /* ==================================================
+       BOOKS
+    ================================================== */
 
     Crossword:
-        createBrand("Crossword", "Crossword", "Books"),
+        createBrand(
+            "Crossword",
+            "Crossword",
+            "Books"
+        ),
+
+
+    /* ==================================================
+       APPAREL
+    ================================================== */
 
     MarksAndSpencer:
-        createBrand("MarksAndSpencer", "Marks & Spencer", "Fashion"),
+        createBrand(
+            "MarksAndSpencer",
+            "Marks & Spencer",
+            "Fashion"
+        ),
 
     VanHeusen:
-        createBrand("VanHeusen", "Van Heusen", "Fashion"),
+        createBrand(
+            "VanHeusen",
+            "Van Heusen",
+            "Fashion"
+        ),
 
     AllenSolly:
-        createBrand("AllenSolly", "Allen Solly", "Fashion"),
+        createBrand(
+            "AllenSolly",
+            "Allen Solly",
+            "Fashion"
+        ),
 
     PeterEngland:
-        createBrand("PeterEngland", "Peter England", "Fashion")
+        createBrand(
+            "PeterEngland",
+            "Peter England",
+            "Fashion"
+        )
 };
 
 
@@ -357,24 +785,34 @@ const BRANDS = {
 ===================================================== */
 
 function getBrand(brandId) {
+
     return BRANDS[brandId] || null;
+
 }
 
 
 function getAllBrands() {
+
     return Object.values(BRANDS);
+
 }
 
 
 function getBrandsByCategory(category) {
 
     if (category === "All") {
+
         return getAllBrands();
+
     }
 
     return getAllBrands().filter(
-        brand => brand.category === category
+
+        brand =>
+            brand.category === category
+
     );
+
 }
 
 
@@ -383,13 +821,19 @@ function getBrandDiscount(
     mode = "fixed"
 ) {
 
-    const brand = getBrand(brandId);
+    const brand =
+        getBrand(brandId);
 
     if (!brand) {
+
         return 0;
+
     }
 
     return mode === "custom"
+
         ? brand.customDiscount
+
         : brand.fixedDiscount;
-}
+
+           }
