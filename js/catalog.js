@@ -1,21 +1,16 @@
 /* =====================================================
    GIFTCARDSTORE — CATALOG
-   COMPLETE LOGO SYSTEM
-   VERSION: 2026-09-16-12
+   VECTOR LOGO SYSTEM
+   VERSION: 2026-09-16-13
 ===================================================== */
 
 (function () {
 
     "use strict";
 
-    const VERSION = "2026-09-16-12";
+    const LOGOS = {
 
-    /*
-     * Verified logo files where we already know they work.
-     * Everything else uses the brand's own website icon.
-     */
-
-    const VERIFIED = {
+        /* SHOPPING */
 
         "Amazon":
             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Amazon_2024.svg",
@@ -23,11 +18,62 @@
         "Flipkart":
             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Flipkart_logo_(2026).svg",
 
+        "Tata CLiQ":
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/TATA_Cliq_Logo.jpg",
+
+        "Meesho":
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Meesho_logo.png",
+
+
+        /* FASHION */
+
         "Myntra":
             "https://commons.wikimedia.org/wiki/Special:Redirect/file/65c5da9f878952603e370d03_Myntra-Logo_1.svg",
 
+        "Max Fashion":
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Logo_of_Max_Fashion_and_Accessories,_March_2018.png",
+
+        "Shoppers Stop":
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Shoppers_Stop_Logo.gif",
+
+        "Levi's":
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Levi%27s_logo.svg",
+
+        "Decathlon":
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Decathlon_Logo24.svg",
+
+        "FirstCry":
+            "https://cdn.simpleicons.org/firstcry/00AEEF",
+
+        "Marks & Spencer":
+            "https://cdn.simpleicons.org/marksandspencer/000000",
+
+        "Van Heusen":
+            "https://cdn.simpleicons.org/vanheusen/000000",
+
+        "Allen Solly":
+            "https://cdn.simpleicons.org/allensolly/000000",
+
+        "Peter England":
+            "https://cdn.simpleicons.org/peterengland/003B5C",
+
+
+        /* ELECTRONICS / HOME */
+
         "Croma":
             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Croma_logo.png",
+
+        "Vijay Sales":
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/VijaySale-Logo.png",
+
+        "IKEA":
+            "https://cdn.simpleicons.org/ikea/0058A3",
+
+        "Pepperfry":
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Pepperfry_logo.jpg",
+
+
+        /* FOOD */
 
         "Domino's":
             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Domino%27s_2025.svg",
@@ -38,8 +84,11 @@
         "Swiggy":
             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Swiggy_logo.png",
 
-        "Meesho":
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Meesho_logo.png",
+        "Haldiram's":
+            "https://cdn.simpleicons.org/haldirams/E31B23",
+
+
+        /* GROCERY */
 
         "bigbasket":
             "https://commons.wikimedia.org/wiki/Special:Redirect/file/BigBasket_Logo.png",
@@ -47,106 +96,95 @@
         "Zepto":
             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Zepto_Logo.svg",
 
-        "Vijay Sales":
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/VijaySale-Logo.png",
+
+        /* ENTERTAINMENT */
+
+        "BookMyShow":
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/BookMyShow_Logo.svg",
+
+        "PVR":
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/PVR_INOX_Logo_After_Merger.png",
+
+        "Spotify":
+            "https://cdn.simpleicons.org/spotify/1DB954",
+
+        "Netflix":
+            "https://cdn.simpleicons.org/netflix/E50914",
+
+        "Sony LIV":
+            "https://cdn.simpleicons.org/sonyliv/000000",
+
+        "ZEE5":
+            "https://cdn.simpleicons.org/zee5/8230C6",
+
+
+        /* TRAVEL */
+
+        "Uber":
+            "https://cdn.simpleicons.org/uber/000000",
+
+        "MakeMyTrip":
+            "https://cdn.simpleicons.org/makemytrip/E52B50",
+
+        "Cleartrip":
+            "https://cdn.simpleicons.org/cleartrip/EF3340",
+
+        "EaseMyTrip":
+            "https://cdn.simpleicons.org/easemytrip/000000",
+
+        "Air India":
+            "https://cdn.simpleicons.org/airindia/D71920",
+
+
+        /* BEAUTY / HEALTH */
 
         "Nykaa":
             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Nykaa_New_Logo.svg",
 
-        "Max Fashion":
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Logo_of_Max_Fashion_and_Accessories,_March_2018.png"
+        "Tira":
+            "https://cdn.simpleicons.org/tira/000000",
+
+        "The Body Shop":
+            "https://cdn.simpleicons.org/thebodyshop/004C3F",
+
+        "Tata 1mg":
+            "https://cdn.simpleicons.org/1mg/FF6F61",
+
+        "Netmeds":
+            "https://cdn.simpleicons.org/netmeds/00A651",
+
+        "Cult.fit":
+            "https://cdn.simpleicons.org/cultfit/000000",
+
+
+        /* JEWELLERY */
+
+        "Fastrack":
+            "https://cdn.simpleicons.org/fastrack/000000",
+
+        "Titan":
+            "https://cdn.simpleicons.org/titan/004B87",
+
+        "CaratLane":
+            "https://cdn.simpleicons.org/caratlane/000000",
+
+        "Mia by Tanishq":
+            "https://cdn.simpleicons.org/tanishq/000000",
+
+
+        /* GIFTS / BOOKS */
+
+        "Archies":
+            "https://cdn.simpleicons.org/archies/000000",
+
+        "Hamleys":
+            "https://cdn.simpleicons.org/hamleys/000000",
+
+        "Crossword":
+            "https://cdn.simpleicons.org/crossword/000000"
 
     };
 
-
-    /*
-     * Official website domains.
-     * Used to obtain the brand's current website icon.
-     */
-
-    const DOMAINS = {
-
-        /* Shopping */
-        "Amazon": "amazon.in",
-        "Flipkart": "flipkart.com",
-        "Tata CLiQ": "tatacliq.com",
-        "Meesho": "meesho.com",
-
-        /* Fashion */
-        "Myntra": "myntra.com",
-        "AJIO": "ajio.com",
-        "Westside": "westside.com",
-        "Max Fashion": "maxfashion.in",
-        "Lifestyle": "lifestylestores.com",
-        "Shoppers Stop": "shoppersstop.com",
-        "Pantaloons": "pantaloons.com",
-        "Levi's": "levi.in",
-        "Decathlon": "decathlon.in",
-        "FirstCry": "firstcry.com",
-        "Marks & Spencer": "marksandspencer.in",
-        "Van Heusen": "vanheusenindia.com",
-        "Allen Solly": "allensolly.com",
-        "Peter England": "peterengland.com",
-
-        /* Electronics / Home */
-        "Croma": "croma.com",
-        "Reliance Digital": "reliancedigital.in",
-        "Vijay Sales": "vijaysales.com",
-        "IKEA": "ikea.com",
-        "Pepperfry": "pepperfry.com",
-
-        /* Food */
-        "Domino's": "dominos.co.in",
-        "Zomato": "zomato.com",
-        "Swiggy": "swiggy.com",
-        "Haldiram's": "haldirams.com",
-
-        /* Grocery */
-        "bigbasket": "bigbasket.com",
-        "Blinkit": "blinkit.com",
-        "Zepto": "zepto.com",
-
-        /* Entertainment */
-        "BookMyShow": "bookmyshow.com",
-        "PVR": "pvrcinemas.com",
-        "Spotify": "spotify.com",
-        "Netflix": "netflix.com",
-        "Sony LIV": "sonyliv.com",
-        "ZEE5": "zee5.com",
-
-        /* Travel */
-        "Uber": "uber.com",
-        "MakeMyTrip": "makemytrip.com",
-        "Cleartrip": "cleartrip.com",
-        "EaseMyTrip": "easemytrip.com",
-        "Air India": "airindia.com",
-
-        /* Beauty / Health */
-        "Nykaa": "nykaa.com",
-        "Tira": "tirabeauty.com",
-        "The Body Shop": "thebodyshop.in",
-        "Tata 1mg": "1mg.com",
-        "Netmeds": "netmeds.com",
-        "Cult.fit": "cult.fit",
-
-        /* Jewellery */
-        "Fastrack": "fastrack.in",
-        "Titan": "titan.co.in",
-        "CaratLane": "caratlane.com",
-        "Mia by Tanishq": "miyatiss.com",
-
-        /* Gifts / Books */
-        "Archies": "archiesonline.com",
-        "Hamleys": "hamleys.in",
-        "Crossword": "crossword.in"
-
-    };
-
-
-    /*
-     * Normalise brand names so small spelling differences
-     * do not break the lookup.
-     */
 
     function clean(name) {
 
@@ -159,68 +197,24 @@
     }
 
 
-    function findObjectKey(object, name) {
+    function findLogo(name) {
 
-        if (object[name]) {
-            return name;
+        if (LOGOS[name]) {
+            return LOGOS[name];
         }
 
         const target = clean(name);
 
-        return Object.keys(object).find(
-            function (key) {
-                return clean(key) === target;
+        const key = Object.keys(LOGOS).find(
+            function (item) {
+                return clean(item) === target;
             }
-        ) || null;
-
-    }
-
-
-    /*
-     * Google retrieves the current favicon from the
-     * specified official brand domain.
-     */
-
-    function websiteLogo(domain) {
-
-        return (
-            "https://www.google.com/s2/favicons" +
-            "?domain=" +
-            encodeURIComponent(domain) +
-            "&sz=256"
         );
 
-    }
-
-
-    /*
-     * Get the best available logo.
-     */
-
-    function getLogo(name) {
-
-        const verifiedKey =
-            findObjectKey(VERIFIED, name);
-
-        if (verifiedKey) {
-            return VERIFIED[verifiedKey];
-        }
-
-        const domainKey =
-            findObjectKey(DOMAINS, name);
-
-        if (domainKey) {
-            return websiteLogo(DOMAINS[domainKey]);
-        }
-
-        return null;
+        return key ? LOGOS[key] : null;
 
     }
 
-
-    /*
-     * Update BRANDS before products are created.
-     */
 
     function updateBrands() {
 
@@ -238,7 +232,7 @@
                 }
 
                 const logo =
-                    getLogo(brand.name);
+                    findLogo(brand.name);
 
                 if (logo) {
                     brand.logo = logo;
@@ -250,100 +244,49 @@
     }
 
 
-    /*
-     * Refresh images already present on screen.
-     */
-
     function refreshImages() {
 
-        const images =
-            document.querySelectorAll(
+        document
+            .querySelectorAll(
                 "img.brand-logo, #productLogo, .owned-gift-logo img"
-            );
+            )
+            .forEach(
+                function (img) {
 
-        images.forEach(
-            function (img) {
+                    const name =
+                        String(img.alt || "").trim();
 
-                const name =
-                    String(img.alt || "").trim();
+                    const logo =
+                        findLogo(name);
 
-                if (!name) {
-                    return;
-                }
-
-                const logo =
-                    getLogo(name);
-
-                if (!logo) {
-                    return;
-                }
-
-                if (
-                    img.dataset.gcsLogo === logo
-                ) {
-                    return;
-                }
-
-                img.dataset.gcsLogo = logo;
-
-                img.onerror = function () {
-
-                    /*
-                     * If the verified/website image fails,
-                     * try the website favicon once.
-                     */
-
-                    const domainKey =
-                        findObjectKey(DOMAINS, name);
-
-                    if (!domainKey) {
+                    if (!logo) {
                         return;
                     }
 
-                    const fallback =
-                        websiteLogo(
-                            DOMAINS[domainKey]
-                        );
-
                     if (
-                        img.dataset.gcsFallback !== fallback
+                        img.dataset.gcsLogo === logo
                     ) {
-
-                        img.dataset.gcsFallback =
-                            fallback;
-
-                        img.onerror = null;
-                        img.src = fallback;
-
+                        return;
                     }
 
-                };
+                    img.dataset.gcsLogo = logo;
 
-                img.src = logo;
+                    img.onerror = null;
 
-            }
-        );
+                    img.src = logo;
+
+                }
+            );
 
     }
 
 
-    /*
-     * Watch the catalog because cards are generated
-     * dynamically by the application.
-     */
+    function observeCards() {
 
-    function startObserver() {
-
-        if (
-            typeof MutationObserver === "undefined"
-        ) {
-            return;
-        }
-
-        const target =
+        const cards =
             document.getElementById("cards");
 
-        if (!target) {
+        if (!cards) {
             return;
         }
 
@@ -355,7 +298,7 @@
             );
 
         observer.observe(
-            target,
+            cards,
             {
                 childList: true,
                 subtree: true
@@ -365,37 +308,17 @@
     }
 
 
-    /*
-     * Initialise everything.
-     */
-
     function initialise() {
 
         updateBrands();
 
         refreshImages();
 
-        startObserver();
+        observeCards();
 
-        setTimeout(
-            refreshImages,
-            300
-        );
-
-        setTimeout(
-            refreshImages,
-            1000
-        );
-
-        setTimeout(
-            refreshImages,
-            2500
-        );
-
-        setTimeout(
-            refreshImages,
-            5000
-        );
+        setTimeout(refreshImages, 500);
+        setTimeout(refreshImages, 1500);
+        setTimeout(refreshImages, 3000);
 
     }
 
