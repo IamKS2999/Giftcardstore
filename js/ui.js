@@ -1,6 +1,6 @@
 /* =====================================================
-   GIFTCARDSTORE — PREMIUM UI SYSTEM
-   FULL UI REDESIGN
+   GIFTCARDSTORE — PREMIUM UI
+   VISUAL REDESIGN v2
 ===================================================== */
 
 window.GCS = window.GCS || {};
@@ -17,16 +17,19 @@ GCS.closeAllOverlays = function () {
     document
         .querySelectorAll(".overlay")
         .forEach(function (overlay) {
+
             overlay.style.display = "none";
+
         });
 
 };
 
-window.closeAllOverlays = GCS.closeAllOverlays;
+window.closeAllOverlays =
+    GCS.closeAllOverlays;
 
 
 /* =====================================================
-   NOTIFICATION
+   PREMIUM NOTICE
 ===================================================== */
 
 window.showNotice = function (
@@ -36,7 +39,9 @@ window.showNotice = function (
 ) {
 
     const old =
-        document.getElementById("gcsNotice");
+        document.getElementById(
+            "gcsNotice"
+        );
 
     if (old) {
         old.remove();
@@ -45,7 +50,8 @@ window.showNotice = function (
     const notice =
         document.createElement("div");
 
-    notice.id = "gcsNotice";
+    notice.id =
+        "gcsNotice";
 
     notice.className =
         "gcs-notice " + type;
@@ -53,6 +59,7 @@ window.showNotice = function (
     notice.innerHTML = `
 
         <div class="gcs-notice-mark">
+
             ${
                 type === "success"
                     ? "✓"
@@ -60,6 +67,7 @@ window.showNotice = function (
                         ? "!"
                         : "i"
             }
+
         </div>
 
         <div class="gcs-notice-copy">
@@ -77,26 +85,37 @@ window.showNotice = function (
         <button
             class="gcs-notice-close"
             onclick="this.parentElement.remove()">
+
             ×
+
         </button>
 
     `;
 
-    document.body.appendChild(notice);
+    document.body.appendChild(
+        notice
+    );
 
-    setTimeout(function () {
+    setTimeout(
+        function () {
 
-        if (notice.parentElement) {
-            notice.remove();
-        }
+            if (
+                notice.parentElement
+            ) {
 
-    }, 3500);
+                notice.remove();
+
+            }
+
+        },
+        3200
+    );
 
 };
 
 
 /* =====================================================
-   PREMIUM DESIGN SYSTEM
+   DESIGN SYSTEM
 ===================================================== */
 
 (function () {
@@ -110,11 +129,15 @@ window.showNotice = function (
         old.remove();
     }
 
+
     const style =
-        document.createElement("style");
+        document.createElement(
+            "style"
+        );
 
     style.id =
         "gcs-premium-ui";
+
 
     style.textContent = `
 
@@ -124,12 +147,6 @@ window.showNotice = function (
 
 * {
     box-sizing: border-box;
-}
-
-button,
-input,
-textarea {
-    font: inherit;
 }
 
 button {
@@ -143,41 +160,39 @@ button {
 
 .site-header {
 
-    min-height: 72px !important;
+    min-height: 70px !important;
 
     padding:
-        10px 28px !important;
-
-    gap: 20px !important;
+        9px 22px !important;
 
     background:
-        rgba(12,10,20,.94) !important;
+        rgba(12,10,18,.96) !important;
 
     border-bottom:
-        1px solid rgba(255,255,255,.08) !important;
+        1px solid rgba(255,255,255,.07) !important;
 
     backdrop-filter:
-        blur(18px);
+        blur(20px);
 
 }
 
 .site-header .logo {
 
     font-size:
-        25px !important;
+        24px !important;
 
     font-weight:
         900 !important;
 
     letter-spacing:
-        -1.2px;
+        -1.3px;
 
 }
 
 .site-header nav {
 
     gap:
-        9px !important;
+        8px !important;
 
 }
 
@@ -187,7 +202,7 @@ button {
         44px !important;
 
     padding:
-        10px 18px !important;
+        9px 17px !important;
 
     border-radius:
         14px !important;
@@ -208,22 +223,6 @@ button {
     gap:
         7px;
 
-    min-width:
-        104px;
-
-}
-
-#cartCount {
-
-    display:
-        inline-flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
 }
 
 
@@ -234,27 +233,20 @@ button {
 .hero {
 
     padding-top:
-        70px !important;
+        65px !important;
 
     padding-bottom:
-        46px !important;
-
-}
-
-.hero-actions {
-
-    gap:
-        12px !important;
+        40px !important;
 
 }
 
 .hero-mini-stats {
 
     width:
-        min(610px,100%) !important;
+        min(600px,100%) !important;
 
     margin:
-        13px auto 0 !important;
+        12px auto 0 !important;
 
     gap:
         8px !important;
@@ -264,7 +256,7 @@ button {
 .hero-mini-stats > div {
 
     min-height:
-        66px;
+        63px;
 
     display:
         flex;
@@ -276,16 +268,16 @@ button {
         center;
 
     padding:
-        10px 8px !important;
+        9px !important;
 
     border:
-        1px solid rgba(255,255,255,.08) !important;
+        1px solid rgba(255,255,255,.07) !important;
 
     border-radius:
-        16px !important;
+        15px !important;
 
     background:
-        rgba(255,255,255,.035) !important;
+        rgba(255,255,255,.028) !important;
 
 }
 
@@ -294,15 +286,12 @@ button {
     font-size:
         17px !important;
 
-    line-height:
-        1.15;
-
 }
 
 .hero-mini-stats span {
 
     margin-top:
-        4px;
+        3px;
 
     font-size:
         9px !important;
@@ -311,63 +300,25 @@ button {
         uppercase;
 
     letter-spacing:
-        .7px;
+        .6px;
 
 }
 
 
 /* =====================================================
-   PRODUCTS SECTION
-===================================================== */
-
-.products {
-
-    padding-top:
-        42px !important;
-
-}
-
-.section-heading {
-
-    margin-bottom:
-        22px !important;
-
-}
-
-.section-heading h2 {
-
-    letter-spacing:
-        -.6px;
-
-}
-
-
-/* =====================================================
-   PREMIUM SEARCH
+   SEARCH
 ===================================================== */
 
 .search-box {
 
-    position:
-        relative;
-
     min-height:
-        58px !important;
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    margin:
-        0 auto 15px !important;
+        57px !important;
 
     padding:
-        0 18px !important;
+        0 17px !important;
 
     border:
-        1px solid rgba(255,255,255,.09) !important;
+        1px solid rgba(255,255,255,.08) !important;
 
     border-radius:
         17px !important;
@@ -376,77 +327,28 @@ button {
         rgba(255,255,255,.035) !important;
 
     box-shadow:
-        0 8px 30px rgba(0,0,0,.14);
+        0 10px 30px rgba(0,0,0,.14);
 
 }
 
 .search-box:focus-within {
 
     border-color:
-        rgba(135,90,255,.8) !important;
+        rgba(135,90,255,.7) !important;
 
     box-shadow:
-        0 0 0 3px rgba(113,60,243,.10),
-        0 12px 35px rgba(0,0,0,.18);
-
-}
-
-.search-box input {
-
-    min-width:
-        0;
-
-    width:
-        100%;
-
-    border:
-        0 !important;
-
-    outline:
-        0 !important;
-
-    background:
-        transparent !important;
-
-    color:
-        var(--text) !important;
+        0 0 0 3px rgba(113,60,243,.10);
 
 }
 
 .search-symbol {
 
-    margin-right:
-        10px;
-
     color:
         var(--muted);
 
     font-size:
-        25px;
+        24px;
 
-}
-
-
-/* =====================================================
-   SEARCH RESULTS
-===================================================== */
-
-.search-info {
-
-    margin:
-        4px 0 13px;
-
-    color:
-        var(--muted);
-
-    font-size:
-        13px;
-
-}
-
-.search-info strong {
-    color:
-        var(--text);
 }
 
 
@@ -460,40 +362,29 @@ button {
         8px !important;
 
     margin-bottom:
-        24px !important;
+        20px !important;
 
-    scrollbar-width:
-        none;
-
-}
-
-.categories::-webkit-scrollbar {
-    display:
-        none;
 }
 
 .category {
 
     min-height:
-        40px !important;
+        39px !important;
 
     padding:
-        8px 17px !important;
+        7px 16px !important;
 
     border-radius:
         13px !important;
 
     font-size:
-        12px !important;
-
-    font-weight:
-        800 !important;
+        11px !important;
 
 }
 
 
 /* =====================================================
-   BRAND GRID
+   BRAND CARDS
 ===================================================== */
 
 .cards {
@@ -505,58 +396,43 @@ button {
         repeat(auto-fill,minmax(220px,1fr));
 
     gap:
-        15px !important;
+        14px !important;
 
 }
-
-
-/* =====================================================
-   PREMIUM BRAND CARD
-===================================================== */
 
 .cards .card {
 
     position:
         relative;
 
-    display:
-        flex !important;
-
-    flex-direction:
-        column;
-
-    min-width:
-        0;
-
     min-height:
-        326px;
+        315px;
 
     padding:
-        12px !important;
+        11px !important;
 
     border:
         1px solid rgba(255,255,255,.075) !important;
 
     border-radius:
-        20px !important;
+        19px !important;
 
     background:
         linear-gradient(
             145deg,
             rgba(255,255,255,.045),
-            rgba(255,255,255,.018)
+            rgba(255,255,255,.015)
         ) !important;
 
     box-shadow:
-        0 12px 32px rgba(0,0,0,.14);
-
-    transition:
-        transform .18s ease,
-        border-color .18s ease,
-        box-shadow .18s ease;
+        0 12px 32px rgba(0,0,0,.15);
 
     cursor:
         pointer;
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease;
 
 }
 
@@ -566,143 +442,76 @@ button {
         translateY(-3px);
 
     border-color:
-        rgba(132,91,255,.45) !important;
-
-    box-shadow:
-        0 18px 42px rgba(0,0,0,.22);
+        rgba(137,92,255,.42) !important;
 
 }
 
-
-/* =====================================================
-   BRAND LOGO
-===================================================== */
-
 .cards .brand-box {
 
-    position:
-        relative;
-
-    width:
-        100%;
-
     height:
-        125px;
+        120px !important;
 
     flex:
-        0 0 125px;
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
+        0 0 120px !important;
 
     margin-bottom:
-        12px;
-
-    border:
-        1px solid rgba(255,255,255,.06);
+        11px !important;
 
     border-radius:
-        16px;
+        15px !important;
 
     background:
-        rgba(255,255,255,.045);
-
-    overflow:
-        hidden;
+        rgba(255,255,255,.045) !important;
 
 }
 
 .cards .brand-box img {
 
     width:
-        82px;
+        78px !important;
 
     height:
-        82px;
+        78px !important;
 
     object-fit:
         contain;
 
-    display:
-        block;
-
 }
-
-
-/* =====================================================
-   CARD TEXT
-===================================================== */
 
 .cards .brand {
 
-    margin:
-        0 !important;
-
     font-size:
-        10px !important;
-
-    font-weight:
-        900 !important;
+        9px !important;
 
     letter-spacing:
         1px;
-
-    text-transform:
-        uppercase;
 
 }
 
 .cards .card h3 {
 
     margin:
-        5px 0 5px !important;
-
-    min-height:
-        23px;
+        5px 0 4px !important;
 
     font-size:
         18px !important;
-
-    line-height:
-        1.2;
-
-    letter-spacing:
-        -.3px;
 
 }
 
 .cards .discount {
 
-    min-height:
-        19px;
-
     margin-bottom:
-        12px;
+        5px !important;
 
     font-size:
-        12px !important;
-
-    font-weight:
-        800;
+        11px !important;
 
 }
 
 .cards .buy {
 
-    width:
-        100%;
-
     min-height:
-        43px;
-
-    margin-top:
-        auto;
+        42px !important;
 
     border-radius:
         12px !important;
@@ -711,110 +520,144 @@ button {
 
 
 /* =====================================================
-   WISHLIST BUTTON
+   CARD WISHLIST
 ===================================================== */
 
 .wishlist-card-button {
 
     position:
-        absolute;
+        absolute !important;
 
     top:
-        21px;
+        19px !important;
 
     right:
-        21px;
+        19px !important;
 
     z-index:
-        3;
+        5;
 
     width:
-        40px;
+        37px !important;
 
     height:
-        40px;
+        37px !important;
+
+    padding:
+        0 !important;
 
     display:
-        grid;
+        grid !important;
 
     place-items:
-        center;
+        center !important;
 
     border:
-        1px solid rgba(255,255,255,.10);
+        1px solid rgba(255,255,255,.12) !important;
 
     border-radius:
-        12px;
+        11px !important;
 
     background:
-        rgba(10,9,16,.72);
+        rgba(15,13,22,.82) !important;
 
     color:
-        white;
+        #e9e6ef !important;
 
     font-size:
-        21px;
+        20px !important;
 
-    cursor:
-        pointer;
+    line-height:
+        1 !important;
 
     backdrop-filter:
-        blur(8px);
+        blur(10px);
 
 }
 
-.wishlist-card-button.active,
-.wishlist-product-button.active {
+.wishlist-card-button.active {
 
     color:
-        #a875ff;
+        #b17cff !important;
 
     border-color:
-        rgba(168,117,255,.55);
+        rgba(150,100,255,.55) !important;
 
     background:
-        rgba(113,60,243,.16);
+        rgba(113,60,243,.16) !important;
 
 }
 
 
 /* =====================================================
-   PRODUCT MODAL
+   OVERLAY
+===================================================== */
+
+.overlay {
+
+    padding:
+        12px !important;
+
+    background:
+        rgba(4,3,8,.80) !important;
+
+    backdrop-filter:
+        blur(13px);
+
+}
+
+
+/* =====================================================
+   PRODUCT MODAL — NEW PREMIUM SHEET
 ===================================================== */
 
 .product-panel {
 
     width:
-        min(620px,100%) !important;
+        min(570px,100%) !important;
 
     max-height:
-        calc(100vh - 20px);
+        calc(100vh - 24px);
 
     overflow-y:
         auto;
 
     padding:
-        20px !important;
+        18px !important;
 
     border-radius:
-        25px !important;
+        24px !important;
+
+    border:
+        1px solid rgba(255,255,255,.09) !important;
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.48);
 
 }
+
+
+/* -----------------------------------------------------
+   HEADER
+----------------------------------------------------- */
 
 .product-panel .panel-header {
 
     margin-bottom:
-        11px !important;
+        13px !important;
 
 }
 
 .product-panel .panel-header h2 {
 
     margin:
-        2px 0 4px !important;
+        2px 0 3px !important;
 
     font-size:
-        29px !important;
+        30px !important;
+
+    letter-spacing:
+        -.9px;
 
 }
 
@@ -824,19 +667,31 @@ button {
         0 !important;
 
     font-size:
-        13px !important;
+        12px !important;
+
+    line-height:
+        1.45;
 
 }
 
 
-/* =====================================================
-   PRODUCT BRAND HEADER
-===================================================== */
+/* -----------------------------------------------------
+   BRAND HEADER
+----------------------------------------------------- */
 
-.selected-brand {
+.product-panel .selected-brand {
 
     position:
         relative;
+
+    min-height:
+        70px !important;
+
+    margin:
+        0 0 12px !important;
+
+    padding:
+        8px 11px !important;
 
     display:
         flex !important;
@@ -844,171 +699,324 @@ button {
     align-items:
         center;
 
-    min-height:
-        72px;
-
-    margin-bottom:
-        10px !important;
-
-    padding:
-        9px 12px !important;
+    gap:
+        11px;
 
     border:
-        1px solid rgba(255,255,255,.08) !important;
+        1px solid rgba(255,255,255,.075) !important;
 
     border-radius:
-        17px !important;
+        16px !important;
+
+    background:
+        rgba(255,255,255,.028) !important;
+
+}
+
+
+/* logo */
+
+.product-panel .selected-brand-logo {
+
+    width:
+        52px !important;
+
+    height:
+        52px !important;
+
+    flex:
+        0 0 52px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    border:
+        1px solid rgba(255,255,255,.07);
+
+    border-radius:
+        12px !important;
+
+    background:
+        rgba(255,255,255,.04);
+
+    overflow:
+        hidden;
+
+}
+
+.product-panel .selected-brand-logo img {
+
+    width:
+        39px !important;
+
+    height:
+        39px !important;
+
+    object-fit:
+        contain;
+
+}
+
+
+/* brand text */
+
+.product-panel .selected-brand-name {
+
+    font-size:
+        18px !important;
+
+    font-weight:
+        900;
+
+    line-height:
+        1.1;
+
+}
+
+.product-panel .selected-brand-subtitle {
+
+    margin-top:
+        3px;
+
+    font-size:
+        11px !important;
+
+    color:
+        var(--muted);
+
+}
+
+
+/* -----------------------------------------------------
+   WISHLIST — REMOVE UGLY WHITE BUTTON
+----------------------------------------------------- */
+
+.product-panel .wishlist-product-button {
+
+    position:
+        absolute !important;
+
+    right:
+        11px !important;
+
+    top:
+        50% !important;
+
+    transform:
+        translateY(-50%);
+
+    width:
+        39px !important;
+
+    height:
+        39px !important;
+
+    padding:
+        0 !important;
+
+    display:
+        grid !important;
+
+    place-items:
+        center !important;
+
+    border:
+        1px solid rgba(255,255,255,.11) !important;
+
+    border-radius:
+        11px !important;
 
     background:
         rgba(255,255,255,.035) !important;
 
+    color:
+        #e8e4ef !important;
+
+    font-size:
+        21px !important;
+
+    line-height:
+        1 !important;
+
+    box-shadow:
+        none !important;
+
 }
 
-.selected-brand-logo {
+.product-panel .wishlist-product-button.active {
 
-    width:
-        57px !important;
+    color:
+        #b27cff !important;
 
-    height:
-        57px !important;
+    border-color:
+        rgba(164,112,255,.60) !important;
 
-    flex:
-        0 0 57px;
+    background:
+        rgba(113,60,243,.16) !important;
+
+}
+
+
+/* -----------------------------------------------------
+   REMOVE DEBUG-LIKE PRODUCT INFO
+----------------------------------------------------- */
+
+.product-info-box {
+
+    margin:
+        0 0 13px !important;
+
+    padding:
+        9px 11px !important;
+
+    border:
+        1px solid rgba(255,255,255,.06) !important;
+
+    border-radius:
+        12px !important;
+
+    background:
+        rgba(255,255,255,.018) !important;
+
+    color:
+        var(--muted);
+
+    font-size:
+        10px !important;
+
+    line-height:
+        1.4;
+
+}
+
+.product-info-box strong {
+
+    color:
+        var(--text);
+
+}
+
+
+/* -----------------------------------------------------
+   GIFT CARD TYPE
+----------------------------------------------------- */
+
+.product-panel .field-label {
+
+    margin:
+        12px 0 7px !important;
+
+    font-size:
+        12px !important;
+
+    font-weight:
+        900 !important;
+
+    letter-spacing:
+        .1px;
+
+}
+
+.product-panel .mode-buttons {
+
+    display:
+        grid !important;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:
+        8px !important;
+
+    margin-bottom:
+        10px !important;
+
+}
+
+.product-panel .mode-button {
+
+    min-height:
+        55px !important;
+
+    padding:
+        7px 10px !important;
 
     border-radius:
         13px !important;
 
 }
 
-.selected-brand-name {
+.product-panel .mode-button strong {
 
     font-size:
-        17px !important;
-
-    font-weight:
-        900;
+        13px !important;
 
 }
 
+.product-panel .mode-button small {
 
-/* =====================================================
-   PRODUCT INFO
-===================================================== */
-
-.product-info-box {
-
-    margin:
-        8px 0 12px;
-
-    padding:
-        10px 12px;
-
-    border:
-        1px solid rgba(255,255,255,.07);
-
-    border-radius:
-        13px;
-
-    background:
-        rgba(255,255,255,.025);
-
-    color:
-        var(--muted);
+    margin-top:
+        2px;
 
     font-size:
-        11px;
-
-    line-height:
-        1.45;
-
-}
-
-.product-info-box strong {
-    color:
-        var(--text);
-}
-
-
-/* =====================================================
-   MODE
-===================================================== */
-
-.mode-buttons {
-
-    gap:
-        8px !important;
-
-    margin-bottom:
-        10px !important;
-
-}
-
-.mode-button {
-
-    min-height:
-        60px !important;
-
-    padding:
-        8px !important;
-
-    border-radius:
-        14px !important;
-
-}
-
-.mode-button strong {
-
-    font-size:
-        14px !important;
-
-}
-
-.mode-button small {
-
-    font-size:
-        10px !important;
+        9px !important;
 
 }
 
 
-/* =====================================================
-   VALUES
-===================================================== */
+/* -----------------------------------------------------
+   DENOMINATIONS
+----------------------------------------------------- */
 
-.fixed-values {
+.product-panel .fixed-values {
 
     display:
         grid !important;
 
     grid-template-columns:
-        repeat(2,minmax(0,1fr));
+        repeat(2,1fr);
 
     gap:
         8px !important;
 
 }
 
-.value-button {
+.product-panel .value-button {
 
     min-height:
-        70px !important;
+        66px !important;
 
     padding:
         8px !important;
 
+    border:
+        1px solid rgba(255,255,255,.075) !important;
+
     border-radius:
         14px !important;
 
+    background:
+        rgba(255,255,255,.018) !important;
+
 }
 
-.value-button strong {
+.product-panel .value-button strong {
 
     font-size:
         18px !important;
 
+    line-height:
+        1.15;
+
 }
 
-.value-button small {
+.product-panel .value-button small {
+
+    margin-top:
+        3px;
 
     font-size:
         10px !important;
@@ -1016,34 +1024,126 @@ button {
 }
 
 
-/* =====================================================
-   PRICE PREVIEW
-===================================================== */
+/* -----------------------------------------------------
+   SELECTED VALUE
+----------------------------------------------------- */
 
-.price-preview {
+.product-panel .value-button.active {
+
+    border:
+        1px solid rgba(153,103,255,.9) !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(113,60,243,.18),
+            rgba(65,105,225,.12)
+        ) !important;
+
+    box-shadow:
+        0 8px 25px rgba(80,50,180,.12);
+
+}
+
+
+/* -----------------------------------------------------
+   CUSTOM AMOUNT
+----------------------------------------------------- */
+
+.product-panel .custom-area {
 
     margin-top:
-        10px !important;
-
-    padding:
-        12px !important;
-
-    border-radius:
-        15px !important;
+        8px;
 
 }
 
-.preview-row {
+.product-panel .amount-input {
 
     min-height:
-        28px;
+        53px !important;
+
+    border-radius:
+        13px !important;
 
 }
 
-.preview-total strong {
+
+/* -----------------------------------------------------
+   PRICE PREVIEW
+----------------------------------------------------- */
+
+.product-panel .price-preview {
+
+    margin:
+        10px 0 !important;
+
+    padding:
+        11px 13px !important;
+
+    border:
+        1px solid rgba(255,255,255,.07) !important;
+
+    border-radius:
+        14px !important;
+
+    background:
+        rgba(255,255,255,.025) !important;
+
+}
+
+.product-panel .preview-row {
+
+    min-height:
+        27px !important;
+
+}
+
+.product-panel .preview-row span {
+
+    font-size:
+        11px !important;
+
+}
+
+.product-panel .preview-row strong {
+
+    font-size:
+        12px !important;
+
+}
+
+.product-panel .preview-total {
+
+    padding-top:
+        7px;
+
+}
+
+.product-panel .preview-total strong {
 
     font-size:
         20px !important;
+
+}
+
+
+/* -----------------------------------------------------
+   PRIMARY ACTION
+----------------------------------------------------- */
+
+.product-panel .wide-primary {
+
+    min-height:
+        48px !important;
+
+    margin-top:
+        3px;
+
+    border-radius:
+        13px !important;
+
+    font-size:
+        13px !important;
 
 }
 
@@ -1055,19 +1155,19 @@ button {
 .cart-panel {
 
     width:
-        min(650px,100%) !important;
+        min(610px,100%) !important;
 
     max-height:
-        calc(100vh - 20px);
+        calc(100vh - 24px);
 
     overflow-y:
         auto;
 
     padding:
-        20px !important;
+        18px !important;
 
     border-radius:
-        25px !important;
+        24px !important;
 
 }
 
@@ -1077,22 +1177,22 @@ button {
         grid;
 
     grid-template-columns:
-        56px minmax(0,1fr);
+        54px minmax(0,1fr);
 
     gap:
-        11px;
+        10px;
 
     padding:
-        11px;
+        10px;
 
     margin-bottom:
-        8px;
+        7px;
 
     border:
-        1px solid rgba(255,255,255,.075);
+        1px solid rgba(255,255,255,.07);
 
     border-radius:
-        16px;
+        15px;
 
     background:
         rgba(255,255,255,.025);
@@ -1102,65 +1202,33 @@ button {
 .cart-item-logo {
 
     width:
-        56px;
+        54px;
 
     height:
-        56px;
-
-    display:
-        grid;
-
-    place-items:
-        center;
+        54px;
 
     border-radius:
-        13px;
-
-    background:
-        rgba(255,255,255,.05);
-
-    overflow:
-        hidden;
+        12px;
 
 }
 
 .cart-item-logo img {
 
     width:
-        42px;
+        40px;
 
     height:
-        42px;
+        40px;
 
     object-fit:
         contain;
 
 }
 
-.cart-item-content {
-
-    min-width:
-        0;
-
-}
-
-.cart-item-top {
-
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    gap:
-        8px;
-
-}
-
 .cart-item-name {
 
     font-size:
-        14px;
+        13px;
 
     font-weight:
         900;
@@ -1169,119 +1237,49 @@ button {
 
 .cart-item-value {
 
-    margin-top:
-        2px;
-
-    color:
-        var(--muted);
-
     font-size:
-        11px;
+        10px;
 
 }
 
 .cart-item-price {
 
-    margin-top:
-        4px;
-
     font-size:
-        14px;
-
-    font-weight:
-        900;
+        13px;
 
 }
 
 .cart-item-save {
 
-    color:
-        #38d996;
-
     font-size:
-        10px;
-
-    font-weight:
-        800;
+        9px;
 
 }
 
 .cart-item-controls {
 
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap:
-        5px;
-
     margin-top:
-        8px;
+        6px;
 
 }
 
 .qty-button {
 
     width:
-        30px;
+        29px;
 
     height:
-        30px;
-
-    display:
-        grid;
-
-    place-items:
-        center;
-
-    border:
-        1px solid rgba(255,255,255,.10);
+        29px;
 
     border-radius:
-        9px;
-
-    background:
-        rgba(255,255,255,.04);
-
-    color:
-        var(--text);
-
-}
-
-.qty-number {
-
-    min-width:
-        27px;
-
-    text-align:
-        center;
-
-    font-size:
-        12px;
-
-    font-weight:
-        900;
+        8px;
 
 }
 
 .remove-cart {
 
-    margin-left:
-        auto;
-
-    border:
-        0;
-
-    background:
-        transparent;
-
-    color:
-        #ff7d8c;
-
     font-size:
-        11px;
+        10px;
 
 }
 
@@ -1293,77 +1291,37 @@ button {
 .cart-summary {
 
     margin-top:
-        12px;
+        10px;
 
     padding:
-        14px;
-
-    border:
-        1px solid rgba(255,255,255,.08);
+        12px;
 
     border-radius:
-        16px;
-
-    background:
-        rgba(255,255,255,.025);
+        15px;
 
 }
 
 .cart-summary-row {
 
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    gap:
-        12px;
-
     padding:
-        5px 0;
-
-    color:
-        var(--muted);
+        4px 0;
 
     font-size:
-        12px;
+        11px;
 
-}
-
-.cart-summary-row strong {
-    color:
-        var(--text);
-}
-
-.cart-summary-saving strong {
-    color:
-        #38d996;
 }
 
 .cart-summary-total {
 
-    margin-top:
-        7px;
-
-    padding-top:
-        11px;
-
-    border-top:
-        1px solid rgba(255,255,255,.08);
-
-    color:
-        var(--text);
-
     font-size:
-        15px;
+        14px;
 
 }
 
 .cart-summary-total strong {
 
     font-size:
-        20px;
+        18px;
 
 }
 
@@ -1375,145 +1333,131 @@ button {
 .checkout-panel {
 
     width:
-        min(620px,100%) !important;
+        min(600px,100%) !important;
 
     max-height:
-        calc(100vh - 20px);
+        calc(100vh - 24px);
 
     overflow-y:
         auto;
 
     padding:
-        20px !important;
+        18px !important;
 
     border-radius:
-        25px !important;
+        24px !important;
 
 }
 
 .checkout-line {
 
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    gap:
-        12px;
-
     padding:
-        10px 0;
+        9px 0;
 
-    border-bottom:
-        1px solid rgba(255,255,255,.06);
-
-}
-
-.checkout-line:last-child {
-    border-bottom:
-        0;
 }
 
 .checkout-line-name {
 
     font-size:
-        13px;
-
-    font-weight:
-        800;
+        12px;
 
 }
 
 .checkout-line-meta {
 
-    margin-top:
-        2px;
-
-    color:
-        var(--muted);
-
     font-size:
-        10px;
+        9px;
 
 }
 
 .checkout-line-price {
 
-    white-space:
-        nowrap;
-
     font-size:
-        13px;
-
-    font-weight:
-        900;
+        12px;
 
 }
 
 .checkout-totals {
 
-    margin-top:
-        12px;
-
     padding:
-        13px;
+        12px;
 
     border-radius:
-        15px;
-
-    background:
-        rgba(255,255,255,.035);
+        14px;
 
 }
 
-.checkout-total-row {
 
-    display:
-        flex;
+/* =====================================================
+   ORDERS
+===================================================== */
 
-    justify-content:
-        space-between;
+.orders-panel {
+
+    width:
+        min(620px,100%) !important;
+
+    max-height:
+        calc(100vh - 24px);
+
+    overflow-y:
+        auto;
 
     padding:
-        4px 0;
+        18px !important;
 
-    color:
-        var(--muted);
-
-    font-size:
-        12px;
+    border-radius:
+        24px !important;
 
 }
 
-.checkout-total-row strong {
-    color:
-        var(--text);
-}
+.order-card {
 
-.checkout-total-final {
+    padding:
+        12px !important;
 
-    margin-top:
+    margin-bottom:
         7px;
 
-    padding-top:
-        9px;
-
-    border-top:
-        1px solid rgba(255,255,255,.08);
-
-    color:
-        var(--text);
-
-    font-size:
-        15px;
+    border-radius:
+        15px !important;
 
 }
 
-.checkout-total-final strong {
+.order-card-top {
+
+    margin-bottom:
+        6px;
+
+}
+
+.order-card-brand {
 
     font-size:
-        19px;
+        13px;
+
+}
+
+.order-card .status {
+
+    font-size:
+        8px;
+
+}
+
+.view-order-button {
+
+    min-height:
+        37px;
+
+    margin-top:
+        8px;
+
+    border-radius:
+        10px;
+
+    font-size:
+        11px;
 
 }
 
@@ -1528,83 +1472,44 @@ button {
         min(560px,100%) !important;
 
     padding:
-        20px !important;
+        18px !important;
 
     border-radius:
-        25px !important;
+        24px !important;
 
 }
 
 .order-detail-brand {
 
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap:
-        12px;
-
     padding:
-        12px;
-
-    margin-bottom:
         10px;
 
-    border:
-        1px solid rgba(255,255,255,.08);
-
     border-radius:
-        16px;
-
-    background:
-        rgba(255,255,255,.03);
+        15px;
 
 }
 
 .order-detail-logo {
 
     width:
-        54px;
+        50px;
 
     height:
-        54px;
-
-    display:
-        grid;
-
-    place-items:
-        center;
-
-    border-radius:
-        13px;
-
-    background:
-        rgba(255,255,255,.05);
+        50px;
 
 }
 
 .order-detail-logo img {
 
     width:
-        42px;
+        38px;
 
     height:
-        42px;
-
-    object-fit:
-        contain;
+        38px;
 
 }
 
 .order-detail-grid {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
 
     gap:
         7px;
@@ -1614,433 +1519,118 @@ button {
 .order-detail-field {
 
     padding:
-        10px;
-
-    border:
-        1px solid rgba(255,255,255,.06);
+        9px;
 
     border-radius:
-        13px;
-
-    background:
-        rgba(255,255,255,.025);
+        12px;
 
 }
 
 .order-detail-field span {
 
-    display:
-        block;
-
-    color:
-        var(--muted);
-
     font-size:
-        9px;
-
-    text-transform:
-        uppercase;
-
-    letter-spacing:
-        .6px;
+        8px;
 
 }
 
 .order-detail-field strong {
 
-    display:
-        block;
-
-    margin-top:
-        4px;
-
     font-size:
-        13px;
+        12px;
 
 }
 
 
 /* =====================================================
-   ORDERS
-===================================================== */
-
-.orders-panel {
-
-    width:
-        min(650px,100%) !important;
-
-    max-height:
-        calc(100vh - 20px);
-
-    overflow-y:
-        auto;
-
-    padding:
-        20px !important;
-
-    border-radius:
-        25px !important;
-
-}
-
-.order-card {
-
-    padding:
-        13px !important;
-
-    margin-bottom:
-        8px;
-
-    border:
-        1px solid rgba(255,255,255,.075) !important;
-
-    border-radius:
-        16px !important;
-
-    background:
-        rgba(255,255,255,.025) !important;
-
-}
-
-.order-card-top {
-
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    gap:
-        10px;
-
-    margin-bottom:
-        7px;
-
-}
-
-.order-card-brand {
-
-    font-size:
-        14px;
-
-    font-weight:
-        900;
-
-}
-
-.order-card .status {
-
-    padding:
-        4px 8px;
-
-    border-radius:
-        8px;
-
-    background:
-        rgba(56,217,150,.10);
-
-    color:
-        #38d996;
-
-    font-size:
-        9px;
-
-    font-weight:
-        900;
-
-}
-
-.view-order-button {
-
-    width:
-        100%;
-
-    min-height:
-        38px;
-
-    margin-top:
-        9px;
-
-    border-radius:
-        10px;
-
-}
-
-
-/* =====================================================
-   FAQ / TERMS / FEATURE PANELS
+   FEATURE PANELS
 ===================================================== */
 
 .batch-panel {
 
     width:
-        min(620px,100%) !important;
+        min(600px,100%) !important;
 
     max-height:
-        calc(100vh - 20px);
+        calc(100vh - 24px);
 
     overflow-y:
         auto;
 
     padding:
-        20px !important;
+        18px !important;
 
     border-radius:
-        25px !important;
-
-}
-
-.faq-list details {
-
-    margin-bottom:
-        7px;
-
-    padding:
-        12px 13px;
-
-    border:
-        1px solid rgba(255,255,255,.07);
-
-    border-radius:
-        14px;
-
-    background:
-        rgba(255,255,255,.025);
-
-}
-
-.faq-list summary {
-
-    cursor:
-        pointer;
-
-    font-size:
-        13px;
-
-    font-weight:
-        800;
-
-}
-
-.faq-list p {
-
-    margin:
-        8px 0 0;
-
-    color:
-        var(--muted);
-
-    font-size:
-        11px;
-
-    line-height:
-        1.55;
-
-}
-
-.legal-content h3 {
-
-    margin:
-        15px 0 5px;
-
-    font-size:
-        13px;
-
-}
-
-.legal-content p {
-
-    margin:
-        0;
-
-    color:
-        var(--muted);
-
-    font-size:
-        11px;
-
-    line-height:
-        1.55;
+        24px !important;
 
 }
 
 
 /* =====================================================
-   NOTICES
+   FAQ
+===================================================== */
+
+.faq-list details {
+
+    margin-bottom:
+        6px;
+
+    padding:
+        11px 12px;
+
+    border-radius:
+        13px;
+
+}
+
+.faq-list summary {
+
+    font-size:
+        12px;
+
+}
+
+.faq-list p {
+
+    margin-top:
+        7px;
+
+    font-size:
+        10px;
+
+}
+
+
+/* =====================================================
+   NOTICE
 ===================================================== */
 
 .gcs-notice {
 
-    position:
-        fixed;
-
-    z-index:
-        99999;
-
-    left:
-        50%;
-
     bottom:
-        18px;
-
-    transform:
-        translateX(-50%);
-
-    width:
-        min(430px,calc(100% - 24px));
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap:
-        11px;
-
-    padding:
-        12px;
-
-    border:
-        1px solid rgba(255,255,255,.10);
-
-    border-radius:
         16px;
 
-    background:
-        rgba(25,23,33,.96);
-
-    box-shadow:
-        0 18px 50px rgba(0,0,0,.40);
-
-    backdrop-filter:
-        blur(18px);
-
-}
-
-.gcs-notice-mark {
-
     width:
-        34px;
+        min(410px,calc(100% - 24px));
 
-    height:
-        34px;
-
-    flex:
-        0 0 34px;
-
-    display:
-        grid;
-
-    place-items:
-        center;
+    padding:
+        11px;
 
     border-radius:
-        10px;
-
-    background:
-        rgba(113,60,243,.16);
-
-    color:
-        #a875ff;
-
-    font-weight:
-        900;
-
-}
-
-.gcs-notice-copy {
-
-    min-width:
-        0;
-
-    flex:
-        1;
-
-}
-
-.gcs-notice-copy strong,
-.gcs-notice-copy span {
-
-    display:
-        block;
+        15px;
 
 }
 
 .gcs-notice-copy strong {
 
     font-size:
-        12px;
+        11px;
 
 }
 
 .gcs-notice-copy span {
 
-    margin-top:
-        2px;
-
-    color:
-        var(--muted);
-
     font-size:
-        11px;
-
-}
-
-.gcs-notice-close {
-
-    border:
-        0;
-
-    background:
-        transparent;
-
-    color:
-        var(--muted);
-
-    font-size:
-        19px;
-
-}
-
-
-/* =====================================================
-   EMPTY STATES
-===================================================== */
-
-.batch-empty,
-.empty-orders {
-
-    padding:
-        30px 15px;
-
-    text-align:
-        center;
-
-}
-
-.batch-empty h3,
-.empty-orders h3 {
-
-    margin:
-        7px 0 3px;
-
-    font-size:
-        17px;
-
-}
-
-.batch-empty p,
-.empty-orders p {
-
-    margin:
-        0;
-
-    color:
-        var(--muted);
-
-    font-size:
-        11px;
+        10px;
 
 }
 
@@ -2054,20 +1644,14 @@ button {
     .site-header {
 
         min-height:
-            66px !important;
+            65px !important;
 
         padding:
             8px 9px !important;
 
-        gap:
-            7px !important;
-
     }
 
     .site-header .logo {
-
-        max-width:
-            205px;
 
         font-size:
             20px !important;
@@ -2087,20 +1671,13 @@ button {
             40px !important;
 
         padding:
-            8px 11px !important;
+            8px 10px !important;
 
         border-radius:
             12px !important;
 
         font-size:
             12px !important;
-
-    }
-
-    #cartButton {
-
-        min-width:
-            78px;
 
     }
 
@@ -2108,86 +1685,13 @@ button {
     .hero {
 
         padding-top:
-            52px !important;
+            48px !important;
 
         padding-bottom:
-            32px !important;
+            30px !important;
 
     }
 
-    .hero-actions {
-
-        gap:
-            7px !important;
-
-        margin-top:
-            18px !important;
-
-    }
-
-    .hero-actions
-    .primary-button,
-    .hero-actions
-    .secondary-button {
-
-        flex:
-            1;
-
-        min-width:
-            0;
-
-        padding:
-            13px 7px !important;
-
-        font-size:
-            12px !important;
-
-    }
-
-    .hero-mini-stats {
-
-        gap:
-            5px !important;
-
-        margin-top:
-            9px !important;
-
-    }
-
-    .hero-mini-stats > div {
-
-        min-height:
-            60px;
-
-        padding:
-            7px 3px !important;
-
-        border-radius:
-            13px !important;
-
-    }
-
-    .hero-mini-stats strong {
-
-        font-size:
-            15px !important;
-
-    }
-
-    .hero-mini-stats span {
-
-        font-size:
-            7px !important;
-
-    }
-
-
-    .products {
-
-        padding-top:
-            28px !important;
-
-    }
 
     .cards {
 
@@ -2202,10 +1706,10 @@ button {
     .cards .card {
 
         min-height:
-            258px;
+            255px;
 
         padding:
-            9px !important;
+            8px !important;
 
         border-radius:
             16px !important;
@@ -2215,49 +1719,37 @@ button {
     .cards .brand-box {
 
         height:
-            91px;
+            88px !important;
 
         flex-basis:
-            91px;
+            88px !important;
 
         margin-bottom:
-            8px;
+            8px !important;
 
         border-radius:
-            13px;
+            12px !important;
 
     }
 
     .cards .brand-box img {
 
         width:
-            58px;
+            57px !important;
 
         height:
-            58px;
+            57px !important;
 
     }
 
     .cards .card h3 {
 
-        margin:
-            4px 0 !important;
-
-        min-height:
-            19px;
-
         font-size:
-            15px !important;
+            14px !important;
 
     }
 
     .cards .discount {
-
-        min-height:
-            16px;
-
-        margin-bottom:
-            7px;
 
         font-size:
             9px !important;
@@ -2267,48 +1759,47 @@ button {
     .cards .buy {
 
         min-height:
-            36px;
+            35px !important;
 
         font-size:
-            10px;
+            9px !important;
 
     }
 
     .wishlist-card-button {
 
         top:
-            15px;
+            14px !important;
 
         right:
-            15px;
+            14px !important;
 
         width:
-            34px;
+            33px !important;
 
         height:
-            34px;
+            33px !important;
 
         font-size:
-            18px;
+            18px !important;
 
     }
 
 
-    .product-panel,
-    .cart-panel,
-    .checkout-panel,
-    .orders-panel,
-    .batch-panel,
-    .order-detail-panel {
+    /* -----------------------------------------------
+       MOBILE PRODUCT MODAL
+    ----------------------------------------------- */
+
+    .product-panel {
 
         width:
-            min(100%,560px) !important;
+            100% !important;
 
         max-height:
-            calc(100vh - 12px);
+            calc(100vh - 8px);
 
         padding:
-            15px !important;
+            14px !important;
 
         border-radius:
             21px !important;
@@ -2322,38 +1813,192 @@ button {
 
     }
 
-    .fixed-values {
+    .product-panel .panel-header p {
 
-        gap:
-            7px !important;
+        font-size:
+            11px !important;
 
     }
 
-    .value-button {
+
+    .product-panel .selected-brand {
 
         min-height:
-            65px !important;
+            62px !important;
+
+        padding:
+            7px 9px !important;
+
+        margin-bottom:
+            10px !important;
 
     }
 
-    .value-button strong {
+    .product-panel .selected-brand-logo {
+
+        width:
+            46px !important;
+
+        height:
+            46px !important;
+
+        flex-basis:
+            46px;
+
+    }
+
+    .product-panel .selected-brand-logo img {
+
+        width:
+            34px !important;
+
+        height:
+            34px !important;
+
+    }
+
+    .product-panel .selected-brand-name {
 
         font-size:
             16px !important;
 
     }
 
-    .order-detail-grid {
+    .product-panel .selected-brand-subtitle {
+
+        font-size:
+            10px !important;
+
+    }
+
+    .product-panel .wishlist-product-button {
+
+        width:
+            35px !important;
+
+        height:
+            35px !important;
+
+        font-size:
+            19px !important;
+
+    }
+
+
+    .product-info-box {
+
+        padding:
+            8px 9px !important;
+
+        font-size:
+            9px !important;
+
+        margin-bottom:
+            10px !important;
+
+    }
+
+
+    .product-panel .field-label {
+
+        margin:
+            9px 0 6px !important;
+
+        font-size:
+            11px !important;
+
+    }
+
+
+    .product-panel .mode-button {
+
+        min-height:
+            52px !important;
+
+        border-radius:
+            12px !important;
+
+    }
+
+
+    .product-panel .fixed-values {
 
         gap:
-            6px;
+            7px !important;
+
+    }
+
+    .product-panel .value-button {
+
+        min-height:
+            62px !important;
+
+        border-radius:
+            13px !important;
+
+    }
+
+    .product-panel .value-button strong {
+
+        font-size:
+            17px !important;
+
+    }
+
+    .product-panel .value-button small {
+
+        font-size:
+            9px !important;
+
+    }
+
+
+    .product-panel .price-preview {
+
+        padding:
+            9px 11px !important;
+
+        margin:
+            8px 0 !important;
+
+    }
+
+
+    .product-panel .wide-primary {
+
+        min-height:
+            45px !important;
+
+    }
+
+
+    .cart-panel,
+    .checkout-panel,
+    .orders-panel,
+    .batch-panel,
+    .order-detail-panel {
+
+        width:
+            100% !important;
+
+        max-height:
+            calc(100vh - 8px);
+
+        padding:
+            14px !important;
+
+        border-radius:
+            21px !important;
 
     }
 
 }
+
 `;
 
-    document.head.appendChild(style);
+    document.head.appendChild(
+        style
+    );
 
 })();
 
@@ -2366,25 +2011,36 @@ document.addEventListener(
     "keydown",
     function (event) {
 
-        if (event.key !== "Escape") {
+        if (
+            event.key !==
+            "Escape"
+        ) {
             return;
         }
 
+
         const overlays =
             Array.from(
-                document.querySelectorAll(".overlay")
+                document.querySelectorAll(
+                    ".overlay"
+                )
             );
 
+
         for (
-            let i = overlays.length - 1;
+            let i =
+                overlays.length - 1;
+
             i >= 0;
+
             i--
         ) {
 
             if (
                 getComputedStyle(
                     overlays[i]
-                ).display !== "none"
+                ).display !==
+                "none"
             ) {
 
                 overlays[i].style.display =
@@ -2393,6 +2049,28 @@ document.addEventListener(
                 return;
 
             }
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   OUTSIDE CLICK
+===================================================== */
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            event.target.classList
+                .contains("overlay")
+        ) {
+
+            event.target.style.display =
+                "none";
 
         }
 
