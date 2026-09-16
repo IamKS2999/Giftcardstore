@@ -2583,3 +2583,314 @@ footer small{
         font-size:40px;
     }
        }
+
+/* =========================================================
+   BRICK 14 — DARK MODE FINAL POLISH
+   ========================================================= */
+
+[data-theme="dark"] body{
+    background:
+        radial-gradient(
+            circle at 10% 5%,
+            rgba(113,60,243,.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 95% 15%,
+            rgba(65,105,225,.10),
+            transparent 28%
+        ),
+        var(--bg);
+}
+
+
+/* Header */
+[data-theme="dark"] header{
+    box-shadow:
+        0 1px 0 rgba(255,255,255,.03);
+}
+
+
+/* Navigation */
+[data-theme="dark"] nav a{
+    color:var(--muted);
+}
+
+[data-theme="dark"] nav a:hover{
+    background:rgba(113,60,243,.14);
+    color:#a98cff;
+}
+
+
+/* Secondary buttons */
+[data-theme="dark"] .secondary-button{
+    background:var(--surface);
+    border-color:var(--border);
+    color:var(--text);
+}
+
+[data-theme="dark"] .secondary-button:hover{
+    background:var(--surface-2);
+}
+
+
+/* Product cards */
+[data-theme="dark"] .card:hover{
+    border-color:rgba(145,112,255,.35);
+}
+
+[data-theme="dark"] .brand-box{
+    background:
+        linear-gradient(
+            145deg,
+            #20202a,
+            #1b1b24
+        );
+    border-color:#30303b;
+}
+
+
+/* Overlays */
+[data-theme="dark"] .overlay{
+    background:rgba(0,0,0,.72);
+}
+
+
+/* Close buttons */
+[data-theme="dark"] .close-button{
+    background:var(--surface-2);
+    border-color:var(--border);
+    color:var(--muted);
+}
+
+[data-theme="dark"] .close-button:hover{
+    background:var(--surface-3);
+    color:var(--text);
+}
+
+
+/* Selected brand */
+[data-theme="dark"] #productOverlay .selected-brand{
+    background:
+        linear-gradient(
+            135deg,
+            #20202a,
+            #1b1b24
+        ) !important;
+
+    border-color:var(--border) !important;
+}
+
+[data-theme="dark"] #productOverlay .selected-brand-logo{
+    background:#17171f !important;
+    border-color:var(--border) !important;
+}
+
+
+/* Fixed denomination buttons */
+[data-theme="dark"] #productOverlay .value-button{
+    background:var(--surface);
+    border-color:var(--border);
+}
+
+[data-theme="dark"] #productOverlay .value-button:hover{
+    background:var(--surface-2) !important;
+    border-color:#8064d9 !important;
+}
+
+[data-theme="dark"] #productOverlay .value-button.active{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(113,60,243,.18),
+            rgba(65,105,225,.13)
+        ) !important;
+
+    border-color:#8b6bea !important;
+    color:#b69fff !important;
+}
+
+
+/* Custom amount input */
+[data-theme="dark"] #productOverlay .custom-input{
+    background:var(--surface);
+    border-color:var(--border);
+    color:var(--text);
+}
+
+[data-theme="dark"] #productOverlay .custom-input:focus{
+    border-color:#8b6bea !important;
+}
+
+
+/* Price preview */
+[data-theme="dark"] #productOverlay .price-preview{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(113,60,243,.13),
+            rgba(65,105,225,.10)
+        ) !important;
+
+    border-color:var(--border) !important;
+}
+
+
+/* Order summary */
+[data-theme="dark"] #orderOverlay .summary-brand{
+    background:
+        linear-gradient(
+            135deg,
+            #20202a,
+            #1b1b24
+        ) !important;
+}
+
+[data-theme="dark"] #orderOverlay .summary-card{
+    background:var(--surface-2) !important;
+    border-color:var(--border) !important;
+}
+
+
+/* Checkout */
+[data-theme="dark"] #checkoutOverlay .checkout-card{
+    background:
+        linear-gradient(
+            145deg,
+            #20202a,
+            #1b1b24
+        ) !important;
+}
+
+[data-theme="dark"] #checkoutOverlay .email{
+    background:var(--surface);
+    border-color:var(--border);
+    color:var(--text);
+}
+
+
+/* Account */
+[data-theme="dark"] .account-profile{
+    background:
+        linear-gradient(
+            135deg,
+            #20202a,
+            #1b1b24
+        );
+}
+
+[data-theme="dark"] .account-menu>button{
+    background:var(--surface-2);
+    border-color:var(--border);
+}
+
+[data-theme="dark"] .account-menu>button:hover{
+    background:rgba(113,60,243,.13);
+    border-color:#6f54b5;
+}
+
+[data-theme="dark"] .account-menu>button>span{
+    background:var(--surface-3);
+}
+
+
+/* Settings */
+[data-theme="dark"] .theme-option{
+    background:var(--surface-2);
+    border-color:var(--border);
+}
+
+[data-theme="dark"] .theme-option:hover{
+    border-color:#8064d9;
+    background:var(--surface-3);
+}
+
+[data-theme="dark"] .theme-option.active{
+    background:rgba(113,60,243,.15);
+    border-color:#8b6bea;
+}
+
+[data-theme="dark"] .theme-option-icon{
+    background:var(--surface-3);
+}
+
+
+/* Login */
+[data-theme="dark"] .login-icon{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(113,60,243,.18),
+            rgba(65,105,225,.16)
+        );
+}
+
+
+/* Search */
+[data-theme="dark"] .search-box input,
+[data-theme="dark"] #search{
+    background:var(--surface);
+    border-color:var(--border);
+    color:var(--text);
+}
+
+[data-theme="dark"] .search-box input:focus,
+[data-theme="dark"] #search:focus{
+    border-color:#8b6bea;
+}
+
+
+/* Categories */
+[data-theme="dark"] .category{
+    background:var(--surface);
+    border-color:var(--border);
+    color:var(--muted);
+}
+
+[data-theme="dark"] .category:hover{
+    background:var(--surface-2);
+    border-color:#8064d9;
+    color:#b69fff;
+}
+
+
+/* Trust cards */
+[data-theme="dark"] .trust-item{
+    background:var(--surface);
+    border-color:var(--border);
+}
+
+
+/* Success */
+[data-theme="dark"] .success-order{
+    background:var(--surface-3);
+}
+
+/* Notices */
+[data-theme="dark"] .site-notice{
+    background:var(--surface);
+    border-color:var(--border);
+}
+
+
+/* Inputs */
+[data-theme="dark"] input::placeholder{
+    color:#777785;
+}
+
+
+/* Smooth theme transition */
+[data-theme="dark"] .card,
+[data-theme="dark"] .panel,
+[data-theme="dark"] .account-menu>button,
+[data-theme="dark"] .theme-option,
+[data-theme="dark"] .value-button,
+[data-theme="dark"] .summary-card,
+[data-theme="dark"] .checkout-card,
+[data-theme="dark"] .trust-item{
+    transition:
+        background .25s ease,
+        border-color .25s ease,
+        color .25s ease,
+        box-shadow .25s ease;
+}
