@@ -1,6 +1,6 @@
 /* =====================================================
    GIFTCARDSTORE — ORDERS
-   BRICK 14
+   BATCH UPGRADE 3–10
 ===================================================== */
 
 const ORDERS_STORAGE_KEY =
@@ -72,14 +72,18 @@ function openOrders() {
         openLoginPanel();
 
         return;
+
     }
 
+
     loadOrders();
+
 
     const overlay =
         document.getElementById(
             "ordersOverlay"
         );
+
 
     if (overlay) {
         overlay.style.display =
@@ -117,14 +121,17 @@ function loadOrders() {
     const user =
         getCurrentUser();
 
+
     const container =
         document.getElementById(
             "ordersList"
         );
 
+
     if (!container) {
         return;
     }
+
 
     if (!user) {
 
@@ -132,6 +139,7 @@ function loadOrders() {
             "";
 
         return;
+
     }
 
 
@@ -141,7 +149,7 @@ function loadOrders() {
 
     const userOrders =
         orders.filter(
-            function(order) {
+            function (order) {
 
                 return (
                     order.email &&
@@ -153,9 +161,7 @@ function loadOrders() {
         );
 
 
-    if (
-        userOrders.length === 0
-    ) {
+    if (!userOrders.length) {
 
         container.innerHTML = `
 
@@ -170,14 +176,16 @@ function loadOrders() {
                 </h3>
 
                 <p>
-                    Your completed orders
-                    will appear here.
+                    Your completed prototype
+                    orders will appear here.
                 </p>
 
             </div>
+
         `;
 
         return;
+
     }
 
 
@@ -186,23 +194,28 @@ function loadOrders() {
 
 
     userOrders.forEach(
-        function(order) {
+        function (order) {
 
             const card =
                 document.createElement(
                     "div"
                 );
 
+
             card.className =
                 "order-card";
+
+
+            const saving =
+                order.saving ||
+                "₹0";
 
 
             card.innerHTML = `
 
                 <div class="order-card-top">
 
-                    <span
-                        class="order-card-brand">
+                    <span class="order-card-brand">
                         ${escapeHTML(
                             order.brand
                         )}
@@ -210,7 +223,8 @@ function loadOrders() {
 
                     <span class="status">
                         ${escapeHTML(
-                            order.status
+                            order.status ||
+                            "Confirmed"
                         )}
                     </span>
 
@@ -233,6 +247,21 @@ function loadOrders() {
                     <span>
                         ${escapeHTML(
                             order.price
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="order-card-row">
+
+                    <span>
+                        You Saved
+                    </span>
+
+                    <span>
+                        ${escapeHTML(
+                            saving
                         )}
                     </span>
 
@@ -308,7 +337,7 @@ function loadOrders() {
 
 
 /* =====================================================
-   DETAILS
+   ORDER DETAILS
 ===================================================== */
 
 function viewOrderDetails(orderId) {
@@ -318,6 +347,7 @@ function viewOrderDetails(orderId) {
         openLoginPanel();
 
         return;
+
     }
 
 
@@ -327,7 +357,7 @@ function viewOrderDetails(orderId) {
 
     const order =
         getOrders().find(
-            function(item) {
+            function (item) {
 
                 return (
                     item.id === orderId &&
@@ -349,27 +379,179 @@ function viewOrderDetails(orderId) {
         );
 
         return;
+
     }
 
 
-    showNotice(
-        "Brand: " +
-        order.brand +
-        "\nGift Card: " +
-        order.value +
-        "\nAmount Paid: " +
-        order.price +
-        "\nDiscount: " +
-        order.discount +
-        "\nOrder ID: " +
-        order.id +
-        "\nStatus: " +
-        order.status +
-        "\nDate: " +
-        order.date,
+    const brand =
+        typeof getBrand === "function"
+            ? getBrand(order.brandId)
+            : null;
 
-        "Order Details",
-        "info"
+
+    const old =
+        document.getElementById(
+            "orderDetailsOverlay"
+        );
+
+    if (old) {
+        old.remove();
+    }
+
+
+    const overlay =
+        document.createElement(
+            "div"
+        );
+
+
+    overlay.id =
+        "orderDetailsOverlay";
+
+    overlay.className =
+        "overlay";
+
+    overlay.style.display =
+        "flex";
+
+
+    overlay.innerHTML = `
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <div class="panel-eyebrow">
+                        Order
+                    </div>
+
+                    <h2>
+                        Order Details
+                    </h2>
+
+                    <p>
+                        Your prototype order information.
+                    </p>
+                </div>
+
+                <button
+                    class="close-button"
+                    onclick="document.getElementById('orderDetailsOverlay').remove()">
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="checkout-card">
+
+                <div class="checkout-brand">
+
+                    <span>
+                        Gift Card
+                    </span>
+
+                    <strong>
+                        ${escapeHTML(
+                            order.brand
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="checkout-value">
+
+                    <span>
+                        ${escapeHTML(
+                            order.value
+                        )}
+                    </span>
+
+                    <strong>
+                        ${escapeHTML(
+                            order.price
+                        )}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="order-total-box">
+
+                <div class="order-total-row">
+                    <span>Status</span>
+                    <strong>
+                        ${escapeHTML(
+                            order.status ||
+                            "Confirmed"
+                        )}
+                    </strong>
+                </div>
+
+                <div class="order-total-row">
+                    <span>Discount</span>
+                    <strong>
+                        ${escapeHTML(
+                            order.discount
+                        )}
+                    </strong>
+                </div>
+
+                <div class="order-total-row order-total-saving">
+                    <span>You saved</span>
+                    <strong>
+                        ${escapeHTML(
+                            order.saving ||
+                            "₹0"
+                        )}
+                    </strong>
+                </div>
+
+                <div class="order-total-row">
+                    <span>Order ID</span>
+                    <strong>
+                        ${escapeHTML(
+                            order.id
+                        )}
+                    </strong>
+                </div>
+
+                <div class="order-total-row">
+                    <span>Email</span>
+                    <strong>
+                        ${escapeHTML(
+                            order.email
+                        )}
+                    </strong>
+                </div>
+
+                <div class="order-total-row">
+                    <span>Date</span>
+                    <strong>
+                        ${escapeHTML(
+                            order.date
+                        )}
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="prototype-note">
+                Prototype order · No real gift card is issued.
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        overlay
     );
 
 }
@@ -388,11 +570,12 @@ function escapeHTML(value) {
         return "";
     }
 
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
 
-           }
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+                           }
