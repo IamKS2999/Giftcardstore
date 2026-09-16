@@ -1,13 +1,13 @@
 /* =====================================================
    GIFTCARDSTORE — MAIN APPLICATION
-   Brick 13
+   BATCH UPGRADE 3–10
 ===================================================== */
 
 window.GCS = window.GCS || {};
 
 
 /* =====================================================
-   APPLICATION STATE
+   STATE
 ===================================================== */
 
 GCS.selectedBrand = null;
@@ -15,76 +15,236 @@ GCS.selectedValue = 0;
 GCS.selectedPrice = 0;
 GCS.selectedMode = "fixed";
 
+GCS.activeCategory = "All";
+GCS.searchQuery = "";
+
 window.checkoutWaitingForLogin = false;
 
 
 /* =====================================================
-   COMPATIBILITY HELPERS
+   STORAGE
+===================================================== */
+
+const CART_KEY =
+    "gcsCart";
+
+const WISHLIST_KEY =
+    "gcsWishlist";
+
+
+function getCart() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(CART_KEY) || "[]"
+        );
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+function saveCart(cart) {
+
+    localStorage.setItem(
+        CART_KEY,
+        JSON.stringify(cart)
+    );
+
+    GCS.updateCartUI();
+
+}
+
+
+function getWishlist() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(WISHLIST_KEY) || "[]"
+        );
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+function saveWishlist(list) {
+
+    localStorage.setItem(
+        WISHLIST_KEY,
+        JSON.stringify(list)
+    );
+
+}
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function money(value) {
+
+    return "₹" +
+        Number(value || 0).toLocaleString("en-IN");
+
+}
+
+
+function getProductDiscount(
+    brandId,
+    mode
+) {
+
+    return getBrandDiscount(
+        brandId,
+        mode
+    );
+
+}
+
+
+function createCartItem() {
+
+    return {
+
+        id:
+            "CART-" +
+            Date.now() +
+            "-" +
+            Math.random()
+                .toString(36)
+                .slice(2, 7),
+
+        brandId:
+            GCS.selectedBrand,
+
+        value:
+            Number(GCS.selectedValue),
+
+        mode:
+            GCS.selectedMode,
+
+        price:
+            Number(GCS.selectedPrice),
+
+        quantity:
+            1
+
+    };
+
+}
+
+
+/* =====================================================
+   COMPATIBILITY
 ===================================================== */
 
 GCS.isLoggedIn = function () {
-    return typeof isLoggedIn === "function" && isLoggedIn();
+
+    return (
+        typeof isLoggedIn === "function" &&
+        isLoggedIn()
+    );
+
 };
 
 
 GCS.getAccount = function () {
+
     return typeof getCurrentUser === "function"
         ? getCurrentUser()
         : null;
+
 };
 
 
 GCS.getBrand = function (brandId) {
+
     return typeof getBrand === "function"
         ? getBrand(brandId)
         : null;
+
 };
 
 
 GCS.openLogin = function () {
-    if (typeof openLoginPanel === "function") {
+
+    if (
+        typeof openLoginPanel === "function"
+    ) {
         openLoginPanel();
     }
+
 };
 
 
 GCS.openAccount = function () {
-    if (typeof openAccountPanel === "function") {
+
+    if (
+        typeof openAccountPanel === "function"
+    ) {
         openAccountPanel();
     }
+
 };
 
 
 GCS.openOrders = function () {
-    if (typeof openOrders === "function") {
+
+    if (
+        typeof openOrders === "function"
+    ) {
         openOrders();
     }
+
 };
 
 
 GCS.closeOrders = function () {
-    if (typeof closeOrders === "function") {
+
+    if (
+        typeof closeOrders === "function"
+    ) {
         closeOrders();
     }
+
 };
 
 
 GCS.closeAccount = function () {
-    if (typeof closeAccountPanel === "function") {
+
+    if (
+        typeof closeAccountPanel === "function"
+    ) {
         closeAccountPanel();
     }
+
 };
 
 
 GCS.logout = function () {
-    if (typeof logoutUser === "function") {
+
+    if (
+        typeof logoutUser === "function"
+    ) {
         logoutUser();
     }
+
 };
 
 
 /* =====================================================
-   RENDER BRANDS
+   RENDER PRODUCTS
 ===================================================== */
 
 GCS.renderProducts = function (brands) {
@@ -93,10 +253,8 @@ GCS.renderProducts = function (brands) {
         document.getElementById("cards");
 
     if (!container) {
-        console.error("GiftCardStore: cards container missing.");
         return;
     }
-
 
     const brandList =
         brands ||
@@ -106,15 +264,15 @@ GCS.renderProducts = function (brands) {
                 : []
         );
 
-
     container.innerHTML = "";
-
 
     if (!brandList.length) {
 
         container.innerHTML = `
             <div class="empty-orders">
-                No gift cards found.
+                <div class="empty-orders-icon">🔎</div>
+                <h3>No gift cards found</h3>
+                <p>Try another brand, category or search term.</p>
             </div>
         `;
 
@@ -122,17 +280,17 @@ GCS.renderProducts = function (brands) {
     }
 
 
+    const wishlist =
+        getWishlist();
+
+
     brandList.forEach(function (brand) {
 
         const card =
             document.createElement("div");
 
-
-        /*
-         * These class names match style.css.
-         */
-
-        card.className = "card";
+        card.className =
+            "card";
 
 
         const discount =
@@ -142,6 +300,10 @@ GCS.renderProducts = function (brands) {
             );
 
 
+        const wished =
+            wishlist.includes(brand.id);
+
+
         card.innerHTML = `
 
             <div class="brand-box">
@@ -149,27 +311,31 @@ GCS.renderProducts = function (brands) {
                 <img
                     class="brand-logo"
                     src="${brand.logo}"
-                    alt="${brand.name}"
+                    alt="${escapeHTML(brand.name)}"
                     loading="lazy"
                 >
 
-            </div>
+                <button
+                    class="card-wishlist ${wished ? "active" : ""}"
+                    type="button"
+                    aria-label="Save ${escapeHTML(brand.name)}"
+                    onclick="GCS.toggleWishlist('${brand.id}', this)">
+                    ${wished ? "♥" : "♡"}
+                </button>
 
+            </div>
 
             <div class="brand">
-                ${brand.category}
+                ${escapeHTML(brand.category)}
             </div>
 
-
             <h3>
-                ${brand.name}
+                ${escapeHTML(brand.name)}
             </h3>
-
 
             <div class="discount">
                 Up to ${discount}% off
             </div>
-
 
             <button class="buy">
                 View Gift Cards
@@ -198,18 +364,205 @@ GCS.renderProducts = function (brands) {
 
     });
 
+
+    GCS.updateSearchInfo(
+        brandList.length
+    );
+
 };
 
 
 /* =====================================================
-   OPEN PRODUCT
+   FILTER ENGINE
+===================================================== */
+
+GCS.applyFilters = function () {
+
+    const all =
+        getAllBrands();
+
+    const query =
+        GCS.searchQuery
+            .trim()
+            .toLowerCase();
+
+    const category =
+        GCS.activeCategory;
+
+
+    const filtered =
+        all.filter(function (brand) {
+
+            const categoryMatch =
+                category === "All" ||
+                brand.category.toLowerCase() ===
+                category.toLowerCase();
+
+
+            if (!categoryMatch) {
+                return false;
+            }
+
+
+            if (!query) {
+                return true;
+            }
+
+
+            const searchable = [
+                brand.name,
+                brand.category,
+                brand.id
+            ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+
+            return searchable.includes(query);
+
+        });
+
+
+    GCS.renderProducts(
+        filtered
+    );
+
+};
+
+
+GCS.searchCards = function (event) {
+
+    GCS.searchQuery =
+        event.target.value || "";
+
+    const clear =
+        document.getElementById(
+            "clearSearch"
+        );
+
+    if (clear) {
+
+        clear.style.display =
+            GCS.searchQuery
+                ? "block"
+                : "none";
+
+    }
+
+    GCS.applyFilters();
+
+};
+
+
+GCS.clearSearch = function () {
+
+    const input =
+        document.getElementById(
+            "search"
+        );
+
+    if (input) {
+        input.value = "";
+    }
+
+    GCS.searchQuery = "";
+
+    const clear =
+        document.getElementById(
+            "clearSearch"
+        );
+
+    if (clear) {
+        clear.style.display = "none";
+    }
+
+    GCS.applyFilters();
+
+};
+
+
+GCS.updateSearchInfo = function (count) {
+
+    const info =
+        document.getElementById(
+            "searchInfo"
+        );
+
+    if (!info) {
+        return;
+    }
+
+    const query =
+        GCS.searchQuery.trim();
+
+    if (!query) {
+
+        info.style.display =
+            "none";
+
+        return;
+
+    }
+
+    info.style.display =
+        "block";
+
+    info.textContent =
+        count +
+        " result" +
+        (count === 1 ? "" : "s") +
+        " for “" +
+        query +
+        "”";
+
+};
+
+
+/* =====================================================
+   CATEGORY
+===================================================== */
+
+GCS.filterCategory = function (
+    category,
+    button
+) {
+
+    GCS.activeCategory =
+        category;
+
+
+    document
+        .querySelectorAll(".category")
+        .forEach(function (item) {
+
+            item.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    if (button) {
+        button.classList.add(
+            "active"
+        );
+    }
+
+
+    GCS.applyFilters();
+
+};
+
+
+/* =====================================================
+   PRODUCT
 ===================================================== */
 
 GCS.openProduct = function (brandId) {
 
     const brand =
         getBrand(brandId);
-
 
     if (!brand) {
         return;
@@ -219,14 +572,11 @@ GCS.openProduct = function (brandId) {
     GCS.selectedBrand =
         brandId;
 
-
     GCS.selectedMode =
         "fixed";
 
-
     GCS.selectedValue =
         0;
-
 
     GCS.selectedPrice =
         0;
@@ -237,7 +587,6 @@ GCS.openProduct = function (brandId) {
             "productOverlay"
         );
 
-
     if (!overlay) {
         return;
     }
@@ -247,7 +596,6 @@ GCS.openProduct = function (brandId) {
         document.getElementById(
             "productBrand"
         );
-
 
     if (brandName) {
         brandName.textContent =
@@ -260,7 +608,6 @@ GCS.openProduct = function (brandId) {
             "productLogo"
         );
 
-
     if (brandLogo) {
 
         brandLogo.src =
@@ -268,6 +615,57 @@ GCS.openProduct = function (brandId) {
 
         brandLogo.alt =
             brand.name;
+
+    }
+
+
+    const info =
+        document.getElementById(
+            "productInfo"
+        );
+
+    if (info) {
+
+        const fixed =
+            brand.fixedValues
+                .map(value => money(value))
+                .join(" · ");
+
+        info.innerHTML = `
+            <strong>${escapeHTML(brand.name)}</strong>
+            · ${escapeHTML(brand.category)}
+            · Fixed values: ${fixed || "Available"}
+            · Discount: up to ${Math.max(
+                brand.fixedDiscount || 0,
+                brand.customDiscount || 0
+            )}%
+        `;
+
+    }
+
+
+    const wishlist =
+        getWishlist();
+
+    const wishButton =
+        document.getElementById(
+            "wishlistProductButton"
+        );
+
+    if (wishButton) {
+
+        const active =
+            wishlist.includes(
+                brand.id
+            );
+
+        wishButton.classList.toggle(
+            "active",
+            active
+        );
+
+        wishButton.textContent =
+            active ? "♥" : "♡";
 
     }
 
@@ -305,11 +703,11 @@ GCS.openProduct = function (brandId) {
 
                 button.innerHTML = `
                     <strong>
-                        ₹${value.toLocaleString("en-IN")}
+                        ${money(value)}
                     </strong>
 
                     <small>
-                        Pay ₹${price.toLocaleString("en-IN")}
+                        Pay ${money(price)}
                     </small>
                 `;
 
@@ -357,11 +755,6 @@ GCS.openProduct = function (brandId) {
                 );
 
 
-                /*
-                 * Automatically select
-                 * the first denomination.
-                 */
-
                 if (index === 0) {
 
                     GCS.selectedValue =
@@ -383,10 +776,7 @@ GCS.openProduct = function (brandId) {
 
 
     GCS.selectMode("fixed");
-
-
     GCS.updatePreview();
-
 
     overlay.style.display =
         "flex";
@@ -394,17 +784,12 @@ GCS.openProduct = function (brandId) {
 };
 
 
-/* =====================================================
-   CLOSE PRODUCT
-===================================================== */
-
 GCS.closeProduct = function () {
 
     const overlay =
         document.getElementById(
             "productOverlay"
         );
-
 
     if (overlay) {
         overlay.style.display =
@@ -415,7 +800,7 @@ GCS.closeProduct = function () {
 
 
 /* =====================================================
-   SELECT FIXED / CUSTOM
+   PRODUCT MODE
 ===================================================== */
 
 GCS.selectMode = function (mode) {
@@ -437,18 +822,15 @@ GCS.selectMode = function (mode) {
             "fixedArea"
         );
 
-
     const customArea =
         document.getElementById(
             "customArea"
         );
 
-
     const fixedButton =
         document.getElementById(
             "fixedMode"
         );
-
 
     const customButton =
         document.getElementById(
@@ -457,42 +839,34 @@ GCS.selectMode = function (mode) {
 
 
     if (fixedArea) {
-
         fixedArea.style.display =
             mode === "fixed"
                 ? "block"
                 : "none";
-
     }
 
 
     if (customArea) {
-
         customArea.style.display =
             mode === "custom"
                 ? "block"
                 : "none";
-
     }
 
 
     if (fixedButton) {
-
         fixedButton.classList.toggle(
             "active",
             mode === "fixed"
         );
-
     }
 
 
     if (customButton) {
-
         customButton.classList.toggle(
             "active",
             mode === "custom"
         );
-
     }
 
 
@@ -503,17 +877,12 @@ GCS.selectMode = function (mode) {
                 "customAmount"
             );
 
-
         if (input) {
             input.value = "";
         }
 
-
-        GCS.selectedValue =
-            0;
-
-        GCS.selectedPrice =
-            0;
+        GCS.selectedValue = 0;
+        GCS.selectedPrice = 0;
 
         GCS.updatePreview();
 
@@ -523,7 +892,7 @@ GCS.selectMode = function (mode) {
 
 
 /* =====================================================
-   CUSTOM VALUE PRICE
+   CUSTOM PRICE
 ===================================================== */
 
 GCS.updateCustomPrice = function () {
@@ -532,7 +901,6 @@ GCS.updateCustomPrice = function () {
         document.getElementById(
             "customAmount"
         );
-
 
     if (!input) {
         return;
@@ -562,11 +930,8 @@ GCS.updateCustomPrice = function () {
         )
     ) {
 
-        GCS.selectedValue =
-            0;
-
-        GCS.selectedPrice =
-            0;
+        GCS.selectedValue = 0;
+        GCS.selectedPrice = 0;
 
         GCS.updatePreview();
 
@@ -578,13 +943,11 @@ GCS.updateCustomPrice = function () {
     GCS.selectedValue =
         amount;
 
-
     GCS.selectedPrice =
         calculatePrice(
             amount,
             brand.customDiscount
         );
-
 
     GCS.updatePreview();
 
@@ -597,29 +960,10 @@ GCS.updateCustomPrice = function () {
 
 GCS.updatePreview = function () {
 
-    const valueElement =
-        document.getElementById(
-            "previewValue"
-        );
-
-
-    const discountElement =
-        document.getElementById(
-            "previewDiscount"
-        );
-
-
-    const priceElement =
-        document.getElementById(
-            "previewPrice"
-        );
-
-
     const brand =
         getBrand(
             GCS.selectedBrand
         );
-
 
     if (!brand) {
         return;
@@ -633,44 +977,48 @@ GCS.updatePreview = function () {
         );
 
 
-    if (valueElement) {
+    const valueElement =
+        document.getElementById(
+            "previewValue"
+        );
 
+    const discountElement =
+        document.getElementById(
+            "previewDiscount"
+        );
+
+    const priceElement =
+        document.getElementById(
+            "previewPrice"
+        );
+
+
+    if (valueElement) {
         valueElement.textContent =
             GCS.selectedValue > 0
-                ? "₹" +
-                  GCS.selectedValue.toLocaleString(
-                      "en-IN"
-                  )
+                ? money(GCS.selectedValue)
                 : "—";
-
     }
 
 
     if (discountElement) {
-
         discountElement.textContent =
             discount + "%";
-
     }
 
 
     if (priceElement) {
-
         priceElement.textContent =
             GCS.selectedPrice > 0
-                ? "₹" +
-                  GCS.selectedPrice.toLocaleString(
-                      "en-IN"
-                  )
+                ? money(GCS.selectedPrice)
                 : "—";
-
     }
 
 };
 
 
 /* =====================================================
-   CONTINUE TO ORDER
+   ADD TO CART
 ===================================================== */
 
 GCS.continueProduct = function () {
@@ -679,7 +1027,6 @@ GCS.continueProduct = function () {
         getBrand(
             GCS.selectedBrand
         );
-
 
     if (!brand) {
         return;
@@ -691,8 +1038,10 @@ GCS.continueProduct = function () {
         GCS.selectedValue <= 0
     ) {
 
-        alert(
-            "Please select a gift card value first."
+        showNotice(
+            "Please select a gift-card value first.",
+            "Select a value",
+            "error"
         );
 
         return;
@@ -709,8 +1058,10 @@ GCS.continueProduct = function () {
         )
     ) {
 
-        alert(
-            "Please enter a valid amount between ₹100 and ₹10,000."
+        showNotice(
+            "Please enter a valid amount between ₹100 and ₹10,000.",
+            "Invalid amount",
+            "error"
         );
 
         return;
@@ -718,170 +1069,543 @@ GCS.continueProduct = function () {
     }
 
 
-    const discount =
-        getBrandDiscount(
-            GCS.selectedBrand,
-            GCS.selectedMode
+    const cart =
+        getCart();
+
+
+    const existing =
+        cart.find(function (item) {
+
+            return (
+                item.brandId === GCS.selectedBrand &&
+                item.value === Number(GCS.selectedValue) &&
+                item.mode === GCS.selectedMode
+            );
+
+        });
+
+
+    if (existing) {
+
+        existing.quantity =
+            Number(existing.quantity || 1) + 1;
+
+    } else {
+
+        cart.push(
+            createCartItem()
         );
 
+    }
 
-    const saving =
-        calculateSavings(
-            GCS.selectedValue,
-            discount
-        );
 
+    saveCart(cart);
 
     GCS.closeProduct();
 
+    showNotice(
+        brand.name +
+        " gift card added to your cart.",
+        "Added to cart",
+        "success"
+    );
 
-    const brandElement =
+};
+
+
+/* =====================================================
+   CART
+===================================================== */
+
+GCS.getCartTotals = function () {
+
+    const cart =
+        getCart();
+
+    let value = 0;
+    let paid = 0;
+    let quantity = 0;
+
+
+    cart.forEach(function (item) {
+
+        const qty =
+            Number(item.quantity || 1);
+
+        value +=
+            Number(item.value || 0) * qty;
+
+        paid +=
+            Number(item.price || 0) * qty;
+
+        quantity +=
+            qty;
+
+    });
+
+
+    return {
+
+        value,
+        paid,
+        savings:
+            Math.max(0, value - paid),
+        quantity
+
+    };
+
+};
+
+
+GCS.updateCartUI = function () {
+
+    const count =
         document.getElementById(
-            "orderBrand"
+            "cartCount"
         );
 
-
-    const valueElement =
-        document.getElementById(
-            "orderValue"
-        );
+    const cart =
+        getCart();
 
 
-    const originalElement =
-        document.getElementById(
-            "originalPrice"
-        );
+    if (count) {
 
-
-    const discountElement =
-        document.getElementById(
-            "orderDiscount"
-        );
-
-
-    const finalElement =
-        document.getElementById(
-            "finalPrice"
-        );
-
-
-    const totalElement =
-        document.getElementById(
-            "totalPrice"
-        );
-
-
-    if (brandElement) {
-
-        brandElement.textContent =
-            brand.name;
-
-    }
-
-
-    if (valueElement) {
-
-        valueElement.textContent =
-            "₹" +
-            GCS.selectedValue.toLocaleString(
-                "en-IN"
-            ) +
-            " Gift Card";
-
-    }
-
-
-    if (originalElement) {
-
-        originalElement.textContent =
-            "₹" +
-            GCS.selectedValue.toLocaleString(
-                "en-IN"
+        const quantity =
+            cart.reduce(
+                (total, item) =>
+                    total +
+                    Number(item.quantity || 1),
+                0
             );
 
-    }
-
-
-    if (discountElement) {
-
-        discountElement.textContent =
-            discount + "%";
+        count.textContent =
+            quantity;
 
     }
 
 
-    if (finalElement) {
-
-        finalElement.textContent =
-            "₹" +
-            GCS.selectedPrice.toLocaleString(
-                "en-IN"
-            );
-
-    }
-
-
-    if (totalElement) {
-
-        totalElement.textContent =
-            "₹" +
-            GCS.selectedPrice.toLocaleString(
-                "en-IN"
-            );
-
-    }
-
-
-    const savingElement =
+    const items =
         document.getElementById(
-            "orderSaving"
+            "cartItems"
         );
 
-
-    if (savingElement) {
-
-        savingElement.textContent =
-            "You save ₹" +
-            saving.toLocaleString(
-                "en-IN"
-            );
-
+    if (
+        items &&
+        document.getElementById(
+            "cartOverlay"
+        )?.style.display === "flex"
+    ) {
+        GCS.renderCart();
     }
 
+};
+
+
+GCS.openCart = function () {
+
+    GCS.renderCart();
 
     const overlay =
         document.getElementById(
-            "orderOverlay"
+            "cartOverlay"
         );
 
-
     if (overlay) {
-
         overlay.style.display =
             "flex";
+    }
+
+};
+
+
+GCS.closeCart = function () {
+
+    const overlay =
+        document.getElementById(
+            "cartOverlay"
+        );
+
+    if (overlay) {
+        overlay.style.display =
+            "none";
+    }
+
+};
+
+
+GCS.renderCart = function () {
+
+    const container =
+        document.getElementById(
+            "cartItems"
+        );
+
+    const summary =
+        document.getElementById(
+            "cartSummary"
+        );
+
+    if (!container) {
+        return;
+    }
+
+
+    const cart =
+        getCart();
+
+
+    if (!cart.length) {
+
+        container.innerHTML = `
+            <div class="cart-empty">
+                <div class="cart-empty-icon">🛒</div>
+                <h3>Your cart is empty</h3>
+                <p>Add gift cards from the catalogue to see them here.</p>
+            </div>
+        `;
+
+        if (summary) {
+            summary.innerHTML = "";
+        }
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    cart.forEach(function (item) {
+
+        const brand =
+            getBrand(item.brandId);
+
+        if (!brand) {
+            return;
+        }
+
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "cart-item";
+
+
+        const quantity =
+            Number(item.quantity || 1);
+
+
+        card.innerHTML = `
+
+            <div class="cart-item-logo">
+                <img
+                    src="${brand.logo}"
+                    alt="${escapeHTML(brand.name)}">
+            </div>
+
+            <div class="cart-item-info">
+
+                <strong>
+                    ${escapeHTML(brand.name)}
+                </strong>
+
+                <span>
+                    ${money(item.value)} Gift Card
+                    · ${item.mode === "custom" ? "Custom" : "Fixed"}
+                </span>
+
+                <small>
+                    Save ${money(
+                        Math.max(
+                            0,
+                            Number(item.value) -
+                            Number(item.price)
+                        )
+                    )} each
+                </small>
+
+            </div>
+
+            <div class="cart-item-actions">
+
+                <div class="quantity-control">
+
+                    <button
+                        onclick="GCS.changeCartQuantity('${item.id}', -1)">
+                        −
+                    </button>
+
+                    <span>
+                        ${quantity}
+                    </span>
+
+                    <button
+                        onclick="GCS.changeCartQuantity('${item.id}', 1)">
+                        +
+                    </button>
+
+                </div>
+
+                <button
+                    class="remove-cart"
+                    onclick="GCS.removeCartItem('${item.id}')"
+                    title="Remove">
+                    ×
+                </button>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(
+            card
+        );
+
+    });
+
+
+    const totals =
+        GCS.getCartTotals();
+
+
+    if (summary) {
+
+        summary.innerHTML = `
+
+            <div class="cart-summary-row">
+                <span>Gift card value</span>
+                <strong>${money(totals.value)}</strong>
+            </div>
+
+            <div class="cart-summary-row cart-summary-saving">
+                <span>Total savings</span>
+                <strong>− ${money(totals.savings)}</strong>
+            </div>
+
+            <div class="cart-summary-divider"></div>
+
+            <div class="cart-summary-row cart-summary-total">
+                <span>Total</span>
+                <strong>${money(totals.paid)}</strong>
+            </div>
+
+        `;
 
     }
 
 };
 
 
+GCS.changeCartQuantity = function (
+    itemId,
+    change
+) {
+
+    const cart =
+        getCart();
+
+
+    const item =
+        cart.find(
+            item => item.id === itemId
+        );
+
+
+    if (!item) {
+        return;
+    }
+
+
+    item.quantity =
+        Number(item.quantity || 1) +
+        Number(change);
+
+
+    if (item.quantity <= 0) {
+
+        const index =
+            cart.indexOf(item);
+
+        cart.splice(
+            index,
+            1
+        );
+
+    }
+
+
+    saveCart(cart);
+
+    GCS.renderCart();
+
+};
+
+
+GCS.removeCartItem = function (
+    itemId
+) {
+
+    const cart =
+        getCart();
+
+
+    const filtered =
+        cart.filter(
+            item => item.id !== itemId
+        );
+
+
+    saveCart(filtered);
+
+    GCS.renderCart();
+
+    showNotice(
+        "The item was removed from your cart.",
+        "Cart updated",
+        "info"
+    );
+
+};
+
+
 /* =====================================================
-   CLOSE ORDER
+   ORDER SUMMARY
 ===================================================== */
 
-GCS.closeOrder = function () {
+GCS.openOrderSummary = function () {
+
+    const cart =
+        getCart();
+
+    if (!cart.length) {
+
+        showNotice(
+            "Your cart is empty.",
+            "Nothing to checkout",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const container =
+        document.getElementById(
+            "orderSummaryContent"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    const totals =
+        GCS.getCartTotals();
+
+
+    let html = "";
+
+
+    cart.forEach(function (item) {
+
+        const brand =
+            getBrand(item.brandId);
+
+        if (!brand) {
+            return;
+        }
+
+
+        const quantity =
+            Number(item.quantity || 1);
+
+
+        html += `
+
+            <div class="summary-item">
+
+                <div class="summary-item-main">
+
+                    <strong>
+                        ${escapeHTML(brand.name)}
+                    </strong>
+
+                    <span>
+                        ${money(item.value)}
+                        Gift Card × ${quantity}
+                    </span>
+
+                </div>
+
+                <div class="summary-item-price">
+
+                    ${money(
+                        Number(item.price) *
+                        quantity
+                    )}
+
+                    <small>
+                        Save ${money(
+                            (
+                                Number(item.value) -
+                                Number(item.price)
+                            ) * quantity
+                        )}
+                    </small>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+
+    html += `
+
+        <div class="order-total-box">
+
+            <div class="order-total-row">
+                <span>Gift card value</span>
+                <strong>${money(totals.value)}</strong>
+            </div>
+
+            <div class="order-total-row order-total-saving">
+                <span>You save</span>
+                <strong>${money(totals.savings)}</strong>
+            </div>
+
+            <div class="order-total-row order-total-final">
+                <span>Total</span>
+                <strong>${money(totals.paid)}</strong>
+            </div>
+
+        </div>
+
+    `;
+
+
+    container.innerHTML =
+        html;
+
+
+    GCS.closeCart();
+
 
     const overlay =
         document.getElementById(
             "orderOverlay"
         );
 
-
     if (overlay) {
-
         overlay.style.display =
-            "none";
-
+            "flex";
     }
 
 };
@@ -890,6 +1614,26 @@ GCS.closeOrder = function () {
 /* =====================================================
    CHECKOUT
 ===================================================== */
+
+GCS.checkoutCart = function () {
+
+    if (!getCart().length) {
+
+        showNotice(
+            "Your cart is empty.",
+            "Nothing to checkout",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    GCS.openOrderSummary();
+
+};
+
 
 GCS.openCheckout = function () {
 
@@ -907,81 +1651,106 @@ GCS.openCheckout = function () {
     }
 
 
-    const brand =
-        getBrand(
-            GCS.selectedBrand
-        );
+    const cart =
+        getCart();
+
+    if (!cart.length) {
+        return;
+    }
 
 
     const account =
         GCS.getAccount();
 
 
-    if (!brand || !account) {
-        return;
+    const items =
+        document.getElementById(
+            "checkoutItems"
+        );
+
+
+    const totalsBox =
+        document.getElementById(
+            "checkoutTotals"
+        );
+
+
+    if (items) {
+
+        items.innerHTML =
+            cart.map(function (item) {
+
+                const brand =
+                    getBrand(item.brandId);
+
+                return `
+
+                    <div class="checkout-item">
+
+                        <span>
+                            ${escapeHTML(
+                                brand?.name || "Gift Card"
+                            )}
+                            · ${money(item.value)}
+                            × ${Number(item.quantity || 1)}
+                        </span>
+
+                        <strong>
+                            ${money(
+                                Number(item.price || 0) *
+                                Number(item.quantity || 1)
+                            )}
+                        </strong>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
     }
 
 
-    const brandElement =
-        document.getElementById(
-            "checkoutBrand"
-        );
+    const totals =
+        GCS.getCartTotals();
 
 
-    const valueElement =
-        document.getElementById(
-            "checkoutValue"
-        );
+    if (totalsBox) {
+
+        totalsBox.innerHTML = `
+
+            <div class="order-total-box">
+
+                <div class="order-total-row">
+                    <span>Gift card value</span>
+                    <strong>${money(totals.value)}</strong>
+                </div>
+
+                <div class="order-total-row order-total-saving">
+                    <span>Total savings</span>
+                    <strong>${money(totals.savings)}</strong>
+                </div>
+
+                <div class="order-total-row order-total-final">
+                    <span>You pay</span>
+                    <strong>${money(totals.paid)}</strong>
+                </div>
+
+            </div>
+
+        `;
+
+    }
 
 
-    const priceElement =
-        document.getElementById(
-            "checkoutPrice"
-        );
-
-
-    const emailElement =
+    const email =
         document.getElementById(
             "email"
         );
 
-
-    if (brandElement) {
-
-        brandElement.textContent =
-            brand.name;
-
-    }
-
-
-    if (valueElement) {
-
-        valueElement.textContent =
-            "₹" +
-            GCS.selectedValue.toLocaleString(
-                "en-IN"
-            ) +
-            " Gift Card";
-
-    }
-
-
-    if (priceElement) {
-
-        priceElement.textContent =
-            "₹" +
-            GCS.selectedPrice.toLocaleString(
-                "en-IN"
-            );
-
-    }
-
-
-    if (emailElement) {
-
-        emailElement.value =
-            account.email || "";
-
+    if (email) {
+        email.value =
+            account?.email || "";
     }
 
 
@@ -990,20 +1759,13 @@ GCS.openCheckout = function () {
             "checkoutOverlay"
         );
 
-
     if (overlay) {
-
         overlay.style.display =
             "flex";
-
     }
 
 };
 
-
-/* =====================================================
-   CLOSE CHECKOUT
-===================================================== */
 
 GCS.closeCheckout = function () {
 
@@ -1012,19 +1774,31 @@ GCS.closeCheckout = function () {
             "checkoutOverlay"
         );
 
-
     if (overlay) {
-
         overlay.style.display =
             "none";
+    }
 
+};
+
+
+GCS.closeOrder = function () {
+
+    const overlay =
+        document.getElementById(
+            "orderOverlay"
+        );
+
+    if (overlay) {
+        overlay.style.display =
+            "none";
     }
 
 };
 
 
 /* =====================================================
-   EMAIL ERROR
+   EMAIL
 ===================================================== */
 
 GCS.clearEmailError = function () {
@@ -1034,7 +1808,6 @@ GCS.clearEmailError = function () {
             "email"
         );
 
-
     const error =
         document.getElementById(
             "emailError"
@@ -1042,26 +1815,22 @@ GCS.clearEmailError = function () {
 
 
     if (email) {
-
         email.classList.remove(
             "error"
         );
-
     }
 
 
     if (error) {
-
         error.style.display =
             "none";
-
     }
 
 };
 
 
 /* =====================================================
-   CREATE ORDER
+   CREATE ORDERS
 ===================================================== */
 
 GCS.createOrder = function () {
@@ -1102,12 +1871,10 @@ GCS.createOrder = function () {
                 "emailError"
             );
 
-
         if (error) {
             error.style.display =
                 "block";
         }
-
 
         if (emailElement) {
             emailElement.classList.add(
@@ -1115,118 +1882,158 @@ GCS.createOrder = function () {
             );
         }
 
-
         return;
 
     }
 
 
-    const brand =
-        getBrand(
-            GCS.selectedBrand
-        );
+    const cart =
+        getCart();
 
 
-    if (!brand) {
+    if (!cart.length) {
         return;
     }
 
 
-    const discount =
-        getBrandDiscount(
-            GCS.selectedBrand,
-            GCS.selectedMode
-        );
+    const batchId =
+        "GCS-" +
+        Date.now()
+            .toString()
+            .slice(-8);
 
 
-    const order = {
+    cart.forEach(function (item, index) {
 
-        id:
-            "GCS-" +
-            Date.now()
-                .toString()
-                .slice(-8),
+        const brand =
+            getBrand(item.brandId);
 
-        brand:
-            brand.name,
-
-        brandId:
-            GCS.selectedBrand,
-
-        value:
-            "₹" +
-            GCS.selectedValue.toLocaleString(
-                "en-IN"
-            ),
-
-        price:
-            "₹" +
-            GCS.selectedPrice.toLocaleString(
-                "en-IN"
-            ),
-
-        discount:
-            discount + "%",
-
-        email:
-            email,
-
-        status:
-            "Confirmed",
-
-        date:
-            new Date().toLocaleString(
-                "en-IN"
-            )
-
-    };
+        if (!brand) {
+            return;
+        }
 
 
-    if (
-        typeof saveOrder === "function"
-    ) {
-
-        saveOrder(order);
-
-    }
+        const quantity =
+            Number(item.quantity || 1);
 
 
+        for (
+            let i = 0;
+            i < quantity;
+            i++
+        ) {
+
+            const discount =
+                getBrandDiscount(
+                    item.brandId,
+                    item.mode
+                );
+
+
+            const saving =
+                calculateSavings(
+                    item.value,
+                    discount
+                );
+
+
+            const order = {
+
+                id:
+                    batchId +
+                    "-" +
+                    String(index + 1)
+                        .padStart(2, "0") +
+                    String(i + 1),
+
+                batchId:
+                    batchId,
+
+                brand:
+                    brand.name,
+
+                brandId:
+                    item.brandId,
+
+                value:
+                    money(item.value),
+
+                price:
+                    money(item.price),
+
+                discount:
+                    discount + "%",
+
+                saving:
+                    money(saving),
+
+                email:
+                    email,
+
+                status:
+                    "Confirmed",
+
+                date:
+                    new Date()
+                        .toLocaleString(
+                            "en-IN"
+                        )
+
+            };
+
+
+            if (
+                typeof saveOrder === "function"
+            ) {
+                saveOrder(order);
+            }
+
+        }
+
+    });
+
+
+    localStorage.removeItem(
+        CART_KEY
+    );
+
+
+    GCS.updateCartUI();
     GCS.closeCheckout();
 
 
-    const orderIdElement =
+    const orderId =
         document.getElementById(
             "orderId"
         );
 
 
-    if (orderIdElement) {
-
-        orderIdElement.textContent =
-            order.id;
-
+    if (orderId) {
+        orderId.textContent =
+            batchId;
     }
 
 
-    const successOverlay =
+    const success =
         document.getElementById(
             "successOverlay"
         );
 
 
-    if (successOverlay) {
-
-        successOverlay.style.display =
+    if (success) {
+        success.style.display =
             "flex";
-
     }
+
+
+    showNotice(
+        "Your prototype order has been created.",
+        "Order confirmed",
+        "success"
+    );
 
 };
 
-
-/* =====================================================
-   SUCCESS
-===================================================== */
 
 GCS.closeSuccess = function () {
 
@@ -1235,99 +2042,239 @@ GCS.closeSuccess = function () {
             "successOverlay"
         );
 
-
     if (overlay) {
-
         overlay.style.display =
             "none";
-
     }
 
 };
 
 
 /* =====================================================
-   SEARCH
+   WISHLIST
 ===================================================== */
 
-GCS.searchCards = function (event) {
+GCS.toggleWishlist = function (
+    brandId,
+    button
+) {
 
-    const query =
-        event.target.value
-            .trim()
-            .toLowerCase();
-
-
-    const brands =
-        getAllBrands();
+    let list =
+        getWishlist();
 
 
-    const filtered =
-        brands.filter(
-            function (brand) {
-
-                return (
-                    brand.name
-                        .toLowerCase()
-                        .includes(query)
-                    ||
-                    brand.category
-                        .toLowerCase()
-                        .includes(query)
-                );
-
-            }
+    const exists =
+        list.includes(
+            brandId
         );
 
 
-    GCS.renderProducts(
-        filtered
+    if (exists) {
+
+        list =
+            list.filter(
+                id => id !== brandId
+            );
+
+    } else {
+
+        list.push(
+            brandId
+        );
+
+    }
+
+
+    saveWishlist(list);
+
+
+    if (button) {
+
+        button.classList.toggle(
+            "active",
+            !exists
+        );
+
+        button.textContent =
+            !exists ? "♥" : "♡";
+
+    }
+
+
+    const brand =
+        getBrand(brandId);
+
+
+    showNotice(
+        exists
+            ? "Removed from your saved brands."
+            : "Saved to your wishlist.",
+        exists
+            ? "Wishlist updated"
+            : "Saved",
+        "success"
     );
 
 };
 
 
-/* =====================================================
-   CATEGORY FILTER
-===================================================== */
+GCS.toggleWishlistSelected = function () {
 
-GCS.filterCategory = function (
-    category,
-    button
-) {
+    if (!GCS.selectedBrand) {
+        return;
+    }
 
-    const brands =
-        getBrandsByCategory(
-            category
+
+    const button =
+        document.getElementById(
+            "wishlistProductButton"
         );
 
 
-    GCS.renderProducts(
-        brands
+    GCS.toggleWishlist(
+        GCS.selectedBrand,
+        button
     );
 
+};
 
-    document
-        .querySelectorAll(
-            ".category"
-        )
-        .forEach(
-            function (item) {
 
-                item.classList.remove(
-                    "active"
-                );
+GCS.openWishlist = function () {
 
-            }
+    if (
+        typeof openWishlistPanel === "function"
+    ) {
+        openWishlistPanel();
+        return;
+    }
+
+
+    const list =
+        getWishlist();
+
+
+    if (!list.length) {
+
+        showNotice(
+            "You have no saved brands yet.",
+            "Wishlist",
+            "info"
         );
 
+        return;
 
-    if (button) {
+    }
 
-        button.classList.add(
-            "active"
+
+    GCS.closeAllOverlays();
+
+
+    const overlay =
+        document.createElement("div");
+
+    overlay.id =
+        "wishlistOverlay";
+
+    overlay.className =
+        "overlay";
+
+    overlay.style.display =
+        "flex";
+
+
+    overlay.innerHTML = `
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <div class="panel-eyebrow">
+                        Saved
+                    </div>
+
+                    <h2>
+                        Wishlist
+                    </h2>
+
+                    <p>
+                        Your saved gift-card brands.
+                    </p>
+                </div>
+
+                <button
+                    class="close-button"
+                    onclick="document.getElementById('wishlistOverlay').remove()">
+                    ×
+                </button>
+
+            </div>
+
+            <div class="cards wishlist-cards">
+
+                ${list.map(function (id) {
+
+                    const brand =
+                        getBrand(id);
+
+                    if (!brand) {
+                        return "";
+                    }
+
+                    return `
+
+                        <div class="card">
+
+                            <div class="brand-box">
+                                <img
+                                    class="brand-logo"
+                                    src="${brand.logo}"
+                                    alt="${escapeHTML(brand.name)}">
+                            </div>
+
+                            <div class="brand">
+                                ${escapeHTML(brand.category)}
+                            </div>
+
+                            <h3>
+                                ${escapeHTML(brand.name)}
+                            </h3>
+
+                            <button
+                                class="buy"
+                                onclick="GCS.closeWishlist();GCS.openProduct('${brand.id}')">
+                                View Gift Cards
+                            </button>
+
+                        </div>
+
+                    `;
+
+                }).join("")}
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        overlay
+    );
+
+};
+
+
+GCS.closeWishlist = function () {
+
+    const overlay =
+        document.getElementById(
+            "wishlistOverlay"
         );
 
+    if (overlay) {
+        overlay.remove();
     }
 
 };
@@ -1344,23 +2291,9 @@ GCS.updateHeader = function () {
             "loginButton"
         );
 
-
     const accountButton =
         document.getElementById(
             "accountButton"
-        );
-
-
-    /*
-     * The old standalone My Orders button
-     * is deliberately hidden.
-     *
-     * Orders now live inside Account.
-     */
-
-    const standaloneOrders =
-        document.querySelector(
-            "nav > .orders-button:not(#accountButton)"
         );
 
 
@@ -1368,80 +2301,40 @@ GCS.updateHeader = function () {
         GCS.isLoggedIn();
 
 
-    if (standaloneOrders) {
-
-        standaloneOrders.style.display =
-            "none";
-
-    }
-
-
     if (loggedIn) {
 
         if (loginButton) {
-
             loginButton.style.display =
                 "none";
-
         }
 
-
         if (accountButton) {
-
             accountButton.style.display =
                 "inline-flex";
-
-            accountButton.textContent =
-                "Account";
-
         }
 
     } else {
 
         if (loginButton) {
-
             loginButton.style.display =
                 "inline-flex";
-
         }
 
-
         if (accountButton) {
-
             accountButton.style.display =
                 "none";
-
         }
 
     }
 
-};
 
-
-/* =====================================================
-   CLOSE ALL OVERLAYS
-===================================================== */
-
-GCS.closeAllOverlays = function () {
-
-    document
-        .querySelectorAll(
-            ".overlay"
-        )
-        .forEach(
-            function (overlay) {
-
-                overlay.style.display =
-                    "none";
-
-            }
-        );
+    GCS.updateCartUI();
 
 };
 
 
 /* =====================================================
-   START APPLICATION
+   START
 ===================================================== */
 
 document.addEventListener(
@@ -1449,82 +2342,48 @@ document.addEventListener(
     function () {
 
         console.log(
-            "GiftCardStore started."
+            "GiftCardStore started — batch upgrade."
         );
 
-
-        /*
-         * Account modal is handled by account.js.
-         */
 
         if (
             typeof createAccountModal === "function"
         ) {
-
             createAccountModal();
-
         }
 
 
-        /*
-         * Render all brands.
-         */
-
         GCS.renderProducts();
-
-
-        /*
-         * Header state.
-         */
 
         GCS.updateHeader();
 
-
-        /*
-         * Login button.
-         */
 
         const loginButton =
             document.getElementById(
                 "loginButton"
             );
 
-
         if (loginButton) {
-
             loginButton.onclick =
                 GCS.openLogin;
-
         }
 
-
-        /*
-         * Account button.
-         */
 
         const accountButton =
             document.getElementById(
                 "accountButton"
             );
 
-
         if (accountButton) {
-
             accountButton.onclick =
                 GCS.openAccount;
-
         }
 
-
-        /*
-         * Search.
-         */
 
         const search =
             document.getElementById(
                 "search"
             );
-
 
         if (search) {
 
@@ -1536,50 +2395,44 @@ document.addEventListener(
         }
 
 
-        /*
-         * Categories.
-         */
+        GCS.updateCartUI();
+
 
         document
-            .querySelectorAll(
-                ".category"
-            )
-            .forEach(
-                function (button) {
+            .querySelectorAll(".category")
+            .forEach(function (button) {
 
-                    button.addEventListener(
-                        "click",
-                        function () {
+                button.addEventListener(
+                    "click",
+                    function () {
 
-                            GCS.filterCategory(
-                                button.textContent.trim(),
-                                button
-                            );
+                        GCS.filterCategory(
+                            button.dataset.category ||
+                            button.textContent.trim(),
+                            button
+                        );
 
-                        }
-                    );
+                    }
+                );
 
-                }
-            );
+            });
 
-
-        /*
-         * Close overlay when
-         * clicking outside panel.
-         */
 
         document.addEventListener(
-            "click",
+            "keydown",
             function (event) {
 
                 if (
-                    event.target.classList.contains(
-                        "overlay"
-                    )
+                    event.key === "/" &&
+                    document.activeElement.tagName !== "INPUT" &&
+                    document.activeElement.tagName !== "TEXTAREA"
                 ) {
 
-                    event.target.style.display =
-                        "none";
+                    event.preventDefault();
+
+                    if (search) {
+                        search.focus();
+                    }
 
                 }
 
