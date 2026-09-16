@@ -1,46 +1,134 @@
 /* =====================================================
    GIFTCARDSTORE — ACCOUNT
-   BRICK 14
-===================================================== */
+   BRICK 14 — ACCOUNT + APPEARANCE SETTINGS
+   ===================================================== */
 
 const ACCOUNT_KEY = "giftCardCustomer";
+const THEME_KEY = "giftCardTheme";
 
 window.GCS = window.GCS || {};
 
 
 /* =====================================================
    ACCOUNT DATA
-===================================================== */
+   ===================================================== */
 
 function getCurrentUser() {
-
     return JSON.parse(
         localStorage.getItem(ACCOUNT_KEY) || "null"
     );
-
 }
 
 function isLoggedIn() {
-
     return !!getCurrentUser();
-
 }
 
 function saveUser(user) {
-
     localStorage.setItem(
         ACCOUNT_KEY,
         JSON.stringify(user)
     );
 
     updateAccountUI();
-
 }
 
 
 /* =====================================================
-   NOTICE
-===================================================== */
+   THEME SYSTEM
+   ===================================================== */
+
+function getSavedTheme() {
+    return localStorage.getItem(THEME_KEY) || "system";
+}
+
+function getEffectiveTheme(theme) {
+    if (theme === "system") {
+        return window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+    }
+
+    return theme;
+}
+
+function applyTheme(theme) {
+    const effectiveTheme = getEffectiveTheme(theme);
+
+    document.documentElement.setAttribute(
+        "data-theme",
+        effectiveTheme
+    );
+
+    document.documentElement.style.colorScheme =
+        effectiveTheme;
+
+    localStorage.setItem(
+        THEME_KEY,
+        theme
+    );
+
+    updateThemeButtons(theme);
+}
+
+function updateThemeButtons(theme) {
+    document.querySelectorAll(
+        "[data-theme-option]"
+    ).forEach(function(button) {
+
+        button.classList.toggle(
+            "active",
+            button.dataset.themeOption === theme
+        );
+
+    });
+}
+
+function setTheme(theme) {
+    if (
+        theme !== "light" &&
+        theme !== "dark" &&
+        theme !== "system"
+    ) {
+        return;
+    }
+
+    applyTheme(theme);
+}
+
+function initialiseTheme() {
+    applyTheme(getSavedTheme());
+
+    if (window.matchMedia) {
+        const media =
+            window.matchMedia(
+                "(prefers-color-scheme: dark)"
+            );
+
+        const systemThemeChanged =
+            function() {
+                if (getSavedTheme() === "system") {
+                    applyTheme("system");
+                }
+            };
+
+        if (media.addEventListener) {
+            media.addEventListener(
+                "change",
+                systemThemeChanged
+            );
+        } else if (media.addListener) {
+            media.addListener(
+                systemThemeChanged
+            );
+        }
+    }
+}
+
+
+/* =====================================================
+   NOTICE SYSTEM
+   ===================================================== */
 
 function createNoticeSystem() {
 
@@ -62,7 +150,6 @@ function createNoticeSystem() {
         "site-notice-overlay";
 
     overlay.innerHTML = `
-
         <div class="site-notice">
 
             <div
@@ -96,7 +183,6 @@ function createNoticeSystem() {
     `;
 
     document.body.appendChild(overlay);
-
 }
 
 
@@ -162,13 +248,12 @@ function closeNotice() {
         overlay.style.display =
             "none";
     }
-
 }
 
 
 /* =====================================================
    HEADER
-===================================================== */
+   ===================================================== */
 
 function updateAccountUI() {
 
@@ -204,15 +289,13 @@ function updateAccountUI() {
 
         accountButton.style.display =
             "none";
-
     }
-
 }
 
 
 /* =====================================================
    ACCOUNT MODAL
-===================================================== */
+   ===================================================== */
 
 function createAccountModal() {
 
@@ -237,21 +320,22 @@ function createAccountModal() {
         "none";
 
     overlay.innerHTML = `
+        <div class="panel account-modal">
 
-        <div class="modal">
-
-            <div class="modal-header">
+            <div class="panel-header">
 
                 <div>
+                    <div class="panel-eyebrow">
+                        Account
+                    </div>
 
-                    <div class="modal-title">
+                    <h2>
                         My Account
-                    </div>
+                    </h2>
 
-                    <div class="modal-subtitle">
-                        Manage your GiftCardStore account
-                    </div>
-
+                    <p>
+                        Manage your GiftCardStore account.
+                    </p>
                 </div>
 
                 <button
@@ -262,7 +346,6 @@ function createAccountModal() {
 
             </div>
 
-
             <div class="account-profile">
 
                 <div class="account-avatar">
@@ -270,7 +353,6 @@ function createAccountModal() {
                 </div>
 
                 <div>
-
                     <strong id="accountName">
                         Customer
                     </strong>
@@ -279,11 +361,9 @@ function createAccountModal() {
                         class="account-email"
                         id="accountEmail">
                     </div>
-
                 </div>
 
             </div>
-
 
             <div class="account-menu">
 
@@ -294,14 +374,12 @@ function createAccountModal() {
 
                     <div>
                         <strong>Profile</strong>
-
                         <small>
                             View your account information
                         </small>
                     </div>
 
                 </button>
-
 
                 <button
                     onclick="openOrdersFromAccount()">
@@ -310,14 +388,12 @@ function createAccountModal() {
 
                     <div>
                         <strong>My Orders</strong>
-
                         <small>
                             View your previous orders
                         </small>
                     </div>
 
                 </button>
-
 
                 <button
                     onclick="openPaymentSection()">
@@ -326,14 +402,12 @@ function createAccountModal() {
 
                     <div>
                         <strong>Payment Methods</strong>
-
                         <small>
                             Manage payment options
                         </small>
                     </div>
 
                 </button>
-
 
                 <button
                     onclick="openGiftCardsSection()">
@@ -342,14 +416,12 @@ function createAccountModal() {
 
                     <div>
                         <strong>My Gift Cards</strong>
-
                         <small>
                             View your purchased gift cards
                         </small>
                     </div>
 
                 </button>
-
 
                 <button
                     onclick="openSettingsSection()">
@@ -358,16 +430,14 @@ function createAccountModal() {
 
                     <div>
                         <strong>Settings</strong>
-
                         <small>
-                            Account preferences
+                            Appearance and preferences
                         </small>
                     </div>
 
                 </button>
 
             </div>
-
 
             <button
                 class="logout-button"
@@ -380,16 +450,13 @@ function createAccountModal() {
         </div>
     `;
 
-    document.body.appendChild(
-        overlay
-    );
-
+    document.body.appendChild(overlay);
 }
 
 
 /* =====================================================
    LOGIN MODAL
-===================================================== */
+   ===================================================== */
 
 function createLoginModal() {
 
@@ -414,14 +481,15 @@ function createLoginModal() {
         "none";
 
     overlay.innerHTML = `
-
-        <div class="modal login-modal">
+        <div class="panel login-modal">
 
             <button
                 class="close-button"
                 onclick="closeLoginPanel()"
                 style="float:right">
+
                 ×
+
             </button>
 
             <div class="login-icon">
@@ -436,7 +504,6 @@ function createLoginModal() {
                 Sign in to access your account and orders.
             </p>
 
-
             <div class="field-label">
                 Your name
             </div>
@@ -447,7 +514,6 @@ function createLoginModal() {
                 type="text"
                 placeholder="Enter your name"
                 autocomplete="name">
-
 
             <div class="field-label">
                 Email address
@@ -460,12 +526,10 @@ function createLoginModal() {
                 placeholder="you@example.com"
                 autocomplete="email">
 
-
             <div
                 class="login-error"
                 id="loginError">
             </div>
-
 
             <button
                 class="wide-primary"
@@ -478,16 +542,13 @@ function createLoginModal() {
         </div>
     `;
 
-    document.body.appendChild(
-        overlay
-    );
-
+    document.body.appendChild(overlay);
 }
 
 
 /* =====================================================
-   OPEN LOGIN
-===================================================== */
+   LOGIN
+   ===================================================== */
 
 function openLoginPanel() {
 
@@ -508,7 +569,6 @@ function openLoginPanel() {
     document.getElementById(
         "loginOverlay"
     ).style.display = "flex";
-
 }
 
 
@@ -523,7 +583,6 @@ function closeLoginPanel() {
         overlay.style.display =
             "none";
     }
-
 }
 
 
@@ -569,20 +628,11 @@ function submitLogin() {
         return;
     }
 
-
     saveUser({
-
-        name:
-            name,
-
-        email:
-            email,
-
-        createdAt:
-            new Date().toISOString()
-
+        name:name,
+        email:email,
+        createdAt:new Date().toISOString()
     });
-
 
     closeLoginPanel();
 
@@ -592,7 +642,6 @@ function submitLogin() {
         "success"
     );
 
-
     if (
         window.checkoutWaitingForLogin
     ) {
@@ -600,35 +649,28 @@ function submitLogin() {
         window.checkoutWaitingForLogin =
             false;
 
-        setTimeout(
-            function() {
+        setTimeout(function() {
 
-                if (
-                    typeof GCS.openCheckout ===
-                    "function"
-                ) {
-                    GCS.openCheckout();
-                }
+            if (
+                typeof GCS.openCheckout ===
+                "function"
+            ) {
+                GCS.openCheckout();
+            }
 
-            },
-            180
-        );
-
+        },180);
     }
-
 }
 
 
 /* =====================================================
    ACCOUNT OPEN / CLOSE
-===================================================== */
+   ===================================================== */
 
 function openAccountPanel() {
 
     if (!isLoggedIn()) {
-
         openLoginPanel();
-
         return;
     }
 
@@ -651,7 +693,6 @@ function openAccountPanel() {
         "accountOverlay"
     ).style.display =
         "flex";
-
 }
 
 
@@ -666,13 +707,12 @@ function closeAccountPanel() {
         overlay.style.display =
             "none";
     }
-
 }
 
 
 /* =====================================================
    ACCOUNT SECTIONS
-===================================================== */
+   ===================================================== */
 
 function openProfileSection() {
 
@@ -691,7 +731,6 @@ function openProfileSection() {
         "Your Profile",
         "info"
     );
-
 }
 
 
@@ -705,7 +744,6 @@ function openOrdersFromAccount() {
     ) {
         openOrders();
     }
-
 }
 
 
@@ -717,7 +755,6 @@ function openPaymentSection() {
         "Payment Methods",
         "info"
     );
-
 }
 
 
@@ -728,24 +765,165 @@ function openGiftCardsSection() {
         "My Gift Cards",
         "info"
     );
-
 }
 
 
+/* =====================================================
+   SETTINGS
+   ===================================================== */
+
 function openSettingsSection() {
 
-    showNotice(
-        "Account preferences will be added here.",
-        "Settings",
-        "info"
-    );
+    const existing =
+        document.getElementById(
+            "settingsOverlay"
+        );
 
+    if (existing) {
+        existing.style.display = "flex";
+        updateThemeButtons(getSavedTheme());
+        return;
+    }
+
+    const overlay =
+        document.createElement("div");
+
+    overlay.id =
+        "settingsOverlay";
+
+    overlay.className =
+        "overlay";
+
+    overlay.style.display =
+        "flex";
+
+    overlay.innerHTML = `
+        <div class="panel settings-panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <div class="panel-eyebrow">
+                        Settings
+                    </div>
+
+                    <h2>
+                        Appearance
+                    </h2>
+
+                    <p>
+                        Choose how GiftCardStore looks on this device.
+                    </p>
+                </div>
+
+                <button
+                    class="close-button"
+                    onclick="closeSettingsPanel()">
+
+                    ×
+
+                </button>
+
+            </div>
+
+            <div class="settings-section">
+
+                <div class="settings-label">
+                    Theme
+                </div>
+
+                <div class="theme-options">
+
+                    <button
+                        class="theme-option"
+                        data-theme-option="light"
+                        onclick="setTheme('light')">
+
+                        <span class="theme-option-icon">
+                            ☀️
+                        </span>
+
+                        <span>
+                            <strong>Light</strong>
+                            <small>
+                                Bright appearance
+                            </small>
+                        </span>
+
+                    </button>
+
+                    <button
+                        class="theme-option"
+                        data-theme-option="dark"
+                        onclick="setTheme('dark')">
+
+                        <span class="theme-option-icon">
+                            🌙
+                        </span>
+
+                        <span>
+                            <strong>Dark</strong>
+                            <small>
+                                Dark appearance
+                            </small>
+                        </span>
+
+                    </button>
+
+                    <button
+                        class="theme-option"
+                        data-theme-option="system"
+                        onclick="setTheme('system')">
+
+                        <span class="theme-option-icon">
+                            💻
+                        </span>
+
+                        <span>
+                            <strong>System</strong>
+                            <small>
+                                Follow device preference
+                            </small>
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="settings-note">
+                Your appearance preference is saved on this device.
+            </div>
+
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    updateThemeButtons(
+        getSavedTheme()
+    );
+}
+
+
+function closeSettingsPanel() {
+
+    const overlay =
+        document.getElementById(
+            "settingsOverlay"
+        );
+
+    if (overlay) {
+        overlay.style.display =
+            "none";
+    }
 }
 
 
 /* =====================================================
    LOGOUT
-===================================================== */
+   ===================================================== */
 
 function logoutUser() {
 
@@ -762,20 +940,17 @@ function logoutUser() {
         "Signed out",
         "success"
     );
-
 }
 
 
 /* =====================================================
    CHECKOUT LOGIN GATE
-===================================================== */
+   ===================================================== */
 
 function requireLogin(action) {
 
     if (isLoggedIn()) {
-
         action();
-
         return;
     }
 
@@ -783,13 +958,12 @@ function requireLogin(action) {
         true;
 
     openLoginPanel();
-
 }
 
 
 /* =====================================================
    ESCAPE HTML
-===================================================== */
+   ===================================================== */
 
 function escapeHTML(value) {
 
@@ -799,17 +973,18 @@ function escapeHTML(value) {
         .replace(/>/g,"&gt;")
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
-
 }
 
 
 /* =====================================================
    STARTUP
-===================================================== */
+   ===================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
     function() {
+
+        initialiseTheme();
 
         createAccountModal();
 
