@@ -1,9 +1,113 @@
 /* =====================================================
    GIFTCARDSTORE — MAIN APPLICATION
-   BATCH UPGRADE 3–10
+   PREMIUM MARKETPLACE UI
 ===================================================== */
 
 window.GCS = window.GCS || {};
+
+
+/* =====================================================
+   STORAGE
+===================================================== */
+
+const GCS_CART_KEY =
+    "gcsCart";
+
+const GCS_WISHLIST_KEY =
+    "gcsWishlist";
+
+
+function readGCSStorage(key, fallback) {
+
+    try {
+
+        const value =
+            localStorage.getItem(key);
+
+        if (!value) {
+            return fallback;
+        }
+
+        const parsed =
+            JSON.parse(value);
+
+        return parsed;
+
+    } catch (error) {
+
+        return fallback;
+
+    }
+
+}
+
+
+function writeGCSStorage(key, value) {
+
+    try {
+
+        localStorage.setItem(
+            key,
+            JSON.stringify(value)
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "GiftCardStore storage error:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function gcsMoney(value) {
+
+    return "₹" +
+        Number(value || 0)
+            .toLocaleString("en-IN");
+
+}
+
+
+function gcsNumber(value) {
+
+    return Number(value) || 0;
+
+}
+
+
+function gcsEsc(value) {
+
+    return typeof escapeHTML === "function"
+        ? escapeHTML(value)
+        : String(value ?? "")
+            .replace(/&/g,"&amp;")
+            .replace(/</g,"&lt;")
+            .replace(/>/g,"&gt;")
+            .replace(/"/g,"&quot;")
+            .replace(/'/g,"&#039;");
+
+}
+
+
+function gcsToken(value) {
+
+    return encodeURIComponent(
+        String(value)
+    );
+
+}
 
 
 /* =====================================================
@@ -22,131 +126,7 @@ window.checkoutWaitingForLogin = false;
 
 
 /* =====================================================
-   STORAGE
-===================================================== */
-
-const CART_KEY =
-    "gcsCart";
-
-const WISHLIST_KEY =
-    "gcsWishlist";
-
-
-function getCart() {
-
-    try {
-
-        return JSON.parse(
-            localStorage.getItem(CART_KEY) || "[]"
-        );
-
-    } catch (error) {
-
-        return [];
-
-    }
-
-}
-
-
-function saveCart(cart) {
-
-    localStorage.setItem(
-        CART_KEY,
-        JSON.stringify(cart)
-    );
-
-    GCS.updateCartUI();
-
-}
-
-
-function getWishlist() {
-
-    try {
-
-        return JSON.parse(
-            localStorage.getItem(WISHLIST_KEY) || "[]"
-        );
-
-    } catch (error) {
-
-        return [];
-
-    }
-
-}
-
-
-function saveWishlist(list) {
-
-    localStorage.setItem(
-        WISHLIST_KEY,
-        JSON.stringify(list)
-    );
-
-}
-
-
-/* =====================================================
-   HELPERS
-===================================================== */
-
-function money(value) {
-
-    return "₹" +
-        Number(value || 0).toLocaleString("en-IN");
-
-}
-
-
-function getProductDiscount(
-    brandId,
-    mode
-) {
-
-    return getBrandDiscount(
-        brandId,
-        mode
-    );
-
-}
-
-
-function createCartItem() {
-
-    return {
-
-        id:
-            "CART-" +
-            Date.now() +
-            "-" +
-            Math.random()
-                .toString(36)
-                .slice(2, 7),
-
-        brandId:
-            GCS.selectedBrand,
-
-        value:
-            Number(GCS.selectedValue),
-
-        mode:
-            GCS.selectedMode,
-
-        price:
-            Number(GCS.selectedPrice),
-
-        quantity:
-            1
-
-    };
-
-}
-
-
-/* =====================================================
-   COMPATIBILITY
+   ACCOUNT COMPATIBILITY
 ===================================================== */
 
 GCS.isLoggedIn = function () {
@@ -180,9 +160,12 @@ GCS.getBrand = function (brandId) {
 GCS.openLogin = function () {
 
     if (
-        typeof openLoginPanel === "function"
+        typeof openLoginPanel ===
+        "function"
     ) {
+
         openLoginPanel();
+
     }
 
 };
@@ -191,9 +174,12 @@ GCS.openLogin = function () {
 GCS.openAccount = function () {
 
     if (
-        typeof openAccountPanel === "function"
+        typeof openAccountPanel ===
+        "function"
     ) {
+
         openAccountPanel();
+
     }
 
 };
@@ -202,9 +188,12 @@ GCS.openAccount = function () {
 GCS.openOrders = function () {
 
     if (
-        typeof openOrders === "function"
+        typeof openOrders ===
+        "function"
     ) {
+
         openOrders();
+
     }
 
 };
@@ -213,344 +202,746 @@ GCS.openOrders = function () {
 GCS.closeOrders = function () {
 
     if (
-        typeof closeOrders === "function"
+        typeof closeOrders ===
+        "function"
     ) {
+
         closeOrders();
-    }
 
-};
-
-
-GCS.closeAccount = function () {
-
-    if (
-        typeof closeAccountPanel === "function"
-    ) {
-        closeAccountPanel();
-    }
-
-};
-
-
-GCS.logout = function () {
-
-    if (
-        typeof logoutUser === "function"
-    ) {
-        logoutUser();
     }
 
 };
 
 
 /* =====================================================
-   RENDER PRODUCTS
+   CART
 ===================================================== */
 
-GCS.renderProducts = function (brands) {
+GCS.getCart = function () {
+
+    const cart =
+        readGCSStorage(
+            GCS_CART_KEY,
+            []
+        );
+
+    return Array.isArray(cart)
+        ? cart
+        : [];
+
+};
+
+
+GCS.saveCart = function (cart) {
+
+    writeGCSStorage(
+        GCS_CART_KEY,
+        Array.isArray(cart)
+            ? cart
+            : []
+    );
+
+    GCS.updateCartCount();
+
+};
+
+
+GCS.getCartCount = function () {
+
+    return GCS.getCart()
+        .reduce(
+            function (total, item) {
+
+                return total +
+                    Math.max(
+                        1,
+                        gcsNumber(item.quantity)
+                    );
+
+            },
+            0
+        );
+
+};
+
+
+GCS.getCartTotals = function () {
+
+    const cart =
+        GCS.getCart();
+
+    let value = 0;
+    let price = 0;
+    let savings = 0;
+
+    cart.forEach(
+        function (item) {
+
+            const quantity =
+                Math.max(
+                    1,
+                    gcsNumber(item.quantity)
+                );
+
+            value +=
+                gcsNumber(item.value) *
+                quantity;
+
+            price +=
+                gcsNumber(item.price) *
+                quantity;
+
+            savings +=
+                gcsNumber(item.savings) *
+                quantity;
+
+        }
+    );
+
+    return {
+        value,
+        price,
+        savings,
+        count: cart.reduce(
+            (a, item) =>
+                a +
+                Math.max(
+                    1,
+                    gcsNumber(item.quantity)
+                ),
+            0
+        )
+    };
+
+};
+
+
+GCS.updateCartCount = function () {
+
+    const count =
+        GCS.getCartCount();
+
+    const element =
+        document.getElementById(
+            "cartCount"
+        );
+
+    if (element) {
+
+        element.textContent =
+            count;
+
+    }
+
+};
+
+
+/* =====================================================
+   ADD TO CART
+===================================================== */
+
+GCS.addToCart = function () {
+
+    const brand =
+        getBrand(
+            GCS.selectedBrand
+        );
+
+    if (!brand) {
+        return;
+    }
+
+    if (
+        !GCS.selectedValue ||
+        GCS.selectedValue <= 0
+    ) {
+
+        showNotice(
+            "Select a gift-card value first.",
+            "Value required",
+            "error"
+        );
+
+        return;
+
+    }
+
+    const discount =
+        getBrandDiscount(
+            GCS.selectedBrand,
+            GCS.selectedMode
+        );
+
+    const savings =
+        calculateSavings(
+            GCS.selectedValue,
+            discount
+        );
+
+    const itemId =
+        GCS.selectedBrand +
+        "|" +
+        GCS.selectedMode +
+        "|" +
+        GCS.selectedValue;
+
+    const cart =
+        GCS.getCart();
+
+    const existing =
+        cart.find(
+            item =>
+                item.id === itemId
+        );
+
+    if (existing) {
+
+        existing.quantity =
+            Math.min(
+                20,
+                Math.max(
+                    1,
+                    gcsNumber(
+                        existing.quantity
+                    )
+                ) + 1
+            );
+
+    } else {
+
+        cart.push({
+
+            id:
+                itemId,
+
+            brandId:
+                brand.id,
+
+            brand:
+                brand.name,
+
+            category:
+                brand.category,
+
+            logo:
+                brand.logo,
+
+            value:
+                GCS.selectedValue,
+
+            mode:
+                GCS.selectedMode,
+
+            discount:
+                discount,
+
+            price:
+                GCS.selectedPrice,
+
+            savings:
+                savings,
+
+            quantity:
+                1
+
+        });
+
+    }
+
+    GCS.saveCart(cart);
+
+    GCS.closeProduct();
+
+    GCS.openCart();
+
+    showNotice(
+        "Gift card added to your cart.",
+        "Added to cart",
+        "success"
+    );
+
+};
+
+
+/* =====================================================
+   UPDATE QUANTITY
+===================================================== */
+
+GCS.updateCartQuantity = function (
+    itemId,
+    change
+) {
+
+    const cart =
+        GCS.getCart();
+
+    const item =
+        cart.find(
+            product =>
+                product.id === itemId
+        );
+
+    if (!item) {
+        return;
+    }
+
+    item.quantity =
+        Math.max(
+            1,
+            Math.min(
+                20,
+                gcsNumber(item.quantity) +
+                gcsNumber(change)
+            )
+        );
+
+    GCS.saveCart(cart);
+
+    GCS.renderCart();
+
+};
+
+
+GCS.removeFromCart = function (
+    itemId
+) {
+
+    const cart =
+        GCS.getCart()
+            .filter(
+                item =>
+                    item.id !== itemId
+            );
+
+    GCS.saveCart(cart);
+
+    GCS.renderCart();
+
+};
+
+
+GCS.clearCart = function () {
+
+    GCS.saveCart([]);
+
+    GCS.renderCart();
+
+};
+
+
+/* =====================================================
+   OPEN CART
+===================================================== */
+
+GCS.openCart = function () {
+
+    GCS.closeAllOverlays();
+
+    GCS.renderCart();
+
+    const overlay =
+        document.getElementById(
+            "cartOverlay"
+        );
+
+    if (overlay) {
+        overlay.style.display =
+            "flex";
+    }
+
+};
+
+
+GCS.renderCart = function () {
 
     const container =
-        document.getElementById("cards");
+        document.getElementById(
+            "cartItems"
+        );
+
+    const summary =
+        document.getElementById(
+            "cartSummary"
+        );
+
+    const button =
+        document.getElementById(
+            "cartCheckoutButton"
+        );
 
     if (!container) {
         return;
     }
 
-    const brandList =
-        brands ||
-        (
-            typeof getAllBrands === "function"
-                ? getAllBrands()
-                : []
-        );
+    const cart =
+        GCS.getCart();
 
-    container.innerHTML = "";
-
-    if (!brandList.length) {
+    if (!cart.length) {
 
         container.innerHTML = `
-            <div class="empty-orders">
-                <div class="empty-orders-icon">🔎</div>
-                <h3>No gift cards found</h3>
-                <p>Try another brand, category or search term.</p>
-            </div>
-        `;
 
-        return;
-    }
+            <div class="batch-empty">
 
+                <div class="batch-empty-icon">
+                    🛒
+                </div>
 
-    const wishlist =
-        getWishlist();
+                <h3>
+                    Your cart is empty
+                </h3>
 
-
-    brandList.forEach(function (brand) {
-
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "card";
-
-
-        const discount =
-            Math.max(
-                brand.fixedDiscount || 0,
-                brand.customDiscount || 0
-            );
-
-
-        const wished =
-            wishlist.includes(brand.id);
-
-
-        card.innerHTML = `
-
-            <div class="brand-box">
-
-                <img
-                    class="brand-logo"
-                    src="${brand.logo}"
-                    alt="${escapeHTML(brand.name)}"
-                    loading="lazy"
-                >
-
-                <button
-                    class="card-wishlist ${wished ? "active" : ""}"
-                    type="button"
-                    aria-label="Save ${escapeHTML(brand.name)}"
-                    onclick="GCS.toggleWishlist('${brand.id}', this)">
-                    ${wished ? "♥" : "♡"}
-                </button>
+                <p>
+                    Select a gift card and add it here.
+                </p>
 
             </div>
-
-            <div class="brand">
-                ${escapeHTML(brand.category)}
-            </div>
-
-            <h3>
-                ${escapeHTML(brand.name)}
-            </h3>
-
-            <div class="discount">
-                Up to ${discount}% off
-            </div>
-
-            <button class="buy">
-                View Gift Cards
-            </button>
 
         `;
 
+        if (summary) {
+            summary.innerHTML = "";
+        }
 
-        const button =
-            card.querySelector(".buy");
-
-
-        button.addEventListener(
-            "click",
-            function () {
-
-                GCS.openProduct(
-                    brand.id
-                );
-
-            }
-        );
-
-
-        container.appendChild(card);
-
-    });
-
-
-    GCS.updateSearchInfo(
-        brandList.length
-    );
-
-};
-
-
-/* =====================================================
-   FILTER ENGINE
-===================================================== */
-
-GCS.applyFilters = function () {
-
-    const all =
-        getAllBrands();
-
-    const query =
-        GCS.searchQuery
-            .trim()
-            .toLowerCase();
-
-    const category =
-        GCS.activeCategory;
-
-
-    const filtered =
-        all.filter(function (brand) {
-
-            const categoryMatch =
-                category === "All" ||
-                brand.category.toLowerCase() ===
-                category.toLowerCase();
-
-
-            if (!categoryMatch) {
-                return false;
-            }
-
-
-            if (!query) {
-                return true;
-            }
-
-
-            const searchable = [
-                brand.name,
-                brand.category,
-                brand.id
-            ]
-                .filter(Boolean)
-                .join(" ")
-                .toLowerCase();
-
-
-            return searchable.includes(query);
-
-        });
-
-
-    GCS.renderProducts(
-        filtered
-    );
-
-};
-
-
-GCS.searchCards = function (event) {
-
-    GCS.searchQuery =
-        event.target.value || "";
-
-    const clear =
-        document.getElementById(
-            "clearSearch"
-        );
-
-    if (clear) {
-
-        clear.style.display =
-            GCS.searchQuery
-                ? "block"
-                : "none";
-
-    }
-
-    GCS.applyFilters();
-
-};
-
-
-GCS.clearSearch = function () {
-
-    const input =
-        document.getElementById(
-            "search"
-        );
-
-    if (input) {
-        input.value = "";
-    }
-
-    GCS.searchQuery = "";
-
-    const clear =
-        document.getElementById(
-            "clearSearch"
-        );
-
-    if (clear) {
-        clear.style.display = "none";
-    }
-
-    GCS.applyFilters();
-
-};
-
-
-GCS.updateSearchInfo = function (count) {
-
-    const info =
-        document.getElementById(
-            "searchInfo"
-        );
-
-    if (!info) {
-        return;
-    }
-
-    const query =
-        GCS.searchQuery.trim();
-
-    if (!query) {
-
-        info.style.display =
-            "none";
+        if (button) {
+            button.disabled = true;
+        }
 
         return;
 
     }
 
-    info.style.display =
-        "block";
+    container.innerHTML =
+        cart.map(
+            function (item) {
 
-    info.textContent =
-        count +
-        " result" +
-        (count === 1 ? "" : "s") +
-        " for “" +
-        query +
-        "”";
+                const token =
+                    gcsToken(item.id);
 
-};
+                const quantity =
+                    Math.max(
+                        1,
+                        gcsNumber(
+                            item.quantity
+                        )
+                    );
+
+                return `
+
+                    <div class="cart-item">
+
+                        <div class="cart-item-logo">
+
+                            <img
+                                src="${gcsEsc(item.logo)}"
+                                alt="${gcsEsc(item.brand)}">
+
+                        </div>
+
+                        <div class="cart-item-content">
+
+                            <div class="cart-item-top">
+
+                                <div>
+
+                                    <div class="cart-item-name">
+                                        ${gcsEsc(item.brand)}
+                                    </div>
+
+                                    <div class="cart-item-value">
+                                        ${gcsMoney(item.value)}
+                                        · ${gcsEsc(item.mode)}
+                                    </div>
+
+                                </div>
+
+                                <div class="cart-item-price">
+                                    ${gcsMoney(item.price * quantity)}
+                                </div>
+
+                            </div>
+
+                            <div class="cart-item-save">
+                                Save ${gcsMoney(item.savings)}
+                                each
+                            </div>
+
+                            <div class="cart-item-controls">
+
+                                <button
+                                    class="qty-button"
+                                    onclick="GCS.updateCartQuantity(decodeURIComponent('${token}'),-1)">
+                                    −
+                                </button>
+
+                                <span class="qty-number">
+                                    ${quantity}
+                                </span>
+
+                                <button
+                                    class="qty-button"
+                                    onclick="GCS.updateCartQuantity(decodeURIComponent('${token}'),1)">
+                                    +
+                                </button>
+
+                                <button
+                                    class="remove-cart"
+                                    onclick="GCS.removeFromCart(decodeURIComponent('${token}'))">
+                                    Remove
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
 
 
-/* =====================================================
-   CATEGORY
-===================================================== */
-
-GCS.filterCategory = function (
-    category,
-    button
-) {
-
-    GCS.activeCategory =
-        category;
+    const totals =
+        GCS.getCartTotals();
 
 
-    document
-        .querySelectorAll(".category")
-        .forEach(function (item) {
+    if (summary) {
 
-            item.classList.remove(
-                "active"
-            );
+        summary.innerHTML = `
 
-        });
+            <div class="cart-summary-row">
 
+                <span>
+                    Gift card value
+                </span>
+
+                <strong>
+                    ${gcsMoney(totals.value)}
+                </strong>
+
+            </div>
+
+            <div class="cart-summary-row cart-summary-saving">
+
+                <span>
+                    Total savings
+                </span>
+
+                <strong>
+                    − ${gcsMoney(totals.savings)}
+                </strong>
+
+            </div>
+
+            <div class="cart-summary-row cart-summary-total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong>
+                    ${gcsMoney(totals.price)}
+                </strong>
+
+            </div>
+
+        `;
+
+    }
 
     if (button) {
-        button.classList.add(
-            "active"
+        button.disabled = false;
+    }
+
+};
+
+
+/* =====================================================
+   CHECKOUT
+===================================================== */
+
+GCS.checkoutCart = function () {
+
+    const cart =
+        GCS.getCart();
+
+    if (!cart.length) {
+
+        showNotice(
+            "Your cart is empty.",
+            "Cart",
+            "error"
         );
+
+        return;
+
+    }
+
+    if (!GCS.isLoggedIn()) {
+
+        window.checkoutWaitingForLogin =
+            true;
+
+        GCS.closeAllOverlays();
+
+        GCS.openLogin();
+
+        return;
+
+    }
+
+    GCS.renderCheckout();
+
+    GCS.closeAllOverlays();
+
+    const overlay =
+        document.getElementById(
+            "checkoutOverlay"
+        );
+
+    if (overlay) {
+        overlay.style.display =
+            "flex";
+    }
+
+};
+
+
+/*
+ * Compatibility with account.js.
+ */
+
+GCS.openCheckout =
+    GCS.checkoutCart;
+
+
+GCS.renderCheckout = function () {
+
+    const container =
+        document.getElementById(
+            "checkoutItems"
+        );
+
+    const totalsContainer =
+        document.getElementById(
+            "checkoutTotals"
+        );
+
+    const email =
+        document.getElementById(
+            "email"
+        );
+
+    const account =
+        GCS.getAccount();
+
+    if (!container) {
+        return;
+    }
+
+    const cart =
+        GCS.getCart();
+
+    container.innerHTML =
+        cart.map(
+            function (item) {
+
+                const quantity =
+                    Math.max(
+                        1,
+                        gcsNumber(
+                            item.quantity
+                        )
+                    );
+
+                return `
+
+                    <div class="checkout-line">
+
+                        <div>
+
+                            <div class="checkout-line-name">
+                                ${gcsEsc(item.brand)}
+                            </div>
+
+                            <div class="checkout-line-meta">
+                                ${gcsMoney(item.value)}
+                                × ${quantity}
+                            </div>
+
+                        </div>
+
+                        <div class="checkout-line-price">
+                            ${gcsMoney(
+                                item.price * quantity
+                            )}
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+
+    const totals =
+        GCS.getCartTotals();
+
+
+    if (totalsContainer) {
+
+        totalsContainer.innerHTML = `
+
+            <div class="checkout-total-row">
+
+                <span>
+                    Gift card value
+                </span>
+
+                <strong>
+                    ${gcsMoney(totals.value)}
+                </strong>
+
+            </div>
+
+            <div class="checkout-total-row">
+
+                <span>
+                    Savings
+                </span>
+
+                <strong>
+                    − ${gcsMoney(totals.savings)}
+                </strong>
+
+            </div>
+
+            <div class="checkout-total-row checkout-total-final">
+
+                <span>
+                    Total
+                </span>
+
+                <strong>
+                    ${gcsMoney(totals.price)}
+                </strong>
+
+            </div>
+
+        `;
+
     }
 
 
-    GCS.applyFilters();
+    if (email) {
+
+        email.value =
+            account?.email || "";
+
+    }
 
 };
 
@@ -559,7 +950,9 @@ GCS.filterCategory = function (
    PRODUCT
 ===================================================== */
 
-GCS.openProduct = function (brandId) {
+GCS.openProduct = function (
+    brandId
+) {
 
     const brand =
         getBrand(brandId);
@@ -567,7 +960,6 @@ GCS.openProduct = function (brandId) {
     if (!brand) {
         return;
     }
-
 
     GCS.selectedBrand =
         brandId;
@@ -581,7 +973,6 @@ GCS.openProduct = function (brandId) {
     GCS.selectedPrice =
         0;
 
-
     const overlay =
         document.getElementById(
             "productOverlay"
@@ -591,95 +982,97 @@ GCS.openProduct = function (brandId) {
         return;
     }
 
+    GCS.closeAllOverlays();
 
-    const brandName =
+    const name =
         document.getElementById(
             "productBrand"
         );
 
-    if (brandName) {
-        brandName.textContent =
-            brand.name;
-    }
-
-
-    const brandLogo =
+    const logo =
         document.getElementById(
             "productLogo"
         );
 
-    if (brandLogo) {
-
-        brandLogo.src =
-            brand.logo;
-
-        brandLogo.alt =
-            brand.name;
-
-    }
-
+    const values =
+        document.getElementById(
+            "fixedValues"
+        );
 
     const info =
         document.getElementById(
             "productInfo"
         );
 
+    const customButton =
+        document.getElementById(
+            "customMode"
+        );
+
+    const customAmount =
+        document.getElementById(
+            "customAmount"
+        );
+
+    if (name) {
+        name.textContent =
+            brand.name;
+    }
+
+    if (logo) {
+
+        logo.src =
+            brand.logo;
+
+        logo.alt =
+            brand.name;
+
+    }
+
+
     if (info) {
 
         const fixed =
             brand.fixedValues
-                .map(value => money(value))
+                .map(
+                    value =>
+                        gcsMoney(value)
+                )
                 .join(" · ");
 
+        const custom =
+            brand.custom &&
+            brand.custom.enabled
+                ? "Custom values available"
+                : "Preset values only";
+
         info.innerHTML = `
-            <strong>${escapeHTML(brand.name)}</strong>
-            · ${escapeHTML(brand.category)}
-            · Fixed values: ${fixed || "Available"}
-            · Discount: up to ${Math.max(
+
+            <strong>
+                ${gcsEsc(brand.name)}
+            </strong>
+
+            · ${gcsEsc(brand.category)}
+
+            · Fixed values:
+            ${gcsEsc(fixed)}
+
+            · ${custom}
+
+            · Up to
+            ${Math.max(
                 brand.fixedDiscount || 0,
                 brand.customDiscount || 0
-            )}%
+            )}% off
+
         `;
 
     }
 
 
-    const wishlist =
-        getWishlist();
+    if (values) {
 
-    const wishButton =
-        document.getElementById(
-            "wishlistProductButton"
-        );
-
-    if (wishButton) {
-
-        const active =
-            wishlist.includes(
-                brand.id
-            );
-
-        wishButton.classList.toggle(
-            "active",
-            active
-        );
-
-        wishButton.textContent =
-            active ? "♥" : "♡";
-
-    }
-
-
-    const fixedValues =
-        document.getElementById(
-            "fixedValues"
-        );
-
-
-    if (fixedValues) {
-
-        fixedValues.innerHTML = "";
-
+        values.innerHTML = "";
 
         brand.fixedValues.forEach(
             function (value, index) {
@@ -690,31 +1083,44 @@ GCS.openProduct = function (brandId) {
                         brand.fixedDiscount
                     );
 
-
                 const button =
                     document.createElement(
                         "button"
                     );
 
-
                 button.className =
                     "value-button";
 
-
                 button.innerHTML = `
+
                     <strong>
-                        ${money(value)}
+                        ${gcsMoney(value)}
                     </strong>
 
                     <small>
-                        Pay ${money(price)}
+                        Pay ${gcsMoney(price)}
                     </small>
-                `;
 
+                `;
 
                 button.addEventListener(
                     "click",
                     function () {
+
+                        document
+                            .querySelectorAll(
+                                ".value-button"
+                            )
+                            .forEach(
+                                item =>
+                                    item.classList.remove(
+                                        "active"
+                                    )
+                            );
+
+                        button.classList.add(
+                            "active"
+                        );
 
                         GCS.selectedMode =
                             "fixed";
@@ -725,35 +1131,14 @@ GCS.openProduct = function (brandId) {
                         GCS.selectedPrice =
                             price;
 
-
-                        document
-                            .querySelectorAll(
-                                ".value-button"
-                            )
-                            .forEach(
-                                function (item) {
-                                    item.classList.remove(
-                                        "active"
-                                    );
-                                }
-                            );
-
-
-                        button.classList.add(
-                            "active"
-                        );
-
-
                         GCS.updatePreview();
 
                     }
                 );
 
-
-                fixedValues.appendChild(
+                values.appendChild(
                     button
                 );
-
 
                 if (index === 0) {
 
@@ -775,7 +1160,60 @@ GCS.openProduct = function (brandId) {
     }
 
 
-    GCS.selectMode("fixed");
+    if (customButton) {
+
+        const enabled =
+            !!(
+                brand.custom &&
+                brand.custom.enabled
+            );
+
+        customButton.style.display =
+            enabled
+                ? ""
+                : "none";
+
+    }
+
+
+    if (customAmount) {
+
+        customAmount.min =
+            brand.custom?.min || 100;
+
+        customAmount.max =
+            brand.custom?.max || 10000;
+
+        customAmount.value =
+            "";
+
+    }
+
+
+    const customArea =
+        document.getElementById(
+            "customArea"
+        );
+
+    if (customArea) {
+        customArea.style.display =
+            "none";
+    }
+
+
+    const fixedButton =
+        document.getElementById(
+            "fixedMode"
+        );
+
+    if (fixedButton) {
+        fixedButton.classList.add(
+            "active"
+        );
+    }
+
+
+    GCS.updateWishlistProductButton();
     GCS.updatePreview();
 
     overlay.style.display =
@@ -783,6 +1221,10 @@ GCS.openProduct = function (brandId) {
 
 };
 
+
+/* =====================================================
+   PRODUCT CLOSE
+===================================================== */
 
 GCS.closeProduct = function () {
 
@@ -800,22 +1242,33 @@ GCS.closeProduct = function () {
 
 
 /* =====================================================
-   PRODUCT MODE
+   MODE
 ===================================================== */
 
-GCS.selectMode = function (mode) {
+GCS.selectMode = function (
+    mode
+) {
 
-    if (
-        mode !== "fixed" &&
-        mode !== "custom"
-    ) {
+    const brand =
+        getBrand(
+            GCS.selectedBrand
+        );
+
+    if (!brand) {
         return;
     }
 
+    if (
+        mode === "custom" &&
+        !brand.custom?.enabled
+    ) {
+
+        return;
+
+    }
 
     GCS.selectedMode =
         mode;
-
 
     const fixedArea =
         document.getElementById(
@@ -837,62 +1290,59 @@ GCS.selectMode = function (mode) {
             "customMode"
         );
 
-
     if (fixedArea) {
+
         fixedArea.style.display =
             mode === "fixed"
                 ? "block"
                 : "none";
+
     }
 
-
     if (customArea) {
+
         customArea.style.display =
             mode === "custom"
                 ? "block"
                 : "none";
+
     }
 
-
     if (fixedButton) {
+
         fixedButton.classList.toggle(
             "active",
             mode === "fixed"
         );
+
     }
 
-
     if (customButton) {
+
         customButton.classList.toggle(
             "active",
             mode === "custom"
         );
-    }
 
+    }
 
     if (mode === "custom") {
 
-        const input =
-            document.getElementById(
-                "customAmount"
-            );
+        GCS.selectedValue =
+            0;
 
-        if (input) {
-            input.value = "";
-        }
-
-        GCS.selectedValue = 0;
-        GCS.selectedPrice = 0;
-
-        GCS.updatePreview();
+        GCS.selectedPrice =
+            0;
 
     }
+
+    GCS.updatePreview();
 
 };
 
 
 /* =====================================================
-   CUSTOM PRICE
+   CUSTOM VALUE
 ===================================================== */
 
 GCS.updateCustomPrice = function () {
@@ -902,25 +1352,17 @@ GCS.updateCustomPrice = function () {
             "customAmount"
         );
 
-    if (!input) {
-        return;
-    }
-
-
-    const amount =
-        Number(input.value);
-
-
     const brand =
         getBrand(
             GCS.selectedBrand
         );
 
-
-    if (!brand) {
+    if (!input || !brand) {
         return;
     }
 
+    const amount =
+        Number(input.value);
 
     if (
         !isValidProductValue(
@@ -930,15 +1372,17 @@ GCS.updateCustomPrice = function () {
         )
     ) {
 
-        GCS.selectedValue = 0;
-        GCS.selectedPrice = 0;
+        GCS.selectedValue =
+            0;
+
+        GCS.selectedPrice =
+            0;
 
         GCS.updatePreview();
 
         return;
 
     }
-
 
     GCS.selectedValue =
         amount;
@@ -969,15 +1413,13 @@ GCS.updatePreview = function () {
         return;
     }
 
-
     const discount =
         getBrandDiscount(
             GCS.selectedBrand,
             GCS.selectedMode
         );
 
-
-    const valueElement =
+    const value =
         document.getElementById(
             "previewValue"
         );
@@ -987,806 +1429,559 @@ GCS.updatePreview = function () {
             "previewDiscount"
         );
 
-    const priceElement =
+    const price =
         document.getElementById(
             "previewPrice"
         );
 
+    if (value) {
 
-    if (valueElement) {
-        valueElement.textContent =
+        value.textContent =
             GCS.selectedValue > 0
-                ? money(GCS.selectedValue)
+                ? gcsMoney(
+                    GCS.selectedValue
+                )
                 : "—";
-    }
 
+    }
 
     if (discountElement) {
+
         discountElement.textContent =
             discount + "%";
+
     }
 
+    if (price) {
 
-    if (priceElement) {
-        priceElement.textContent =
+        price.textContent =
             GCS.selectedPrice > 0
-                ? money(GCS.selectedPrice)
+                ? gcsMoney(
+                    GCS.selectedPrice
+                )
                 : "—";
+
     }
 
 };
 
 
 /* =====================================================
-   ADD TO CART
+   WISHLIST
 ===================================================== */
 
-GCS.continueProduct = function () {
+GCS.getWishlist = function () {
 
-    const brand =
-        getBrand(
-            GCS.selectedBrand
+    const list =
+        readGCSStorage(
+            GCS_WISHLIST_KEY,
+            []
         );
 
-    if (!brand) {
-        return;
-    }
+    return Array.isArray(list)
+        ? list
+        : [];
+
+};
 
 
-    if (
-        !GCS.selectedValue ||
-        GCS.selectedValue <= 0
-    ) {
+GCS.isWishlisted = function (
+    brandId
+) {
 
-        showNotice(
-            "Please select a gift-card value first.",
-            "Select a value",
-            "error"
-        );
+    return GCS.getWishlist()
+        .includes(brandId);
 
-        return;
-
-    }
+};
 
 
-    if (
-        GCS.selectedMode === "custom" &&
-        !isValidProductValue(
-            GCS.selectedBrand,
-            GCS.selectedValue,
-            "custom"
-        )
-    ) {
+GCS.toggleWishlist = function (
+    brandId
+) {
 
-        showNotice(
-            "Please enter a valid amount between ₹100 and ₹10,000.",
-            "Invalid amount",
-            "error"
-        );
+    let list =
+        GCS.getWishlist();
 
-        return;
+    if (list.includes(brandId)) {
 
-    }
-
-
-    const cart =
-        getCart();
-
-
-    const existing =
-        cart.find(function (item) {
-
-            return (
-                item.brandId === GCS.selectedBrand &&
-                item.value === Number(GCS.selectedValue) &&
-                item.mode === GCS.selectedMode
+        list =
+            list.filter(
+                id =>
+                    id !== brandId
             );
 
-        });
-
-
-    if (existing) {
-
-        existing.quantity =
-            Number(existing.quantity || 1) + 1;
+        showNotice(
+            "Removed from your saved brands.",
+            "Wishlist",
+            "info"
+        );
 
     } else {
 
-        cart.push(
-            createCartItem()
+        list.push(brandId);
+
+        showNotice(
+            "Saved to your wishlist.",
+            "Wishlist",
+            "success"
         );
 
     }
 
-
-    saveCart(cart);
-
-    GCS.closeProduct();
-
-    showNotice(
-        brand.name +
-        " gift card added to your cart.",
-        "Added to cart",
-        "success"
+    writeGCSStorage(
+        GCS_WISHLIST_KEY,
+        list
     );
+
+    GCS.updateWishlistProductButton();
+
+    if (
+        typeof GCS.renderProducts ===
+        "function"
+    ) {
+
+        GCS.applyFilters();
+
+    }
 
 };
 
 
-/* =====================================================
-   CART
-===================================================== */
+GCS.toggleWishlistSelected =
+    function () {
 
-GCS.getCartTotals = function () {
+        if (
+            !GCS.selectedBrand
+        ) {
+            return;
+        }
 
-    const cart =
-        getCart();
-
-    let value = 0;
-    let paid = 0;
-    let quantity = 0;
-
-
-    cart.forEach(function (item) {
-
-        const qty =
-            Number(item.quantity || 1);
-
-        value +=
-            Number(item.value || 0) * qty;
-
-        paid +=
-            Number(item.price || 0) * qty;
-
-        quantity +=
-            qty;
-
-    });
-
-
-    return {
-
-        value,
-        paid,
-        savings:
-            Math.max(0, value - paid),
-        quantity
+        GCS.toggleWishlist(
+            GCS.selectedBrand
+        );
 
     };
 
-};
 
+GCS.updateWishlistProductButton =
+    function () {
 
-GCS.updateCartUI = function () {
-
-    const count =
-        document.getElementById(
-            "cartCount"
-        );
-
-    const cart =
-        getCart();
-
-
-    if (count) {
-
-        const quantity =
-            cart.reduce(
-                (total, item) =>
-                    total +
-                    Number(item.quantity || 1),
-                0
+        const button =
+            document.getElementById(
+                "wishlistProductButton"
             );
 
-        count.textContent =
-            quantity;
-
-    }
-
-
-    const items =
-        document.getElementById(
-            "cartItems"
-        );
-
-    if (
-        items &&
-        document.getElementById(
-            "cartOverlay"
-        )?.style.display === "flex"
-    ) {
-        GCS.renderCart();
-    }
-
-};
-
-
-GCS.openCart = function () {
-
-    GCS.renderCart();
-
-    const overlay =
-        document.getElementById(
-            "cartOverlay"
-        );
-
-    if (overlay) {
-        overlay.style.display =
-            "flex";
-    }
-
-};
-
-
-GCS.closeCart = function () {
-
-    const overlay =
-        document.getElementById(
-            "cartOverlay"
-        );
-
-    if (overlay) {
-        overlay.style.display =
-            "none";
-    }
-
-};
-
-
-GCS.renderCart = function () {
-
-    const container =
-        document.getElementById(
-            "cartItems"
-        );
-
-    const summary =
-        document.getElementById(
-            "cartSummary"
-        );
-
-    if (!container) {
-        return;
-    }
-
-
-    const cart =
-        getCart();
-
-
-    if (!cart.length) {
-
-        container.innerHTML = `
-            <div class="cart-empty">
-                <div class="cart-empty-icon">🛒</div>
-                <h3>Your cart is empty</h3>
-                <p>Add gift cards from the catalogue to see them here.</p>
-            </div>
-        `;
-
-        if (summary) {
-            summary.innerHTML = "";
-        }
-
-        return;
-
-    }
-
-
-    container.innerHTML = "";
-
-
-    cart.forEach(function (item) {
-
-        const brand =
-            getBrand(item.brandId);
-
-        if (!brand) {
+        if (!button) {
             return;
         }
 
+        const active =
+            GCS.isWishlisted(
+                GCS.selectedBrand
+            );
 
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "cart-item";
-
-
-        const quantity =
-            Number(item.quantity || 1);
-
-
-        card.innerHTML = `
-
-            <div class="cart-item-logo">
-                <img
-                    src="${brand.logo}"
-                    alt="${escapeHTML(brand.name)}">
-            </div>
-
-            <div class="cart-item-info">
-
-                <strong>
-                    ${escapeHTML(brand.name)}
-                </strong>
-
-                <span>
-                    ${money(item.value)} Gift Card
-                    · ${item.mode === "custom" ? "Custom" : "Fixed"}
-                </span>
-
-                <small>
-                    Save ${money(
-                        Math.max(
-                            0,
-                            Number(item.value) -
-                            Number(item.price)
-                        )
-                    )} each
-                </small>
-
-            </div>
-
-            <div class="cart-item-actions">
-
-                <div class="quantity-control">
-
-                    <button
-                        onclick="GCS.changeCartQuantity('${item.id}', -1)">
-                        −
-                    </button>
-
-                    <span>
-                        ${quantity}
-                    </span>
-
-                    <button
-                        onclick="GCS.changeCartQuantity('${item.id}', 1)">
-                        +
-                    </button>
-
-                </div>
-
-                <button
-                    class="remove-cart"
-                    onclick="GCS.removeCartItem('${item.id}')"
-                    title="Remove">
-                    ×
-                </button>
-
-            </div>
-
-        `;
-
-
-        container.appendChild(
-            card
+        button.classList.toggle(
+            "active",
+            active
         );
 
-    });
+        button.textContent =
+            active
+                ? "♥"
+                : "♡";
+
+    };
 
 
-    const totals =
-        GCS.getCartTotals();
+/* =====================================================
+   SEARCH + FILTER
+===================================================== */
 
+GCS.applyFilters = function () {
 
-    if (summary) {
+    const all =
+        typeof getAllBrands ===
+        "function"
+            ? getAllBrands()
+            : [];
 
-        summary.innerHTML = `
+    const category =
+        GCS.activeCategory;
 
-            <div class="cart-summary-row">
-                <span>Gift card value</span>
-                <strong>${money(totals.value)}</strong>
-            </div>
-
-            <div class="cart-summary-row cart-summary-saving">
-                <span>Total savings</span>
-                <strong>− ${money(totals.savings)}</strong>
-            </div>
-
-            <div class="cart-summary-divider"></div>
-
-            <div class="cart-summary-row cart-summary-total">
-                <span>Total</span>
-                <strong>${money(totals.paid)}</strong>
-            </div>
-
-        `;
-
-    }
-
-};
-
-
-GCS.changeCartQuantity = function (
-    itemId,
-    change
-) {
-
-    const cart =
-        getCart();
-
-
-    const item =
-        cart.find(
-            item => item.id === itemId
-        );
-
-
-    if (!item) {
-        return;
-    }
-
-
-    item.quantity =
-        Number(item.quantity || 1) +
-        Number(change);
-
-
-    if (item.quantity <= 0) {
-
-        const index =
-            cart.indexOf(item);
-
-        cart.splice(
-            index,
-            1
-        );
-
-    }
-
-
-    saveCart(cart);
-
-    GCS.renderCart();
-
-};
-
-
-GCS.removeCartItem = function (
-    itemId
-) {
-
-    const cart =
-        getCart();
+    const query =
+        GCS.searchQuery
+            .trim()
+            .toLowerCase();
 
 
     const filtered =
-        cart.filter(
-            item => item.id !== itemId
+        all.filter(
+            function (brand) {
+
+                const categoryMatch =
+                    category === "All" ||
+                    brand.category ===
+                        category;
+
+                const searchMatch =
+                    !query ||
+                    brand.name
+                        .toLowerCase()
+                        .includes(query) ||
+                    brand.category
+                        .toLowerCase()
+                        .includes(query);
+
+                return (
+                    categoryMatch &&
+                    searchMatch
+                );
+
+            }
         );
 
 
-    saveCart(filtered);
-
-    GCS.renderCart();
-
-    showNotice(
-        "The item was removed from your cart.",
-        "Cart updated",
-        "info"
+    GCS.renderProducts(
+        filtered
     );
+
+
+    const info =
+        document.getElementById(
+            "searchInfo"
+        );
+
+    if (info) {
+
+        if (query) {
+
+            info.innerHTML =
+                `<strong>${filtered.length}</strong>
+                 result${filtered.length === 1 ? "" : "s"}
+                 for “${gcsEsc(query)}”`;
+
+        } else {
+
+            info.textContent =
+                "";
+
+        }
+
+    }
+
+};
+
+
+GCS.searchCards = function (
+    event
+) {
+
+    GCS.searchQuery =
+        event.target.value;
+
+    GCS.applyFilters();
+
+};
+
+
+GCS.clearSearch = function () {
+
+    const input =
+        document.getElementById(
+            "search"
+        );
+
+    if (input) {
+        input.value = "";
+    }
+
+    GCS.searchQuery =
+        "";
+
+    GCS.applyFilters();
+
+};
+
+
+GCS.filterCategory = function (
+    category,
+    button
+) {
+
+    GCS.activeCategory =
+        category;
+
+    document
+        .querySelectorAll(
+            ".category"
+        )
+        .forEach(
+            function (item) {
+
+                item.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+    if (button) {
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+    GCS.applyFilters();
 
 };
 
 
 /* =====================================================
-   ORDER SUMMARY
+   RENDER PRODUCTS
 ===================================================== */
 
-GCS.openOrderSummary = function () {
-
-    const cart =
-        getCart();
-
-    if (!cart.length) {
-
-        showNotice(
-            "Your cart is empty.",
-            "Nothing to checkout",
-            "error"
-        );
-
-        return;
-
-    }
-
+GCS.renderProducts = function (
+    brands
+) {
 
     const container =
         document.getElementById(
-            "orderSummaryContent"
+            "cards"
         );
-
 
     if (!container) {
         return;
     }
 
-
-    const totals =
-        GCS.getCartTotals();
-
-
-    let html = "";
-
-
-    cart.forEach(function (item) {
-
-        const brand =
-            getBrand(item.brandId);
-
-        if (!brand) {
-            return;
-        }
+    const list =
+        brands ||
+        (
+            typeof getAllBrands ===
+            "function"
+                ? getAllBrands()
+                : []
+        );
 
 
-        const quantity =
-            Number(item.quantity || 1);
+    if (!list.length) {
 
+        container.innerHTML = `
 
-        html += `
+            <div class="batch-empty">
 
-            <div class="summary-item">
-
-                <div class="summary-item-main">
-
-                    <strong>
-                        ${escapeHTML(brand.name)}
-                    </strong>
-
-                    <span>
-                        ${money(item.value)}
-                        Gift Card × ${quantity}
-                    </span>
-
+                <div class="batch-empty-icon">
+                    ◌
                 </div>
 
-                <div class="summary-item-price">
+                <h3>
+                    No matching brands
+                </h3>
 
-                    ${money(
-                        Number(item.price) *
-                        quantity
-                    )}
-
-                    <small>
-                        Save ${money(
-                            (
-                                Number(item.value) -
-                                Number(item.price)
-                            ) * quantity
-                        )}
-                    </small>
-
-                </div>
+                <p>
+                    Try another search or category.
+                </p>
 
             </div>
 
         `;
 
-    });
+        return;
 
-
-    html += `
-
-        <div class="order-total-box">
-
-            <div class="order-total-row">
-                <span>Gift card value</span>
-                <strong>${money(totals.value)}</strong>
-            </div>
-
-            <div class="order-total-row order-total-saving">
-                <span>You save</span>
-                <strong>${money(totals.savings)}</strong>
-            </div>
-
-            <div class="order-total-row order-total-final">
-                <span>Total</span>
-                <strong>${money(totals.paid)}</strong>
-            </div>
-
-        </div>
-
-    `;
+    }
 
 
     container.innerHTML =
-        html;
+        list.map(
+            function (brand) {
+
+                const discount =
+                    Math.max(
+                        brand.fixedDiscount || 0,
+                        brand.customDiscount || 0
+                    );
+
+                const active =
+                    GCS.isWishlisted(
+                        brand.id
+                    );
+
+                const minimum =
+                    brand.fixedValues?.length
+                        ? Math.min(
+                            ...brand.fixedValues
+                        )
+                        : 0;
 
 
-    GCS.closeCart();
+                return `
+
+                    <article
+                        class="card"
+                        data-brand-id="${gcsEsc(
+                            brand.id
+                        )}">
+
+                        <button
+                            class="wishlist-card-button ${
+                                active
+                                    ? "active"
+                                    : ""
+                            }"
+                            onclick="
+                                event.stopPropagation();
+                                GCS.toggleWishlist('${gcsEsc(
+                                    brand.id
+                                )}')
+                            "
+                            aria-label="Save ${gcsEsc(
+                                brand.name
+                            )}">
+
+                            ${active ? "♥" : "♡"}
+
+                        </button>
 
 
-    const overlay =
-        document.getElementById(
-            "orderOverlay"
+                        <div class="brand-box">
+
+                            <img
+                                class="brand-logo"
+                                src="${gcsEsc(
+                                    brand.logo
+                                )}"
+                                alt="${gcsEsc(
+                                    brand.name
+                                )}"
+                                loading="lazy">
+
+                        </div>
+
+
+                        <div class="brand">
+                            ${gcsEsc(
+                                brand.category
+                            )}
+                        </div>
+
+
+                        <h3>
+                            ${gcsEsc(
+                                brand.name
+                            )}
+                        </h3>
+
+
+                        <div class="discount">
+                            Up to ${discount}% off
+                        </div>
+
+
+                        <div class="card-min-value"
+                             style="
+                                color:var(--muted);
+                                font-size:10px;
+                                margin-bottom:8px;
+                             ">
+                            From ${gcsMoney(minimum)}
+                        </div>
+
+
+                        <button
+                            class="buy"
+                            type="button">
+                            View Gift Cards
+                        </button>
+
+                    </article>
+
+                `;
+
+            }
+        )
+        .join("");
+
+
+    container
+        .querySelectorAll(".card")
+        .forEach(
+            function (card) {
+
+                const brandId =
+                    card.dataset.brandId;
+
+                card.addEventListener(
+                    "click",
+                    function () {
+
+                        GCS.openProduct(
+                            brandId
+                        );
+
+                    }
+                );
+
+            }
         );
-
-    if (overlay) {
-        overlay.style.display =
-            "flex";
-    }
 
 };
 
 
 /* =====================================================
-   CHECKOUT
+   HEADER
 ===================================================== */
 
-GCS.checkoutCart = function () {
+GCS.updateHeader = function () {
 
-    if (!getCart().length) {
-
-        showNotice(
-            "Your cart is empty.",
-            "Nothing to checkout",
-            "error"
+    const login =
+        document.getElementById(
+            "loginButton"
         );
-
-        return;
-
-    }
-
-
-    GCS.openOrderSummary();
-
-};
-
-
-GCS.openCheckout = function () {
-
-    if (!GCS.isLoggedIn()) {
-
-        window.checkoutWaitingForLogin =
-            true;
-
-        GCS.closeOrder();
-
-        GCS.openLogin();
-
-        return;
-
-    }
-
-
-    const cart =
-        getCart();
-
-    if (!cart.length) {
-        return;
-    }
-
 
     const account =
-        GCS.getAccount();
-
-
-    const items =
         document.getElementById(
-            "checkoutItems"
+            "accountButton"
         );
 
-
-    const totalsBox =
-        document.getElementById(
-            "checkoutTotals"
-        );
+    const loggedIn =
+        GCS.isLoggedIn();
 
 
-    if (items) {
+    if (login) {
 
-        items.innerHTML =
-            cart.map(function (item) {
-
-                const brand =
-                    getBrand(item.brandId);
-
-                return `
-
-                    <div class="checkout-item">
-
-                        <span>
-                            ${escapeHTML(
-                                brand?.name || "Gift Card"
-                            )}
-                            · ${money(item.value)}
-                            × ${Number(item.quantity || 1)}
-                        </span>
-
-                        <strong>
-                            ${money(
-                                Number(item.price || 0) *
-                                Number(item.quantity || 1)
-                            )}
-                        </strong>
-
-                    </div>
-
-                `;
-
-            }).join("");
+        login.style.display =
+            loggedIn
+                ? "none"
+                : "inline-flex";
 
     }
 
 
-    const totals =
-        GCS.getCartTotals();
+    if (account) {
 
-
-    if (totalsBox) {
-
-        totalsBox.innerHTML = `
-
-            <div class="order-total-box">
-
-                <div class="order-total-row">
-                    <span>Gift card value</span>
-                    <strong>${money(totals.value)}</strong>
-                </div>
-
-                <div class="order-total-row order-total-saving">
-                    <span>Total savings</span>
-                    <strong>${money(totals.savings)}</strong>
-                </div>
-
-                <div class="order-total-row order-total-final">
-                    <span>You pay</span>
-                    <strong>${money(totals.paid)}</strong>
-                </div>
-
-            </div>
-
-        `;
+        account.style.display =
+            loggedIn
+                ? "inline-flex"
+                : "none";
 
     }
 
 
-    const email =
-        document.getElementById(
-            "email"
-        );
-
-    if (email) {
-        email.value =
-            account?.email || "";
-    }
-
-
-    const overlay =
-        document.getElementById(
-            "checkoutOverlay"
-        );
-
-    if (overlay) {
-        overlay.style.display =
-            "flex";
-    }
+    GCS.updateCartCount();
 
 };
 
 
-GCS.closeCheckout = function () {
+/* =====================================================
+   SUCCESS
+===================================================== */
+
+GCS.closeSuccess = function () {
 
     const overlay =
         document.getElementById(
-            "checkoutOverlay"
-        );
-
-    if (overlay) {
-        overlay.style.display =
-            "none";
-    }
-
-};
-
-
-GCS.closeOrder = function () {
-
-    const overlay =
-        document.getElementById(
-            "orderOverlay"
+            "successOverlay"
         );
 
     if (overlay) {
@@ -1803,7 +1998,7 @@ GCS.closeOrder = function () {
 
 GCS.clearEmailError = function () {
 
-    const email =
+    const input =
         document.getElementById(
             "email"
         );
@@ -1813,13 +2008,11 @@ GCS.clearEmailError = function () {
             "emailError"
         );
 
-
-    if (email) {
-        email.classList.remove(
+    if (input) {
+        input.classList.remove(
             "error"
         );
     }
-
 
     if (error) {
         error.style.display =
@@ -1830,12 +2023,15 @@ GCS.clearEmailError = function () {
 
 
 /* =====================================================
-   CREATE ORDERS
+   CREATE ORDER
 ===================================================== */
 
 GCS.createOrder = function () {
 
     if (!GCS.isLoggedIn()) {
+
+        window.checkoutWaitingForLogin =
+            true;
 
         GCS.openLogin();
 
@@ -1847,17 +2043,33 @@ GCS.createOrder = function () {
     const account =
         GCS.getAccount();
 
+    const cart =
+        GCS.getCart();
 
-    const emailElement =
+    if (!cart.length) {
+
+        showNotice(
+            "Your cart is empty.",
+            "Checkout",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const emailInput =
         document.getElementById(
             "email"
         );
 
-
     const email =
-        emailElement
-            ? emailElement.value.trim().toLowerCase()
-            : account.email;
+        emailInput
+            ? emailInput.value
+                .trim()
+                .toLowerCase()
+            : account?.email || "";
 
 
     const validEmail =
@@ -1876,8 +2088,8 @@ GCS.createOrder = function () {
                 "block";
         }
 
-        if (emailElement) {
-            emailElement.classList.add(
+        if (emailInput) {
+            emailInput.classList.add(
                 "error"
             );
         }
@@ -1887,53 +2099,29 @@ GCS.createOrder = function () {
     }
 
 
-    const cart =
-        getCart();
+    const totals =
+        GCS.getCartTotals();
 
 
-    if (!cart.length) {
-        return;
-    }
-
-
-    const batchId =
-        "GCS-" +
+    const stamp =
         Date.now()
             .toString()
             .slice(-8);
 
 
-    cart.forEach(function (item, index) {
-
-        const brand =
-            getBrand(item.brandId);
-
-        if (!brand) {
-            return;
-        }
+    const batchId =
+        "GCS-" + stamp;
 
 
-        const quantity =
-            Number(item.quantity || 1);
+    cart.forEach(
+        function (item, index) {
 
-
-        for (
-            let i = 0;
-            i < quantity;
-            i++
-        ) {
-
-            const discount =
-                getBrandDiscount(
-                    item.brandId,
-                    item.mode
-                );
-
-
-            const saving =
-                calculateSavings(
-                    item.value,
-                    discount
+            const quantity =
+                Math.max(
+                    1,
+                    gcsNumber(
+                        item.quantity
+                    )
                 );
 
 
@@ -1942,30 +2130,37 @@ GCS.createOrder = function () {
                 id:
                     batchId +
                     "-" +
-                    String(index + 1)
-                        .padStart(2, "0") +
-                    String(i + 1),
+                    (index + 1),
 
                 batchId:
                     batchId,
 
                 brand:
-                    brand.name,
+                    item.brand,
 
                 brandId:
                     item.brandId,
 
                 value:
-                    money(item.value),
+                    gcsMoney(
+                        item.value
+                    ),
 
                 price:
-                    money(item.price),
+                    gcsMoney(
+                        item.price
+                    ),
 
                 discount:
-                    discount + "%",
+                    item.discount + "%",
 
-                saving:
-                    money(saving),
+                savings:
+                    gcsMoney(
+                        item.savings
+                    ),
+
+                quantity:
+                    quantity,
 
                 email:
                     email,
@@ -1983,30 +2178,27 @@ GCS.createOrder = function () {
 
 
             if (
-                typeof saveOrder === "function"
+                typeof saveOrder ===
+                "function"
             ) {
+
                 saveOrder(order);
+
             }
 
         }
-
-    });
-
-
-    localStorage.removeItem(
-        CART_KEY
     );
 
 
-    GCS.updateCartUI();
-    GCS.closeCheckout();
+    GCS.saveCart([]);
+
+    GCS.closeAllOverlays();
 
 
     const orderId =
         document.getElementById(
             "orderId"
         );
-
 
     if (orderId) {
         orderId.textContent =
@@ -2019,316 +2211,13 @@ GCS.createOrder = function () {
             "successOverlay"
         );
 
-
     if (success) {
         success.style.display =
             "flex";
     }
 
 
-    showNotice(
-        "Your prototype order has been created.",
-        "Order confirmed",
-        "success"
-    );
-
-};
-
-
-GCS.closeSuccess = function () {
-
-    const overlay =
-        document.getElementById(
-            "successOverlay"
-        );
-
-    if (overlay) {
-        overlay.style.display =
-            "none";
-    }
-
-};
-
-
-/* =====================================================
-   WISHLIST
-===================================================== */
-
-GCS.toggleWishlist = function (
-    brandId,
-    button
-) {
-
-    let list =
-        getWishlist();
-
-
-    const exists =
-        list.includes(
-            brandId
-        );
-
-
-    if (exists) {
-
-        list =
-            list.filter(
-                id => id !== brandId
-            );
-
-    } else {
-
-        list.push(
-            brandId
-        );
-
-    }
-
-
-    saveWishlist(list);
-
-
-    if (button) {
-
-        button.classList.toggle(
-            "active",
-            !exists
-        );
-
-        button.textContent =
-            !exists ? "♥" : "♡";
-
-    }
-
-
-    const brand =
-        getBrand(brandId);
-
-
-    showNotice(
-        exists
-            ? "Removed from your saved brands."
-            : "Saved to your wishlist.",
-        exists
-            ? "Wishlist updated"
-            : "Saved",
-        "success"
-    );
-
-};
-
-
-GCS.toggleWishlistSelected = function () {
-
-    if (!GCS.selectedBrand) {
-        return;
-    }
-
-
-    const button =
-        document.getElementById(
-            "wishlistProductButton"
-        );
-
-
-    GCS.toggleWishlist(
-        GCS.selectedBrand,
-        button
-    );
-
-};
-
-
-GCS.openWishlist = function () {
-
-    if (
-        typeof openWishlistPanel === "function"
-    ) {
-        openWishlistPanel();
-        return;
-    }
-
-
-    const list =
-        getWishlist();
-
-
-    if (!list.length) {
-
-        showNotice(
-            "You have no saved brands yet.",
-            "Wishlist",
-            "info"
-        );
-
-        return;
-
-    }
-
-
-    GCS.closeAllOverlays();
-
-
-    const overlay =
-        document.createElement("div");
-
-    overlay.id =
-        "wishlistOverlay";
-
-    overlay.className =
-        "overlay";
-
-    overlay.style.display =
-        "flex";
-
-
-    overlay.innerHTML = `
-
-        <div class="panel">
-
-            <div class="panel-header">
-
-                <div>
-                    <div class="panel-eyebrow">
-                        Saved
-                    </div>
-
-                    <h2>
-                        Wishlist
-                    </h2>
-
-                    <p>
-                        Your saved gift-card brands.
-                    </p>
-                </div>
-
-                <button
-                    class="close-button"
-                    onclick="document.getElementById('wishlistOverlay').remove()">
-                    ×
-                </button>
-
-            </div>
-
-            <div class="cards wishlist-cards">
-
-                ${list.map(function (id) {
-
-                    const brand =
-                        getBrand(id);
-
-                    if (!brand) {
-                        return "";
-                    }
-
-                    return `
-
-                        <div class="card">
-
-                            <div class="brand-box">
-                                <img
-                                    class="brand-logo"
-                                    src="${brand.logo}"
-                                    alt="${escapeHTML(brand.name)}">
-                            </div>
-
-                            <div class="brand">
-                                ${escapeHTML(brand.category)}
-                            </div>
-
-                            <h3>
-                                ${escapeHTML(brand.name)}
-                            </h3>
-
-                            <button
-                                class="buy"
-                                onclick="GCS.closeWishlist();GCS.openProduct('${brand.id}')">
-                                View Gift Cards
-                            </button>
-
-                        </div>
-
-                    `;
-
-                }).join("")}
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    document.body.appendChild(
-        overlay
-    );
-
-};
-
-
-GCS.closeWishlist = function () {
-
-    const overlay =
-        document.getElementById(
-            "wishlistOverlay"
-        );
-
-    if (overlay) {
-        overlay.remove();
-    }
-
-};
-
-
-/* =====================================================
-   HEADER
-===================================================== */
-
-GCS.updateHeader = function () {
-
-    const loginButton =
-        document.getElementById(
-            "loginButton"
-        );
-
-    const accountButton =
-        document.getElementById(
-            "accountButton"
-        );
-
-
-    const loggedIn =
-        GCS.isLoggedIn();
-
-
-    if (loggedIn) {
-
-        if (loginButton) {
-            loginButton.style.display =
-                "none";
-        }
-
-        if (accountButton) {
-            accountButton.style.display =
-                "inline-flex";
-        }
-
-    } else {
-
-        if (loginButton) {
-            loginButton.style.display =
-                "inline-flex";
-        }
-
-        if (accountButton) {
-            accountButton.style.display =
-                "none";
-        }
-
-    }
-
-
-    GCS.updateCartUI();
+    GCS.updateHeader();
 
 };
 
@@ -2341,15 +2230,13 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-        console.log(
-            "GiftCardStore started — batch upgrade."
-        );
-
-
         if (
-            typeof createAccountModal === "function"
+            typeof createAccountModal ===
+            "function"
         ) {
+
             createAccountModal();
+
         }
 
 
@@ -2358,24 +2245,24 @@ document.addEventListener(
         GCS.updateHeader();
 
 
-        const loginButton =
+        const login =
             document.getElementById(
                 "loginButton"
             );
 
-        if (loginButton) {
-            loginButton.onclick =
+        if (login) {
+            login.onclick =
                 GCS.openLogin;
         }
 
 
-        const accountButton =
+        const account =
             document.getElementById(
                 "accountButton"
             );
 
-        if (accountButton) {
-            accountButton.onclick =
+        if (account) {
+            account.onclick =
                 GCS.openAccount;
         }
 
@@ -2395,48 +2282,27 @@ document.addEventListener(
         }
 
 
-        GCS.updateCartUI();
+        setTimeout(
+            function () {
 
-
-        document
-            .querySelectorAll(".category")
-            .forEach(function (button) {
-
-                button.addEventListener(
-                    "click",
-                    function () {
-
-                        GCS.filterCategory(
-                            button.dataset.category ||
-                            button.textContent.trim(),
-                            button
-                        );
-
-                    }
-                );
-
-            });
-
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
+                const count =
+                    document.getElementById(
+                        "heroBrandCount"
+                    );
 
                 if (
-                    event.key === "/" &&
-                    document.activeElement.tagName !== "INPUT" &&
-                    document.activeElement.tagName !== "TEXTAREA"
+                    count &&
+                    typeof getAllBrands ===
+                    "function"
                 ) {
 
-                    event.preventDefault();
-
-                    if (search) {
-                        search.focus();
-                    }
+                    count.textContent =
+                        getAllBrands().length;
 
                 }
 
-            }
+            },
+            100
         );
 
     }
