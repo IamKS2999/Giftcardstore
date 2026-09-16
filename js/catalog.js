@@ -1,97 +1,132 @@
 /* =====================================================
    GIFTCARDSTORE — CATALOG
-   VECTOR LOGO SYSTEM
-   VERSION: 2026-09-16-5
+   SAFE LOGO SYSTEM
+   VERSION: 2026-09-16-6
 ===================================================== */
 
 (function () {
 
     "use strict";
 
-    const VERSION = "20260916-5";
-
-
-    /* ==================================================
-       VERIFIED SIMPLE ICON CONFIG
-       ================================================== */
+    const VERSION = "20260916-6";
 
     const LOGOS = {
 
-        "Amazon": ["amazon", "FF9900"],
-        "Flipkart": ["flipkart", "2874F0"],
-        "Myntra": ["myntra", "FF3F6C"],
-        "Croma": ["croma", "000000"],
+        "Amazon":
+            "https://cdn.simpleicons.org/amazon/FF9900",
 
-        "Domino's": ["dominos", "E31837"],
-        "Zomato": ["zomato", "E23744"],
-        "Swiggy": ["swiggy", "FC8019"],
-        "Uber": ["uber", "000000"],
+        "Flipkart":
+            "https://cdn.simpleicons.org/flipkart/2874F0",
 
-        "BookMyShow": ["bookmyshow", "F84464"],
-        "PVR": ["pvr", "F5C400"],
+        "Myntra":
+            "https://cdn.simpleicons.org/myntra/FF3F6C",
 
-        "Nykaa": ["nykaa", "FC2779"],
-        "AJIO": ["ajio", "000000"],
-        "Westside": ["westside", "000000"],
-        "Max Fashion": ["maxfashion", "C8A77A"],
+        "Croma":
+            "https://cdn.simpleicons.org/croma/000000",
 
-        "Tata CLiQ": ["tatacliq", "E91E63"],
-        "Meesho": ["meesho", "E5007D"],
+        "Domino's":
+            "https://cdn.simpleicons.org/dominos/E31837",
 
-        "bigbasket": ["bigbasket", "84C225"],
-        "Blinkit": ["blinkit", "F8CB46"],
-        "Zepto": ["zepto", "8A2BE2"],
+        "Zomato":
+            "https://cdn.simpleicons.org/zomato/E23744",
 
-        "Reliance Digital": ["reliancedigital", "E42529"],
-        "Vijay Sales": ["vijaysales", "E31837"],
+        "Swiggy":
+            "https://cdn.simpleicons.org/swiggy/FC8019",
 
-        "IKEA": ["ikea", "0058A3"],
-        "Lifestyle": ["lifestyle", "000000"],
+        "Uber":
+            "https://cdn.simpleicons.org/uber/000000",
 
-        "Shoppers Stop": ["shoppersstop", "D71920"],
-        "Pantaloons": ["pantaloons", "E40046"],
-        "Levi's": ["levis", "C41230"],
-        "Decathlon": ["decathlon", "0082C3"],
-        "FirstCry": ["firstcry", "00AEEF"],
-        "Pepperfry": ["pepperfry", "D71920"],
+        "BookMyShow":
+            "https://cdn.simpleicons.org/bookmyshow/F84464",
 
-        "Tata 1mg": ["1mg", "FF6B6B"],
-        "Netmeds": ["netmeds", "24A148"],
-        "Cult.fit": ["cultfit", "FF3D71"],
+        "PVR":
+            "https://cdn.simpleicons.org/pvr/F5C400",
 
-        "Spotify": ["spotify", "1DB954"],
-        "Netflix": ["netflix", "E50914"],
-        "Sony LIV": ["sonyliv", "000000"],
-        "ZEE5": ["zee5", "8230C6"],
+        "Nykaa":
+            "https://cdn.simpleicons.org/nykaa/FC2779",
 
-        "MakeMyTrip": ["makemytrip", "E52B50"],
-        "Cleartrip": ["cleartrip", "EF3340"],
-        "EaseMyTrip": ["easemytrip", "FF6B00"],
-        "Air India": ["airindia", "D71920"],
+        "AJIO":
+            "https://cdn.simpleicons.org/ajio/000000",
 
-        "Tira": ["tira", "000000"],
-        "The Body Shop": ["thebodyshop", "004C3F"],
+        "Westside":
+            "https://cdn.simpleicons.org/westside/000000",
 
-        "Fastrack": ["fastrack", "000000"],
-        "Titan": ["titan", "004B87"],
-        "CaratLane": ["caratlane", "000000"],
-        "Mia by Tanishq": ["mia", "8C1D40"],
+        "Tata CLiQ":
+            "https://cdn.simpleicons.org/tatacliq/E91E63",
 
-        "Marks & Spencer": ["marksandspencer", "000000"],
-        "Van Heusen": ["vanheusen", "000000"],
-        "Allen Solly": ["allensolly", "000000"],
-        "Peter England": ["peterengland", "003B5C"],
+        "Meesho":
+            "https://cdn.simpleicons.org/meesho/E5007D",
 
-        "Haldiram's": ["haldirams", "E31B23"]
+        "bigbasket":
+            "https://cdn.simpleicons.org/bigbasket/84C225",
+
+        "Blinkit":
+            "https://cdn.simpleicons.org/blinkit/F8CB46",
+
+        "Zepto":
+            "https://cdn.simpleicons.org/zepto/8A2BE2",
+
+        "Reliance Digital":
+            "https://cdn.simpleicons.org/reliancedigital/E42529",
+
+        "IKEA":
+            "https://cdn.simpleicons.org/ikea/0058A3",
+
+        "Lifestyle":
+            "https://cdn.simpleicons.org/lifestyle/000000",
+
+        "Levi's":
+            "https://cdn.simpleicons.org/levis/C41230",
+
+        "Decathlon":
+            "https://cdn.simpleicons.org/decathlon/0082C3",
+
+        "FirstCry":
+            "https://cdn.simpleicons.org/firstcry/00AEEF",
+
+        "Pepperfry":
+            "https://cdn.simpleicons.org/pepperfry/D71920",
+
+        "Spotify":
+            "https://cdn.simpleicons.org/spotify/1DB954",
+
+        "Netflix":
+            "https://cdn.simpleicons.org/netflix/E50914",
+
+        "ZEE5":
+            "https://cdn.simpleicons.org/zee5/8230C6",
+
+        "MakeMyTrip":
+            "https://cdn.simpleicons.org/makemytrip/E52B50",
+
+        "Cleartrip":
+            "https://cdn.simpleicons.org/cleartrip/EF3340",
+
+        "Air India":
+            "https://cdn.simpleicons.org/airindia/D71920",
+
+        "The Body Shop":
+            "https://cdn.simpleicons.org/thebodyshop/004C3F",
+
+        "Spotify":
+            "https://cdn.simpleicons.org/spotify/1DB954",
+
+        "Titan":
+            "https://cdn.simpleicons.org/titan/004B87",
+
+        "Marks & Spencer":
+            "https://cdn.simpleicons.org/marksandspencer/000000",
+
+        "Peter England":
+            "https://cdn.simpleicons.org/peterengland/003B5C",
+
+        "Haldiram's":
+            "https://cdn.simpleicons.org/haldirams/E31B23"
 
     };
 
 
-    /* ==================================================
-       NAME NORMALISATION
-       ================================================== */
-
-    function cleanName(name) {
+    function normalise(name) {
 
         return String(name || "")
             .toLowerCase()
@@ -102,106 +137,28 @@
     }
 
 
-    function getConfig(name) {
+    function findLogo(name) {
 
         if (LOGOS[name]) {
             return LOGOS[name];
         }
 
-        const wanted = cleanName(name);
+        const target =
+            normalise(name);
 
-        const key = Object.keys(LOGOS).find(
-            function (item) {
-                return cleanName(item) === wanted;
-            }
-        );
-
-        return key ? LOGOS[key] : null;
-    }
-
-
-    /* ==================================================
-       SIMPLE ICON URL
-       ================================================== */
-
-    function simpleIcon(slug, colour) {
-
-        return (
-            "https://cdn.simpleicons.org/" +
-            slug +
-            "/" +
-            colour
-        );
-
-    }
-
-
-    /* ==================================================
-       SAFE SVG FALLBACK
-       ==================================================
-
-       This is ONLY used when an actual vector source
-       cannot be loaded.
-
-       It is intentionally neutral rather than pretending
-       to be the official brand logo.
-    ================================================== */
-
-    function fallbackLogo(name) {
-
-        const safeName =
-            escapeXML(
-                String(name || "")
-                    .substring(0, 22)
+        const key =
+            Object.keys(LOGOS).find(
+                function (item) {
+                    return normalise(item) === target;
+                }
             );
 
-        const svg =
-            '<svg xmlns="http://www.w3.org/2000/svg" ' +
-            'viewBox="0 0 900 300">' +
-
-            '<rect width="900" height="300" rx="35" ' +
-            'fill="#ffffff"/>' +
-
-            '<text x="450" y="180" ' +
-            'text-anchor="middle" ' +
-            'font-family="Arial,sans-serif" ' +
-            'font-size="72" ' +
-            'font-weight="700" ' +
-            'fill="#222222">' +
-
-            safeName +
-
-            '</text>' +
-
-            '</svg>';
-
-        return (
-            "data:image/svg+xml;charset=UTF-8," +
-            encodeURIComponent(svg)
-        );
+        return key
+            ? LOGOS[key]
+            : null;
 
     }
 
-
-    /* ==================================================
-       XML ESCAPE
-       ================================================== */
-
-    function escapeXML(text) {
-
-        return String(text || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&apos;");
-
-    }
-
-
-    /* ==================================================
-       APPLY LOGOS TO BRAND DATABASE
-       ================================================== */
 
     function updateBrands() {
 
@@ -212,43 +169,31 @@
         Object.keys(BRANDS).forEach(
             function (id) {
 
-                const brand = BRANDS[id];
+                const brand =
+                    BRANDS[id];
 
                 if (!brand || !brand.name) {
                     return;
                 }
 
-                const config =
-                    getConfig(brand.name);
+                const logo =
+                    findLogo(brand.name);
 
-                if (!config) {
-                    brand.logo =
-                        fallbackLogo(brand.name);
+                /*
+                 * Only replace the logo when we have
+                 * a known logo URL.
+                 */
 
-                    brand.logoVersion =
-                        VERSION;
-
-                    return;
+                if (logo) {
+                    brand.logo = logo;
+                    brand.logoVersion = VERSION;
                 }
-
-                brand.logo =
-                    simpleIcon(
-                        config[0],
-                        config[1]
-                    );
-
-                brand.logoVersion =
-                    VERSION;
 
             }
         );
 
     }
 
-
-    /* ==================================================
-       LOAD INDIVIDUAL IMAGE
-       ================================================== */
 
     function loadLogo(img) {
 
@@ -263,12 +208,17 @@
             return;
         }
 
-        const config =
-            getConfig(name);
+        const logo =
+            findLogo(name);
 
         /*
-         * Already processed with this version.
+         * If there is no logo in our database,
+         * leave the existing image alone.
          */
+
+        if (!logo) {
+            return;
+        }
 
         if (
             img.dataset.logoVersion ===
@@ -280,58 +230,12 @@
         img.dataset.logoVersion =
             VERSION;
 
-        /*
-         * No configured vector:
-         * use controlled fallback.
-         */
+        img.onerror = null;
 
-        if (!config) {
-
-            img.onerror = null;
-
-            img.src =
-                fallbackLogo(name);
-
-            return;
-        }
-
-        const source =
-            simpleIcon(
-                config[0],
-                config[1]
-            );
-
-        img.dataset.logoStage =
-            "simple-icons";
-
-        /*
-         * IMPORTANT:
-         * If the vector source fails, don't repeatedly
-         * attempt different broken URLs.
-         */
-
-        img.onerror =
-            function () {
-
-                img.onerror = null;
-
-                img.dataset.logoStage =
-                    "fallback";
-
-                img.src =
-                    fallbackLogo(name);
-
-            };
-
-        img.src =
-            source;
+        img.src = logo;
 
     }
 
-
-    /* ==================================================
-       REFRESH ALL LOGOS
-       ================================================== */
 
     function refreshLogos() {
 
@@ -343,48 +247,12 @@
             )
             .forEach(
                 function (img) {
-
                     loadLogo(img);
-
                 }
             );
 
     }
 
-
-    /* ==================================================
-       OBSERVE DYNAMIC CONTENT
-       ================================================== */
-
-    function observe() {
-
-        if (!document.body) {
-            return;
-        }
-
-        const observer =
-            new MutationObserver(
-                function () {
-
-                    refreshLogos();
-
-                }
-            );
-
-        observer.observe(
-            document.body,
-            {
-                childList: true,
-                subtree: true
-            }
-        );
-
-    }
-
-
-    /* ==================================================
-       INITIALISE
-       ================================================== */
 
     function initialise() {
 
@@ -392,7 +260,20 @@
 
         refreshLogos();
 
-        observe();
+        /*
+         * Run again after the product cards
+         * have been rendered.
+         */
+
+        setTimeout(
+            refreshLogos,
+            500
+        );
+
+        setTimeout(
+            refreshLogos,
+            1500
+        );
 
     }
 
