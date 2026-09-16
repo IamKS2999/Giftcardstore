@@ -1,22 +1,22 @@
 /* =====================================================
    GIFT CARD STORE — BRAND DATABASE
    Full Catalog + Local User-Provided Logos
-   VERSION: 2026-09-16-19
+   VERSION: 2026-09-16-20
 ===================================================== */
 
 const LOCAL_LOGOS = {
-    TataCLiQ: "logos/tata-cliq.png",
-    Meesho: "logos/meesho.jpg",
-    AJIO: "logos/ajio.png",
-    Westside: "logos/westside.png",
-    MaxFashion: "logos/max-fashion.jpg",
-    Lifestyle: "logos/lifestyle.png",
-    ShoppersStop: "logos/shoppers-stop.jpg",
-    AllenSolly: "logos/allen-solly.png",
-    FirstCry: "logos/firstcry.png",
-    Netmeds: "logos/netmeds.png",
-    MiaByTanishq: "logos/mia-by-tanishq.png",
-    Crossword: "logos/crossword.png",
+   TataCLiQ: "js/logos/tata-cliq.png",
+Meesho: "js/logos/meesho.jpg",
+AJIO: "js/logos/ajio.png",
+Westside: "js/logos/westside.png",
+MaxFashion: "js/logos/max-fashion.jpg",
+Lifestyle: "js/logos/lifestyle.png",
+ShoppersStop: "js/logos/shoppers-stop.jpg",
+AllenSolly: "js/logos/allen-solly.png",
+FirstCry: "js/logos/firstcry.png",
+Netmeds: "js/logos/netmeds.png",
+MiaByTanishq: "js/logos/mia-by-tanishq.png",
+Crossword: "js/logos/crossword.png",
 };
 
 const REMOTE_LOGOS = {
