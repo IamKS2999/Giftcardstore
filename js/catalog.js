@@ -1,290 +1,250 @@
 /* =====================================================
    GIFTCARDSTORE — CATALOG
-   VECTOR LOGO SYSTEM
-   VERSION: 2026-09-16
+   CRISP VECTOR LOGO SYSTEM
+   VERSION: 2026-09-16-4
 ===================================================== */
 
 (function () {
 
     "use strict";
 
-    const VERSION = "20260916-3";
+    const VERSION = "20260916-4";
 
 
-    /*
-     * ==================================================
-     * BRAND LOGO CONFIGURATION
-     * ==================================================
-     *
-     * [Simple Icons slug, brand colour, website, fallback]
-     *
-     * SVG is always attempted first.
-     * Website favicon is ONLY a last-resort fallback.
-     */
+    /* ==================================================
+       BRAND LOGO DATABASE
+
+       [simple-icons slug, colour, fallback colour]
+       ================================================== */
 
     const LOGOS = {
 
-        "Domino's": ["dominos", "E31837", "dominos.co.in", "DO"],
-        "Zomato": ["zomato", "E23744", "zomato.com", "ZO"],
-        "Swiggy": ["swiggy", "FC8019", "swiggy.com", "SW"],
-        "Uber": ["uber", "000000", "uber.com", "UB"],
+        "Domino's": ["dominos", "E31837", "#E31837"],
+        "Zomato": ["zomato", "E23744", "#E23744"],
+        "Swiggy": ["swiggy", "FC8019", "#FC8019"],
+        "Uber": ["uber", "000000", "#000000"],
 
-        "BookMyShow": ["bookmyshow", "F84464", "bookmyshow.com", "BM"],
-        "PVR": ["pvr", "F5C400", "pvrcinemas.com", "PV"],
+        "BookMyShow": ["bookmyshow", "F84464", "#F84464"],
+        "PVR": ["pvr", "F5C400", "#F5C400"],
 
-        "Nykaa": ["nykaa", "FC2779", "nykaa.com", "NY"],
-        "AJIO": ["ajio", "000000", "ajio.com", "AJ"],
-        "Westside": ["westside", "000000", "westside.com", "WE"],
-        "Max Fashion": ["max", "C8A77A", "maxfashion.in", "MX"],
+        "Nykaa": ["nykaa", "FC2779", "#FC2779"],
+        "AJIO": ["ajio", "000000", "#000000"],
+        "Westside": ["westside", "000000", "#000000"],
+        "Max Fashion": ["max", "C8A77A", "#C8A77A"],
 
-        "Tata CLiQ": ["tatacliq", "E91E63", "tatacliq.com", "TC"],
-        "Meesho": ["meesho", "E5007D", "meesho.com", "ME"],
+        "Tata CLiQ": ["tatacliq", "E91E63", "#E91E63"],
+        "Meesho": ["meesho", "E5007D", "#E5007D"],
 
-        "bigbasket": ["bigbasket", "84C225", "bigbasket.com", "BB"],
-        "Blinkit": ["blinkit", "F8CB46", "blinkit.com", "BL"],
-        "Zepto": ["zepto", "8A2BE2", "zeptonow.com", "ZE"],
+        "bigbasket": ["bigbasket", "84C225", "#84C225"],
+        "Blinkit": ["blinkit", "F8CB46", "#F8CB46"],
+        "Zepto": ["zepto", "8A2BE2", "#8A2BE2"],
 
         "Reliance Digital": [
             "reliancedigital",
             "E42529",
-            "reliancedigital.in",
-            "RD"
+            "#E42529"
         ],
 
         "Vijay Sales": [
             "vijaysales",
             "E31837",
-            "vijaysales.com",
-            "VS"
+            "#E31837"
         ],
 
-        "IKEA": ["ikea", "0058A3", "ikea.com", "IK"],
-        "Lifestyle": ["lifestyle", "000000", "lifestylestores.com", "LS"],
+        "IKEA": ["ikea", "0058A3", "#0058A3"],
+        "Lifestyle": ["lifestyle", "000000", "#000000"],
 
         "Shoppers Stop": [
             "shoppersstop",
             "D71920",
-            "shoppersstop.com",
-            "SS"
+            "#D71920"
         ],
 
         "Pantaloons": [
             "pantaloons",
             "E40046",
-            "pantaloons.com",
-            "PA"
+            "#E40046"
         ],
 
         "Levi's": [
             "levis",
             "C41230",
-            "levi.com",
-            "LE"
+            "#C41230"
         ],
 
         "Decathlon": [
             "decathlon",
             "0082C3",
-            "decathlon.in",
-            "DE"
+            "#0082C3"
         ],
 
         "FirstCry": [
             "firstcry",
             "00AEEF",
-            "firstcry.com",
-            "FC"
+            "#00AEEF"
         ],
 
         "Pepperfry": [
             "pepperfry",
             "D71920",
-            "pepperfry.com",
-            "PF"
+            "#D71920"
         ],
 
         "Tata 1mg": [
             "1mg",
             "FF6B6B",
-            "1mg.com",
-            "1M"
+            "#FF6B6B"
         ],
 
         "Netmeds": [
             "netmeds",
             "24A148",
-            "netmeds.com",
-            "NM"
+            "#24A148"
         ],
 
         "Cult.fit": [
             "cultfit",
             "FF3D71",
-            "cult.fit",
-            "CF"
+            "#FF3D71"
         ],
 
         "Spotify": [
             "spotify",
             "1DB954",
-            "spotify.com",
-            "SP"
+            "#1DB954"
         ],
 
         "Netflix": [
             "netflix",
             "E50914",
-            "netflix.com",
-            "NF"
+            "#E50914"
         ],
 
         "Sony LIV": [
             "sonyliv",
             "000000",
-            "sonyliv.com",
-            "SL"
+            "#000000"
         ],
 
         "ZEE5": [
             "zee5",
             "8230C6",
-            "zee5.com",
-            "Z5"
+            "#8230C6"
         ],
 
         "MakeMyTrip": [
             "makemytrip",
             "E52B50",
-            "makemytrip.com",
-            "MM"
+            "#E52B50"
         ],
 
         "Cleartrip": [
             "cleartrip",
             "EF3340",
-            "cleartrip.com",
-            "CT"
+            "#EF3340"
         ],
 
         "EaseMyTrip": [
             "easemytrip",
             "FF6B00",
-            "easemytrip.com",
-            "EM"
+            "#FF6B00"
         ],
 
         "Air India": [
             "airindia",
             "D71920",
-            "airindia.com",
-            "AI"
+            "#D71920"
         ],
 
         "Tira": [
             "tira",
             "000000",
-            "tirabeauty.com",
-            "TI"
+            "#000000"
         ],
 
         "The Body Shop": [
             "thebodyshop",
             "004C3F",
-            "thebodyshop.com",
-            "BS"
+            "#004C3F"
         ],
 
         "Fastrack": [
             "fastrack",
             "000000",
-            "fastrack.in",
-            "FT"
+            "#000000"
         ],
 
         "Titan": [
             "titan",
             "004B87",
-            "titan.co.in",
-            "TI"
+            "#004B87"
         ],
 
         "CaratLane": [
             "caratlane",
             "000000",
-            "caratlane.com",
-            "CL"
+            "#000000"
         ],
 
         "Mia by Tanishq": [
             "mia",
             "8C1D40",
-            "mia.tatacliq.com",
-            "MI"
+            "#8C1D40"
         ],
 
         "Archies": [
-            "archies",
+            null,
             "E31B23",
-            "archiesonline.com",
-            "AR"
+            "#E31B23"
         ],
 
         "Hamleys": [
-            "hamleys",
+            null,
             "E30613",
-            "hamleys.in",
-            "HA"
+            "#E30613"
         ],
 
         "Crossword": [
-            "crossword",
+            null,
             "E31837",
-            "crossword.in",
-            "CR"
+            "#E31837"
         ],
 
         "Marks & Spencer": [
             "marksandspencer",
             "000000",
-            "marksandspencer.com",
-            "MS"
+            "#000000"
         ],
 
         "Van Heusen": [
             "vanheusen",
             "000000",
-            "vanheusenindia.com",
-            "VH"
+            "#000000"
         ],
 
         "Allen Solly": [
             "allensolly",
             "000000",
-            "allensolly.com",
-            "AS"
+            "#000000"
         ],
 
         "Peter England": [
             "peterengland",
             "003B5C",
-            "peterengland.com",
-            "PE"
+            "#003B5C"
         ],
 
         "Haldiram's": [
             "haldirams",
             "E31B23",
-            "haldirams.com",
-            "HA"
+            "#E31B23"
         ]
     };
 
 
-    /*
-     * ==================================================
-     * NAME NORMALISATION
-     * ==================================================
-     */
+    /* ==================================================
+       NAME NORMALISATION
+       ================================================== */
 
     function cleanName(name) {
 
@@ -297,7 +257,7 @@
     }
 
 
-    function getLogoConfig(name) {
+    function getConfig(name) {
 
         if (LOGOS[name]) {
             return LOGOS[name];
@@ -306,42 +266,32 @@
         const wanted =
             cleanName(name);
 
-        const found =
+        const key =
             Object.keys(LOGOS).find(
-                function (key) {
+                function (item) {
 
                     return (
-                        cleanName(key)
+                        cleanName(item)
                         === wanted
                     );
 
                 }
             );
 
-        return found
-            ? LOGOS[found]
+        return key
+            ? LOGOS[key]
             : null;
     }
 
 
-    /*
-     * ==================================================
-     * URL BUILDERS
-     * ==================================================
-     */
+    /* ==================================================
+       SIMPLE ICON SVG
+       ================================================== */
 
-    function vectorLogo(
+    function simpleIcon(
         slug,
         colour
     ) {
-
-        /*
-         * Simple Icons CDN returns SVG.
-         *
-         * The colour is explicitly supplied so
-         * the icon is not forced into a generic
-         * black/grey appearance.
-         */
 
         return (
             "https://cdn.simpleicons.org/" +
@@ -355,60 +305,153 @@
     }
 
 
-    function faviconLogo(domain) {
+    /* ==================================================
+       CRISP VECTOR WORDMARK
 
-        return (
-            "https://www.google.com/s2/favicons" +
-            "?domain=" +
-            encodeURIComponent(domain) +
-            "&sz=256" +
-            "&v=" +
-            VERSION
+       Used instead of blurry favicons when a brand
+       does not have a Simple Icons entry.
+       ================================================== */
+
+    function wordmarkLogo(
+        name,
+        colour
+    ) {
+
+        let display =
+            String(name || "")
+                .replace(
+                    /['’]/g,
+                    ""
+                );
+
+
+        /*
+         * Special visual treatments for brands
+         * whose logos don't exist in Simple Icons.
+         */
+
+        if (
+            cleanName(name) ===
+            "archies"
+        ) {
+
+            return svgData(
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">' +
+
+                '<path d="M300 250 C270 220 90 125 150 55 C190 10 250 35 300 95 C350 35 410 10 450 55 C510 125 330 220 300 250Z" ' +
+                'fill="' + colour + '"/>' +
+
+                '<text x="300" y="170" text-anchor="middle" ' +
+                'font-family="Arial,sans-serif" font-size="90" ' +
+                'font-weight="700" fill="white">a</text>' +
+
+                '</svg>'
+            );
+
+        }
+
+
+        if (
+            cleanName(name) ===
+            "hamleys"
+        ) {
+
+            return svgData(
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 300">' +
+
+                '<text x="350" y="205" text-anchor="middle" ' +
+                'font-family="Georgia,serif" font-size="170" ' +
+                'font-style="italic" font-weight="600" ' +
+                'fill="' + colour + '">H</text>' +
+
+                '</svg>'
+            );
+
+        }
+
+
+        if (
+            cleanName(name) ===
+            "crossword"
+        ) {
+
+            return svgData(
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">' +
+
+                '<rect width="500" height="500" rx="70" fill="#FFD600"/>' +
+
+                '<path d="M145 130 H315 V175 H200 V215 H300 V260 H200 V315 H325 V365 H145 Z" ' +
+                'fill="#222"/>' +
+
+                '</svg>'
+            );
+
+        }
+
+
+        if (
+            cleanName(name) ===
+            "shoppersstop"
+        ) {
+
+            return svgData(
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">' +
+
+                '<rect width="500" height="500" fill="#050505"/>' +
+
+                '<text x="250" y="335" text-anchor="middle" ' +
+                'font-family="Georgia,serif" font-size="300" ' +
+                'font-weight="700" fill="white">S</text>' +
+
+                '</svg>'
+            );
+
+        }
+
+
+        /*
+         * General crisp wordmark.
+         */
+
+        const short =
+            display
+                .substring(0, 18);
+
+
+        return svgData(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300">' +
+
+            '<text x="450" y="190" text-anchor="middle" ' +
+            'font-family="Arial,sans-serif" font-size="100" ' +
+            'font-weight="700" fill="' + colour + '">' +
+
+            escapeXML(short) +
+
+            '</text>' +
+
+            '</svg>'
         );
 
     }
 
 
-    /*
-     * ==================================================
-     * FINAL PLACEHOLDER
-     * ==================================================
-     *
-     * This is deliberately only the FINAL fallback.
-     */
+    /* ==================================================
+       SVG HELPERS
+       ================================================== */
 
-    function placeholderLogo(text) {
+    function escapeXML(text) {
 
-        const label =
-            String(text || "GC")
-                .replace(
-                    /[^A-Za-z0-9]/g,
-                    ""
-                )
-                .substring(0, 3)
-                .toUpperCase();
+        return String(text || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&apos;");
+
+    }
 
 
-        const svg =
-            '<svg xmlns="http://www.w3.org/2000/svg" ' +
-            'viewBox="0 0 512 512">' +
-
-            '<rect width="512" height="512" ' +
-            'rx="90" fill="#f3f3f3"/>' +
-
-            '<text x="256" y="300" ' +
-            'text-anchor="middle" ' +
-            'font-family="Arial,sans-serif" ' +
-            'font-size="125" ' +
-            'font-weight="700" ' +
-            'fill="#222">' +
-
-            label +
-
-            '</text>' +
-
-            '</svg>';
-
+    function svgData(svg) {
 
         return (
             "data:image/svg+xml;charset=UTF-8," +
@@ -418,15 +461,9 @@
     }
 
 
-    /*
-     * ==================================================
-     * APPLY LOGOS TO EXISTING BRANDS
-     * ==================================================
-     *
-     * IMPORTANT:
-     * We DO NOT add duplicate brands.
-     * We modify the brands that already exist.
-     */
+    /* ==================================================
+       APPLY TO EXISTING BRANDS
+       ================================================== */
 
     function updateBrands() {
 
@@ -439,61 +476,93 @@
 
 
         Object.keys(BRANDS)
-            .forEach(function (id) {
+            .forEach(
+                function (id) {
 
-                const brand =
-                    BRANDS[id];
+                    const brand =
+                        BRANDS[id];
 
 
-                if (
-                    !brand ||
-                    !brand.name
-                ) {
-                    return;
+                    if (
+                        !brand ||
+                        !brand.name
+                    ) {
+                        return;
+                    }
+
+
+                    const config =
+                        getConfig(
+                            brand.name
+                        );
+
+
+                    if (!config) {
+                        return;
+                    }
+
+
+                    const slug =
+                        config[0];
+
+                    const colour =
+                        config[1];
+
+                    const hex =
+                        config[2];
+
+
+                    /*
+                     * If Simple Icons has the brand,
+                     * use the real vector icon.
+                     */
+
+                    if (slug) {
+
+                        brand.logo =
+                            simpleIcon(
+                                slug,
+                                colour
+                            );
+
+                    }
+
+                    /*
+                     * Otherwise use our own crisp
+                     * vector SVG.
+                     */
+
+                    else {
+
+                        brand.logo =
+                            wordmarkLogo(
+                                brand.name,
+                                hex
+                            );
+
+                    }
+
+
+                    /*
+                     * IMPORTANT:
+                     * No favicon fallback anymore.
+                     */
+
+                    brand.logoFallback =
+                        null;
+
+                    brand.logoVersion =
+                        VERSION;
+
                 }
-
-
-                const config =
-                    getLogoConfig(
-                        brand.name
-                    );
-
-
-                if (!config) {
-                    return;
-                }
-
-
-                brand.logo =
-                    vectorLogo(
-                        config[0],
-                        config[1]
-                    );
-
-
-                brand.logoFallback =
-                    faviconLogo(
-                        config[2]
-                    );
-
-
-                brand.logoLabel =
-                    config[3];
-
-
-                brand.logoVersion =
-                    VERSION;
-
-            });
+            );
 
     }
 
 
-    /*
-     * ==================================================
-     * LOAD AN IMAGE
-     * ==================================================
-     */
+    /* ==================================================
+       LOAD IMAGE
+       ================================================== */
 
     function loadLogo(img) {
 
@@ -502,21 +571,19 @@
         }
 
 
-        const brandName =
+        const name =
             String(
                 img.alt || ""
             ).trim();
 
 
-        if (!brandName) {
+        if (!name) {
             return;
         }
 
 
         const config =
-            getLogoConfig(
-                brandName
-            );
+            getConfig(name);
 
 
         if (!config) {
@@ -524,28 +591,50 @@
         }
 
 
-        const svg =
-            vectorLogo(
-                config[0],
-                config[1]
-            );
+        const slug =
+            config[0];
+
+        const colour =
+            config[1];
+
+        const hex =
+            config[2];
 
 
-        const favicon =
-            faviconLogo(
-                config[2]
-            );
-
-
-        const placeholder =
-            placeholderLogo(
-                config[3]
-            );
+        let source;
 
 
         /*
-         * Don't continuously reload
-         * the same image.
+         * Real vector icon.
+         */
+
+        if (slug) {
+
+            source =
+                simpleIcon(
+                    slug,
+                    colour
+                );
+
+        }
+
+        /*
+         * Crisp custom SVG.
+         */
+
+        else {
+
+            source =
+                wordmarkLogo(
+                    name,
+                    hex
+                );
+
+        }
+
+
+        /*
+         * Prevent unnecessary reloads.
          */
 
         if (
@@ -561,63 +650,39 @@
 
 
         img.dataset.logoStage =
-            "svg";
+            "vector";
 
 
         img.onerror =
             function () {
 
                 /*
-                 * SVG failed.
-                 * Try favicon.
+                 * If a Simple Icon unexpectedly
+                 * fails, immediately replace it
+                 * with our crisp SVG wordmark.
                  */
-
-                if (
-                    img.dataset.logoStage ===
-                    "svg"
-                ) {
-
-                    img.dataset.logoStage =
-                        "favicon";
-
-                    img.src =
-                        favicon;
-
-                    return;
-                }
-
-
-                /*
-                 * Favicon failed.
-                 * Use clean placeholder.
-                 */
-
-                img.dataset.logoStage =
-                    "placeholder";
 
                 img.onerror = null;
 
+
                 img.src =
-                    placeholder;
+                    wordmarkLogo(
+                        name,
+                        hex
+                    );
 
             };
 
 
-        /*
-         * SVG FIRST.
-         */
-
         img.src =
-            svg;
+            source;
 
     }
 
 
-    /*
-     * ==================================================
-     * REFRESH VISIBLE LOGOS
-     * ==================================================
-     */
+    /* ==================================================
+       REFRESH ALL LOGOS
+       ================================================== */
 
     function refreshLogos() {
 
@@ -638,14 +703,9 @@
     }
 
 
-    /*
-     * ==================================================
-     * OBSERVER
-     * ==================================================
-     *
-     * app.js dynamically creates cards,
-     * so watch for newly-created images.
-     */
+    /* ==================================================
+       WATCH DYNAMIC CONTENT
+       ================================================== */
 
     function observe() {
 
@@ -675,42 +735,18 @@
     }
 
 
-    /*
-     * ==================================================
-     * INITIALISATION
-     * ==================================================
-     */
+    /* ==================================================
+       INITIALISE
+       ================================================== */
 
     function initialise() {
 
-        /*
-         * First modify the existing
-         * BRANDS objects.
-         */
-
         updateBrands();
-
-
-        /*
-         * Then update whatever is already
-         * rendered.
-         */
 
         refreshLogos();
 
-
-        /*
-         * Watch future cards.
-         */
-
         observe();
 
-
-        /*
-         * app.js may render products
-         * after startup, so refresh a few
-         * times during initial rendering.
-         */
 
         setTimeout(
             function () {
