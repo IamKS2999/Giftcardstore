@@ -1,7 +1,7 @@
 /* =====================================================
-   GIFTCARDSTORE — UI POLISH SYSTEM
-   Purchase Modal + Account Upgrade
-   VERSION: 2026-09-16-UI-FINAL
+   GIFTCARDSTORE — UI POLISH
+   ACCOUNT + HOMEPAGE FIX
+   VERSION: 2026-09-16-HOME-FIX
 ===================================================== */
 
 window.GCS = window.GCS || {};
@@ -10,34 +10,220 @@ GCS.pendingCheckout = false;
 
 
 /* =====================================================
-   UI POLISH CSS
+   OVERLAY CONTROL
 ===================================================== */
 
-(function injectUIPolish() {
+GCS.closeAllOverlays = function () {
 
-    const existing =
-        document.getElementById(
-            "gcs-ui-polish"
-        );
+    document
+        .querySelectorAll(".overlay")
+        .forEach(function (overlay) {
 
-    if (existing) {
-        existing.remove();
+            overlay.style.display = "none";
+
+        });
+
+};
+
+window.closeAllOverlays =
+    GCS.closeAllOverlays;
+
+
+/* =====================================================
+   NOTIFICATIONS
+===================================================== */
+
+window.showNotice = function (
+    message,
+    title = "GiftCardStore",
+    type = "info"
+) {
+
+    const old =
+        document.getElementById("gcsNotice");
+
+    if (old) {
+        old.remove();
     }
 
+
+    const notice =
+        document.createElement("div");
+
+    notice.id =
+        "gcsNotice";
+
+    notice.className =
+        "gcs-notice " + type;
+
+
+    notice.innerHTML = `
+
+        <div class="gcs-notice-icon">
+            ${
+                type === "success"
+                    ? "✓"
+                    : type === "error"
+                        ? "!"
+                        : "i"
+            }
+        </div>
+
+        <div class="gcs-notice-content">
+
+            <strong>
+                ${escapeHTML(title)}
+            </strong>
+
+            <span>
+                ${escapeHTML(message)}
+            </span>
+
+        </div>
+
+        <button
+            class="gcs-notice-close"
+            onclick="this.parentElement.remove()">
+            ×
+        </button>
+
+    `;
+
+
+    document.body.appendChild(
+        notice
+    );
+
+
+    setTimeout(
+        function () {
+
+            if (notice.parentElement) {
+                notice.remove();
+            }
+
+        },
+        3200
+    );
+
+};
+
+
+/* =====================================================
+   UI CSS
+===================================================== */
+
+(function () {
+
+    const old =
+        document.getElementById(
+            "gcs-final-ui"
+        );
+
+    if (old) {
+        old.remove();
+    }
+
+
     const style =
-        document.createElement("style");
+        document.createElement(
+            "style"
+        );
 
     style.id =
-        "gcs-ui-polish";
+        "gcs-final-ui";
+
 
     style.textContent = `
 
+
         /* =================================================
-           OVERLAY
+           GENERAL OVERLAY
         ================================================= */
 
         .overlay {
             padding: 12px !important;
+        }
+
+
+        /* =================================================
+           HOMEPAGE HERO STATS
+        ================================================= */
+
+        .hero-mini-stats {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap:
+                10px;
+
+            width:
+                min(560px, 100%);
+
+            margin:
+                4px auto 0;
+
+        }
+
+
+        .hero-mini-stats > div {
+
+            padding:
+                12px 10px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                15px;
+
+            background:
+                rgba(255,255,255,.035);
+
+            text-align:
+                center;
+
+        }
+
+
+        .hero-mini-stats strong {
+
+            display:
+                block;
+
+            color:
+                var(--text);
+
+            font-size:
+                17px;
+
+            line-height:
+                1.2;
+
+        }
+
+
+        .hero-mini-stats span {
+
+            display:
+                block;
+
+            margin-top:
+                3px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                10px;
+
+            line-height:
+                1.25;
+
         }
 
 
@@ -71,13 +257,16 @@ GCS.pendingCheckout = false;
         }
 
 
-        .product-panel .panel-header h2 {
+        .product-panel
+        .panel-header h2 {
             margin-bottom:
                 4px !important;
         }
 
 
-        .product-panel .panel-header p {
+        .product-panel
+        .panel-header p {
+
             margin-top:
                 0 !important;
 
@@ -86,14 +275,12 @@ GCS.pendingCheckout = false;
 
             line-height:
                 1.45;
+
         }
 
 
-        /* =================================================
-           SELECTED BRAND
-        ================================================= */
-
-        .product-panel .selected-brand {
+        .product-panel
+        .selected-brand {
 
             min-height:
                 76px;
@@ -140,10 +327,6 @@ GCS.pendingCheckout = false;
         }
 
 
-        /* =================================================
-           PRODUCT INFORMATION
-        ================================================= */
-
         .product-info-box {
 
             margin:
@@ -164,19 +347,8 @@ GCS.pendingCheckout = false;
         }
 
 
-        /* =================================================
-           GIFT CARD TYPE
-        ================================================= */
-
-        .product-panel .field-label {
-
-            margin-bottom:
-                7px !important;
-
-        }
-
-
-        .product-panel .mode-buttons {
+        .product-panel
+        .mode-buttons {
 
             gap:
                 8px !important;
@@ -187,7 +359,8 @@ GCS.pendingCheckout = false;
         }
 
 
-        .product-panel .mode-button {
+        .product-panel
+        .mode-button {
 
             min-height:
                 62px !important;
@@ -203,27 +376,20 @@ GCS.pendingCheckout = false;
 
         .product-panel
         .mode-button strong {
-
             font-size:
                 14px !important;
-
         }
 
 
         .product-panel
         .mode-button small {
-
             font-size:
                 11px !important;
-
         }
 
 
-        /* =================================================
-           FIXED VALUE GRID
-        ================================================= */
-
-        .product-panel .fixed-values {
+        .product-panel
+        .fixed-values {
 
             display:
                 grid !important;
@@ -279,11 +445,8 @@ GCS.pendingCheckout = false;
         }
 
 
-        /* =================================================
-           PRICE PREVIEW
-        ================================================= */
-
-        .product-panel .price-preview {
+        .product-panel
+        .price-preview {
 
             margin-top:
                 11px !important;
@@ -297,32 +460,8 @@ GCS.pendingCheckout = false;
         }
 
 
-        .product-panel .preview-row {
-
-            padding:
-                3px 0 !important;
-
-        }
-
-
-        .product-panel .preview-total {
-
-            padding-top:
-                8px !important;
-
-        }
-
-
-        .product-panel .wide-primary {
-
-            margin-top:
-                11px;
-
-        }
-
-
         /* =================================================
-           ACCOUNT MODAL
+           ACCOUNT
         ================================================= */
 
         .account-modal-clean {
@@ -360,9 +499,6 @@ GCS.pendingCheckout = false;
             font-size:
                 26px !important;
 
-            margin-bottom:
-                3px !important;
-
         }
 
 
@@ -374,10 +510,6 @@ GCS.pendingCheckout = false;
 
         }
 
-
-        /* =================================================
-           ACCOUNT PROFILE
-        ================================================= */
 
         .account-modal-clean
         .account-profile-clean {
@@ -422,32 +554,20 @@ GCS.pendingCheckout = false;
 
 
         .account-profile-copy strong {
-
             font-size:
                 18px !important;
-
         }
 
 
         .account-profile-copy span {
-
-            margin-top:
-                2px !important;
-
             font-size:
                 12px;
-
         }
 
 
         .account-profile-copy small {
-
-            margin-top:
-                3px !important;
-
             font-size:
                 11px;
-
         }
 
 
@@ -523,9 +643,6 @@ GCS.pendingCheckout = false;
             margin-top:
                 3px;
 
-            color:
-                var(--text);
-
             font-size:
                 18px;
 
@@ -533,137 +650,13 @@ GCS.pendingCheckout = false;
 
 
         .gcs-account-stat.saved strong {
-
             color:
                 var(--purple);
-
         }
 
 
         /* =================================================
-           ACCOUNT SAVINGS
-        ================================================= */
-
-        .account-modal-clean
-        .account-saving-strip {
-
-            margin:
-                0 0 10px !important;
-
-            padding:
-                13px 16px !important;
-
-            border-radius:
-                16px !important;
-
-        }
-
-
-        .account-modal-clean
-        .account-saving-strip strong {
-
-            font-size:
-                27px !important;
-
-        }
-
-
-        .account-modal-clean
-        .account-saving-label {
-
-            font-size:
-                10px !important;
-
-        }
-
-
-        .account-modal-clean
-        .account-saving-arrow {
-
-            font-size:
-                11px !important;
-
-        }
-
-
-        /* =================================================
-           ACCOUNT MENU
-        ================================================= */
-
-        .account-menu-clean {
-
-            gap:
-                7px !important;
-
-        }
-
-
-        .account-menu-clean > button {
-
-            min-height:
-                58px;
-
-            gap:
-                11px !important;
-
-            padding:
-                9px 11px !important;
-
-            border-radius:
-                15px !important;
-
-        }
-
-
-        .account-menu-clean > button > span {
-
-            width:
-                39px !important;
-
-            height:
-                39px !important;
-
-            flex:
-                0 0 39px;
-
-            display:
-                grid;
-
-            place-items:
-                center;
-
-            border-radius:
-                11px !important;
-
-            font-size:
-                18px !important;
-
-        }
-
-
-        .account-menu-clean
-        button strong {
-
-            font-size:
-                14px !important;
-
-        }
-
-
-        .account-menu-clean
-        button small {
-
-            margin-top:
-                2px;
-
-            font-size:
-                10px !important;
-
-        }
-
-
-        /* =================================================
-           SAVED / WISHLIST ACCOUNT BUTTON
+           SAVED ACCOUNT BUTTON
         ================================================= */
 
         .gcs-saved-account-button {
@@ -741,7 +734,6 @@ GCS.pendingCheckout = false;
 
 
         .gcs-saved-account-button strong {
-
             display:
                 block;
 
@@ -769,14 +761,149 @@ GCS.pendingCheckout = false;
 
 
         /* =================================================
-           LOGOUT
+           NOTICES
         ================================================= */
 
-        .account-modal-clean
-        .logout-button {
+        .gcs-notice {
+
+            position:
+                fixed;
+
+            z-index:
+                9999;
+
+            left:
+                50%;
+
+            bottom:
+                20px;
+
+            transform:
+                translateX(-50%);
+
+            width:
+                min(440px, calc(100% - 28px));
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+            padding:
+                14px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                17px;
+
+            background:
+                var(--surface);
+
+            box-shadow:
+                0 18px 55px rgba(0,0,0,.35);
+
+        }
+
+
+        .gcs-notice-icon {
+
+            width:
+                35px;
+
+            height:
+                35px;
+
+            flex:
+                0 0 35px;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            border-radius:
+                11px;
+
+            background:
+                rgba(113,60,243,.18);
+
+            color:
+                var(--purple);
+
+            font-weight:
+                900;
+
+        }
+
+
+        .gcs-notice-content {
+            min-width:
+                0;
+
+            flex:
+                1;
+        }
+
+
+        .gcs-notice-content strong,
+        .gcs-notice-content span {
+            display:
+                block;
+        }
+
+
+        .gcs-notice-content strong {
+            font-size:
+                13px;
+        }
+
+
+        .gcs-notice-content span {
 
             margin-top:
-                10px !important;
+                3px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                12px;
+
+            white-space:
+                pre-line;
+
+        }
+
+
+        .gcs-notice-close {
+
+            width:
+                30px;
+
+            height:
+                30px;
+
+            border:
+                0;
+
+            background:
+                transparent;
+
+            color:
+                var(--muted);
+
+            font-size:
+                20px;
+
+            cursor:
+                pointer;
 
         }
 
@@ -790,6 +917,47 @@ GCS.pendingCheckout = false;
             .overlay {
                 padding:
                     8px !important;
+            }
+
+
+            .hero-mini-stats {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+                gap:
+                    6px;
+
+                margin-top:
+                    2px;
+
+            }
+
+
+            .hero-mini-stats > div {
+
+                padding:
+                    9px 4px;
+
+                border-radius:
+                    12px;
+
+            }
+
+
+            .hero-mini-stats strong {
+
+                font-size:
+                    15px;
+
+            }
+
+
+            .hero-mini-stats span {
+
+                font-size:
+                    8px;
+
             }
 
 
@@ -864,15 +1032,6 @@ GCS.pendingCheckout = false;
 
 
             .product-panel
-            .selected-brand-subtitle {
-
-                font-size:
-                    11px !important;
-
-            }
-
-
-            .product-panel
             .fixed-values {
 
                 grid-template-columns:
@@ -903,34 +1062,6 @@ GCS.pendingCheckout = false;
 
                 font-size:
                     17px !important;
-
-            }
-
-
-            .product-panel
-            .fixed-values
-            .value-button small {
-
-                font-size:
-                    10px !important;
-
-            }
-
-
-            .product-panel
-            .mode-button {
-
-                min-height:
-                    58px !important;
-
-            }
-
-
-            .product-panel
-            .price-preview {
-
-                padding:
-                    10px !important;
 
             }
 
@@ -1009,366 +1140,49 @@ GCS.pendingCheckout = false;
 
             }
 
-
-            .account-menu-clean > button > span,
-            .gcs-saved-account-button .saved-icon {
-
-                width:
-                    37px !important;
-
-                height:
-                    37px !important;
-
-                flex-basis:
-                    37px !important;
-
-            }
-
         }
 
     `;
 
-    document.head.appendChild(style);
+
+    document.head.appendChild(
+        style
+    );
 
 })();
 
 
 /* =====================================================
-   ACCOUNT OVERVIEW
+   HOMEPAGE STAT FIX
 ===================================================== */
 
-function gcsGetUserOrders() {
+function updateHeroBrandCount() {
 
-    if (
-        typeof getCurrentUser !==
-        "function" ||
-        typeof getOrders !==
-        "function"
-    ) {
-        return [];
-    }
-
-
-    const user =
-        getCurrentUser();
-
-
-    if (!user || !user.email) {
-        return [];
-    }
-
-
-    return getOrders().filter(
-        function (order) {
-
-            return (
-                order.email &&
-                order.email.toLowerCase() ===
-                user.email.toLowerCase()
-            );
-
-        }
-    );
-
-}
-
-
-function gcsGetSavedCount() {
-
-    try {
-
-        const saved =
-            JSON.parse(
-                localStorage.getItem(
-                    "gcsWishlist"
-                ) || "[]"
-            );
-
-        return Array.isArray(saved)
-            ? saved.length
-            : 0;
-
-    } catch (error) {
-
-        return 0;
-
-    }
-
-}
-
-
-function gcsCreateAccountOverview() {
-
-    const accountOverlay =
+    const element =
         document.getElementById(
-            "accountOverlay"
+            "heroBrandCount"
         );
 
 
-    if (!accountOverlay) {
-        return;
-    }
-
-
-    const menu =
-        accountOverlay.querySelector(
-            ".account-menu-clean"
-        );
-
-
-    if (!menu) {
-        return;
-    }
-
-
-    const old =
-        accountOverlay.querySelector(
-            ".gcs-account-overview"
-        );
-
-
-    if (old) {
-        old.remove();
-    }
-
-
-    const orders =
-        gcsGetUserOrders();
-
-
-    const saved =
-        gcsGetSavedCount();
-
-
-    const overview =
-        document.createElement(
-            "div"
-        );
-
-
-    overview.className =
-        "gcs-account-overview";
-
-
-    overview.innerHTML = `
-
-        <div class="gcs-account-stat">
-
-            <span>
-                ORDERS
-            </span>
-
-            <strong>
-                ${orders.length}
-            </strong>
-
-        </div>
-
-
-        <div class="gcs-account-stat">
-
-            <span>
-                GIFT CARDS
-            </span>
-
-            <strong>
-                ${orders.length}
-            </strong>
-
-        </div>
-
-
-        <div class="gcs-account-stat saved">
-
-            <span>
-                SAVED
-            </span>
-
-            <strong>
-                ${saved}
-            </strong>
-
-        </div>
-
-    `;
-
-
-    menu.parentNode.insertBefore(
-        overview,
-        menu
-    );
-
-}
-
-
-/* =====================================================
-   SAVED ACCOUNT BUTTON
-===================================================== */
-
-function gcsCreateSavedButton() {
-
-    const accountOverlay =
-        document.getElementById(
-            "accountOverlay"
-        );
-
-
-    if (!accountOverlay) {
-        return;
-    }
-
-
-    const menu =
-        accountOverlay.querySelector(
-            ".account-menu-clean"
-        );
-
-
-    if (!menu) {
+    if (!element) {
         return;
     }
 
 
     if (
-        accountOverlay.querySelector(
-            ".gcs-saved-account-button"
-        )
-    ) {
-        return;
-    }
-
-
-    const button =
-        document.createElement(
-            "button"
-        );
-
-
-    button.type =
-        "button";
-
-
-    button.className =
-        "gcs-saved-account-button";
-
-
-    button.innerHTML = `
-
-        <span class="saved-icon">
-            ♡
-        </span>
-
-        <div>
-
-            <strong>
-                Saved Gift Cards
-            </strong>
-
-            <small>
-                View your saved brands
-            </small>
-
-        </div>
-
-    `;
-
-
-    button.addEventListener(
-        "click",
-        function () {
-
-            if (
-                typeof GCS.openWishlist ===
-                "function"
-            ) {
-
-                GCS.openWishlist();
-
-            } else if (
-                typeof openWishlist ===
-                "function"
-            ) {
-
-                openWishlist();
-
-            }
-
-        }
-    );
-
-
-    menu.appendChild(
-        button
-    );
-
-}
-
-
-/* =====================================================
-   ACCOUNT ENHANCEMENT
-===================================================== */
-
-function gcsEnhanceAccount() {
-
-    gcsCreateAccountOverview();
-
-    gcsCreateSavedButton();
-
-}
-
-
-/* =====================================================
-   REFRESH ACCOUNT WHEN OPENED
-===================================================== */
-
-function gcsPatchAccountOpening() {
-
-    if (
-        typeof window.openAccountPanel !==
+        typeof getAllBrands !==
         "function"
     ) {
         return;
     }
 
 
-    if (
-        window.openAccountPanel.__gcsEnhanced
-    ) {
-        return;
-    }
+    const brands =
+        getAllBrands();
 
 
-    const original =
-        window.openAccountPanel;
-
-
-    const enhanced =
-        function () {
-
-            original.apply(
-                this,
-                arguments
-            );
-
-
-            setTimeout(
-                function () {
-
-                    gcsEnhanceAccount();
-
-                },
-                20
-            );
-
-        };
-
-
-    enhanced.__gcsEnhanced =
-        true;
-
-
-    window.openAccountPanel =
-        enhanced;
+    element.textContent =
+        brands.length;
 
 }
 
@@ -1384,12 +1198,10 @@ document.addEventListener(
         setTimeout(
             function () {
 
-                gcsPatchAccountOpening();
-
-                gcsEnhanceAccount();
+                updateHeroBrandCount();
 
             },
-            250
+            50
         );
 
     }
@@ -1425,17 +1237,13 @@ document.addEventListener(
             i--
         ) {
 
-            const overlay =
-                overlays[i];
-
-
             if (
                 getComputedStyle(
-                    overlay
+                    overlays[i]
                 ).display !== "none"
             ) {
 
-                overlay.style.display =
+                overlays[i].style.display =
                     "none";
 
                 break;
