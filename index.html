@@ -38,6 +38,14 @@
         </a>
 
         <button
+            class="header-action cart-header-button"
+            id="cartButton"
+            onclick="GCS.openCart()">
+            🛒 Cart
+            <span id="cartCount" class="cart-count">0</span>
+        </button>
+
+        <button
             class="header-action"
             id="loginButton">
             Login
@@ -89,6 +97,25 @@
             class="secondary-button">
             View Brands
         </a>
+
+    </div>
+
+    <div class="hero-mini-stats">
+
+        <div>
+            <strong id="heroBrandCount">0</strong>
+            <span>Brands</span>
+        </div>
+
+        <div>
+            <strong>Instant</strong>
+            <span>Savings preview</span>
+        </div>
+
+        <div>
+            <strong>Simple</strong>
+            <span>Checkout flow</span>
+        </div>
 
     </div>
 
@@ -165,9 +192,27 @@
         <input
             id="search"
             type="text"
-            placeholder="Search gift cards..."
+            placeholder="Search brands, categories..."
             autocomplete="off">
 
+        <button
+            id="clearSearch"
+            class="search-clear"
+            type="button"
+            onclick="GCS.clearSearch()"
+            style="display:none">
+            ×
+        </button>
+
+    </div>
+
+
+    <!-- SEARCH RESULT INFO -->
+
+    <div
+        id="searchInfo"
+        class="search-info"
+        style="display:none">
     </div>
 
 
@@ -177,36 +222,42 @@
 
         <button
             class="category active"
+            data-category="All"
             onclick="GCS.filterCategory('All', this)">
             All
         </button>
 
         <button
             class="category"
+            data-category="Shopping"
             onclick="GCS.filterCategory('Shopping', this)">
             Shopping
         </button>
 
         <button
             class="category"
+            data-category="Fashion"
             onclick="GCS.filterCategory('Fashion', this)">
             Fashion
         </button>
 
         <button
             class="category"
+            data-category="Food"
             onclick="GCS.filterCategory('Food', this)">
             Food
         </button>
 
         <button
             class="category"
+            data-category="Electronics"
             onclick="GCS.filterCategory('Electronics', this)">
             Electronics
         </button>
 
         <button
             class="category"
+            data-category="Entertainment"
             onclick="GCS.filterCategory('Entertainment', this)">
             Entertainment
         </button>
@@ -287,6 +338,22 @@
 
             </div>
 
+            <button
+                id="wishlistProductButton"
+                class="wishlist-product-button"
+                type="button"
+                onclick="GCS.toggleWishlistSelected()">
+                ♡
+            </button>
+
+        </div>
+
+
+        <!-- PRODUCT INFO -->
+
+        <div
+            id="productInfo"
+            class="product-info-box">
         </div>
 
 
@@ -428,7 +495,65 @@
             class="wide-primary"
             onclick="GCS.continueProduct()">
 
-            Continue
+            Add to Cart
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CART
+===================================================== -->
+
+<div
+    class="overlay"
+    id="cartOverlay">
+
+    <div class="panel cart-panel">
+
+        <div class="panel-header">
+
+            <div>
+                <div class="panel-eyebrow">
+                    Shopping
+                </div>
+
+                <h2>
+                    Your Cart
+                </h2>
+
+                <p>
+                    Review your selected gift cards before checkout.
+                </p>
+            </div>
+
+            <button
+                class="close-button"
+                onclick="GCS.closeCart()">
+                ×
+            </button>
+
+        </div>
+
+
+        <div id="cartItems"></div>
+
+
+        <div
+            id="cartSummary"
+            class="cart-summary">
+        </div>
+
+
+        <button
+            id="cartCheckoutButton"
+            class="wide-primary"
+            onclick="GCS.checkoutCart()">
+
+            Continue to Checkout
 
         </button>
 
@@ -459,7 +584,7 @@
                 </h2>
 
                 <p>
-                    Check your gift card before checkout.
+                    Check your gift cards before checkout.
                 </p>
             </div>
 
@@ -472,90 +597,9 @@
         </div>
 
 
-        <div class="summary-brand">
-
-            <div
-                class="summary-brand-name"
-                id="orderBrand">
-                Amazon
-            </div>
-
-            <div
-                class="summary-value"
-                id="orderValue">
-                ₹500 Gift Card
-            </div>
-
-        </div>
-
-
-        <div class="summary-card">
-
-            <div class="summary-row">
-
-                <span>
-                    Gift Card Value
-                </span>
-
-                <strong id="originalPrice">
-                    ₹500
-                </strong>
-
-            </div>
-
-
-            <div class="summary-row">
-
-                <span>
-                    Discount
-                </span>
-
-                <strong
-                    class="discount-text"
-                    id="orderDiscount">
-                    3%
-                </strong>
-
-            </div>
-
-
-            <div class="summary-row">
-
-                <span>
-                    You Pay
-                </span>
-
-                <strong id="finalPrice">
-                    ₹485
-                </strong>
-
-            </div>
-
-
-            <div
-                class="saving-banner"
-                id="orderSaving">
-
-                You save ₹15
-
-            </div>
-
-
-            <div class="summary-divider"></div>
-
-
-            <div class="summary-row summary-total">
-
-                <span>
-                    Total
-                </span>
-
-                <strong id="totalPrice">
-                    ₹485
-                </strong>
-
-            </div>
-
+        <div
+            id="orderSummaryContent"
+            class="order-summary-content">
         </div>
 
 
@@ -607,29 +651,15 @@
         </div>
 
 
-        <div class="checkout-card">
-
-            <div class="checkout-brand">
-                <span>
-                    Gift Card
-                </span>
-
-                <strong id="checkoutBrand">
-                    Amazon
-                </strong>
-            </div>
+        <div
+            id="checkoutItems"
+            class="checkout-items">
+        </div>
 
 
-            <div class="checkout-value">
-                <span id="checkoutValue">
-                    ₹500 Gift Card
-                </span>
-
-                <strong id="checkoutPrice">
-                    ₹485
-                </strong>
-            </div>
-
+        <div
+            id="checkoutTotals"
+            class="checkout-totals">
         </div>
 
 
@@ -784,6 +814,18 @@
             Save more. Shop smarter.
         </p>
 
+        <div class="footer-links">
+
+            <button onclick="GCS.openFaq()">
+                FAQ
+            </button>
+
+            <button onclick="GCS.openTerms()">
+                Terms
+            </button>
+
+        </div>
+
         <small>
             © 2026 GiftCardStore · Prototype
         </small>
@@ -805,6 +847,6 @@
 <script src="js/ui.js?v=20260916-8"></script>
 <script src="js/app.js?v=20260916-8"></script>
 <script src="js/features.js?v=20260916-8"></script>
-     
+
 </body>
 </html>
