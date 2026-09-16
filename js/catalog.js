@@ -1,685 +1,757 @@
 /* =====================================================
-   GIFTCARDSTORE — EXTENDED CATALOG
-   COLOURED BRAND LOGO VERSION
+   GIFTCARDSTORE — CATALOG LOGO FIX
+   VERSION: 2026-09-16
 ===================================================== */
 
 (function () {
 
+    "use strict";
+
     /*
-     * Brand logo helper
-     *
-     * Uses Simple Icons with the brand's actual colour.
-     * If a logo is unavailable, Google favicon is used.
-     * Final fallback is a clean two-letter placeholder.
+     * Cache-buster.
+     * Change this number whenever logo assets are updated.
      */
+    const LOGO_VERSION = "20260916-2";
 
-    const logo = (slug, colour, domain, label) => {
-        const simpleIcon =
-            "https://cdn.simpleicons.org/" +
-            slug +
-            "/" +
-            colour;
 
-        const favicon =
-            "https://www.google.com/s2/favicons?domain=" +
-            encodeURIComponent(domain) +
-            "&sz=128";
-
-        return {
-            primary: simpleIcon,
-            fallback: favicon,
-            label: label
-        };
-    };
-
+    /*
+     * =================================================
+     * BRAND LOGO DATABASE
+     * =================================================
+     *
+     * Format:
+     * "Brand Name": [simple-icons-slug, colour, domain, fallback]
+     */
 
     const BRAND_LOGOS = {
 
-        Zomato: logo(
-            "zomato",
-            "E23744",
-            "zomato.com",
-            "ZO"
-        ),
-
-        Swiggy: logo(
-            "swiggy",
-            "FC8019",
-            "swiggy.com",
-            "SW"
-        ),
-
-        Uber: logo(
-            "uber",
-            "000000",
-            "uber.com",
-            "UB"
-        ),
-
-        BookMyShow: logo(
-            "bookmyshow",
-            "F84464",
-            "bookmyshow.com",
-            "BM"
-        ),
-
-        PVR: logo(
-            "pvr",
-            "F5C400",
-            "pvrcinemas.com",
-            "PV"
-        ),
-
-        Nykaa: logo(
-            "nykaa",
-            "FC2779",
-            "nykaa.com",
-            "NY"
-        ),
-
-        AJIO: logo(
-            "ajio",
-            "000000",
-            "ajio.com",
-            "AJ"
-        ),
-
-        Westside: logo(
-            "westside",
-            "000000",
-            "westside.com",
-            "WE"
-        ),
-
-        MaxFashion: logo(
-            "max",
-            "C8A77A",
-            "maxfashion.in",
-            "MX"
-        ),
-
-        TataCliq: logo(
-            "tatacliq",
-            "E91E63",
-            "tatacliq.com",
-            "TC"
-        ),
-
-        Meesho: logo(
-            "meesho",
-            "E5007D",
-            "meesho.com",
-            "ME"
-        ),
-
-        BigBasket: logo(
-            "bigbasket",
-            "84C225",
-            "bigbasket.com",
-            "BB"
-        ),
-
-        Blinkit: logo(
-            "blinkit",
-            "F8CB46",
-            "blinkit.com",
-            "BL"
-        ),
-
-        Zepto: logo(
-            "zepto",
-            "8A2BE2",
-            "zeptonow.com",
-            "ZE"
-        ),
-
-        RelianceDigital: logo(
-            "reliancedigital",
-            "E42529",
-            "reliancedigital.in",
-            "RD"
-        ),
-
-        VijaySales: logo(
-            "vijaysales",
-            "E31837",
-            "vijaysales.com",
-            "VS"
-        ),
-
-        IKEA: logo(
-            "ikea",
-            "0058A3",
-            "ikea.com",
-            "IK"
-        ),
-
-        Lifestyle: logo(
-            "lifestyle",
-            "000000",
-            "lifestylestores.com",
-            "LS"
-        ),
-
-        ShoppersStop: logo(
-            "shoppersstop",
-            "D71920",
-            "shoppersstop.com",
-            "SS"
-        ),
-
-        Pantaloons: logo(
-            "pantaloons",
-            "E40046",
-            "pantaloons.com",
-            "PA"
-        ),
-
-        Levis: logo(
-            "levis",
-            "C41230",
-            "levi.com",
-            "LE"
-        ),
-
-        Decathlon: logo(
-            "decathlon",
-            "0082C3",
-            "decathlon.in",
-            "DE"
-        ),
-
-        FirstCry: logo(
-            "firstcry",
-            "00AEEF",
-            "firstcry.com",
-            "FC"
-        ),
-
-        Pepperfry: logo(
-            "pepperfry",
-            "D71920",
-            "pepperfry.com",
-            "PF"
-        ),
-
-        Tata1mg: logo(
-            "1mg",
-            "FF6B6B",
-            "1mg.com",
-            "1M"
-        ),
-
-        Netmeds: logo(
-            "netmeds",
-            "24A148",
-            "netmeds.com",
-            "NM"
-        ),
-
-        CultFit: logo(
-            "cultfit",
-            "FF3D71",
-            "cult.fit",
-            "CF"
-        ),
-
-        Spotify: logo(
-            "spotify",
-            "1DB954",
-            "spotify.com",
-            "SP"
-        ),
-
-        Netflix: logo(
-            "netflix",
-            "E50914",
-            "netflix.com",
-            "NF"
-        ),
-
-        SonyLiv: logo(
-            "sonyliv",
-            "000000",
-            "sonyliv.com",
-            "SL"
-        ),
-
-        Zee5: logo(
-            "zee5",
-            "8230C6",
-            "zee5.com",
-            "Z5"
-        ),
-
-        MakeMyTrip: logo(
-            "makemytrip",
-            "E52B50",
-            "makemytrip.com",
-            "MM"
-        ),
-
-        Cleartrip: logo(
-            "cleartrip",
-            "EF3340",
-            "cleartrip.com",
-            "CT"
-        ),
-
-        EaseMyTrip: logo(
-            "easemytrip",
-            "FF6B00",
-            "easemytrip.com",
-            "EM"
-        ),
-
-        AirIndia: logo(
-            "airindia",
-            "D71920",
-            "airindia.com",
-            "AI"
-        ),
-
-        Tira: logo(
-            "tira",
-            "000000",
-            "tirabeauty.com",
-            "TI"
-        ),
-
-        TheBodyShop: logo(
-            "thebodyshop",
-            "004C3F",
-            "thebodyshop.com",
-            "BS"
-        ),
-
-        Fastrack: logo(
-            "fastrack",
-            "000000",
-            "fastrack.in",
-            "FT"
-        ),
-
-        Titan: logo(
-            "titan",
-            "004B87",
-            "titan.co.in",
-            "TI"
-        ),
-
-        CaratLane: logo(
-            "caratlane",
-            "000000",
-            "caratlane.com",
-            "CL"
-        ),
-
-        Mia: logo(
-            "mia",
-            "8C1D40",
-            "mia.tatacliq.com",
-            "MI"
-        ),
-
-        Archies: logo(
-            "archies",
-            "E31B23",
-            "archiesonline.com",
-            "AR"
-        ),
-
-        Hamleys: logo(
-            "hamleys",
-            "E30613",
-            "hamleys.in",
-            "HA"
-        ),
-
-        Crossword: logo(
-            "crossword",
-            "E31837",
-            "crossword.in",
-            "CR"
-        ),
-
-        MarksSpencer: logo(
-            "marksandspencer",
-            "000000",
-            "marksandspencer.com",
-            "M&S"
-        ),
-
-        VanHeusen: logo(
-            "vanheusen",
-            "000000",
-            "vanheusenindia.com",
-            "VH"
-        ),
-
-        AllenSolly: logo(
-            "allensolly",
-            "000000",
-            "allensolly.com",
-            "AS"
-        ),
-
-        PeterEngland: logo(
-            "peterengland",
-            "003B5C",
-            "peterengland.com",
-            "PE"
-        ),
-
-        Haldirams: logo(
-            "haldirams",
-            "E31B23",
-            "haldirams.com",
-            "HA"
-        ),
-
-        Dominos2: logo(
+        "Domino's": [
             "dominos",
             "E31837",
             "dominos.co.in",
             "DO"
-        )
+        ],
+
+        "Zomato": [
+            "zomato",
+            "E23744",
+            "zomato.com",
+            "ZO"
+        ],
+
+        "Swiggy": [
+            "swiggy",
+            "FC8019",
+            "swiggy.com",
+            "SW"
+        ],
+
+        "Uber": [
+            "uber",
+            "000000",
+            "uber.com",
+            "UB"
+        ],
+
+        "BookMyShow": [
+            "bookmyshow",
+            "F84464",
+            "bookmyshow.com",
+            "BM"
+        ],
+
+        "PVR": [
+            "pvr",
+            "F5C400",
+            "pvrcinemas.com",
+            "PV"
+        ],
+
+        "Nykaa": [
+            "nykaa",
+            "FC2779",
+            "nykaa.com",
+            "NY"
+        ],
+
+        "AJIO": [
+            "ajio",
+            "000000",
+            "ajio.com",
+            "AJ"
+        ],
+
+        "Westside": [
+            "westside",
+            "000000",
+            "westside.com",
+            "WE"
+        ],
+
+        "Max Fashion": [
+            "max",
+            "C8A77A",
+            "maxfashion.in",
+            "MX"
+        ],
+
+        "Tata CLiQ": [
+            "tatacliq",
+            "E91E63",
+            "tatacliq.com",
+            "TC"
+        ],
+
+        "Meesho": [
+            "meesho",
+            "E5007D",
+            "meesho.com",
+            "ME"
+        ],
+
+        "bigbasket": [
+            "bigbasket",
+            "84C225",
+            "bigbasket.com",
+            "BB"
+        ],
+
+        "Blinkit": [
+            "blinkit",
+            "F8CB46",
+            "blinkit.com",
+            "BL"
+        ],
+
+        "Zepto": [
+            "zepto",
+            "8A2BE2",
+            "zeptonow.com",
+            "ZE"
+        ],
+
+        "Reliance Digital": [
+            "reliancedigital",
+            "E42529",
+            "reliancedigital.in",
+            "RD"
+        ],
+
+        "Vijay Sales": [
+            "vijaysales",
+            "E31837",
+            "vijaysales.com",
+            "VS"
+        ],
+
+        "IKEA": [
+            "ikea",
+            "0058A3",
+            "ikea.com",
+            "IK"
+        ],
+
+        "Lifestyle": [
+            "lifestyle",
+            "000000",
+            "lifestylestores.com",
+            "LS"
+        ],
+
+        "Shoppers Stop": [
+            "shoppersstop",
+            "D71920",
+            "shoppersstop.com",
+            "SS"
+        ],
+
+        "Pantaloons": [
+            "pantaloons",
+            "E40046",
+            "pantaloons.com",
+            "PA"
+        ],
+
+        "Levi's": [
+            "levis",
+            "C41230",
+            "levi.com",
+            "LE"
+        ],
+
+        "Decathlon": [
+            "decathlon",
+            "0082C3",
+            "decathlon.in",
+            "DE"
+        ],
+
+        "FirstCry": [
+            "firstcry",
+            "00AEEF",
+            "firstcry.com",
+            "FC"
+        ],
+
+        "Pepperfry": [
+            "pepperfry",
+            "D71920",
+            "pepperfry.com",
+            "PF"
+        ],
+
+        "Tata 1mg": [
+            "1mg",
+            "FF6B6B",
+            "1mg.com",
+            "1M"
+        ],
+
+        "Netmeds": [
+            "netmeds",
+            "24A148",
+            "netmeds.com",
+            "NM"
+        ],
+
+        "Cult.fit": [
+            "cultfit",
+            "FF3D71",
+            "cult.fit",
+            "CF"
+        ],
+
+        "Spotify": [
+            "spotify",
+            "1DB954",
+            "spotify.com",
+            "SP"
+        ],
+
+        "Netflix": [
+            "netflix",
+            "E50914",
+            "netflix.com",
+            "NF"
+        ],
+
+        "Sony LIV": [
+            "sonyliv",
+            "000000",
+            "sonyliv.com",
+            "SL"
+        ],
+
+        "ZEE5": [
+            "zee5",
+            "8230C6",
+            "zee5.com",
+            "Z5"
+        ],
+
+        "MakeMyTrip": [
+            "makemytrip",
+            "E52B50",
+            "makemytrip.com",
+            "MM"
+        ],
+
+        "Cleartrip": [
+            "cleartrip",
+            "EF3340",
+            "cleartrip.com",
+            "CT"
+        ],
+
+        "EaseMyTrip": [
+            "easemytrip",
+            "FF6B00",
+            "easemytrip.com",
+            "EM"
+        ],
+
+        "Air India": [
+            "airindia",
+            "D71920",
+            "airindia.com",
+            "AI"
+        ],
+
+        "Tira": [
+            "tira",
+            "000000",
+            "tirabeauty.com",
+            "TI"
+        ],
+
+        "The Body Shop": [
+            "thebodyshop",
+            "004C3F",
+            "thebodyshop.com",
+            "BS"
+        ],
+
+        "Fastrack": [
+            "fastrack",
+            "000000",
+            "fastrack.in",
+            "FT"
+        ],
+
+        "Titan": [
+            "titan",
+            "004B87",
+            "titan.co.in",
+            "TI"
+        ],
+
+        "CaratLane": [
+            "caratlane",
+            "000000",
+            "caratlane.com",
+            "CL"
+        ],
+
+        "Mia by Tanishq": [
+            "mia",
+            "8C1D40",
+            "mia.tatacliq.com",
+            "MI"
+        ],
+
+        "Archies": [
+            "archies",
+            "E31B23",
+            "archiesonline.com",
+            "AR"
+        ],
+
+        "Hamleys": [
+            "hamleys",
+            "E30613",
+            "hamleys.in",
+            "HA"
+        ],
+
+        "Crossword": [
+            "crossword",
+            "E31837",
+            "crossword.in",
+            "CR"
+        ],
+
+        "Marks & Spencer": [
+            "marksandspencer",
+            "000000",
+            "marksandspencer.com",
+            "M&S"
+        ],
+
+        "Van Heusen": [
+            "vanheusen",
+            "000000",
+            "vanheusenindia.com",
+            "VH"
+        ],
+
+        "Allen Solly": [
+            "allensolly",
+            "000000",
+            "allensolly.com",
+            "AS"
+        ],
+
+        "Peter England": [
+            "peterengland",
+            "003B5C",
+            "peterengland.com",
+            "PE"
+        ],
+
+        "Haldiram's": [
+            "haldirams",
+            "E31B23",
+            "haldirams.com",
+            "HA"
+        ]
     };
 
 
     /*
-     * Default gift-card denominations
+     * =================================================
+     * HELPERS
+     * =================================================
      */
 
-    const defaultValues = [
-        500,
-        1000,
-        2000,
-        5000
-    ];
+    function normaliseName(name) {
 
+        return String(name || "")
+            .toLowerCase()
+            .replace(/['’]/g, "")
+            .replace(/&/g, "and")
+            .replace(/[^a-z0-9]/g, "");
 
-    /*
-     * Additional brands
-     */
-
-    const extraBrands = [
-
-        ["Zomato", "Zomato", "Food", 6],
-        ["Swiggy", "Swiggy", "Food", 5],
-        ["Uber", "Uber", "Travel", 4],
-        ["BookMyShow", "BookMyShow", "Entertainment", 5],
-        ["PVR", "PVR", "Entertainment", 5],
-
-        ["Nykaa", "Nykaa", "Beauty", 5],
-        ["AJIO", "AJIO", "Fashion", 5],
-        ["Westside", "Westside", "Fashion", 5],
-        ["MaxFashion", "Max Fashion", "Fashion", 5],
-
-        ["TataCliq", "Tata CLiQ", "Shopping", 4],
-        ["Meesho", "Meesho", "Shopping", 4],
-
-        ["BigBasket", "bigbasket", "Food", 5],
-        ["Blinkit", "Blinkit", "Food", 5],
-        ["Zepto", "Zepto", "Food", 4],
-
-        ["RelianceDigital", "Reliance Digital", "Electronics", 4],
-        ["VijaySales", "Vijay Sales", "Electronics", 4],
-
-        ["IKEA", "IKEA", "Shopping", 5],
-
-        ["Lifestyle", "Lifestyle", "Fashion", 5],
-        ["ShoppersStop", "Shoppers Stop", "Fashion", 5],
-        ["Pantaloons", "Pantaloons", "Fashion", 5],
-        ["Levis", "Levi's", "Fashion", 4],
-
-        ["Decathlon", "Decathlon", "Shopping", 4],
-        ["FirstCry", "FirstCry", "Shopping", 4],
-        ["Pepperfry", "Pepperfry", "Shopping", 4],
-
-        ["Tata1mg", "Tata 1mg", "Shopping", 4],
-        ["Netmeds", "Netmeds", "Shopping", 4],
-
-        ["CultFit", "Cult.fit", "Entertainment", 4],
-
-        ["Spotify", "Spotify", "Entertainment", 4],
-        ["Netflix", "Netflix", "Entertainment", 3],
-        ["SonyLiv", "Sony LIV", "Entertainment", 4],
-        ["Zee5", "ZEE5", "Entertainment", 4],
-
-        ["MakeMyTrip", "MakeMyTrip", "Travel", 5],
-        ["Cleartrip", "Cleartrip", "Travel", 4],
-        ["EaseMyTrip", "EaseMyTrip", "Travel", 4],
-        ["AirIndia", "Air India", "Travel", 3],
-
-        ["Tira", "Tira", "Beauty", 5],
-        ["TheBodyShop", "The Body Shop", "Beauty", 4],
-
-        ["Fastrack", "Fastrack", "Fashion", 4],
-        ["Titan", "Titan", "Fashion", 4],
-
-        ["CaratLane", "CaratLane", "Shopping", 4],
-        ["Mia", "Mia by Tanishq", "Shopping", 4],
-
-        ["Archies", "Archies", "Shopping", 4],
-        ["Hamleys", "Hamleys", "Shopping", 4],
-        ["Crossword", "Crossword", "Shopping", 4],
-
-        ["ShoppersStop2", "Shoppers Stop", "Shopping", 4],
-
-        ["MarksSpencer", "Marks & Spencer", "Fashion", 4],
-        ["VanHeusen", "Van Heusen", "Fashion", 4],
-        ["AllenSolly", "Allen Solly", "Fashion", 4],
-        ["PeterEngland", "Peter England", "Fashion", 4],
-
-        ["Haldirams", "Haldiram's", "Food", 4],
-
-        ["Dominos2", "Domino's", "Food", 15]
-    ];
-
-
-    /*
-     * Add brands to BRANDS
-     */
-
-    extraBrands.forEach(function (item) {
-
-        const id = item[0];
-
-        if (BRANDS[id]) {
-            return;
-        }
-
-        const brandName = item[1];
-
-        const logoData =
-            BRAND_LOGOS[id] || {
-                primary:
-                    "https://www.google.com/s2/favicons?domain=" +
-                    encodeURIComponent(
-                        brandName.toLowerCase().replace(/\s+/g, "") +
-                        ".com"
-                    ) +
-                    "&sz=128",
-
-                fallback: "",
-                label:
-                    brandName
-                        .replace(/[^A-Za-z]/g, "")
-                        .substring(0, 2)
-                        .toUpperCase()
-            };
-
-
-        BRANDS[id] = {
-
-            id: id,
-
-            name: brandName,
-
-            category: item[2],
-
-            logo: logoData.primary,
-
-            logoFallback: logoData.fallback,
-
-            logoLabel: logoData.label,
-
-            fixedDiscount: item[3],
-
-            customDiscount:
-                Math.min(item[3], 5),
-
-            fixedValues:
-                defaultValues.slice(),
-
-            custom: {
-                enabled: true,
-                min: 100,
-                max: 10000
-            }
-        };
-    });
-
-
-    /*
-     * Robust logo loading
-     *
-     * Primary:
-     * coloured Simple Icon
-     *
-     * Secondary:
-     * Google favicon
-     *
-     * Final:
-     * clean two-letter SVG
-     */
-
-    function createFallbackLogo(label) {
-
-        const safeLabel =
-            String(label || "GC")
-                .replace(/[<>&'"]/g, "")
-                .substring(0, 3)
-                .toUpperCase();
-
-        const svg =
-            '<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">' +
-            '<rect width="256" height="256" rx="48" fill="#f3f3f3"/>' +
-            '<text x="128" y="142" text-anchor="middle" ' +
-            'font-family="Arial,sans-serif" font-size="72" ' +
-            'font-weight="700" fill="#222">' +
-            safeLabel +
-            '</text>' +
-            '</svg>';
-
-        return "data:image/svg+xml;charset=UTF-8," +
-            encodeURIComponent(svg);
     }
 
 
-    function prepareImage(img, brand) {
+    function getLogoData(brandName) {
 
-        if (!img || !brand) {
+        if (!brandName) {
+            return null;
+        }
+
+        const exact =
+            BRAND_LOGOS[brandName];
+
+        if (exact) {
+            return exact;
+        }
+
+
+        const target =
+            normaliseName(brandName);
+
+
+        const key =
+            Object.keys(BRAND_LOGOS)
+                .find(function (name) {
+
+                    return (
+                        normaliseName(name)
+                        === target
+                    );
+
+                });
+
+
+        return key
+            ? BRAND_LOGOS[key]
+            : null;
+    }
+
+
+    function createSimpleIconUrl(
+        slug,
+        colour
+    ) {
+
+        return (
+            "https://cdn.simpleicons.org/" +
+            slug +
+            "/" +
+            colour +
+            "?v=" +
+            LOGO_VERSION
+        );
+
+    }
+
+
+    function createFaviconUrl(
+        domain
+    ) {
+
+        return (
+            "https://www.google.com/s2/favicons" +
+            "?domain=" +
+            encodeURIComponent(domain) +
+            "&sz=256" +
+            "&v=" +
+            LOGO_VERSION
+        );
+
+    }
+
+
+    function createLetterLogo(
+        letters
+    ) {
+
+        const safe =
+            String(letters || "GC")
+                .replace(
+                    /[^A-Za-z0-9&]/g,
+                    ""
+                )
+                .substring(0, 3)
+                .toUpperCase();
+
+
+        const svg =
+            '<svg xmlns="http://www.w3.org/2000/svg" ' +
+            'width="512" height="512" viewBox="0 0 512 512">' +
+
+            '<rect width="512" height="512" ' +
+            'rx="90" fill="#f4f4f4"/>' +
+
+            '<text x="256" y="290" ' +
+            'text-anchor="middle" ' +
+            'font-family="Arial,sans-serif" ' +
+            'font-size="130" ' +
+            'font-weight="700" ' +
+            'fill="#222">' +
+
+            safe +
+
+            '</text>' +
+
+            '</svg>';
+
+
+        return (
+            "data:image/svg+xml;charset=UTF-8," +
+            encodeURIComponent(svg)
+        );
+
+    }
+
+
+    /*
+     * =================================================
+     * APPLY LOGO TO AN EXISTING BRAND
+     * =================================================
+     */
+
+    function applyLogoToBrand(
+        brand
+    ) {
+
+        if (!brand || !brand.name) {
             return;
         }
 
+
+        const data =
+            getLogoData(brand.name);
+
+
+        if (!data) {
+            return;
+        }
+
+
+        const slug =
+            data[0];
+
+        const colour =
+            data[1];
+
+        const domain =
+            data[2];
+
+        const fallbackLetters =
+            data[3];
+
+
+        /*
+         * IMPORTANT:
+         *
+         * This overwrites the EXISTING logo
+         * from brands.js.
+         *
+         * This was the missing part in the
+         * previous catalog.js.
+         */
+
+        brand.logo =
+            createSimpleIconUrl(
+                slug,
+                colour
+            );
+
+        brand.logoFallback =
+            createFaviconUrl(
+                domain
+            );
+
+        brand.logoLabel =
+            fallbackLetters;
+
+
+        brand.logoVersion =
+            LOGO_VERSION;
+
+    }
+
+
+    /*
+     * =================================================
+     * UPDATE ALL EXISTING BRANDS
+     * =================================================
+     */
+
+    function updateExistingBrands() {
+
+        if (
+            typeof BRANDS ===
+            "undefined"
+        ) {
+            return;
+        }
+
+
+        Object.keys(BRANDS)
+            .forEach(function (key) {
+
+                const brand =
+                    BRANDS[key];
+
+                applyLogoToBrand(
+                    brand
+                );
+
+            });
+
+    }
+
+
+    /*
+     * =================================================
+     * FIX ALREADY-RENDERED IMAGES
+     * =================================================
+     */
+
+    function prepareImage(
+        img
+    ) {
+
+        if (!img) {
+            return;
+        }
+
+
+        const alt =
+            String(img.alt || "")
+                .trim();
+
+
+        if (!alt) {
+            return;
+        }
+
+
+        const data =
+            getLogoData(alt);
+
+
+        if (!data) {
+            return;
+        }
+
+
+        const slug =
+            data[0];
+
+        const colour =
+            data[1];
+
+        const domain =
+            data[2];
+
+        const letters =
+            data[3];
+
+
         const primary =
-            brand.logo || "";
-
-        const secondary =
-            brand.logoFallback || "";
-
-        const finalFallback =
-            createFallbackLogo(
-                brand.logoLabel ||
-                brand.name
+            createSimpleIconUrl(
+                slug,
+                colour
             );
 
 
-        img.dataset.logoStage = "primary";
+        const favicon =
+            createFaviconUrl(
+                domain
+            );
 
 
-        img.onerror = function () {
+        const finalFallback =
+            createLetterLogo(
+                letters
+            );
 
-            const stage =
-                img.dataset.logoStage;
+
+        /*
+         * Prevent repeatedly resetting
+         * the same image.
+         */
+
+        const imageVersion =
+            img.dataset.logoVersion;
 
 
-            /*
-             * Primary failed → favicon
-             */
+        if (
+            imageVersion ===
+            LOGO_VERSION
+        ) {
+            return;
+        }
 
-            if (
-                stage === "primary" &&
-                secondary
-            ) {
+
+        img.dataset.logoVersion =
+            LOGO_VERSION;
+
+
+        img.dataset.logoStage =
+            "primary";
+
+
+        img.onerror =
+            function () {
+
+                const stage =
+                    img.dataset.logoStage;
+
+
+                /*
+                 * Primary logo failed.
+                 * Try website favicon.
+                 */
+
+                if (
+                    stage ===
+                    "primary"
+                ) {
+
+                    img.dataset.logoStage =
+                        "favicon";
+
+                    img.src =
+                        favicon;
+
+                    return;
+                }
+
+
+                /*
+                 * Favicon failed.
+                 * Use final placeholder.
+                 */
 
                 img.dataset.logoStage =
-                    "fallback";
+                    "final";
+
+                img.onerror = null;
 
                 img.src =
-                    secondary;
+                    finalFallback;
 
-                return;
-            }
-
-
-            /*
-             * Favicon failed → generated
-             * clean fallback
-             */
-
-            img.dataset.logoStage =
-                "final";
-
-            img.onerror = null;
-
-            img.src =
-                finalFallback;
-        };
+            };
 
 
         img.src =
             primary;
+
     }
 
 
     /*
-     * Find brand from image attributes
+     * =================================================
+     * REFRESH ALL LOGO IMAGES
+     * =================================================
      */
 
-    function findBrandFromImage(img) {
-
-        const alt =
-            (img.alt || "")
-                .trim()
-                .toLowerCase();
-
-        if (!alt) {
-            return null;
-        }
-
-
-        return Object.values(BRANDS).find(
-            function (brand) {
-
-                return (
-                    brand.name
-                        .toLowerCase()
-                        === alt
-                );
-            }
-        ) || null;
-    }
-
-
-    /*
-     * Apply improved logos to all
-     * brand cards already rendered.
-     */
-
-    function refreshBrandImages() {
+    function refreshImages() {
 
         document
             .querySelectorAll(
@@ -689,68 +761,123 @@
             )
             .forEach(function (img) {
 
-                const brand =
-                    findBrandFromImage(img);
+                prepareImage(img);
 
-                if (brand) {
-                    prepareImage(
-                        img,
-                        brand
-                    );
-                }
             });
+
     }
 
 
     /*
-     * Watch for dynamically rendered
-     * product cards and modals.
+     * =================================================
+     * OBSERVE DYNAMICALLY CREATED CARDS
+     * =================================================
      */
 
-    function observeBrandImages() {
+    function startObserver() {
+
+        if (!document.body) {
+            return;
+        }
+
 
         const observer =
             new MutationObserver(
                 function () {
-                    refreshBrandImages();
+
+                    refreshImages();
+
                 }
             );
 
 
-        if (document.body) {
+        observer.observe(
+            document.body,
+            {
+                childList: true,
+                subtree: true
+            }
+        );
 
-            observer.observe(
-                document.body,
-                {
-                    childList: true,
-                    subtree: true
-                }
-            );
-        }
     }
 
 
     /*
-     * Start after page load.
+     * =================================================
+     * INITIALISE
+     * =================================================
      */
 
-    function initialiseCatalogLogos() {
+    function initialise() {
 
-        refreshBrandImages();
+        /*
+         * STEP 1
+         * Fix the actual BRANDS objects.
+         */
 
-        observeBrandImages();
+        updateExistingBrands();
+
+
+        /*
+         * STEP 2
+         * Fix cards already on screen.
+         */
+
+        refreshImages();
+
+
+        /*
+         * STEP 3
+         * Watch cards generated later.
+         */
+
+        startObserver();
+
+
+        /*
+         * Extra refreshes because app.js
+         * may render products shortly
+         * after startup.
+         */
 
         setTimeout(
-            refreshBrandImages,
+            function () {
+
+                updateExistingBrands();
+                refreshImages();
+
+            },
             300
         );
 
+
         setTimeout(
-            refreshBrandImages,
+            function () {
+
+                updateExistingBrands();
+                refreshImages();
+
+            },
             1000
         );
+
+
+        setTimeout(
+            function () {
+
+                updateExistingBrands();
+                refreshImages();
+
+            },
+            2000
+        );
+
     }
 
+
+    /*
+     * Start.
+     */
 
     if (
         document.readyState ===
@@ -759,12 +886,13 @@
 
         document.addEventListener(
             "DOMContentLoaded",
-            initialiseCatalogLogos
+            initialise
         );
 
     } else {
 
-        initialiseCatalogLogos();
+        initialise();
+
     }
 
 
