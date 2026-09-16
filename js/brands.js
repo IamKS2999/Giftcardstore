@@ -1,864 +1,354 @@
 /* =====================================================
    GIFT CARD STORE — BRAND DATABASE
-   Full Catalog
+   Full Catalog + Stable Logo Sources
+===================================================== */
+
+const LOGO = "https://commons.wikimedia.org/wiki/Special:Redirect/file/";
+
+const BRAND_LOGOS = {
+
+    Amazon:
+        LOGO + "Amazon_2024.svg",
+
+    Flipkart:
+        LOGO + "Flipkart_logo_(2026).svg",
+
+    TataCLiQ:
+        LOGO + "TATA_Cliq_Logo.jpg",
+
+    Meesho:
+        LOGO + "Meesho_logo.png",
+
+    Myntra:
+        LOGO + "65c5da9f878952603e370d03_Myntra-Logo_1.svg",
+
+    MaxFashion:
+        LOGO + "Logo_of_Max_Fashion_and_Accessories,_March_2018.png",
+
+    ShoppersStop:
+        LOGO + "Shoppers_Stop_Logo.gif",
+
+    Levis:
+        LOGO + "Levi%27s_logo.svg",
+
+    Decathlon:
+        LOGO + "Decathlon_Logo24.svg",
+
+    FirstCry:
+        LOGO + "FirstCry_logo.svg",
+
+    Croma:
+        LOGO + "Croma_logo.png",
+
+    RelianceDigital:
+        LOGO + "Reliance_Digital.svg",
+
+    VijaySales:
+        LOGO + "VijaySale-Logo.png",
+
+    IKEA:
+        LOGO + "Ikea_logo.svg",
+
+    Pepperfry:
+        LOGO + "Pepperfry_logo.jpg",
+
+    Domino:
+        LOGO + "Domino%27s_2025.svg",
+
+    Zomato:
+        LOGO + "Zomato_Logo.svg",
+
+    Swiggy:
+        LOGO + "Swiggy_logo.png",
+
+    BigBasket:
+        LOGO + "BigBasket_Logo.png",
+
+    Blinkit:
+        LOGO + "Blinkit-yellow-rounded.svg",
+
+    Zepto:
+        LOGO + "Zepto_Logo.svg",
+
+    BookMyShow:
+        LOGO + "Bookmyshow-logoid.png",
+
+    Spotify:
+        LOGO + "2024_Spotify_Logo.svg",
+
+    Netflix:
+        LOGO + "Netflix_2015_logo.svg",
+
+    SonyLIV:
+        LOGO + "SonyLIV_2020.png",
+
+    ZEE5:
+        LOGO + "ZEE5_2025.svg",
+
+    Uber:
+        LOGO + "Uber_logo_2018.svg",
+
+    MakeMyTrip:
+        LOGO + "Makemytrip_logo.svg",
+
+    Cleartrip:
+        LOGO + "Cleartrip_Original.svg",
+
+    EaseMyTrip:
+        LOGO + "EaseMyTrip_Logo.svg",
+
+    Nykaa:
+        LOGO + "Nykaa_New_Logo.svg",
+
+    PeterEngland:
+        LOGO + "Peter_England_logo.svg"
+};
+
+
+/* =====================================================
+   FALLBACK — OFFICIAL DOMAIN ICON
+===================================================== */
+
+const DOMAIN_LOGOS = {
+
+    AJIO: "ajio.com",
+    Westside: "westside.com",
+    Lifestyle: "lifestylestores.com",
+    Pantaloons: "pantaloons.com",
+    Haldirams: "haldirams.com",
+    PVR: "pvrcinemas.com",
+    AirIndia: "airindia.com",
+    Tira: "tirabeauty.com",
+    TheBodyShop: "thebodyshop.in",
+    Tata1mg: "1mg.com",
+    Netmeds: "netmeds.com",
+    CultFit: "cult.fit",
+    Fastrack: "fastrack.in",
+    Titan: "titan.co.in",
+    CaratLane: "caratlane.com",
+    MiaByTanishq: "mia.tanishq.co.in",
+    Archies: "archiesonline.com",
+    Hamleys: "hamleys.in",
+    Crossword: "crossword.in",
+    MarksAndSpencer: "marksandspencer.in",
+    VanHeusen: "vanheusenindia.com",
+    AllenSolly: "allensolly.com"
+};
+
+
+function getLogo(brandId) {
+
+    if (BRAND_LOGOS[brandId]) {
+        return BRAND_LOGOS[brandId];
+    }
+
+    if (DOMAIN_LOGOS[brandId]) {
+        return "https://www.google.com/s2/favicons?domain=" +
+            DOMAIN_LOGOS[brandId] +
+            "&sz=256";
+    }
+
+    return "";
+}
+
+
+/* =====================================================
+   BRAND FACTORY
+===================================================== */
+
+function createBrand(
+    id,
+    name,
+    category,
+    fixedDiscount = 5,
+    customDiscount = 5,
+    fixedValues = [500, 1000, 2000, 5000]
+) {
+
+    return {
+        id: id,
+        name: name,
+        category: category,
+        logo: getLogo(id),
+        fixedDiscount: fixedDiscount,
+        customDiscount: customDiscount,
+        fixedValues: fixedValues,
+        custom: {
+            enabled: true,
+            min: 100,
+            max: 10000
+        }
+    };
+}
+
+
+/* =====================================================
+   BRAND DATABASE
 ===================================================== */
 
 const BRANDS = {
 
-    /* ==================================================
-       SHOPPING
-    ================================================== */
-
-    Amazon: {
-        id: "Amazon",
-        name: "Amazon",
-        category: "Shopping",
-        logo: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Amazon_2024.svg",
-        fixedDiscount: 3,
-        customDiscount: 3,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Flipkart: {
-        id: "Flipkart",
-        name: "Flipkart",
-        category: "Shopping",
-        logo: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Flipkart_logo_(2026).svg",
-        fixedDiscount: 3.5,
-        customDiscount: 3.5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    TataCLiQ: {
-        id: "TataCLiQ",
-        name: "Tata CLiQ",
-        category: "Shopping",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Meesho: {
-        id: "Meesho",
-        name: "Meesho",
-        category: "Shopping",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    /* ==================================================
-       FASHION
-    ================================================== */
-
-    Myntra: {
-        id: "Myntra",
-        name: "Myntra",
-        category: "Fashion",
-        logo: "https://commons.wikimedia.org/wiki/Special:Redirect/file/65c5da9f878952603e370d03_Myntra-Logo_1.svg",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    AJIO: {
-        id: "AJIO",
-        name: "AJIO",
-        category: "Fashion",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Westside: {
-        id: "Westside",
-        name: "Westside",
-        category: "Fashion",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    MaxFashion: {
-        id: "MaxFashion",
-        name: "Max Fashion",
-        category: "Fashion",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Lifestyle: {
-        id: "Lifestyle",
-        name: "Lifestyle",
-        category: "Fashion",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    ShoppersStop: {
-        id: "ShoppersStop",
-        name: "Shoppers Stop",
-        category: "Fashion",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Pantaloons: {
-        id: "Pantaloons",
-        name: "Pantaloons",
-        category: "Fashion",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Levis: {
-        id: "Levis",
-        name: "Levi's",
-        category: "Fashion",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Decathlon: {
-        id: "Decathlon",
-        name: "Decathlon",
-        category: "Fashion",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    FirstCry: {
-        id: "FirstCry",
-        name: "FirstCry",
-        category: "Fashion",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    /* ==================================================
-       ELECTRONICS
-    ================================================== */
-
-    Croma: {
-        id: "Croma",
-        name: "Croma",
-        category: "Electronics",
-        logo: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Croma_logo.png",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    RelianceDigital: {
-        id: "RelianceDigital",
-        name: "Reliance Digital",
-        category: "Electronics",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    VijaySales: {
-        id: "VijaySales",
-        name: "Vijay Sales",
-        category: "Electronics",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    IKEA: {
-        id: "IKEA",
-        name: "IKEA",
-        category: "Home",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Pepperfry: {
-        id: "Pepperfry",
-        name: "Pepperfry",
-        category: "Home",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    /* ==================================================
-       FOOD
-    ================================================== */
-
-    Domino: {
-        id: "Domino",
-        name: "Domino's",
-        category: "Food",
-        logo: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Domino%27s_pizza_logo.svg",
-        fixedDiscount: 15,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Zomato: {
-        id: "Zomato",
-        name: "Zomato",
-        category: "Food",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Swiggy: {
-        id: "Swiggy",
-        name: "Swiggy",
-        category: "Food",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Haldirams: {
-        id: "Haldirams",
-        name: "Haldiram's",
-        category: "Food",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    /* ==================================================
-       GROCERY
-    ================================================== */
-
-    BigBasket: {
-        id: "BigBasket",
-        name: "bigbasket",
-        category: "Grocery",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Blinkit: {
-        id: "Blinkit",
-        name: "Blinkit",
-        category: "Grocery",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Zepto: {
-        id: "Zepto",
-        name: "Zepto",
-        category: "Grocery",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    /* ==================================================
-       ENTERTAINMENT
-    ================================================== */
-
-    BookMyShow: {
-        id: "BookMyShow",
-        name: "BookMyShow",
-        category: "Entertainment",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    PVR: {
-        id: "PVR",
-        name: "PVR",
-        category: "Entertainment",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Spotify: {
-        id: "Spotify",
-        name: "Spotify",
-        category: "Entertainment",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Netflix: {
-        id: "Netflix",
-        name: "Netflix",
-        category: "Entertainment",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    SonyLIV: {
-        id: "SonyLIV",
-        name: "Sony LIV",
-        category: "Entertainment",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    ZEE5: {
-        id: "ZEE5",
-        name: "ZEE5",
-        category: "Entertainment",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    /* ==================================================
-       TRAVEL
-    ================================================== */
-
-    Uber: {
-        id: "Uber",
-        name: "Uber",
-        category: "Travel",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    MakeMyTrip: {
-        id: "MakeMyTrip",
-        name: "MakeMyTrip",
-        category: "Travel",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Cleartrip: {
-        id: "Cleartrip",
-        name: "Cleartrip",
-        category: "Travel",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    EaseMyTrip: {
-        id: "EaseMyTrip",
-        name: "EaseMyTrip",
-        category: "Travel",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    AirIndia: {
-        id: "AirIndia",
-        name: "Air India",
-        category: "Travel",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    /* ==================================================
-       BEAUTY & PERSONAL CARE
-    ================================================== */
-
-    Nykaa: {
-        id: "Nykaa",
-        name: "Nykaa",
-        category: "Beauty",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Tira: {
-        id: "Tira",
-        name: "Tira",
-        category: "Beauty",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    TheBodyShop: {
-        id: "TheBodyShop",
-        name: "The Body Shop",
-        category: "Beauty",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Tata1mg: {
-        id: "Tata1mg",
-        name: "Tata 1mg",
-        category: "Health",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Netmeds: {
-        id: "Netmeds",
-        name: "Netmeds",
-        category: "Health",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    CultFit: {
-        id: "CultFit",
-        name: "Cult.fit",
-        category: "Health",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    /* ==================================================
-       JEWELLERY & WATCHES
-    ================================================== */
-
-    Fastrack: {
-        id: "Fastrack",
-        name: "Fastrack",
-        category: "Jewellery",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Titan: {
-        id: "Titan",
-        name: "Titan",
-        category: "Jewellery",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    CaratLane: {
-        id: "CaratLane",
-        name: "CaratLane",
-        category: "Jewellery",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    MiaByTanishq: {
-        id: "MiaByTanishq",
-        name: "Mia by Tanishq",
-        category: "Jewellery",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    /* ==================================================
-       GIFTS & BOOKS
-    ================================================== */
-
-    Archies: {
-        id: "Archies",
-        name: "Archies",
-        category: "Gifts",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Hamleys: {
-        id: "Hamleys",
-        name: "Hamleys",
-        category: "Gifts",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    Crossword: {
-        id: "Crossword",
-        name: "Crossword",
-        category: "Books",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    /* ==================================================
-       APPAREL
-    ================================================== */
-
-    MarksAndSpencer: {
-        id: "MarksAndSpencer",
-        name: "Marks & Spencer",
-        category: "Fashion",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    VanHeusen: {
-        id: "VanHeusen",
-        name: "Van Heusen",
-        category: "Fashion",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    AllenSolly: {
-        id: "AllenSolly",
-        name: "Allen Solly",
-        category: "Fashion",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    },
-
-    PeterEngland: {
-        id: "PeterEngland",
-        name: "Peter England",
-        category: "Fashion",
-        logo: "",
-        fixedDiscount: 5,
-        customDiscount: 5,
-        fixedValues: [500, 1000, 2000, 5000],
-        custom: {
-            enabled: true,
-            min: 100,
-            max: 10000
-        }
-    }
+    Amazon:
+        createBrand("Amazon", "Amazon", "Shopping", 3, 3),
 
+    Flipkart:
+        createBrand("Flipkart", "Flipkart", "Shopping", 3.5, 3.5),
+
+    TataCLiQ:
+        createBrand("TataCLiQ", "Tata CLiQ", "Shopping"),
+
+    Meesho:
+        createBrand("Meesho", "Meesho", "Shopping"),
+
+    Myntra:
+        createBrand("Myntra", "Myntra", "Fashion"),
+
+    AJIO:
+        createBrand("AJIO", "AJIO", "Fashion"),
+
+    Westside:
+        createBrand("Westside", "Westside", "Fashion"),
+
+    MaxFashion:
+        createBrand("MaxFashion", "Max Fashion", "Fashion"),
+
+    Lifestyle:
+        createBrand("Lifestyle", "Lifestyle", "Fashion"),
+
+    ShoppersStop:
+        createBrand("ShoppersStop", "Shoppers Stop", "Fashion"),
+
+    Pantaloons:
+        createBrand("Pantaloons", "Pantaloons", "Fashion"),
+
+    Levis:
+        createBrand("Levis", "Levi's", "Fashion"),
+
+    Decathlon:
+        createBrand("Decathlon", "Decathlon", "Fashion"),
+
+    FirstCry:
+        createBrand("FirstCry", "FirstCry", "Fashion"),
+
+    Croma:
+        createBrand("Croma", "Croma", "Electronics"),
+
+    RelianceDigital:
+        createBrand("RelianceDigital", "Reliance Digital", "Electronics"),
+
+    VijaySales:
+        createBrand("VijaySales", "Vijay Sales", "Electronics"),
+
+    IKEA:
+        createBrand("IKEA", "IKEA", "Home"),
+
+    Pepperfry:
+        createBrand("Pepperfry", "Pepperfry", "Home"),
+
+    Domino:
+        createBrand("Domino", "Domino's", "Food", 15, 5),
+
+    Zomato:
+        createBrand("Zomato", "Zomato", "Food"),
+
+    Swiggy:
+        createBrand("Swiggy", "Swiggy", "Food"),
+
+    Haldirams:
+        createBrand("Haldirams", "Haldiram's", "Food"),
+
+    BigBasket:
+        createBrand("BigBasket", "bigbasket", "Grocery"),
+
+    Blinkit:
+        createBrand("Blinkit", "Blinkit", "Grocery"),
+
+    Zepto:
+        createBrand("Zepto", "Zepto", "Grocery"),
+
+    BookMyShow:
+        createBrand("BookMyShow", "BookMyShow", "Entertainment"),
+
+    PVR:
+        createBrand("PVR", "PVR", "Entertainment"),
+
+    Spotify:
+        createBrand("Spotify", "Spotify", "Entertainment"),
+
+    Netflix:
+        createBrand("Netflix", "Netflix", "Entertainment"),
+
+    SonyLIV:
+        createBrand("SonyLIV", "Sony LIV", "Entertainment"),
+
+    ZEE5:
+        createBrand("ZEE5", "ZEE5", "Entertainment"),
+
+    Uber:
+        createBrand("Uber", "Uber", "Travel"),
+
+    MakeMyTrip:
+        createBrand("MakeMyTrip", "MakeMyTrip", "Travel"),
+
+    Cleartrip:
+        createBrand("Cleartrip", "Cleartrip", "Travel"),
+
+    EaseMyTrip:
+        createBrand("EaseMyTrip", "EaseMyTrip", "Travel"),
+
+    AirIndia:
+        createBrand("AirIndia", "Air India", "Travel"),
+
+    Nykaa:
+        createBrand("Nykaa", "Nykaa", "Beauty"),
+
+    Tira:
+        createBrand("Tira", "Tira", "Beauty"),
+
+    TheBodyShop:
+        createBrand("TheBodyShop", "The Body Shop", "Beauty"),
+
+    Tata1mg:
+        createBrand("Tata1mg", "Tata 1mg", "Health"),
+
+    Netmeds:
+        createBrand("Netmeds", "Netmeds", "Health"),
+
+    CultFit:
+        createBrand("CultFit", "Cult.fit", "Health"),
+
+    Fastrack:
+        createBrand("Fastrack", "Fastrack", "Jewellery"),
+
+    Titan:
+        createBrand("Titan", "Titan", "Jewellery"),
+
+    CaratLane:
+        createBrand("CaratLane", "CaratLane", "Jewellery"),
+
+    MiaByTanishq:
+        createBrand("MiaByTanishq", "Mia by Tanishq", "Jewellery"),
+
+    Archies:
+        createBrand("Archies", "Archies", "Gifts"),
+
+    Hamleys:
+        createBrand("Hamleys", "Hamleys", "Gifts"),
+
+    Crossword:
+        createBrand("Crossword", "Crossword", "Books"),
+
+    MarksAndSpencer:
+        createBrand("MarksAndSpencer", "Marks & Spencer", "Fashion"),
+
+    VanHeusen:
+        createBrand("VanHeusen", "Van Heusen", "Fashion"),
+
+    AllenSolly:
+        createBrand("AllenSolly", "Allen Solly", "Fashion"),
+
+    PeterEngland:
+        createBrand("PeterEngland", "Peter England", "Fashion")
 };
 
 
@@ -867,16 +357,12 @@ const BRANDS = {
 ===================================================== */
 
 function getBrand(brandId) {
-
     return BRANDS[brandId] || null;
-
 }
 
 
 function getAllBrands() {
-
     return Object.values(BRANDS);
-
 }
 
 
@@ -887,10 +373,8 @@ function getBrandsByCategory(category) {
     }
 
     return getAllBrands().filter(
-        brand =>
-            brand.category === category
+        brand => brand.category === category
     );
-
 }
 
 
@@ -899,8 +383,7 @@ function getBrandDiscount(
     mode = "fixed"
 ) {
 
-    const brand =
-        getBrand(brandId);
+    const brand = getBrand(brandId);
 
     if (!brand) {
         return 0;
@@ -909,5 +392,4 @@ function getBrandDiscount(
     return mode === "custom"
         ? brand.customDiscount
         : brand.fixedDiscount;
-
-       }
+}
