@@ -1,6 +1,6 @@
 /* =====================================================
-   GIFTCARDSTORE — FEATURES
-   BATCH UPGRADE 3–10
+   GIFTCARDSTORE — PREMIUM FEATURES
+   WISHLIST + SAVINGS + REFERRAL + SUPPORT + FAQ + TERMS
 ===================================================== */
 
 (function () {
@@ -15,59 +15,727 @@
         "gcsSupportTickets";
 
 
+    /* =================================================
+       HELPERS
+    ================================================= */
+
     function esc(value) {
 
-        return typeof escapeHTML === "function"
+        return typeof escapeHTML ===
+            "function"
+
             ? escapeHTML(value)
+
             : String(value ?? "")
-                .replace(/[&<>"']/g, function (c) {
-                    return {
-                        "&": "&amp;",
-                        "<": "&lt;",
-                        ">": "&gt;",
-                        '"': "&quot;",
-                        "'": "&#039;"
-                    }[c];
-                });
+                .replace(/&/g,"&amp;")
+                .replace(/</g,"&lt;")
+                .replace(/>/g,"&gt;")
+                .replace(/"/g,"&quot;")
+                .replace(/'/g,"&#039;");
 
     }
 
 
     function user() {
 
-        return typeof getCurrentUser === "function"
+        return typeof getCurrentUser ===
+            "function"
+
             ? getCurrentUser()
+
             : null;
 
     }
 
 
-    function myOrders() {
+    function orders() {
 
         const u =
             user();
 
         if (
             !u ||
-            typeof getOrders !== "function"
+            typeof getOrders !==
+            "function"
         ) {
+
             return [];
+
         }
 
 
-        return getOrders().filter(
-            function (o) {
+        return getOrders()
+            .filter(
+                function (order) {
 
-                return (
-                    o.email &&
-                    o.email.toLowerCase() ===
-                    u.email.toLowerCase()
-                );
+                    return (
+                        order.email &&
+                        order.email.toLowerCase() ===
+                        u.email.toLowerCase()
+                    );
 
-            }
+                }
+            );
+
+    }
+
+
+    function quantity(order) {
+
+        return Math.max(
+            1,
+            Number(
+                order.quantity
+            ) || 1
         );
 
     }
+
+
+    function number(value) {
+
+        return parseInt(
+            String(
+                value || ""
+            ).replace(
+                /\D/g,
+                ""
+            ),
+            10
+        ) || 0;
+
+    }
+
+
+    /* =================================================
+       OVERLAY FACTORY
+    ================================================= */
+
+    function closeEverything() {
+
+        if (
+            typeof GCS !==
+            "undefined" &&
+            typeof GCS.closeAllOverlays ===
+            "function"
+        ) {
+
+            GCS.closeAllOverlays();
+
+        } else {
+
+            document
+                .querySelectorAll(".overlay")
+                .forEach(
+                    el =>
+                        el.style.display =
+                            "none"
+                );
+
+        }
+
+    }
+
+
+    function makeOverlay(
+        id,
+        title,
+        eyebrow,
+        subtitle,
+        content,
+        className = "batch-panel"
+    ) {
+
+        closeEverything();
+
+        const old =
+            document.getElementById(id);
+
+        if (old) {
+            old.remove();
+        }
+
+
+        const overlay =
+            document.createElement(
+                "div"
+            );
+
+        overlay.id =
+            id;
+
+        overlay.className =
+            "overlay";
+
+        overlay.style.display =
+            "flex";
+
+
+        overlay.innerHTML = `
+
+            <div class="panel ${className}">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <div class="panel-eyebrow">
+                            ${esc(eyebrow)}
+                        </div>
+
+                        <h2>
+                            ${esc(title)}
+                        </h2>
+
+                        <p>
+                            ${esc(subtitle)}
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="close-button"
+                        onclick="closeBatchOverlay('${id}')">
+
+                        ×
+
+                    </button>
+
+                </div>
+
+                ${content}
+
+            </div>
+
+        `;
+
+
+        document.body.appendChild(
+            overlay
+        );
+
+        return overlay;
+
+    }
+
+
+    window.closeBatchOverlay =
+        function (id) {
+
+            const element =
+                document.getElementById(
+                    id
+                );
+
+            if (element) {
+                element.style.display =
+                    "none";
+            }
+
+        };
+
+
+    /* =================================================
+       WISHLIST
+    ================================================= */
+
+    window.openWishlist =
+        function () {
+
+            if (!user()) {
+
+                return openLoginPanel();
+
+            }
+
+
+            const ids =
+                typeof GCS !==
+                "undefined"
+
+                    ? GCS.getWishlist()
+                    : [];
+
+
+            const brands =
+                ids
+                    .map(
+                        id =>
+                            typeof getBrand ===
+                            "function"
+                                ? getBrand(id)
+                                : null
+                    )
+                    .filter(Boolean);
+
+
+            let content;
+
+
+            if (!brands.length) {
+
+                content = `
+
+                    <div class="batch-empty">
+
+                        <div class="batch-empty-icon">
+                            ♡
+                        </div>
+
+                        <h3>
+                            Your wishlist is empty
+                        </h3>
+
+                        <p>
+                            Tap the heart on any brand to save it here.
+                        </p>
+
+                    </div>
+
+                `;
+
+            } else {
+
+                content = `
+
+                    <div class="wishlist-list">
+
+                        ${brands.map(
+                            function (brand) {
+
+                                const active =
+                                    typeof GCS !==
+                                    "undefined" &&
+                                    GCS.isWishlisted(
+                                        brand.id
+                                    );
+
+
+                                return `
+
+                                    <div
+                                        class="cart-item"
+                                        style="cursor:pointer"
+                                        onclick="
+                                            GCS.openProduct(
+                                                '${esc(brand.id)}'
+                                            )
+                                        ">
+
+                                        <div class="cart-item-logo">
+
+                                            <img
+                                                src="${esc(
+                                                    brand.logo
+                                                )}"
+                                                alt="${esc(
+                                                    brand.name
+                                                )}">
+
+                                        </div>
+
+
+                                        <div class="cart-item-content">
+
+                                            <div class="cart-item-top">
+
+                                                <div>
+
+                                                    <div class="cart-item-name">
+                                                        ${esc(
+                                                            brand.name
+                                                        )}
+                                                    </div>
+
+                                                    <div class="cart-item-value">
+                                                        ${esc(
+                                                            brand.category
+                                                        )}
+                                                    </div>
+
+                                                </div>
+
+                                                <button
+                                                    class="wishlist-card-button ${
+                                                        active
+                                                            ? "active"
+                                                            : ""
+                                                    }"
+                                                    style="
+                                                        position:static;
+                                                        flex:0 0 40px;
+                                                    "
+                                                    onclick="
+                                                        event.stopPropagation();
+                                                        GCS.toggleWishlist(
+                                                            '${esc(
+                                                                brand.id
+                                                            )}'
+                                                        );
+                                                        openWishlist();
+                                                    ">
+
+                                                    ♥
+
+                                                </button>
+
+                                            </div>
+
+
+                                            <div class="cart-item-save">
+
+                                                Up to
+                                                ${Math.max(
+                                                    brand.fixedDiscount || 0,
+                                                    brand.customDiscount || 0
+                                                )}% off
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                `;
+
+                            }
+                        ).join("")}
+
+                    </div>
+
+                `;
+
+            }
+
+
+            makeOverlay(
+                "wishlistOverlay",
+                "Wishlist",
+                "Saved",
+                "Your saved gift-card brands.",
+                content,
+                "batch-panel"
+            );
+
+        };
+
+
+    window.openWishlistFromAccount =
+        window.openWishlist;
+
+
+    if (
+        typeof GCS !==
+        "undefined"
+    ) {
+
+        GCS.openWishlist =
+            window.openWishlist;
+
+    }
+
+
+    /* =================================================
+       SAVINGS
+    ================================================= */
+
+    window.getUserSavings =
+        function () {
+
+            const list =
+                orders();
+
+            let value = 0;
+            let paid = 0;
+
+
+            list.forEach(
+                function (order) {
+
+                    const q =
+                        quantity(order);
+
+                    value +=
+                        number(
+                            order.value
+                        ) * q;
+
+                    paid +=
+                        number(
+                            order.price
+                        ) * q;
+
+                }
+            );
+
+
+            return {
+
+                saved:
+                    Math.max(
+                        0,
+                        value - paid
+                    ),
+
+                value,
+                paid,
+
+                orders:
+                    list.length
+
+            };
+
+        };
+
+
+    window.openSavings =
+        function () {
+
+            if (!user()) {
+                return openLoginPanel();
+            }
+
+
+            const data =
+                getUserSavings();
+
+
+            makeOverlay(
+                "savingsOverlay",
+                "Your Savings",
+                "Savings",
+                "A clear view of your prototype order savings.",
+                `
+
+                    <div class="savings-hero">
+
+                        <span>
+                            TOTAL SAVED
+                        </span>
+
+                        <strong>
+                            ₹${data.saved.toLocaleString(
+                                "en-IN"
+                            )}
+                        </strong>
+
+                        <small>
+                            Across
+                            ${data.orders}
+                            order${data.orders === 1 ? "" : "s"}
+                        </small>
+
+                    </div>
+
+
+                    <div class="savings-stats">
+
+                        <div>
+                            <span>
+                                Gift card value
+                            </span>
+
+                            <strong>
+                                ₹${data.value.toLocaleString(
+                                    "en-IN"
+                                )}
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                Amount paid
+                            </span>
+
+                            <strong>
+                                ₹${data.paid.toLocaleString(
+                                    "en-IN"
+                                )}
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                Orders
+                            </span>
+
+                            <strong>
+                                ${data.orders}
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-note">
+
+                        Savings are calculated from prototype order records stored on this device.
+
+                    </div>
+
+                `,
+                "batch-panel"
+            );
+
+        };
+
+
+    /* =================================================
+       GIFT CARDS
+    ================================================= */
+
+    window.openGiftCards =
+        function () {
+
+            if (!user()) {
+                return openLoginPanel();
+            }
+
+
+            const list =
+                orders();
+
+
+            let content;
+
+
+            if (!list.length) {
+
+                content = `
+
+                    <div class="batch-empty">
+
+                        <div class="batch-empty-icon">
+                            🎁
+                        </div>
+
+                        <h3>
+                            No gift cards yet
+                        </h3>
+
+                        <p>
+                            Your confirmed prototype orders will appear here.
+                        </p>
+
+                    </div>
+
+                `;
+
+            } else {
+
+                content = `
+
+                    <div class="gift-card-grid">
+
+                        ${list.map(
+                            function (order) {
+
+                                const brand =
+                                    typeof getBrand ===
+                                    "function"
+                                        ? getBrand(
+                                            order.brandId
+                                        )
+                                        : null;
+
+
+                                const q =
+                                    quantity(
+                                        order
+                                    );
+
+
+                                return `
+
+                                    <div class="owned-gift-card">
+
+                                        <div class="owned-gift-logo">
+
+                                            ${
+                                                brand?.logo
+                                                    ? `
+                                                        <img
+                                                            src="${esc(
+                                                                brand.logo
+                                                            )}"
+                                                            alt="${esc(
+                                                                order.brand
+                                                            )}">
+                                                      `
+                                                    : "🎁"
+                                            }
+
+                                        </div>
+
+
+                                        <div class="owned-gift-info">
+
+                                            <strong>
+                                                ${esc(
+                                                    order.brand
+                                                )}
+                                            </strong>
+
+                                            <span>
+                                                ${esc(
+                                                    order.value
+                                                )}
+                                                Gift Card
+                                                ${
+                                                    q > 1
+                                                        ? " × " + q
+                                                        : ""
+                                                }
+                                            </span>
+
+                                            <small>
+                                                ${esc(
+                                                    order.id
+                                                )}
+                                            </small>
+
+                                        </div>
+
+
+                                        <div class="owned-gift-status">
+
+                                            ${esc(
+                                                order.status ||
+                                                "Confirmed"
+                                            )}
+
+                                        </div>
+
+                                    </div>
+
+                                `;
+
+                            }
+                        ).join("")}
+
+                    </div>
+
+                `;
+
+            }
+
+
+            makeOverlay(
+                "giftCardsOverlay",
+                "My Gift Cards",
+                "Account",
+                "Your gift-card collection.",
+                content,
+                "batch-panel"
+            );
+
+        };
+
+
+    window.openGiftCardsFromAccount =
+        window.openGiftCards;
 
 
     /* =================================================
@@ -101,7 +769,7 @@
                         "GCS" +
                         Math.random()
                             .toString(36)
-                            .slice(2, 8)
+                            .slice(2,8)
                             .toUpperCase(),
 
                     earned:
@@ -126,498 +794,6 @@
         };
 
 
-    /* =================================================
-       OVERLAY
-    ================================================= */
-
-    function closeEverything() {
-
-        if (
-            typeof closeAllOverlays ===
-            "function"
-        ) {
-
-            closeAllOverlays();
-
-        } else {
-
-            document
-                .querySelectorAll(".overlay")
-                .forEach(function (el) {
-                    el.style.display = "none";
-                });
-
-        }
-
-    }
-
-
-    function makeOverlay(
-        id,
-        title,
-        eyebrow,
-        subtitle,
-        content,
-        className = ""
-    ) {
-
-        closeEverything();
-
-
-        const old =
-            document.getElementById(id);
-
-        if (old) {
-            old.remove();
-        }
-
-
-        const el =
-            document.createElement("div");
-
-
-        el.id =
-            id;
-
-        el.className =
-            "overlay";
-
-        el.style.display =
-            "flex";
-
-
-        el.innerHTML = `
-
-            <div class="panel ${className}">
-
-                <div class="panel-header">
-
-                    <div>
-
-                        <div class="panel-eyebrow">
-                            ${esc(eyebrow)}
-                        </div>
-
-                        <h2>
-                            ${esc(title)}
-                        </h2>
-
-                        <p>
-                            ${esc(subtitle)}
-                        </p>
-
-                    </div>
-
-                    <button
-                        class="close-button"
-                        onclick="closeBatchOverlay('${id}')">
-                        ×
-                    </button>
-
-                </div>
-
-                ${content}
-
-            </div>
-
-        `;
-
-
-        document.body.appendChild(
-            el
-        );
-
-
-        return el;
-
-    }
-
-
-    window.closeBatchOverlay =
-        function (id) {
-
-            const el =
-                document.getElementById(id);
-
-            if (el) {
-                el.style.display =
-                    "none";
-            }
-
-        };
-
-
-    /* =================================================
-       MY GIFT CARDS
-    ================================================= */
-
-    window.openGiftCards =
-        function () {
-
-            if (!user()) {
-                return openLoginPanel();
-            }
-
-
-            const orders =
-                myOrders();
-
-
-            let content;
-
-
-            if (!orders.length) {
-
-                content = `
-
-                    <div class="batch-empty">
-
-                        <div class="batch-empty-icon">
-                            🎁
-                        </div>
-
-                        <h3>
-                            No gift cards yet
-                        </h3>
-
-                        <p>
-                            Your completed prototype
-                            gift-card orders will appear here.
-                        </p>
-
-                    </div>
-
-                `;
-
-            } else {
-
-                content = `
-
-                    <div class="gift-card-grid">
-
-                        ${orders.map(function (o) {
-
-                            const b =
-                                typeof getBrand === "function"
-                                    ? getBrand(o.brandId)
-                                    : null;
-
-
-                            return `
-
-                                <div class="owned-gift-card">
-
-                                    <div class="owned-gift-logo">
-
-                                        ${b?.logo
-                                            ? `
-                                                <img
-                                                    src="${esc(b.logo)}"
-                                                    alt="${esc(o.brand)}">
-                                              `
-                                            : "🎁"}
-
-                                    </div>
-
-
-                                    <div class="owned-gift-info">
-
-                                        <strong>
-                                            ${esc(o.brand)}
-                                        </strong>
-
-                                        <span>
-                                            ${esc(o.value)}
-                                            Gift Card
-                                        </span>
-
-                                        <small>
-                                            Order ${esc(o.id)}
-                                        </small>
-
-                                    </div>
-
-
-                                    <div class="owned-gift-status">
-                                        ${esc(
-                                            o.status ||
-                                            "Confirmed"
-                                        )}
-                                    </div>
-
-                                </div>
-
-                            `;
-
-                        }).join("")}
-
-                    </div>
-
-                `;
-
-            }
-
-
-            makeOverlay(
-                "giftCardsOverlay",
-                "My Gift Cards",
-                "Account",
-                "Your gift-card collection from prototype orders.",
-                content,
-                "batch-panel"
-            );
-
-        };
-
-
-    window.openGiftCardsFromAccount =
-        window.openGiftCards;
-
-
-    /* =================================================
-       SAVINGS
-    ================================================= */
-
-    window.getUserSavings =
-        function () {
-
-            const orders =
-                myOrders();
-
-
-            const n =
-                function (s) {
-
-                    return parseInt(
-                        String(s || "")
-                            .replace(/\D/g, ""),
-                        10
-                    ) || 0;
-
-                };
-
-
-            const value =
-                orders.reduce(
-                    (a, o) =>
-                        a + n(o.value),
-                    0
-                );
-
-
-            const paid =
-                orders.reduce(
-                    (a, o) =>
-                        a + n(o.price),
-                    0
-                );
-
-
-            return {
-
-                saved:
-                    Math.max(
-                        0,
-                        value - paid
-                    ),
-
-                value,
-
-                paid,
-
-                orders:
-                    orders.length
-
-            };
-
-        };
-
-
-    window.openSavings =
-        function () {
-
-            if (!user()) {
-                return openLoginPanel();
-            }
-
-
-            const data =
-                getUserSavings();
-
-
-            makeOverlay(
-                "savingsOverlay",
-                "Your Savings",
-                "Savings",
-                "A simple view of what your prototype orders have saved.",
-                `
-
-                    <div class="savings-hero">
-
-                        <span>
-                            Total saved
-                        </span>
-
-                        <strong>
-                            ₹${data.saved.toLocaleString("en-IN")}
-                        </strong>
-
-                        <small>
-                            Across ${data.orders}
-                            order${data.orders === 1 ? "" : "s"}
-                        </small>
-
-                    </div>
-
-
-                    <div class="savings-stats">
-
-                        <div>
-                            <span>
-                                Gift card value
-                            </span>
-
-                            <strong>
-                                ₹${data.value.toLocaleString("en-IN")}
-                            </strong>
-                        </div>
-
-
-                        <div>
-                            <span>
-                                Amount paid
-                            </span>
-
-                            <strong>
-                                ₹${data.paid.toLocaleString("en-IN")}
-                            </strong>
-                        </div>
-
-
-                        <div>
-                            <span>
-                                Orders
-                            </span>
-
-                            <strong>
-                                ${data.orders}
-                            </strong>
-                        </div>
-
-                    </div>
-
-
-                    <div class="settings-note">
-                        Savings are calculated from
-                        prototype order records stored
-                        on this device.
-                    </div>
-
-                `,
-                "batch-panel"
-            );
-
-        };
-
-
-    /* =================================================
-       WISHLIST ACCOUNT ACCESS
-    ================================================= */
-
-    window.openWishlistPanel =
-        function () {
-
-            if (!user()) {
-                return openLoginPanel();
-            }
-
-
-            if (
-                typeof GCS.openWishlist ===
-                "function"
-            ) {
-
-                GCS.openWishlist();
-
-            }
-
-        };
-
-
-    function addWishlistToAccount() {
-
-        const menu =
-            document.querySelector(
-                ".account-menu-clean"
-            );
-
-
-        if (!menu) {
-            return;
-        }
-
-
-        if (
-            menu.querySelector(
-                "[data-gcs-wishlist]"
-            )
-        ) {
-            return;
-        }
-
-
-        const button =
-            document.createElement(
-                "button"
-            );
-
-
-        button.setAttribute(
-            "data-gcs-wishlist",
-            "true"
-        );
-
-
-        button.innerHTML = `
-
-            <span class="account-menu-icon">
-                ♡
-            </span>
-
-            <span>
-                <strong>Wishlist</strong>
-                <small>Saved brands</small>
-            </span>
-
-        `;
-
-
-        button.onclick =
-            function () {
-
-                if (
-                    typeof closeAccountPanel ===
-                    "function"
-                ) {
-                    closeAccountPanel();
-                }
-
-                GCS.openWishlist();
-
-            };
-
-
-        menu.appendChild(
-            button
-        );
-
-    }
-
-
-    /* =================================================
-       REFER & EARN
-    ================================================= */
-
     window.openReferral =
         function () {
 
@@ -634,7 +810,7 @@
                 "referralOverlay",
                 "Refer & Earn",
                 "Rewards",
-                "Share your code and earn a prototype reward when a referral qualifies.",
+                "Your prototype referral rewards.",
                 `
 
                     <div class="referral-reward-hero">
@@ -661,13 +837,17 @@
                         </span>
 
                         <strong id="referralCodeText">
-                            ${esc(data.code)}
+                            ${esc(
+                                data.code
+                            )}
                         </strong>
 
                         <button
                             class="secondary-button"
                             onclick="copyReferralCode()">
-                            Copy code
+
+                            Copy Code
+
                         </button>
 
                     </div>
@@ -676,6 +856,7 @@
                     <div class="savings-stats">
 
                         <div>
+
                             <span>
                                 Successful referrals
                             </span>
@@ -683,10 +864,12 @@
                             <strong>
                                 ${data.referrals}
                             </strong>
+
                         </div>
 
 
                         <div>
+
                             <span>
                                 Rewards earned
                             </span>
@@ -694,14 +877,16 @@
                             <strong>
                                 ₹${data.earned}
                             </strong>
+
                         </div>
 
                     </div>
 
 
                     <div class="settings-note">
-                        Prototype tracking only.
-                        No real money is issued.
+
+                        Prototype tracking only. No real money is issued.
+
                     </div>
 
                 `,
@@ -721,13 +906,11 @@
 
 
             if (
-                navigator.clipboard &&
-                navigator.clipboard.writeText
+                navigator.clipboard
             ) {
 
-                navigator.clipboard.writeText(
-                    code
-                );
+                navigator.clipboard
+                    .writeText(code);
 
             }
 
@@ -757,7 +940,7 @@
                 "supportOverlay",
                 "Support",
                 "Help",
-                "Create a support ticket for your issue.",
+                "Create a support ticket.",
                 `
 
                     <label class="field-label">
@@ -777,20 +960,22 @@
                     <textarea
                         id="ticketMessage"
                         class="support-textarea"
-                        placeholder="Describe the issue...">
-                    </textarea>
+                        placeholder="Describe the issue..."></textarea>
 
 
                     <button
                         class="wide-primary"
                         onclick="createSupportTicket()">
+
                         Create Support Ticket
+
                     </button>
 
 
                     <div class="support-contact">
-                        Prototype tickets are stored locally
-                        on this device.
+
+                        Prototype tickets are stored locally on this device.
+
                     </div>
 
                 `,
@@ -806,29 +991,30 @@
             const u =
                 user();
 
+            if (!u) {
+                return;
+            }
+
 
             const subject =
-                document
-                    .getElementById(
-                        "ticketSubject"
-                    )
-                    ?.value
-                    .trim();
+                document.getElementById(
+                    "ticketSubject"
+                )?.value.trim();
 
 
             const message =
-                document
-                    .getElementById(
-                        "ticketMessage"
-                    )
-                    ?.value
-                    .trim();
+                document.getElementById(
+                    "ticketMessage"
+                )?.value.trim();
 
 
-            if (!subject || !message) {
+            if (
+                !subject ||
+                !message
+            ) {
 
                 showNotice(
-                    "Please enter both a subject and message.",
+                    "Enter both a subject and message.",
                     "Support",
                     "error"
                 );
@@ -857,9 +1043,11 @@
                 email:
                     u.email,
 
-                subject,
+                subject:
+                    subject,
 
-                message,
+                message:
+                    message,
 
                 status:
                     "Open",
@@ -904,95 +1092,86 @@
                 "faqOverlay",
                 "Frequently Asked Questions",
                 "Help",
-                "Quick answers to common questions.",
+                "Answers to common questions.",
                 `
 
                     <div class="faq-list">
 
                         <details open>
+
                             <summary>
                                 How does the discount work?
                             </summary>
 
                             <p>
-                                Select a gift-card value and
-                                the prototype calculates your
-                                discounted price before checkout.
+                                Select a gift-card value and the prototype calculates the discounted price before checkout.
                             </p>
+
                         </details>
 
 
                         <details>
+
                             <summary>
                                 Can I use a custom value?
                             </summary>
 
                             <p>
-                                Where enabled, custom values
-                                range from ₹100 to ₹10,000.
+                                Where enabled, custom values can be entered within the range shown by the selected brand.
                             </p>
+
                         </details>
 
 
                         <details>
-                            <summary>
-                                Can I add multiple gift cards?
-                            </summary>
 
-                            <p>
-                                Yes. Add different gift cards
-                                to your cart and review them
-                                together before checkout.
-                            </p>
-                        </details>
-
-
-                        <details>
                             <summary>
                                 Where are my gift cards?
                             </summary>
 
                             <p>
-                                Open Account → My Gift Cards
-                                after completing a prototype order.
+                                Open Account → My Gift Cards after completing a prototype order.
                             </p>
+
                         </details>
 
 
                         <details>
+
                             <summary>
                                 Is this a real payment checkout?
                             </summary>
 
                             <p>
-                                No. This version is a prototype
-                                and does not process real payments.
+                                No. This website is currently a prototype and does not process real payments.
                             </p>
+
                         </details>
 
 
                         <details>
+
                             <summary>
-                                How does Refer & Earn work?
+                                How does the wishlist work?
                             </summary>
 
                             <p>
-                                The prototype displays ₹10 for
-                                each successful referral.
-                                No real money is issued.
+                                Tap the heart on a brand to save it. Saved brands appear under Account → Wishlist.
                             </p>
+
                         </details>
 
 
                         <details>
+
                             <summary>
                                 How do I contact support?
                             </summary>
 
                             <p>
-                                Open Account → Support and
-                                create a ticket.
+                                Open Account → Support and create a support ticket.
                             </p>
+
                         </details>
 
                     </div>
@@ -1015,7 +1194,7 @@
                 "termsOverlay",
                 "Terms & Conditions",
                 "Legal",
-                "Prototype terms for the current GiftCardStore experience.",
+                "Terms for the current prototype.",
                 `
 
                     <div class="legal-content">
@@ -1025,8 +1204,7 @@
                         </h3>
 
                         <p>
-                            GiftCardStore is currently a prototype.
-                            No real payment is processed.
+                            GiftCardStore is currently a prototype. No real payment is processed.
                         </p>
 
 
@@ -1035,9 +1213,7 @@
                         </h3>
 
                         <p>
-                            Brand names, prices and discounts shown
-                            here are demonstration data until live
-                            commercial integrations are added.
+                            Brand names, prices and discounts shown here are demonstration data until live commercial integrations are added.
                         </p>
 
 
@@ -1046,9 +1222,7 @@
                         </h3>
 
                         <p>
-                            Account information is stored locally
-                            in the browser in this prototype.
-                            Do not enter sensitive financial information.
+                            Account information is stored locally in the browser in this prototype. Do not enter sensitive financial information.
                         </p>
 
 
@@ -1057,18 +1231,16 @@
                         </h3>
 
                         <p>
-                            Orders created here are demonstration
-                            records and do not represent real purchases.
+                            Orders created here are demonstration records and do not represent real purchases.
                         </p>
 
 
                         <h3>
-                            5. Referrals
+                            5. Wishlist and referral features
                         </h3>
 
                         <p>
-                            Referral rewards are prototype records
-                            and are not redeemable for cash.
+                            Wishlist and referral information are prototype records stored locally on the device.
                         </p>
 
 
@@ -1077,8 +1249,7 @@
                         </h3>
 
                         <p>
-                            Support tickets are stored locally and
-                            are not connected to a live support team.
+                            Support tickets are stored locally and are not connected to a live support team.
                         </p>
 
                     </div>
@@ -1091,107 +1262,91 @@
 
 
     /* =================================================
-       FEATURE CSS
+       ACCOUNT WISHLIST BUTTON
     ================================================= */
 
-    const style =
-        document.createElement(
-            "style"
+    function addAccountWishlistButton() {
+
+        const overlay =
+            document.getElementById(
+                "accountOverlay"
+            );
+
+        if (!overlay) {
+            return;
+        }
+
+
+        const menu =
+            overlay.querySelector(
+                ".account-menu-clean"
+            );
+
+        if (!menu) {
+            return;
+        }
+
+
+        if (
+            menu.querySelector(
+                ".gcs-saved-account-button"
+            )
+        ) {
+            return;
+        }
+
+
+        const button =
+            document.createElement(
+                "button"
+            );
+
+        button.type =
+            "button";
+
+        button.className =
+            "gcs-saved-account-button";
+
+
+        button.innerHTML = `
+
+            <span class="saved-icon">
+                ♡
+            </span>
+
+            <div>
+
+                <strong>
+                    Wishlist
+                </strong>
+
+                <small>
+                    Saved brands
+                </small>
+
+            </div>
+
+        `;
+
+
+        button.onclick =
+            window.openWishlist;
+
+
+        menu.appendChild(
+            button
         );
 
+    }
 
-    style.id =
-        "gcs-feature-upgrade-styles";
-
-
-    style.textContent = `
-
-        .card{
-            position:relative;
-        }
-
-        .brand-box{
-            position:relative;
-        }
-
-        .card-wishlist{
-            position:absolute;
-            top:10px;
-            right:10px;
-            width:37px;
-            height:37px;
-            display:grid;
-            place-items:center;
-            border:1px solid rgba(255,255,255,.15);
-            border-radius:12px;
-            background:rgba(10,10,15,.68);
-            backdrop-filter:blur(8px);
-            color:#fff;
-            font-size:19px;
-            cursor:pointer;
-        }
-
-        .card-wishlist.active{
-            color:#fff;
-            background:linear-gradient(135deg,#713cf3,#4169e1);
-            border-color:transparent;
-        }
-
-        .wishlist-cards{
-            margin-top:5px;
-        }
-
-        .account-menu-icon{
-            width:38px;
-            height:38px;
-            display:grid;
-            place-items:center;
-            flex:0 0 38px;
-            border-radius:12px;
-            background:var(--surface-3);
-            font-size:19px;
-        }
-
-    `;
-
-
-    document.head.appendChild(
-        style
-    );
-
-
-    /* =================================================
-       START FEATURE PATCH
-    ================================================= */
 
     document.addEventListener(
         "DOMContentLoaded",
         function () {
 
             setTimeout(
-                function () {
-
-                    if (
-                        typeof ensureReferralForUser ===
-                        "function" &&
-                        user()
-                    ) {
-                        ensureReferralForUser();
-                    }
-
-
-                    addWishlistToAccount();
-
-
-                    if (
-                        typeof GCS.updateCartUI ===
-                        "function"
-                    ) {
-                        GCS.updateCartUI();
-                    }
-
-                },
-                500
+                addAccountWishlistButton,
+                250
             );
 
         }
