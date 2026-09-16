@@ -2894,3 +2894,345 @@ footer small{
         color .25s ease,
         box-shadow .25s ease;
 }
+
+/* =========================================================
+   BATCH RELEASE — DISCOVERY + ACCOUNT FEATURES
+   ========================================================= */
+
+.brand-box,
+.selected-brand-logo,
+.owned-gift-logo{
+    background:#fff !important;
+}
+
+[data-theme="dark"] .brand-box,
+[data-theme="dark"] .selected-brand-logo,
+[data-theme="dark"] .owned-gift-logo{
+    background:#fff !important;
+}
+
+.cards{
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:16px;
+}
+
+.card{
+    padding:13px;
+    border-radius:20px;
+}
+
+.brand-box{
+    height:145px;
+    border-radius:16px;
+    padding:15px;
+}
+
+.brand-logo{
+    width:88%;
+    height:105px;
+}
+
+.card h3{
+    font-size:19px;
+}
+
+.card .discount{
+    margin-bottom:11px;
+}
+
+.batch-panel{
+    width:min(680px,100%);
+}
+
+.gift-card-grid{
+    display:grid;
+    gap:12px;
+}
+
+.owned-gift-card{
+    display:grid;
+    grid-template-columns:72px 1fr auto;
+    align-items:center;
+    gap:14px;
+    padding:14px;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:18px;
+}
+
+.owned-gift-logo{
+    width:72px;
+    height:60px;
+    display:grid;
+    place-items:center;
+    padding:8px;
+    border-radius:13px;
+    border:1px solid #e4e4e8;
+    overflow:hidden;
+}
+
+.owned-gift-logo img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.owned-gift-info strong,
+.owned-gift-info span,
+.owned-gift-info small{
+    display:block;
+}
+
+.owned-gift-info span{
+    margin-top:3px;
+    color:var(--muted);
+}
+
+.owned-gift-info small{
+    margin-top:5px;
+    color:var(--light);
+}
+
+.owned-gift-status{
+    padding:6px 9px;
+    border-radius:999px;
+    background:var(--green-bg);
+    color:var(--green);
+    font-size:12px;
+    font-weight:900;
+}
+
+.batch-empty{
+    padding:35px 20px;
+    text-align:center;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:20px;
+}
+
+.batch-empty-icon{
+    font-size:45px;
+    margin-bottom:10px;
+}
+
+.batch-empty h3{
+    margin:0 0 7px;
+    font-size:22px;
+}
+
+.batch-empty p{
+    color:var(--muted);
+    margin:0 0 20px;
+}
+
+.savings-hero{
+    padding:24px;
+    margin-bottom:14px;
+    border-radius:22px;
+    background:linear-gradient(135deg,rgba(113,60,243,.16),rgba(65,105,225,.13));
+    border:1px solid var(--border);
+}
+
+.savings-hero span,
+.savings-hero small{
+    display:block;
+    color:var(--muted);
+}
+
+.savings-hero strong{
+    display:block;
+    margin:5px 0;
+    font-size:42px;
+    color:var(--purple);
+}
+
+.savings-stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:11px;
+}
+
+.savings-stats>div{
+    padding:16px;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:16px;
+}
+
+.savings-stats span,
+.savings-stats strong{
+    display:block;
+}
+
+.savings-stats span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.savings-stats strong{
+    margin-top:5px;
+    font-size:19px;
+}
+
+.referral-code-box{
+    display:grid;
+    gap:8px;
+    padding:20px;
+    margin-bottom:14px;
+    text-align:center;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:20px;
+}
+
+.referral-code-box span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.referral-code-box strong{
+    font-size:32px;
+    letter-spacing:3px;
+    color:var(--purple);
+}
+
+.support-textarea{
+    width:100%;
+    min-height:130px;
+    resize:vertical;
+    margin-bottom:18px;
+    padding:15px;
+    border:1px solid var(--border);
+    border-radius:15px;
+    outline:none;
+    background:var(--surface);
+    color:var(--text);
+}
+
+.support-textarea:focus{
+    border-color:var(--purple);
+    box-shadow:0 0 0 4px rgba(113,60,243,.10);
+}
+
+.support-contact{
+    margin-top:13px;
+    color:var(--light);
+    text-align:center;
+    font-size:12px;
+}
+
+.faq-list{
+    display:grid;
+    gap:10px;
+}
+
+.faq-list details{
+    padding:16px 18px;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:16px;
+}
+
+.faq-list summary{
+    cursor:pointer;
+    font-weight:850;
+}
+
+.faq-list p{
+    margin:10px 0 0;
+    color:var(--muted);
+    line-height:1.5;
+}
+
+.legal-content{
+    padding:20px;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:18px;
+}
+
+.legal-content h3{
+    margin:0 0 6px;
+    font-size:16px;
+}
+
+.legal-content p{
+    margin:0 0 18px;
+    color:var(--muted);
+    line-height:1.55;
+}
+
+.batch-footer-links{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:20px 0;
+}
+
+.batch-footer-links button{
+    padding:8px 12px;
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:999px;
+    background:transparent;
+    color:#d5d2df;
+    font-size:12px;
+}
+
+@media(max-width:700px){
+    .cards{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:11px;
+    }
+
+    .card{
+        padding:10px;
+        border-radius:17px;
+    }
+
+    .brand-box{
+        height:110px;
+        border-radius:13px;
+    }
+
+    .brand-logo{
+        height:78px;
+    }
+
+    .card h3{
+        font-size:16px;
+    }
+
+    .card .brand{
+        font-size:10px;
+        margin-top:11px;
+    }
+
+    .card .discount{
+        font-size:12px;
+    }
+
+    .card .buy{
+        min-height:42px;
+        font-size:12px;
+        border-radius:11px;
+    }
+
+    .owned-gift-card{
+        grid-template-columns:58px 1fr;
+    }
+
+    .owned-gift-logo{
+        width:58px;
+        height:52px;
+    }
+
+    .owned-gift-status{
+        grid-column:2;
+        justify-self:start;
+    }
+
+    .savings-stats{
+        grid-template-columns:1fr;
+    }
+}
