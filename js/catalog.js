@@ -1,64 +1,55 @@
 /* =====================================================
    GIFTCARDSTORE — CATALOG
-   CLEAN LOGO ENGINE
-   VERSION: 2026-09-16-8
+   LOGO LOADER
+   VERSION: 2026-09-16-9
 ===================================================== */
 
 (function () {
 
     "use strict";
 
-    const VERSION = "2026-09-16-8";
-
-
-    /* ==================================================
-       LOGO SOURCES
-       Only use sources we explicitly define.
-    ================================================== */
+    const VERSION = "2026-09-16-9";
 
     const LOGOS = {
 
         "Amazon":
-            "https://cdn.simpleicons.org/amazon/FF9900",
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Amazon_2024.svg",
 
         "Flipkart":
-            "https://cdn.simpleicons.org/flipkart/2874F0",
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Flipkart_logo_(2026).svg",
 
         "Myntra":
-            "https://cdn.simpleicons.org/myntra/FF3F6C",
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/65c5da9f878952603e370d03_Myntra-Logo_1.svg",
 
         "Croma":
-            "https://cdn.simpleicons.org/croma/000000",
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Croma_logo.png",
 
         "Domino's":
-            "https://cdn.simpleicons.org/dominos/E31837",
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Domino%27s_2025.svg",
 
         "Zomato":
-            "https://cdn.simpleicons.org/zomato/E23744",
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Zomato_Logo.svg",
 
         "Swiggy":
-            "https://cdn.simpleicons.org/swiggy/FC8019",
-
-        "Uber":
-            "https://cdn.simpleicons.org/uber/000000",
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Swiggy_logo.png",
 
         "BookMyShow":
             "https://cdn.simpleicons.org/bookmyshow/F84464",
 
         "Nykaa":
-            "https://cdn.simpleicons.org/nykaa/FC2779",
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Nykaa_New_Logo.svg",
 
         "Meesho":
-            "https://cdn.simpleicons.org/meesho/E5007D",
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Meesho_logo.png",
 
         "bigbasket":
-            "https://cdn.simpleicons.org/bigbasket/84C225",
-
-        "Blinkit":
-            "https://cdn.simpleicons.org/blinkit/F8CB46",
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/BigBasket_Logo.png",
 
         "Zepto":
-            "https://cdn.simpleicons.org/zepto/8A2BE2",
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Zepto_Logo.svg",
+
+        "Vijay Sales":
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/VijaySale-Logo.png",
 
         "IKEA":
             "https://cdn.simpleicons.org/ikea/0058A3",
@@ -102,12 +93,6 @@
         "Reliance Digital":
             "https://cdn.simpleicons.org/reliancedigital/E42529",
 
-        "PVR":
-            "https://cdn.simpleicons.org/pvr/F5C400",
-
-        "Sony LIV":
-            "https://cdn.simpleicons.org/sonyliv/000000",
-
         "Fastrack":
             "https://cdn.simpleicons.org/fastrack/000000",
 
@@ -132,11 +117,7 @@
     };
 
 
-    /* ==================================================
-       NAME MATCHING
-    ================================================== */
-
-    function cleanName(name) {
+    function clean(name) {
 
         return String(name || "")
             .toLowerCase()
@@ -147,78 +128,45 @@
     }
 
 
-    function findLogo(name) {
+    function getLogo(name) {
 
         if (LOGOS[name]) {
             return LOGOS[name];
         }
 
-        const target =
-            cleanName(name);
+        const target = clean(name);
 
-        const match =
-            Object.keys(LOGOS).find(
-                function (key) {
+        const key = Object.keys(LOGOS).find(
+            function (item) {
+                return clean(item) === target;
+            }
+        );
 
-                    return (
-                        cleanName(key) ===
-                        target
-                    );
-
-                }
-            );
-
-        return match
-            ? LOGOS[match]
-            : null;
+        return key ? LOGOS[key] : null;
 
     }
 
 
-    /* ==================================================
-       UPDATE BRAND DATABASE
-    ================================================== */
-
     function updateBrands() {
 
-        if (
-            typeof BRANDS ===
-            "undefined"
-        ) {
+        if (typeof BRANDS === "undefined") {
             return;
         }
 
         Object.keys(BRANDS).forEach(
             function (id) {
 
-                const brand =
-                    BRANDS[id];
+                const brand = BRANDS[id];
 
-                if (
-                    !brand ||
-                    !brand.name
-                ) {
+                if (!brand || !brand.name) {
                     return;
                 }
 
                 const logo =
-                    findLogo(
-                        brand.name
-                    );
-
-                /*
-                 * Only replace an existing logo
-                 * when we have an explicit source.
-                 */
+                    getLogo(brand.name);
 
                 if (logo) {
-
-                    brand.logo =
-                        logo;
-
-                    brand.logoVersion =
-                        VERSION;
-
+                    brand.logo = logo;
                 }
 
             }
@@ -227,122 +175,28 @@
     }
 
 
-    /* ==================================================
-       IMAGE ERROR HANDLING
-    ================================================== */
-
-    function protectImage(img) {
-
-        if (!img) {
-            return;
-        }
-
-        /*
-         * Never replace a failed logo with
-         * generated text or a favicon.
-         */
-
-        img.onerror =
-            function () {
-
-                img.onerror = null;
-
-                /*
-                 * Leave the image source alone.
-                 * This prevents endless replacement.
-                 */
-
-            };
-
-    }
-
-
-    /* ==================================================
-       REFRESH LOGOS
-    ================================================== */
-
-    function refreshLogos() {
+    function refreshImages() {
 
         document
             .querySelectorAll(
-                "img.brand-logo, " +
-                "#productLogo, " +
-                ".owned-gift-logo img"
+                "img.brand-logo, #productLogo, .owned-gift-logo img"
             )
             .forEach(
                 function (img) {
 
                     const name =
-                        String(
-                            img.alt || ""
-                        ).trim();
+                        String(img.alt || "").trim();
 
                     const logo =
-                        findLogo(name);
-
-                    /*
-                     * If this brand has no explicit
-                     * replacement, leave its original
-                     * brands.js logo untouched.
-                     */
+                        getLogo(name);
 
                     if (!logo) {
-
-                        protectImage(img);
-
                         return;
-
                     }
 
-                    img.onerror =
-                        function () {
+                    img.onerror = null;
 
-                            img.onerror = null;
-
-                            /*
-                             * Restore the original
-                             * brands.js logo if available.
-                             */
-
-                            if (
-                                typeof BRANDS !==
-                                "undefined"
-                            ) {
-
-                                const brand =
-                                    Object.values(
-                                        BRANDS
-                                    ).find(
-                                        function (item) {
-
-                                            return (
-                                                item &&
-                                                item.name ===
-                                                name
-                                            );
-
-                                        }
-                                    );
-
-                                if (
-                                    brand &&
-                                    brand.logo &&
-                                    brand.logo !==
-                                    logo
-                                ) {
-
-                                    img.src =
-                                        brand.logo;
-
-                                }
-
-                            }
-
-                        };
-
-
-                    img.src =
-                        logo;
+                    img.src = logo;
 
                     img.dataset.logoVersion =
                         VERSION;
@@ -353,44 +207,20 @@
     }
 
 
-    /* ==================================================
-       INITIALISE
-    ================================================== */
-
     function initialise() {
 
         updateBrands();
 
-        refreshLogos();
+        refreshImages();
 
         setTimeout(
-            function () {
-
-                updateBrands();
-                refreshLogos();
-
-            },
+            refreshImages,
             500
         );
 
         setTimeout(
-            function () {
-
-                updateBrands();
-                refreshLogos();
-
-            },
+            refreshImages,
             1500
-        );
-
-        setTimeout(
-            function () {
-
-                updateBrands();
-                refreshLogos();
-
-            },
-            3000
         );
 
     }
