@@ -44,7 +44,7 @@ window.showNotice = function (message, title = "GiftCardStore", type = "info") {
 
         window.__gcsNoticeTimer = setTimeout(function () {
             closeNotice();
-        }, 3000);
+        }, 1500);
 
         return;
     }
