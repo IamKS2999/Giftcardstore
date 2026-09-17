@@ -1,2508 +1,850 @@
-/* =========================================================
-   GIFTCARDSTORE — PREMIUM MARKETPLACE SYSTEM V3
-   Full stylesheet replacement
-   Desktop-first / responsive / clean product configurator
-========================================================= */
-
-:root{
-    --bg:#07080c;
-    --bg-2:#0b0d12;
-    --surface:#10131a;
-    --surface-2:#151923;
-    --surface-3:#1b202b;
-
-    --text:#f7f8fc;
-    --muted:#9299aa;
-    --muted-2:#697181;
-
-    --border:rgba(255,255,255,.075);
-    --border-strong:rgba(255,255,255,.14);
-
-    --purple:#8b5cf6;
-    --purple-light:#b9a3ff;
-    --blue:#5f7dff;
-    --green:#35d399;
-    --green-soft:rgba(53,211,153,.10);
-    --red:#ff6577;
-
-    --shadow:0 20px 60px rgba(0,0,0,.28);
-    --shadow-lg:0 35px 110px rgba(0,0,0,.58);
-
-    --ease:.18s ease;
-}
-
-[data-theme="light"]{
-    --bg:#f5f6fa;
-    --bg-2:#ffffff;
-    --surface:#ffffff;
-    --surface-2:#f7f8fb;
-    --surface-3:#eef0f5;
-    --text:#151823;
-    --muted:#697080;
-    --muted-2:#969cab;
-    --border:rgba(20,25,40,.09);
-    --border-strong:rgba(20,25,40,.15);
-    --shadow:0 18px 55px rgba(30,35,60,.10);
-    --shadow-lg:0 30px 90px rgba(30,35,60,.18);
-}
-
-/* =========================================================
-   GLOBAL
-========================================================= */
-
-*,
-*::before,
-*::after{
-    box-sizing:border-box;
-}
-
-html{
-    width:100%;
-    min-width:0;
-    overflow-x:hidden;
-    scroll-behavior:smooth;
-}
-
-body{
-    width:100%;
-    min-width:0;
-    min-height:100vh;
-    margin:0;
-    overflow-x:hidden;
-
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Arial,
-        sans-serif;
-
-    color:var(--text);
-
-    background:
-        radial-gradient(900px 500px at 8% -10%,rgba(139,92,246,.12),transparent 68%),
-        radial-gradient(800px 500px at 100% 0%,rgba(79,124,255,.08),transparent 70%),
-        var(--bg);
-}
-
-button,
-input,
-textarea,
-select{
-    font:inherit;
-}
-
-button{
-    cursor:pointer;
-}
-
-img{
-    display:block;
-    max-width:100%;
-}
-
-a{
-    color:inherit;
-    text-decoration:none;
-}
-
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible,
-a:focus-visible{
-    outline:2px solid rgba(139,92,246,.7);
-    outline-offset:2px;
-}
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.site-header,
-header{
-    position:sticky;
-    top:0;
-    z-index:1000;
-
-    width:100%;
-    min-height:76px;
-
-    display:flex;
-    align-items:center;
-    gap:26px;
-
-    padding:0 max(28px,calc((100vw - 1280px)/2));
-
-    background:rgba(7,8,12,.88);
-    border-bottom:1px solid var(--border);
-
-    backdrop-filter:blur(22px);
-    -webkit-backdrop-filter:blur(22px);
-}
-
-[data-theme="light"] .site-header,
-[data-theme="light"] header{
-    background:rgba(255,255,255,.90);
-}
-
-.logo{
-    flex:0 0 auto;
-
-    font-size:25px;
-    line-height:1;
-    font-weight:950;
-    letter-spacing:-1.5px;
-    white-space:nowrap;
-
-    background:linear-gradient(110deg,#bda9ff,#805fff 48%,#6794ff);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-}
-
-nav{
-    min-width:0;
-    flex:1 1 auto;
-
-    display:flex;
-    align-items:center;
-    gap:3px;
-}
-
-nav a{
-    padding:10px 12px;
-
-    color:var(--muted);
-    border-radius:10px;
-
-    font-size:12px;
-    font-weight:750;
-
-    transition:var(--ease);
-}
-
-nav a:hover{
-    color:var(--text);
-    background:rgba(255,255,255,.055);
-}
-
-.header-action,
-#loginButton,
-#accountButton,
-#cartButton,
-.header-savings-button{
-    min-height:42px;
-    flex:0 0 auto;
-
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:7px;
-
-    padding:0 14px;
-
-    border:1px solid var(--border);
-    border-radius:11px;
-
-    background:var(--surface);
-    color:var(--text);
-
-    font-size:11px;
-    font-weight:850;
-
-    transition:var(--ease);
-}
-
-.header-action:hover,
-#loginButton:hover,
-#accountButton:hover,
-#cartButton:hover,
-.header-savings-button:hover{
-    transform:translateY(-1px);
-    border-color:rgba(139,92,246,.42);
-    background:var(--surface-2);
-}
-
-#cartButton{
-    background:rgba(139,92,246,.10);
-    border-color:rgba(139,92,246,.22);
-}
-
-#cartCount{
-    min-width:19px;
-    height:19px;
-
-    display:inline-grid;
-    place-items:center;
-
-    padding:0 5px;
-
-    border-radius:999px;
-
-    background:var(--purple);
-    color:#fff;
-
-    font-size:9px;
-    font-weight:900;
-}
-
-.header-savings-button{
-    color:var(--purple-light);
-}
-
-.header-savings-label{
-    color:var(--muted);
-    font-size:9px;
-}
-
-.header-savings-button strong{
-    color:var(--green);
-}
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero{
-    position:relative;
-    isolation:isolate;
-
-    width:min(1280px,100%);
-    margin:0 auto;
-
-    padding:108px 36px 86px;
-
-    text-align:center;
-}
-
-.hero::before{
-    content:"";
-    position:absolute;
-    z-index:-1;
-
-    width:720px;
-    height:360px;
-
-    left:50%;
-    top:15px;
-
-    transform:translateX(-50%);
+<!DOCTYPE html>
+<html lang="en">
 
-    background:radial-gradient(
-        ellipse,
-        rgba(123,84,246,.18),
-        transparent 68%
-    );
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    filter:blur(35px);
-    pointer-events:none;
-}
+<title>GiftCardStore — Smart Gift Cards</title>
 
-.hero-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
+<link rel="stylesheet" href="css/style.css?v=20260917-01">
 
-    margin-bottom:24px;
-    padding:8px 13px;
-
-    border:1px solid rgba(139,92,246,.27);
-    border-radius:999px;
-
-    background:rgba(139,92,246,.08);
-    color:#c0adff;
+</head>
 
-    font-size:10px;
-    font-weight:850;
-    letter-spacing:.45px;
-}
-
-.hero-badge::before{
-    content:"";
-    width:6px;
-    height:6px;
+<body>
 
-    border-radius:50%;
-    background:#8b5cf6;
-    box-shadow:0 0 13px #8b5cf6;
-}
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-.hero h1{
-    max-width:980px;
-    margin:0 auto;
+<header class="site-header">
 
-    font-size:clamp(48px,6vw,82px);
-    line-height:.96;
-    letter-spacing:-4.5px;
-    font-weight:950;
-}
-
-.hero h1 span{
-    display:block;
-
-    background:linear-gradient(110deg,#bda9ff,#805fff 45%,#709cff);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-}
-
-.hero p{
-    max-width:660px;
-    margin:25px auto 0;
-
-    color:var(--muted);
-
-    font-size:15px;
-    line-height:1.75;
-}
-
-.hero-actions{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:11px;
-
-    margin-top:32px;
-}
-
-.primary-button,
-.secondary-button{
-    min-height:48px;
-
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-
-    padding:0 21px;
+    <div class="logo">
+        GiftCardStore
+    </div>
 
-    border-radius:12px;
+    <nav>
 
-    font-size:12px;
-    font-weight:850;
+        <a href="#">
+            Home
+        </a>
 
-    transition:var(--ease);
-}
+        <a href="#products">
+            Gift Cards
+        </a>
 
-.primary-button{
-    color:#fff;
+        <a href="#footer">
+            How It Works
+        </a>
 
-    background:linear-gradient(135deg,#8b5cf6,#5e72ff);
+        <button
+            class="header-action cart-header-button"
+            id="cartButton"
+            onclick="GCS.openCart()">
+            🛒 Cart
+            <span id="cartCount" class="cart-count">0</span>
+        </button>
 
-    box-shadow:0 13px 34px rgba(106,76,246,.23);
-}
+        <button
+            class="header-action"
+            id="loginButton">
+            Login
+        </button>
 
-.primary-button:hover{
-    transform:translateY(-2px);
-    box-shadow:0 17px 42px rgba(106,76,246,.31);
-}
+        <button
+            class="header-action account-button"
+            id="accountButton"
+            style="display:none">
+            Account
+        </button>
 
-.secondary-button{
-    border:1px solid var(--border-strong);
-    background:var(--surface);
-    color:var(--text);
-}
+    </nav>
 
-.secondary-button:hover{
-    transform:translateY(-1px);
-    border-color:rgba(139,92,246,.42);
-}
+</header>
 
-/* =========================================================
-   STATS
-========================================================= */
 
-.hero-mini-stats{
-    width:min(620px,100%);
-    margin:46px auto 0;
+<!-- =====================================================
+     HERO
+===================================================== -->
 
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
+<section class="hero">
 
-    border:1px solid var(--border);
-    border-radius:18px;
+    <div class="hero-badge">
+        Smart shopping. Better prices.
+    </div>
 
-    background:rgba(255,255,255,.025);
-    overflow:hidden;
-}
+    <h1>
+        Save more on the
+        <span>brands you love.</span>
+    </h1>
 
-.hero-mini-stat{
-    padding:18px 12px;
-    border-right:1px solid var(--border);
-}
+    <p>
+        Choose a gift card, select your value,
+        see your savings instantly and continue
+        through a simple checkout experience.
+    </p>
 
-.hero-mini-stat:last-child{
-    border-right:0;
-}
+    <div class="hero-actions">
 
-.hero-mini-stat strong{
-    display:block;
-    font-size:19px;
-    font-weight:950;
-}
+        <a
+            href="#products"
+            class="primary-button">
+            Explore Gift Cards
+        </a>
 
-.hero-mini-stat span{
-    display:block;
-    margin-top:5px;
+        <a
+            href="#products"
+            class="secondary-button">
+            View Brands
+        </a>
 
-    color:var(--muted-2);
-    font-size:9px;
-    font-weight:750;
-}
+    </div>
 
-/* =========================================================
-   TRUST
-========================================================= */
+    <div class="hero-mini-stats">
 
-.trust-strip{
-    width:min(1180px,calc(100% - 48px));
-    margin:0 auto 76px;
+        <div class="hero-mini-stat">
+            <strong id="heroBrandCount">0</strong>
+            <span>Brands</span>
+        </div>
 
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
+        <div class="hero-mini-stat">
+            <strong>Instant</strong>
+            <span>Savings preview</span>
+        </div>
 
-    border-top:1px solid var(--border);
-    border-bottom:1px solid var(--border);
-}
+        <div class="hero-mini-stat">
+            <strong>Simple</strong>
+            <span>Checkout flow</span>
+        </div>
 
-.trust-item{
-    min-width:0;
+    </div>
 
-    display:flex;
-    align-items:center;
-    gap:13px;
+</section>
 
-    padding:21px 25px;
 
-    border-right:1px solid var(--border);
-}
+<!-- =====================================================
+     TRUST STRIP
+===================================================== -->
 
-.trust-item:last-child{
-    border-right:0;
-}
+<section class="trust-strip">
 
-.trust-icon{
-    width:36px;
-    height:36px;
-    flex:0 0 36px;
+    <div class="trust-item">
+        <div class="trust-icon">✦</div>
+        <div>
+            <strong>Simple selection</strong>
+            <span>Choose your preferred value</span>
+        </div>
+    </div>
 
-    display:grid;
-    place-items:center;
+    <div class="trust-item">
+        <div class="trust-icon">%</div>
+        <div>
+            <strong>Transparent savings</strong>
+            <span>See the discount before checkout</span>
+        </div>
+    </div>
 
-    border-radius:10px;
+    <div class="trust-item">
+        <div class="trust-icon">✓</div>
+        <div>
+            <strong>Clear checkout</strong>
+            <span>Review everything before confirming</span>
+        </div>
+    </div>
 
-    background:rgba(139,92,246,.10);
-    color:#bca8ff;
+</section>
 
-    font-size:13px;
-    font-weight:900;
-}
 
-.trust-item strong{
-    display:block;
-    font-size:11px;
-    font-weight:850;
-}
+<!-- =====================================================
+     PRODUCTS
+===================================================== -->
 
-.trust-item span{
-    display:block;
-    margin-top:3px;
+<section
+    class="products"
+    id="products">
 
-    color:var(--muted-2);
-    font-size:9px;
-}
+    <div class="section-heading">
 
-/* =========================================================
-   PRODUCT SECTION
-========================================================= */
+        <div class="section-eyebrow">
+            Gift Cards
+        </div>
 
-.products{
-    width:min(1280px,100%);
-    margin:0 auto;
+        <h2>
+            Choose your favourite brand
+        </h2>
 
-    padding:0 36px 100px;
-}
+        <p>
+            Select a brand and find the gift card
+            value that works for you.
+        </p>
 
-.section-heading{
-    margin-bottom:27px;
-}
+    </div>
 
-.section-eyebrow,
-.panel-eyebrow{
-    margin-bottom:8px;
 
-    color:#a184ff;
+    <!-- SEARCH -->
 
-    font-size:9px;
-    font-weight:900;
-    letter-spacing:1.9px;
-    text-transform:uppercase;
-}
+    <div class="search-box">
 
-.section-heading h2{
-    margin:0;
+        <span class="search-symbol">
+            ⌕
+        </span>
 
-    font-size:34px;
-    line-height:1.08;
-    letter-spacing:-1.4px;
-    font-weight:930;
-}
+        <input
+            id="search"
+            type="text"
+            placeholder="Search brands, categories..."
+            autocomplete="off">
 
-.section-heading p{
-    max-width:650px;
-    margin:9px 0 0;
+        <button
+            id="clearSearch"
+            class="search-clear"
+            type="button"
+            onclick="GCS.clearSearch()"
+            style="display:none">
+            ×
+        </button>
 
-    color:var(--muted);
+    </div>
 
-    font-size:12px;
-    line-height:1.65;
-}
 
-/* =========================================================
-   SEARCH
-========================================================= */
+    <!-- SEARCH RESULT INFO -->
 
-.search-box{
-    position:relative;
+    <div
+        id="searchInfo"
+        class="search-info"
+        style="display:none">
+    </div>
 
-    width:100%;
-    min-height:58px;
 
-    display:flex;
-    align-items:center;
+    <!-- CATEGORIES -->
 
-    margin-bottom:13px;
+    <div class="categories">
 
-    border:1px solid var(--border);
-    border-radius:15px;
+        <button
+            class="category active"
+            data-category="All"
+            onclick="GCS.filterCategory('All', this)">
+            All
+        </button>
 
-    background:var(--surface);
+        <button
+            class="category"
+            data-category="Shopping"
+            onclick="GCS.filterCategory('Shopping', this)">
+            Shopping
+        </button>
 
-    transition:var(--ease);
-}
+        <button
+            class="category"
+            data-category="Fashion"
+            onclick="GCS.filterCategory('Fashion', this)">
+            Fashion
+        </button>
 
-.search-box:focus-within{
-    border-color:rgba(139,92,246,.5);
-    box-shadow:0 0 0 4px rgba(139,92,246,.065);
-}
+        <button
+            class="category"
+            data-category="Food"
+            onclick="GCS.filterCategory('Food', this)">
+            Food
+        </button>
 
-.search-symbol{
-    margin-left:18px;
-    color:var(--muted);
-    font-size:20px;
-}
+        <button
+            class="category"
+            data-category="Electronics"
+            onclick="GCS.filterCategory('Electronics', this)">
+            Electronics
+        </button>
 
-.search-box input{
-    width:100%;
-    min-width:0;
+        <button
+            class="category"
+            data-category="Entertainment"
+            onclick="GCS.filterCategory('Entertainment', this)">
+            Entertainment
+        </button>
 
-    border:0;
-    outline:0;
+    </div>
 
-    padding:0 17px 0 11px;
 
-    background:transparent;
-    color:var(--text);
+    <!-- BRAND CARDS -->
 
-    font-size:13px;
-}
+    <div
+        class="cards"
+        id="cards">
+    </div>
 
-.search-box input::placeholder{
-    color:var(--muted-2);
-}
+</section>
 
-#clearSearch{
-    width:31px;
-    height:31px;
-    flex:0 0 31px;
 
-    margin-right:10px;
+<!-- =====================================================
+     PRODUCT MODAL
+===================================================== -->
 
-    border:0;
-    border-radius:9px;
+<div
+    class="overlay"
+    id="productOverlay">
 
-    background:var(--surface-3);
-    color:var(--muted);
-}
+    <div class="panel product-panel">
 
-/* =========================================================
-   CATEGORIES
-========================================================= */
+        <div class="panel-header">
 
-.categories{
-    display:flex;
-    align-items:center;
-    gap:7px;
+            <div>
+                <div class="panel-eyebrow">
+                    Gift Card
+                </div>
 
-    margin:0 0 28px;
+                <h2>
+                    Choose your value
+                </h2>
 
-    overflow-x:auto;
-    scrollbar-width:none;
-}
+                <p>
+                    Select a denomination or enter
+                    your own amount.
+                </p>
+            </div>
 
-.categories::-webkit-scrollbar{
-    display:none;
-}
+            <button
+                class="close-button"
+                onclick="GCS.closeProduct()">
+                ×
+            </button>
 
-.category{
-    flex:0 0 auto;
+        </div>
 
-    min-height:36px;
 
-    padding:0 15px;
+        <!-- BRAND -->
 
-    border:1px solid var(--border);
-    border-radius:10px;
+        <div class="selected-brand">
 
-    background:var(--surface);
-    color:var(--muted);
+            <div class="selected-brand-logo">
 
-    font-size:10px;
-    font-weight:800;
+                <img
+                    id="productLogo"
+                    src=""
+                    alt="">
 
-    transition:var(--ease);
-}
+            </div>
 
-.category:hover{
-    color:var(--text);
-    border-color:var(--border-strong);
-}
+            <div>
 
-.category.active{
-    border-color:rgba(139,92,246,.4);
-    background:rgba(139,92,246,.13);
-    color:#c9bbff;
-}
+                <div
+                    class="selected-brand-name"
+                    id="productBrand">
+                    Amazon
+                </div>
 
-/* =========================================================
-   PRODUCT CARDS
-========================================================= */
+                <div class="selected-brand-subtitle">
+                    Gift Card
+                </div>
 
-.cards{
-    display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:18px;
-}
+            </div>
 
-.card{
-    position:relative;
-    min-width:0;
+            <button
+                id="wishlistProductButton"
+                class="wishlist-product-button"
+                type="button"
+                onclick="GCS.toggleWishlistSelected()">
+                ♡
+            </button>
 
-    display:flex;
-    flex-direction:column;
+        </div>
 
-    padding:13px;
 
-    border:1px solid var(--border);
-    border-radius:20px;
+        <!-- PRODUCT INFO -->
 
-    background:
-        linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012)),
-        var(--surface);
+        <div
+            id="productInfo"
+            class="product-info-box">
+        </div>
 
-    overflow:hidden;
 
-    cursor:pointer;
+        <!-- MODE -->
 
-    transition:
-        transform .2s ease,
-        border-color .2s ease,
-        box-shadow .2s ease;
-}
+        <div class="field-label">
+            Gift Card Type
+        </div>
 
-.card:hover{
-    transform:translateY(-5px);
+        <div class="mode-buttons">
 
-    border-color:rgba(139,92,246,.35);
-    box-shadow:var(--shadow);
-}
+            <button
+                class="mode-button active"
+                id="fixedMode"
+                onclick="GCS.selectMode('fixed')">
 
-.brand-box{
-    width:100%;
-    height:170px;
+                <strong>
+                    Fixed Value
+                </strong>
 
-    display:grid;
-    place-items:center;
+                <small>
+                    Choose a preset
+                </small>
 
-    margin-bottom:15px;
+            </button>
 
-    border:1px solid var(--border);
-    border-radius:16px;
+            <button
+                class="mode-button"
+                id="customMode"
+                onclick="GCS.selectMode('custom')">
 
-    background:
-        radial-gradient(
-            circle at 50% 25%,
-            rgba(139,92,246,.08),
-            transparent 62%
-        ),
-        var(--surface-2);
+                <strong>
+                    Custom Value
+                </strong>
 
-    overflow:hidden;
-}
+                <small>
+                    Enter your amount
+                </small>
 
-.brand-box img,
-.brand-logo{
-    width:92px;
-    height:92px;
+            </button>
 
-    object-fit:contain;
+        </div>
 
-    transition:transform .2s ease;
-}
 
-.card:hover .brand-box img{
-    transform:scale(1.06);
-}
+        <!-- FIXED -->
 
-.brand{
-    margin-bottom:5px;
+        <div id="fixedArea">
 
-    color:var(--muted-2);
+            <div
+                class="fixed-values"
+                id="fixedValues">
+            </div>
 
-    font-size:8px;
-    font-weight:850;
-    letter-spacing:1.1px;
-    text-transform:uppercase;
-}
+        </div>
 
-.card h3{
-    margin:0;
 
-    font-size:16px;
-    line-height:1.2;
-    letter-spacing:-.35px;
-    font-weight:900;
-}
+        <!-- CUSTOM -->
 
-.discount{
-    width:max-content;
+        <div
+            id="customArea"
+            class="custom-area"
+            style="display:none">
 
-    margin-top:9px;
-    padding:5px 7px;
+            <div class="amount-input">
 
-    border-radius:7px;
+                <span>
+                    ₹
+                </span>
 
-    background:var(--green-soft);
-    color:var(--green);
+                <input
+                    id="customAmount"
+                    class="custom-input"
+                    type="number"
+                    min="100"
+                    max="10000"
+                    placeholder="Enter amount"
+                    oninput="GCS.updateCustomPrice()">
 
-    font-size:9px;
-    font-weight:900;
-}
+            </div>
 
-.card > div[style*="font-size"]{
-    color:var(--muted)!important;
-    font-size:9px!important;
-}
+            <div class="input-hint">
+                Minimum ₹100 · Maximum ₹10,000
+            </div>
 
-.buy{
-    width:100%;
-    min-height:41px;
+        </div>
 
-    margin-top:14px;
 
-    border:1px solid rgba(139,92,246,.24);
-    border-radius:11px;
+        <!-- PREVIEW -->
 
-    background:rgba(139,92,246,.09);
-    color:#c9bbff;
+        <div class="price-preview">
 
-    font-size:10px;
-    font-weight:850;
+            <div class="preview-row">
 
-    transition:var(--ease);
-}
+                <span>
+                    Gift Card Value
+                </span>
 
-.buy:hover{
-    background:rgba(139,92,246,.17);
-    border-color:rgba(139,92,246,.43);
-}
+                <strong id="previewValue">
+                    —
+                </strong>
 
-.wishlist-card-button{
-    position:absolute;
-    z-index:5;
+            </div>
 
-    top:11px;
-    right:11px;
 
-    width:35px;
-    height:35px;
+            <div class="preview-row">
 
-    display:grid;
-    place-items:center;
+                <span>
+                    Your Discount
+                </span>
 
-    border:1px solid rgba(255,255,255,.11);
-    border-radius:10px;
+                <strong
+                    class="discount-text"
+                    id="previewDiscount">
+                    3%
+                </strong>
 
-    background:rgba(8,9,13,.78);
-    color:#aeb2bf;
+            </div>
 
-    font-size:17px;
-    line-height:1;
+            <div class="preview-divider"></div>
 
-    backdrop-filter:blur(8px);
+            <div class="preview-row preview-total">
 
-    transition:var(--ease);
-}
+                <span>
+                    You Pay
+                </span>
 
-.wishlist-card-button:hover{
-    color:#fff;
-    border-color:rgba(139,92,246,.4);
-}
+                <strong id="previewPrice">
+                    —
+                </strong>
 
-.wishlist-card-button.active{
-    color:#c9bbff;
-    background:rgba(139,92,246,.15);
-    border-color:rgba(139,92,246,.4);
-}
+            </div>
 
-/* =========================================================
-   OVERLAYS
-========================================================= */
+        </div>
 
-.overlay{
-    position:fixed!important;
-    inset:0!important;
-    z-index:5000;
 
-    width:100vw!important;
-    max-width:100vw!important;
-    height:100dvh!important;
+        <button
+            class="wide-primary"
+            onclick="GCS.continueProduct()">
 
-    display:none;
-    align-items:center!important;
-    justify-content:center!important;
+            Add to Cart
 
-    padding:28px!important;
-    margin:0!important;
+        </button>
 
-    background:rgba(2,3,7,.80);
+    </div>
 
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
+</div>
 
-    overflow-x:hidden!important;
-    overflow-y:auto!important;
-}
 
-.overlay > .panel{
-    position:relative!important;
-    inset:auto!important;
+<!-- =====================================================
+     CART
+===================================================== -->
 
-    transform:none!important;
-    float:none!important;
+<div
+    class="overlay"
+    id="cartOverlay">
 
-    flex:0 1 auto!important;
+    <div class="panel cart-panel">
 
-    width:min(760px,100%)!important;
-    min-width:0!important;
-    max-width:760px!important;
+        <div class="panel-header">
 
-    max-height:calc(100dvh - 56px)!important;
+            <div>
+                <div class="panel-eyebrow">
+                    Shopping
+                </div>
 
-    margin:0!important;
-    padding:30px!important;
+                <h2>
+                    Your Cart
+                </h2>
 
-    border:1px solid var(--border-strong);
-    border-radius:26px;
+                <p>
+                    Review your selected gift cards before checkout.
+                </p>
+            </div>
 
-    background:
-        linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.015)),
-        var(--surface);
+            <button
+                class="close-button"
+                onclick="GCS.closeCart()">
+                ×
+            </button>
 
-    box-shadow:var(--shadow-lg);
+        </div>
 
-    color:var(--text);
 
-    overflow-x:hidden!important;
-    overflow-y:auto!important;
-}
+        <div id="cartItems"></div>
 
-.overlay > .panel,
-.product-panel,
-.cart-panel,
-.checkout-panel,
-.orders-panel,
-.batch-panel,
-.order-detail-panel,
-.account-modal-clean,
-.account-detail-panel,
-.login-modal-clean{
-    min-width:0!important;
-    margin-left:0!important;
-    margin-right:0!important;
-    transform:none!important;
-    box-sizing:border-box!important;
-}
 
-.panel::-webkit-scrollbar{
-    width:5px;
-}
+        <div
+            id="cartSummary"
+            class="cart-summary">
+        </div>
 
-.panel::-webkit-scrollbar-thumb{
-    background:var(--surface-3);
-    border-radius:99px;
-}
 
-/* =========================================================
-   PANEL HEADER
-========================================================= */
+        <button
+            id="cartCheckoutButton"
+            class="wide-primary"
+            onclick="GCS.checkoutCart()">
 
-.panel-header{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:18px;
+            Continue to Checkout
 
-    margin-bottom:25px;
-}
+        </button>
 
-.panel-header > div{
-    min-width:0;
-}
+    </div>
 
-.panel-header h2{
-    margin:0;
+</div>
 
-    font-size:31px;
-    line-height:1.04;
-    letter-spacing:-1.25px;
-    font-weight:930;
 
-    overflow-wrap:anywhere;
-}
+<!-- =====================================================
+     ORDER SUMMARY
+===================================================== -->
 
-.panel-header p{
-    margin:8px 0 0;
+<div
+    class="overlay"
+    id="orderOverlay">
 
-    color:var(--muted);
+    <div class="panel">
 
-    font-size:11px;
-    line-height:1.55;
-}
+        <div class="panel-header">
 
-.close-button{
-    width:40px;
-    height:40px;
-    flex:0 0 40px;
+            <div>
+                <div class="panel-eyebrow">
+                    Review
+                </div>
 
-    display:grid;
-    place-items:center;
+                <h2>
+                    Order Summary
+                </h2>
 
-    border:1px solid var(--border);
-    border-radius:12px;
+                <p>
+                    Check your gift cards before checkout.
+                </p>
+            </div>
 
-    background:var(--surface-2);
-    color:var(--muted);
+            <button
+                class="close-button"
+                onclick="GCS.closeOrder()">
+                ×
+            </button>
 
-    font-size:22px;
-    line-height:1;
+        </div>
 
-    transition:var(--ease);
-}
 
-.close-button:hover{
-    color:var(--text);
-    border-color:var(--border-strong);
-    background:var(--surface-3);
-}
+        <div
+            id="orderSummaryContent"
+            class="order-summary-content">
+        </div>
 
-/* =========================================================
-   PRODUCT CONFIGURATOR
-   IMPORTANT:
-   - Brand stays
-   - Explanatory info box is removed
-   - Type stays as a clean segmented control
-   - Values become the main selection area
-========================================================= */
 
-.product-panel{
-    width:min(860px,100%)!important;
-    max-width:860px!important;
-}
+        <button
+            class="wide-primary"
+            onclick="GCS.openCheckout()">
 
-/* Remove the clutter identified in the screenshot */
-.product-info-box{
-    display:none!important;
-}
+            Continue to Checkout
 
-/* Brand identity */
-.selected-brand{
-    position:relative;
+        </button>
 
-    width:100%;
-    min-width:0;
-    min-height:88px;
+    </div>
 
-    display:flex;
-    align-items:center;
-    gap:15px;
+</div>
 
-    margin:0 0 25px;
-    padding:13px 60px 13px 13px;
 
-    border:1px solid var(--border);
-    border-radius:18px;
+<!-- =====================================================
+     CHECKOUT
+===================================================== -->
 
-    background:
-        linear-gradient(135deg,rgba(139,92,246,.055),transparent 55%),
-        var(--surface-2);
+<div
+    class="overlay"
+    id="checkoutOverlay">
 
-    overflow:hidden;
-}
+    <div class="panel">
 
-.selected-brand-logo{
-    width:62px;
-    height:62px;
-    flex:0 0 62px;
+        <div class="panel-header">
 
-    display:grid;
-    place-items:center;
+            <div>
+                <div class="panel-eyebrow">
+                    Checkout
+                </div>
 
-    border:1px solid var(--border);
-    border-radius:15px;
+                <h2>
+                    Complete your order
+                </h2>
 
-    background:var(--surface-3);
-}
+                <p>
+                    Confirm your email for this prototype order.
+                </p>
+            </div>
 
-.selected-brand-logo img{
-    width:45px;
-    height:45px;
+            <button
+                class="close-button"
+                onclick="GCS.closeCheckout()">
+                ×
+            </button>
 
-    object-fit:contain;
-}
+        </div>
 
-.selected-brand-name{
-    min-width:0;
 
-    font-size:20px;
-    line-height:1.15;
-    font-weight:900;
+        <div
+            id="checkoutItems"
+            class="checkout-items">
+        </div>
 
-    overflow-wrap:anywhere;
-}
 
-.selected-brand-subtitle{
-    margin-top:4px;
+        <div
+            id="checkoutTotals"
+            class="checkout-totals">
+        </div>
 
-    color:var(--muted);
-    font-size:10px;
-    font-weight:700;
-}
 
-.wishlist-product-button{
-    position:absolute;
+        <label
+            class="field-label"
+            for="email">
+            Email Address
+        </label>
 
-    right:13px;
-    top:50%;
+        <input
+            id="email"
+            class="email"
+            type="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+            oninput="GCS.clearEmailError()">
 
-    transform:translateY(-50%);
 
-    width:40px;
-    height:40px;
+        <div
+            class="email-error"
+            id="emailError">
+            Please enter a valid email address.
+        </div>
 
-    display:grid;
-    place-items:center;
 
-    border:1px solid var(--border);
-    border-radius:11px;
+        <button
+            class="wide-primary"
+            onclick="GCS.createOrder()">
 
-    background:var(--surface);
-    color:var(--muted);
+            Confirm Order
 
-    font-size:20px;
+        </button>
 
-    transition:var(--ease);
-}
 
-.wishlist-product-button:hover{
-    border-color:rgba(139,92,246,.35);
-    color:var(--text);
-}
+        <div class="prototype-note">
+            Prototype checkout · No real payment is processed.
+        </div>
 
-.wishlist-product-button.active{
-    color:#c9bbff;
-    border-color:rgba(139,92,246,.4);
-    background:rgba(139,92,246,.12);
-}
+    </div>
 
-/* =========================================================
-   TYPE
-========================================================= */
+</div>
 
-.field-label{
-    display:block;
 
-    margin:0 0 9px;
+<!-- =====================================================
+     SUCCESS
+===================================================== -->
 
-    color:var(--muted);
+<div
+    class="overlay"
+    id="successOverlay">
 
-    font-size:9px;
-    font-weight:900;
-    letter-spacing:1px;
-    text-transform:uppercase;
-}
+    <div class="panel success-panel">
 
-.mode-buttons{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:9px;
+        <div class="success-mark">
+            ✓
+        </div>
 
-    margin-bottom:23px;
-}
+        <div class="panel-eyebrow">
+            Completed
+        </div>
 
-.mode-button{
-    min-width:0;
-    min-height:67px;
+        <h2>
+            Order Confirmed
+        </h2>
 
-    padding:12px 14px;
+        <p>
+            Your prototype order has been created successfully.
+        </p>
 
-    border:1px solid var(--border);
-    border-radius:15px;
 
-    background:var(--surface-2);
-    color:var(--text);
+        <div class="success-order">
 
-    text-align:left;
+            <span>
+                Order ID
+            </span>
 
-    transition:var(--ease);
-}
+            <strong id="orderId">
+                GCS-000001
+            </strong>
 
-.mode-button strong{
-    display:block;
+        </div>
 
-    font-size:13px;
-    font-weight:900;
-}
 
-.mode-button small{
-    display:block;
+        <button
+            class="wide-primary"
+            onclick="GCS.closeSuccess()">
 
-    margin-top:4px;
+            Done
 
-    color:var(--muted);
-    font-size:9px;
-}
+        </button>
 
-.mode-button:hover{
-    border-color:rgba(139,92,246,.30);
-}
+    </div>
 
-.mode-button.active{
-    border-color:rgba(139,92,246,.55);
+</div>
 
-    background:
-        linear-gradient(135deg,rgba(139,92,246,.18),rgba(95,118,255,.07)),
-        var(--surface-2);
 
-    box-shadow:inset 0 0 0 1px rgba(139,92,246,.08);
-}
+<!-- =====================================================
+     ORDERS
+===================================================== -->
 
-/* =========================================================
-   VALUES
-========================================================= */
+<div
+    class="overlay"
+    id="ordersOverlay">
 
-.fixed-values{
-    display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:10px;
+    <div class="panel orders-panel">
 
-    width:100%;
-    min-width:0;
+        <div class="panel-header">
 
-    margin-top:0;
-}
+            <div>
+                <div class="panel-eyebrow">
+                    Account
+                </div>
 
-.value-button{
-    min-width:0;
-    min-height:88px;
+                <h2>
+                    My Orders
+                </h2>
 
-    padding:12px;
+                <p>
+                    Your previous prototype orders.
+                </p>
+            </div>
 
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
+            <button
+                class="close-button"
+                onclick="GCS.closeOrders()">
+                ×
+            </button>
 
-    border:1px solid var(--border);
-    border-radius:16px;
+        </div>
 
-    background:var(--surface-2);
-    color:var(--text);
 
-    transition:var(--ease);
-}
+        <div id="ordersList"></div>
 
-.value-button strong{
-    font-size:18px;
-    font-weight:900;
-}
+    </div>
 
-.value-button small{
-    margin-top:5px;
+</div>
 
-    color:var(--muted);
-    font-size:9px;
-}
 
-.value-button:hover{
-    transform:translateY(-2px);
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 
-    border-color:rgba(139,92,246,.36);
-    background:var(--surface-3);
-}
+<footer id="footer">
 
-.value-button.active{
-    border-color:rgba(139,92,246,.60);
+    <div class="footer-inner">
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(139,92,246,.20),
-            rgba(79,124,255,.08)
-        );
+        <div class="footer-brand">
+            GiftCardStore
+        </div>
 
-    box-shadow:
-        inset 0 0 0 1px rgba(139,92,246,.10),
-        0 10px 28px rgba(86,70,180,.10);
-}
+        <p>
+            Save more. Shop smarter.
+        </p>
 
-/* Custom value */
-.custom-area{
-    width:100%;
-    margin-top:12px;
-}
+        <div class="footer-links">
 
-.amount-input{
-    display:flex;
-    align-items:center;
+            <button onclick="GCS.openFaq()">
+                FAQ
+            </button>
 
-    min-height:55px;
+            <button onclick="GCS.openTerms()">
+                Terms
+            </button>
 
-    border:1px solid var(--border);
-    border-radius:14px;
+        </div>
 
-    background:var(--surface-2);
-    overflow:hidden;
-}
+        <small>
+            © 2026 GiftCardStore · Prototype
+        </small>
 
-.amount-input > span{
-    padding-left:15px;
+    </div>
 
-    color:var(--muted);
-    font-weight:900;
-}
+</footer>
 
-.custom-input{
-    width:100%;
-    min-width:0;
 
-    border:0;
-    outline:0;
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
-    padding:0 15px;
+<script src="js/brands.js?v=20260917-01"></script>
+<script src="js/catalog.js?v=20260917-01"></script>
+<script src="js/products.js?v=20260917-01"></script>
+<script src="js/account.js?v=20260917-01"></script>
+<script src="js/orders.js?v=20260917-01"></script>
+<script src="js/ui.js?v=20260917-01"></script>
+<script src="js/app.js?v=20260917-01"></script>
+<script src="js/features.js?v=20260917-01"></script>
 
-    background:transparent;
-    color:var(--text);
-
-    font-size:14px;
-    font-weight:800;
-}
-
-.input-hint{
-    margin-top:6px;
-    color:var(--muted-2);
-    font-size:9px;
-}
-
-/* =========================================================
-   PRICE SUMMARY
-========================================================= */
-
-.price-preview{
-    width:100%;
-
-    margin-top:20px;
-    padding:17px;
-
-    border:1px solid var(--border);
-    border-radius:17px;
-
-    background:
-        linear-gradient(135deg,rgba(139,92,246,.035),transparent),
-        var(--surface-2);
-}
-
-.preview-row{
-    min-height:31px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-
-    color:var(--muted);
-    font-size:11px;
-}
-
-.preview-row strong{
-    color:var(--text);
-    font-weight:900;
-}
-
-.discount-text{
-    color:var(--green)!important;
-}
-
-.preview-divider{
-    height:1px;
-    margin:8px 0;
-
-    background:var(--border);
-}
-
-.preview-total{
-    color:var(--text);
-}
-
-.preview-total strong{
-    font-size:23px;
-}
-
-/* =========================================================
-   CTA
-========================================================= */
-
-.wide-primary{
-    width:100%;
-    min-height:52px;
-
-    margin-top:15px;
-
-    border:0;
-    border-radius:14px;
-
-    background:linear-gradient(135deg,#8b5cf6,#5f76ff);
-
-    color:#fff;
-
-    font-size:13px;
-    font-weight:900;
-
-    box-shadow:0 14px 34px rgba(106,76,246,.22);
-
-    transition:var(--ease);
-}
-
-.wide-primary:hover{
-    transform:translateY(-2px);
-    box-shadow:0 18px 42px rgba(106,76,246,.30);
-}
-
-/* =========================================================
-   OTHER PANELS
-========================================================= */
-
-.cart-panel,
-.checkout-panel,
-.orders-panel,
-.batch-panel,
-.order-detail-panel{
-    width:min(700px,100%)!important;
-    max-width:700px!important;
-}
-
-.cart-item{
-    display:grid;
-    grid-template-columns:56px minmax(0,1fr);
-    gap:12px;
-
-    padding:12px;
-    margin-bottom:8px;
-
-    border:1px solid var(--border);
-    border-radius:16px;
-
-    background:var(--surface-2);
-}
-
-.cart-item-logo{
-    width:56px;
-    height:56px;
-
-    display:grid;
-    place-items:center;
-
-    border-radius:13px;
-    background:var(--surface-3);
-}
-
-.cart-item-logo img{
-    width:40px;
-    height:40px;
-    object-fit:contain;
-}
-
-.cart-item-name{
-    font-size:13px;
-    font-weight:900;
-}
-
-.cart-item-meta{
-    margin-top:3px;
-    color:var(--muted);
-    font-size:9px;
-}
-
-.cart-item-price{
-    margin-top:6px;
-    font-size:12px;
-    font-weight:900;
-}
-
-.cart-item-save{
-    margin-top:2px;
-    color:var(--green);
-    font-size:9px;
-    font-weight:700;
-}
-
-.cart-item-controls{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    margin-top:9px;
-}
-
-.qty-button{
-    width:29px;
-    height:29px;
-
-    border:1px solid var(--border);
-    border-radius:8px;
-
-    background:var(--surface-3);
-    color:var(--text);
-
-    font-size:15px;
-}
-
-.qty-number{
-    min-width:23px;
-    text-align:center;
-    font-size:11px;
-    font-weight:900;
-}
-
-.remove-cart{
-    margin-left:auto;
-
-    border:0;
-    background:transparent;
-    color:var(--muted);
-
-    font-size:9px;
-}
-
-.cart-summary,
-.checkout-totals{
-    margin-top:12px;
-    padding:14px;
-
-    border:1px solid var(--border);
-    border-radius:15px;
-    background:var(--surface-2);
-}
-
-.cart-summary-row,
-.checkout-total-row{
-    display:flex;
-    justify-content:space-between;
-    gap:15px;
-
-    padding:5px 0;
-
-    color:var(--muted);
-    font-size:10px;
-}
-
-.cart-summary-row strong,
-.checkout-total-row strong{
-    color:var(--text);
-}
-
-.cart-summary-total,
-.checkout-total-row.total{
-    display:flex;
-    justify-content:space-between;
-    gap:15px;
-
-    margin-top:7px;
-    padding-top:11px;
-
-    border-top:1px solid var(--border);
-
-    color:var(--text);
-    font-size:13px;
-    font-weight:900;
-}
-
-.cart-summary-total strong,
-.checkout-total-row.total strong{
-    font-size:18px;
-}
-
-/* =========================================================
-   SUMMARY / CHECKOUT
-========================================================= */
-
-.summary-brand,
-.checkout-card,
-.success-order,
-.order-detail-brand{
-    padding:15px;
-
-    border:1px solid var(--border);
-    border-radius:16px;
-
-    background:var(--surface-2);
-}
-
-.summary-brand-name,
-.checkout-brand strong{
-    font-size:16px;
-    font-weight:900;
-}
-
-.summary-value{
-    margin-top:4px;
-    color:var(--muted);
-    font-size:10px;
-}
-
-.summary-card{
-    margin-top:10px;
-    padding:15px;
-
-    border:1px solid var(--border);
-    border-radius:16px;
-
-    background:var(--surface-2);
-}
-
-.summary-row{
-    display:flex;
-    justify-content:space-between;
-    gap:15px;
-
-    padding:6px 0;
-
-    color:var(--muted);
-    font-size:11px;
-}
-
-.summary-row strong{
-    color:var(--text);
-}
-
-.summary-divider{
-    height:1px;
-    margin:7px 0;
-    background:var(--border);
-}
-
-.summary-total{
-    color:var(--text);
-    font-weight:900;
-}
-
-.summary-total strong{
-    font-size:20px;
-}
-
-.saving-banner{
-    margin-top:9px;
-    padding:9px;
-
-    border-radius:9px;
-
-    background:var(--green-soft);
-    color:var(--green);
-
-    text-align:center;
-
-    font-size:10px;
-    font-weight:850;
-}
-
-.checkout-brand span{
-    display:block;
-    margin-bottom:3px;
-
-    color:var(--muted);
-    font-size:8px;
-    text-transform:uppercase;
-    letter-spacing:1px;
-}
-
-.checkout-value{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-    margin-top:13px;
-}
-
-.checkout-value span{
-    color:var(--muted);
-    font-size:10px;
-}
-
-.checkout-value strong{
-    font-size:17px;
-}
-
-.email,
-.login-input{
-    width:100%;
-    min-height:48px;
-
-    padding:0 13px;
-
-    border:1px solid var(--border);
-    border-radius:12px;
-
-    outline:0;
-
-    background:var(--surface-2);
-    color:var(--text);
-
-    font-size:12px;
-}
-
-.email:focus,
-.login-input:focus{
-    border-color:rgba(139,92,246,.5);
-}
-
-.email-error{
-    display:none;
-    margin-top:6px;
-    color:var(--red);
-    font-size:9px;
-}
-
-.prototype-note{
-    margin-top:10px;
-    color:var(--muted-2);
-    text-align:center;
-    font-size:8px;
-}
-
-/* =========================================================
-   SUCCESS
-========================================================= */
-
-.success-panel{
-    width:min(450px,100%)!important;
-    max-width:450px!important;
-    text-align:center;
-}
-
-.success-mark{
-    width:68px;
-    height:68px;
-
-    display:grid;
-    place-items:center;
-
-    margin:0 auto 18px;
-
-    border-radius:22px;
-
-    background:var(--green-soft);
-    color:var(--green);
-
-    font-size:30px;
-    font-weight:900;
-}
-
-.success-panel h2{
-    margin:0;
-    font-size:29px;
-}
-
-.success-panel p{
-    color:var(--muted);
-    font-size:11px;
-}
-
-.success-order{
-    margin-top:18px;
-    text-align:left;
-}
-
-.success-order span{
-    display:block;
-    color:var(--muted);
-    font-size:8px;
-    text-transform:uppercase;
-    letter-spacing:1px;
-}
-
-.success-order strong{
-    display:block;
-    margin-top:5px;
-    font-size:13px;
-}
-
-/* =========================================================
-   ORDERS
-========================================================= */
-
-.order-card{
-    padding:14px;
-    margin-bottom:8px;
-
-    border:1px solid var(--border);
-    border-radius:16px;
-    background:var(--surface-2);
-}
-
-.order-card-row{
-    display:flex;
-    justify-content:space-between;
-    gap:15px;
-
-    padding:5px 0;
-
-    color:var(--muted);
-    font-size:10px;
-}
-
-.order-card-row strong{
-    color:var(--text);
-}
-
-.order-id{
-    color:#b9a8ff;
-    font-size:9px;
-}
-
-.view-order-button{
-    width:100%;
-    min-height:37px;
-    margin-top:9px;
-
-    border:1px solid var(--border);
-    border-radius:10px;
-
-    background:var(--surface-3);
-    color:var(--text);
-
-    font-size:9px;
-    font-weight:800;
-}
-
-.order-detail-brand{
-    display:flex;
-    align-items:center;
-    gap:11px;
-}
-
-.order-detail-logo{
-    width:50px;
-    height:50px;
-
-    display:grid;
-    place-items:center;
-
-    border-radius:12px;
-    background:var(--surface-3);
-}
-
-.order-detail-logo img{
-    width:36px;
-    height:36px;
-    object-fit:contain;
-}
-
-.order-detail-grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:8px;
-    margin-top:10px;
-}
-
-.order-detail-field{
-    min-width:0;
-    padding:11px;
-
-    border:1px solid var(--border);
-    border-radius:12px;
-    background:var(--surface-2);
-}
-
-.order-detail-field span{
-    display:block;
-    margin-bottom:4px;
-
-    color:var(--muted-2);
-    font-size:8px;
-    text-transform:uppercase;
-    letter-spacing:.7px;
-}
-
-.order-detail-field strong{
-    font-size:11px;
-    overflow-wrap:anywhere;
-}
-
-/* =========================================================
-   EMPTY STATES
-========================================================= */
-
-.empty-orders{
-    padding:35px 20px;
-
-    text-align:center;
-
-    border:1px dashed var(--border);
-    border-radius:18px;
-
-    background:rgba(255,255,255,.015);
-}
-
-.empty-orders-icon{
-    margin-bottom:9px;
-    font-size:30px;
-}
-
-.empty-orders h3{
-    margin:0;
-    font-size:15px;
-}
-
-.empty-orders p{
-    margin:7px 0 0;
-    color:var(--muted);
-    font-size:10px;
-}
-
-/* =========================================================
-   NOTICES
-========================================================= */
-
-.gcs-notice,
-.site-notice{
-    position:fixed;
-    z-index:99999;
-
-    left:50%;
-    bottom:20px;
-
-    transform:translateX(-50%);
-
-    width:min(410px,calc(100% - 24px));
-
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-    padding:12px 13px;
-
-    border:1px solid var(--border-strong);
-    border-radius:15px;
-
-    background:rgba(18,20,27,.96);
-
-    box-shadow:var(--shadow);
-
-    backdrop-filter:blur(18px);
-}
-
-.gcs-ni,
-.notice-icon{
-    width:30px;
-    height:30px;
-    flex:0 0 30px;
-
-    display:grid;
-    place-items:center;
-
-    border-radius:9px;
-
-    background:rgba(139,92,246,.14);
-    color:#c4b5fd;
-
-    font-size:12px;
-    font-weight:900;
-}
-
-.gcs-notice strong,
-.notice-title{
-    display:block;
-    font-size:10px;
-    font-weight:900;
-}
-
-.gcs-notice span,
-.notice-message{
-    display:block;
-    margin-top:3px;
-    color:var(--muted);
-    font-size:9px;
-}
-
-.gcs-notice button,
-.notice-close{
-    margin-left:auto;
-    border:0;
-    background:transparent;
-    color:var(--muted);
-    font-size:18px;
-}
-
-/* =========================================================
-   ACCOUNT / FEATURE PANELS
-========================================================= */
-
-.account-modal-clean,
-.account-detail-panel,
-.login-modal-clean{
-    width:min(700px,100%)!important;
-    max-width:700px!important;
-}
-
-.account-profile-clean{
-    display:flex;
-    align-items:center;
-    gap:15px;
-
-    padding:16px;
-    margin-bottom:12px;
-
-    border:1px solid var(--border);
-    border-radius:17px;
-
-    background:var(--surface-2);
-}
-
-.account-avatar-clean{
-    width:54px;
-    height:54px;
-    flex:0 0 54px;
-
-    display:grid;
-    place-items:center;
-
-    border-radius:15px;
-    background:var(--surface-3);
-
-    font-size:25px;
-}
-
-.account-profile-copy strong,
-.account-profile-copy span,
-.account-profile-copy small{
-    display:block;
-}
-
-.account-profile-copy strong{
-    font-size:18px;
-}
-
-.account-profile-copy span{
-    margin-top:3px;
-    color:var(--muted);
-    font-size:10px;
-}
-
-.account-profile-copy small{
-    margin-top:4px;
-    color:var(--green);
-    font-size:9px;
-    font-weight:800;
-}
-
-.account-menu-clean{
-    display:grid;
-    gap:8px;
-}
-
-.account-menu-clean > button{
-    width:100%;
-
-    display:flex;
-    align-items:center;
-    gap:12px;
-
-    padding:13px;
-
-    border:1px solid var(--border);
-    border-radius:14px;
-
-    background:var(--surface-2);
-    color:var(--text);
-
-    text-align:left;
-
-    font-size:11px;
-    font-weight:800;
-
-    transition:var(--ease);
-}
-
-.account-menu-clean > button:hover{
-    border-color:rgba(139,92,246,.32);
-    background:var(--surface-3);
-}
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-footer{
-    margin-top:20px;
-    border-top:1px solid var(--border);
-    background:var(--bg-2);
-}
-
-.footer-inner{
-    width:min(1180px,100%);
-    margin:auto;
-    padding:48px 28px;
-    text-align:center;
-}
-
-.footer-brand{
-    font-size:22px;
-    font-weight:950;
-
-    background:linear-gradient(110deg,#b59cff,#6485ff);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-}
-
-.footer-inner p{
-    margin:7px 0;
-    color:var(--muted);
-    font-size:10px;
-}
-
-.footer-inner small{
-    color:var(--muted-2);
-    font-size:8px;
-}
-
-/* =========================================================
-   TABLET
-========================================================= */
-
-@media(max-width:1050px){
-
-    .site-header,
-    header{
-        padding:0 24px;
-        gap:18px;
-    }
-
-    nav{
-        display:none;
-    }
-
-    .cards{
-        grid-template-columns:repeat(3,minmax(0,1fr));
-    }
-
-    .products{
-        padding-left:24px;
-        padding-right:24px;
-    }
-}
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:700px){
-
-    .site-header,
-    header{
-        min-height:64px;
-        padding:0 12px;
-        gap:7px;
-    }
-
-    .logo{
-        font-size:19px;
-        letter-spacing:-1px;
-    }
-
-    nav{
-        display:flex;
-        justify-content:flex-end;
-        gap:4px;
-    }
-
-    nav a{
-        display:none;
-    }
-
-    .header-action,
-    #loginButton,
-    #accountButton,
-    #cartButton,
-    .header-savings-button{
-        min-height:35px;
-        padding:0 8px;
-        border-radius:9px;
-        font-size:9px;
-    }
-
-    .header-savings-label{
-        display:none;
-    }
-
-    .hero{
-        padding:64px 18px 52px;
-    }
-
-    .hero h1{
-        font-size:43px;
-        letter-spacing:-2.7px;
-    }
-
-    .hero p{
-        font-size:12px;
-        line-height:1.65;
-    }
-
-    .hero-actions{
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        margin-top:24px;
-    }
-
-    .primary-button,
-    .secondary-button{
-        min-height:43px;
-        padding:0 10px;
-        font-size:10px;
-    }
-
-    .hero-mini-stats{
-        margin-top:30px;
-    }
-
-    .hero-mini-stat{
-        padding:13px 5px;
-    }
-
-    .hero-mini-stat strong{
-        font-size:15px;
-    }
-
-    .hero-mini-stat span{
-        font-size:7px;
-    }
-
-    .trust-strip{
-        display:block;
-        width:auto;
-        margin:0 18px 50px;
-    }
-
-    .trust-item{
-        border-right:0;
-        border-bottom:1px solid var(--border);
-    }
-
-    .trust-item:last-child{
-        border-bottom:0;
-    }
-
-    .products{
-        padding:0 12px 65px;
-    }
-
-    .section-heading{
-        margin-bottom:20px;
-    }
-
-    .section-heading h2{
-        font-size:26px;
-    }
-
-    .section-heading p{
-        font-size:10px;
-    }
-
-    .cards{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-        gap:10px;
-    }
-
-    .card{
-        padding:8px;
-        border-radius:15px;
-    }
-
-    .brand-box{
-        height:108px;
-        margin-bottom:9px;
-        border-radius:12px;
-    }
-
-    .brand-box img,
-    .brand-logo{
-        width:60px;
-        height:60px;
-    }
-
-    .brand{
-        font-size:7px;
-    }
-
-    .card h3{
-        font-size:13px;
-    }
-
-    .discount{
-        margin-top:6px;
-        font-size:8px;
-    }
-
-    .buy{
-        min-height:36px;
-        margin-top:10px;
-        font-size:8px;
-    }
-
-    .wishlist-card-button{
-        top:7px;
-        right:7px;
-        width:29px;
-        height:29px;
-        border-radius:8px;
-        font-size:15px;
-    }
-
-    /* PRODUCT MODAL */
-    .overlay{
-        align-items:flex-end!important;
-        justify-content:center!important;
-
-        padding:8px!important;
-
-        overflow-x:hidden!important;
-        overflow-y:auto!important;
-    }
-
-    .overlay > .panel,
-    .product-panel,
-    .cart-panel,
-    .checkout-panel,
-    .orders-panel,
-    .batch-panel,
-    .order-detail-panel,
-    .account-modal-clean,
-    .account-detail-panel,
-    .login-modal-clean{
-        width:100%!important;
-        min-width:0!important;
-        max-width:none!important;
-
-        max-height:calc(100dvh - 16px)!important;
-
-        margin:0!important;
-        padding:18px!important;
-
-        border-radius:23px 23px 16px 16px!important;
-
-        transform:none!important;
-        left:auto!important;
-        right:auto!important;
-    }
-
-    .panel-header{
-        margin-bottom:20px;
-        gap:10px;
-    }
-
-    .panel-header h2{
-        font-size:25px;
-    }
-
-    .panel-header p{
-        font-size:9px;
-    }
-
-    .close-button{
-        width:35px;
-        height:35px;
-        flex-basis:35px;
-        font-size:19px;
-    }
-
-    .selected-brand{
-        min-height:70px;
-        margin-bottom:20px;
-        padding:10px 53px 10px 10px;
-        border-radius:16px;
-    }
-
-    .selected-brand-logo{
-        width:48px;
-        height:48px;
-        flex-basis:48px;
-        border-radius:12px;
-    }
-
-    .selected-brand-logo img{
-        width:34px;
-        height:34px;
-    }
-
-    .selected-brand-name{
-        font-size:16px;
-    }
-
-    .selected-brand-subtitle{
-        font-size:9px;
-    }
-
-    .field-label{
-        margin-bottom:8px;
-    }
-
-    .mode-buttons{
-        gap:7px;
-        margin-bottom:19px;
-    }
-
-    .mode-button{
-        min-height:60px;
-        padding:9px;
-        border-radius:14px;
-    }
-
-    .mode-button strong{
-        font-size:11px;
-    }
-
-    .mode-button small{
-        font-size:8px;
-    }
-
-    .fixed-values{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-        gap:8px;
-    }
-
-    .value-button{
-        min-height:68px;
-        border-radius:14px;
-    }
-
-    .value-button strong{
-        font-size:15px;
-    }
-
-    .value-button small{
-        font-size:8px;
-    }
-
-    .price-preview{
-        margin-top:16px;
-        padding:13px;
-    }
-
-    .preview-row{
-        font-size:10px;
-    }
-
-    .preview-total strong{
-        font-size:21px;
-    }
-
-    .wide-primary{
-        min-height:48px;
-        font-size:12px;
-    }
-
-    .order-detail-grid{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .gcs-notice,
-    .site-notice{
-        bottom:12px;
-        width:calc(100% - 20px);
-    }
-}
-
-/* =========================================================
-   SMALL PHONES
-========================================================= */
-
-@media(max-width:380px){
-
-    .logo{
-        font-size:17px;
-    }
-
-    .header-action,
-    #loginButton,
-    #accountButton,
-    #cartButton,
-    .header-savings-button{
-        padding:0 6px;
-        font-size:8px;
-    }
-
-    .hero h1{
-        font-size:38px;
-    }
-
-    .cards{
-        gap:7px;
-    }
-
-    .card{
-        padding:7px;
-    }
-
-    .brand-box{
-        height:92px;
-    }
-
-    .brand-box img,
-    .brand-logo{
-        width:51px;
-        height:51px;
-    }
-
-    .card h3{
-        font-size:12px;
-    }
-
-    .buy{
-        min-height:34px;
-    }
-
-    .overlay > .panel,
-    .product-panel{
-        padding:15px!important;
-    }
-
-    .panel-header h2{
-        font-size:23px;
-    }
-
-    .selected-brand{
-        margin-bottom:17px;
-    }
-}
+</body>
+</html>
