@@ -15,7 +15,7 @@ function addBrand(
         name,
         category,
         domain,
-        logo: `https://www.google.com/s2/favicons?domain=${domain}&sz=256`,
+        logo: `https://www.google.com/s2/favicons?domain=${domain}&sz=512`,
         fixedDiscount: discount,
         customDiscount: discount,
         acquisitionRate,
