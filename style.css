@@ -3046,80 +3046,810 @@ nav a{font-size:11px;padding:9px 11px;}
   .cards{grid-template-columns:repeat(3,minmax(0,1fr));}
 }
 
-/* MOBILE — compact storefront, not giant app cards */
-@media(max-width:700px){
-  .site-header,header{min-height:60px;padding:0 14px;gap:10px;}
-  .logo{font-size:18px;}
-  nav{gap:2px;overflow:hidden;}
-  nav a{font-size:9px;padding:7px 7px;}
-  .header-action,#loginButton,#accountButton,#cartButton,.header-savings-button{min-height:34px;padding:0 8px;font-size:8px;}
+/* =========================================================
+   MOBILE V7 — PREMIUM GIFT CARD STORE
+   Mobile catalogue + purchase experience
+========================================================= */
 
-  .hero{padding:64px 18px 50px;}
-  .hero h1{font-size:43px;letter-spacing:-2.6px;}
-  .hero p{font-size:11px;line-height:1.6;margin-top:17px;}
-  .hero-actions{margin-top:22px;gap:7px;}
-  .primary-button,.secondary-button{min-height:40px;padding:0 13px;font-size:9px;}
-  .hero-mini-stats{margin-top:28px;}
-  .hero-mini-stat{padding:12px 7px;}
-  .hero-mini-stat strong{font-size:14px;}
-  .hero-mini-stat span{font-size:7px;}
+@media (max-width:700px){
 
-  .trust-strip{width:calc(100% - 28px);margin-bottom:48px;grid-template-columns:1fr;}
-  .trust-item{padding:14px 16px;border-right:0;border-bottom:1px solid var(--border);}
-  .trust-item:last-child{border-bottom:0;}
+    /* ---------- GLOBAL MOBILE ---------- */
 
-  .products{padding:0 14px 65px;}
-  .section-heading{margin-bottom:19px;}
-  .section-heading h2{font-size:28px;letter-spacing:-1.05px;}
-  .section-heading p{font-size:10px;line-height:1.5;}
-  .search-box{min-height:48px;border-radius:12px;}
-  .categories{margin-bottom:18px;}
-  .category{min-height:32px;padding:0 12px;font-size:8.5px;}
+    body{
+        overflow-x:hidden;
+    }
 
-  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
-  .card{padding:8px;border-radius:15px;}
-  .brand-box{height:105px;margin-bottom:10px;border-radius:11px;}
-  .brand-box img,.brand-logo{width:62px;height:62px;}
-  .brand{font-size:6.5px;letter-spacing:1px;margin-bottom:4px;}
-  .card h3{font-size:13px;letter-spacing:-.25px;}
-  .discount{margin-top:6px;padding:4px 6px;font-size:7px;}
-  .card > div[style*="font-size"]{font-size:8px!important;margin-top:3px!important;}
-  .buy{min-height:35px;margin-top:9px;border-radius:9px;font-size:8px;}
-  .wishlist-card-button{top:8px;right:8px;width:31px;height:31px;border-radius:9px;}
+    .site-header,
+    header{
+        position:sticky;
+        top:0;
+        z-index:1000;
 
-  .product-panel{
-    width:calc(100% - 20px)!important;
-    max-width:none!important;
-    padding:20px!important;
-    border-radius:20px!important;
-  }
-  .product-panel .panel-header{margin-bottom:17px;}
-  .product-panel .panel-header h2{font-size:25px;letter-spacing:-.9px;}
-  .product-panel .panel-header p{font-size:9px;}
-  .selected-brand{min-height:78px;padding:9px 45px 9px 9px;border-radius:13px;}
-  .selected-brand-logo{width:56px;height:56px;flex-basis:56px;border-radius:11px;}
-  .selected-brand-logo img{width:40px;height:40px;}
-  .selected-brand-name{font-size:16px;}
-  .selected-brand-subtitle{font-size:8px;}
-  .wishlist-product-button{width:32px;height:32px;right:9px;font-size:16px;}
-  .mode-buttons{gap:7px;margin-bottom:14px;}
-  .mode-button{min-height:56px;padding:9px;border-radius:11px;}
-  .mode-button strong{font-size:10px;}
-  .mode-button small{font-size:7px;}
-  .fixed-values{gap:7px;}
-  .value-button{min-height:61px;border-radius:11px;}
-  .value-button strong{font-size:14px;}
-  .value-button small{font-size:7px;}
-  .price-preview{margin-top:13px;padding:12px;border-radius:12px;}
-  .preview-row{font-size:9px;min-height:26px;}
-  .preview-total strong{font-size:20px;}
-  .product-panel .wide-primary{min-height:45px;margin-top:12px;font-size:9px;}
+        min-height:64px;
+        padding:0 15px;
+
+        gap:8px;
+    }
+
+    .logo{
+        font-size:19px;
+        letter-spacing:-1px;
+    }
+
+    nav{
+        justify-content:flex-end;
+        gap:5px;
+    }
+
+    nav a{
+        display:none;
+    }
+
+    .header-action,
+    #loginButton,
+    #accountButton,
+    #cartButton,
+    .header-savings-button{
+        min-height:36px;
+        padding:0 10px;
+        border-radius:10px;
+        font-size:9px;
+    }
+
+    #cartButton{
+        gap:5px;
+    }
+
+    #cartCount{
+        min-width:18px;
+        height:18px;
+    }
+
+
+    /* ---------- HERO ---------- */
+
+    .hero{
+        width:100%;
+        padding:58px 18px 42px;
+    }
+
+    .hero::before{
+        width:360px;
+        height:250px;
+        top:10px;
+    }
+
+    .hero-badge{
+        margin-bottom:19px;
+        padding:7px 11px;
+        font-size:9px;
+    }
+
+    .hero h1{
+        font-size:42px;
+        line-height:.98;
+        letter-spacing:-2.7px;
+    }
+
+    .hero p{
+        max-width:350px;
+        margin:18px auto 0;
+
+        font-size:11px;
+        line-height:1.65;
+    }
+
+    .hero-actions{
+        width:100%;
+        margin-top:22px;
+        gap:8px;
+    }
+
+    .primary-button,
+    .secondary-button{
+        flex:1;
+        min-height:44px;
+        border-radius:11px;
+        font-size:9px;
+    }
+
+    .hero-mini-stats{
+        width:100%;
+        margin-top:28px;
+        border-radius:15px;
+    }
+
+    .hero-mini-stat{
+        padding:14px 6px;
+    }
+
+    .hero-mini-stat strong{
+        font-size:15px;
+    }
+
+    .hero-mini-stat span{
+        margin-top:4px;
+        font-size:7px;
+    }
+
+
+    /* ---------- TRUST ---------- */
+
+    .trust-strip{
+        width:calc(100% - 30px);
+        margin:0 auto 48px;
+
+        grid-template-columns:1fr;
+
+        border-top:1px solid var(--border);
+        border-bottom:1px solid var(--border);
+    }
+
+    .trust-item{
+        min-height:68px;
+        padding:13px 15px;
+
+        border-right:0;
+        border-bottom:1px solid var(--border);
+    }
+
+    .trust-item:last-child{
+        border-bottom:0;
+    }
+
+    .trust-icon{
+        width:34px;
+        height:34px;
+        flex-basis:34px;
+    }
+
+    .trust-item strong{
+        font-size:10px;
+    }
+
+    .trust-item span{
+        font-size:8px;
+    }
+
+
+    /* ---------- PRODUCT SECTION ---------- */
+
+    .products{
+        width:100%;
+        padding:0 15px 70px;
+    }
+
+    .section-heading{
+        margin-bottom:17px;
+    }
+
+    .section-eyebrow{
+        margin-bottom:7px;
+        font-size:8px;
+        letter-spacing:1.8px;
+    }
+
+    .section-heading h2{
+        font-size:28px;
+        line-height:1.05;
+        letter-spacing:-1.3px;
+    }
+
+    .section-heading p{
+        max-width:350px;
+        margin-top:8px;
+
+        font-size:10px;
+        line-height:1.55;
+    }
+
+
+    /* ---------- SEARCH ---------- */
+
+    .search-box{
+        min-height:50px;
+        margin-bottom:11px;
+
+        border-radius:15px;
+    }
+
+    .search-symbol{
+        margin-left:15px;
+        font-size:20px;
+    }
+
+    .search-box input{
+        min-width:0;
+        padding:0 13px;
+
+        font-size:12px;
+    }
+
+
+    /* ---------- CATEGORY BAR ---------- */
+
+    .categories{
+        display:flex;
+
+        gap:7px;
+
+        width:100%;
+        margin-bottom:18px;
+        padding:1px 0 5px;
+
+        overflow-x:auto;
+        scrollbar-width:none;
+    }
+
+    .categories::-webkit-scrollbar{
+        display:none;
+    }
+
+    .category{
+        flex:0 0 auto;
+
+        min-height:35px;
+        padding:0 14px;
+
+        border-radius:999px;
+
+        font-size:9px;
+        font-weight:850;
+    }
+
+
+    /* =====================================================
+       BRAND CATALOGUE
+
+       One premium horizontal product row.
+       Real brand artwork gets visual priority.
+    ===================================================== */
+
+    .cards{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:10px;
+    }
+
+    .card{
+        position:relative;
+
+        display:grid !important;
+        grid-template-columns:96px minmax(0,1fr) !important;
+        grid-template-rows:auto auto auto !important;
+
+        width:100%;
+        min-height:116px;
+
+        padding:10px;
+
+        border:1px solid var(--border);
+        border-radius:17px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255,255,255,.045),
+                rgba(255,255,255,.018)
+            );
+
+        box-shadow:none;
+
+        overflow:hidden;
+
+        transition:
+            transform .18s ease,
+            border-color .18s ease,
+            background .18s ease;
+    }
+
+    .card:hover{
+        transform:none;
+    }
+
+    .card:active{
+        transform:scale(.985);
+    }
+
+
+    /* Real brand artwork */
+
+    .brand-box{
+        grid-column:1;
+        grid-row:1 / 4;
+
+        width:96px;
+        height:96px;
+
+        margin:0;
+
+        display:grid;
+        place-items:center;
+
+        border-radius:14px;
+
+        background:#171a22;
+
+        border:1px solid rgba(255,255,255,.07);
+
+        overflow:hidden;
+    }
+
+    .brand-box img,
+    .brand-logo{
+        width:96px !important;
+        height:96px !important;
+
+        object-fit:cover !important;
+
+        border-radius:14px;
+    }
+
+
+    /* Category */
+
+    .brand{
+        grid-column:2;
+        grid-row:1;
+
+        margin:2px 34px 3px 2px;
+
+        color:var(--muted-2);
+
+        font-size:7px;
+        line-height:1;
+        font-weight:900;
+        letter-spacing:1.15px;
+        text-transform:uppercase;
+    }
+
+
+    /* Brand name */
+
+    .card h3{
+        grid-column:2;
+        grid-row:2;
+
+        min-width:0;
+
+        margin:0 34px 0 2px;
+
+        color:var(--text);
+
+        font-size:16px;
+        line-height:1.15;
+        letter-spacing:-.35px;
+        font-weight:900;
+
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+    }
+
+
+    /* Discount */
+
+    .discount{
+        grid-column:2;
+        grid-row:3;
+
+        width:max-content;
+
+        margin:6px 0 0 2px;
+        padding:0;
+
+        background:none;
+
+        color:var(--green);
+
+        font-size:11px;
+        line-height:1;
+        font-weight:950;
+    }
+
+
+    /* Remove the old "From ₹..." inline clutter */
+
+    .card > div[style*="font-size"]{
+        grid-column:2;
+
+        margin-left:2px !important;
+
+        color:var(--muted) !important;
+
+        font-size:8px !important;
+    }
+
+
+    /* Wishlist */
+
+    .wishlist-card-button{
+        position:absolute;
+
+        top:8px;
+        right:8px;
+
+        width:30px;
+        height:30px;
+
+        border-radius:9px;
+
+        background:rgba(7,8,12,.72);
+
+        border:1px solid var(--border-strong);
+
+        color:#c8cbd5;
+
+        font-size:17px;
+    }
+
+
+    /* Purchase button */
+
+    .buy{
+        position:absolute;
+
+        right:9px;
+        bottom:9px;
+
+        width:auto;
+
+        min-height:30px;
+
+        margin:0;
+        padding:0 11px;
+
+        border-radius:9px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(139,92,246,.20),
+                rgba(95,125,255,.15)
+            );
+
+        border:1px solid rgba(139,92,246,.30);
+
+        color:#cbbcff;
+
+        font-size:8px;
+        font-weight:900;
+    }
+
+    .buy:active{
+        transform:scale(.96);
+    }
+
+
+    /* =====================================================
+       PURCHASE MODAL
+    ===================================================== */
+
+    .overlay{
+        align-items:center !important;
+
+        padding:10px !important;
+    }
+
+    .product-panel{
+        width:100% !important;
+        max-width:none !important;
+
+        max-height:calc(100dvh - 20px) !important;
+
+        padding:20px !important;
+
+        border-radius:22px !important;
+
+        overflow-y:auto !important;
+
+        background:
+            linear-gradient(
+                145deg,
+                #191c26 0%,
+                #11131a 100%
+            ) !important;
+
+        border:1px solid rgba(255,255,255,.12) !important;
+
+        box-shadow:
+            0 30px 100px rgba(0,0,0,.65) !important;
+    }
+
+
+    /* Modal heading */
+
+    .product-panel .panel-header{
+        margin-bottom:18px;
+    }
+
+    .product-panel .panel-header h2{
+        margin:0;
+
+        font-size:27px;
+        line-height:1.05;
+        letter-spacing:-1.2px;
+    }
+
+    .product-panel .panel-header p{
+        margin-top:8px;
+
+        font-size:9px;
+        line-height:1.5;
+    }
+
+    .close-button{
+        width:38px;
+        height:38px;
+
+        border-radius:11px;
+    }
+
+
+    /* ---------- SELECTED BRAND ---------- */
+
+    .selected-brand{
+        min-height:70px;
+
+        margin-bottom:20px;
+
+        padding:8px 44px 8px 8px;
+
+        border-radius:14px;
+
+        background:#151821;
+
+        border:1px solid var(--border);
+    }
+
+    .selected-brand-logo{
+        width:54px;
+        height:54px;
+        flex-basis:54px;
+
+        border-radius:12px;
+
+        background:#f5f6f8;
+    }
+
+    .selected-brand-logo img{
+        width:43px;
+        height:43px;
+
+        object-fit:contain;
+    }
+
+    .selected-brand-name{
+        font-size:16px;
+        font-weight:900;
+    }
+
+    .selected-brand-subtitle{
+        margin-top:3px;
+        font-size:8px;
+    }
+
+    .wishlist-product-button{
+        width:32px;
+        height:32px;
+
+        right:8px;
+
+        border-radius:9px;
+    }
+
+
+    /* ---------- REMOVE REDUNDANT INFO BOX ---------- */
+
+    .product-info-box{
+        display:none !important;
+    }
+
+
+    /* ---------- TYPE ---------- */
+
+    .field-label{
+        margin:0 0 8px;
+
+        font-size:8px;
+        letter-spacing:1.4px;
+        font-weight:900;
+        text-transform:uppercase;
+    }
+
+    .mode-buttons{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+
+        gap:7px;
+
+        margin-bottom:18px;
+    }
+
+    .mode-button{
+        min-height:54px;
+
+        padding:9px 10px;
+
+        border-radius:12px;
+
+        text-align:left;
+    }
+
+    .mode-button strong{
+        font-size:10px;
+    }
+
+    .mode-button small{
+        margin-top:3px;
+        font-size:7px;
+    }
+
+
+    /* ---------- VALUE ---------- */
+
+    .fixed-values{
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+
+        gap:7px;
+    }
+
+    .value-button{
+        min-height:61px;
+
+        border-radius:12px;
+    }
+
+    .value-button strong{
+        font-size:15px;
+    }
+
+    .value-button small{
+        margin-top:3px;
+        font-size:7px;
+    }
+
+
+    /* ---------- CUSTOM AMOUNT ---------- */
+
+    .custom-area{
+        margin-bottom:12px;
+    }
+
+    .amount-input{
+        min-height:52px;
+
+        border-radius:12px;
+    }
+
+    .custom-input{
+        font-size:15px;
+    }
+
+    .input-hint{
+        margin-top:6px;
+        font-size:8px;
+    }
+
+
+    /* ---------- PRICE SUMMARY ---------- */
+
+    .price-preview{
+        margin-top:15px;
+        padding:14px;
+
+        border-radius:14px;
+
+        background:#171a24;
+
+        border:1px solid rgba(255,255,255,.06);
+    }
+
+    .preview-row{
+        min-height:27px;
+
+        font-size:9px;
+    }
+
+    .preview-total{
+        padding-top:3px;
+    }
+
+    .preview-total strong{
+        font-size:24px;
+        letter-spacing:-.7px;
+    }
+
+
+    /* ---------- ADD TO CART ---------- */
+
+    .product-panel .wide-primary{
+        width:100%;
+
+        min-height:48px;
+
+        margin-top:12px;
+
+        border-radius:12px;
+
+        font-size:10px;
+        font-weight:900;
+    }
 }
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
 
 @media(max-width:380px){
-  .cards{gap:8px;}
-  .card{padding:7px;}
-  .brand-box{height:96px;}
-  .brand-box img,.brand-logo{width:56px;height:56px;}
-  .card h3{font-size:12px;}
-}
+
+    .logo{
+        font-size:17px;
+    }
+
+    .header-action,
+    #loginButton,
+    #accountButton,
+    #cartButton,
+    .header-savings-button{
+        padding:0 8px;
+        font-size:8px;
+    }
+
+    .hero{
+        padding-left:15px;
+        padding-right:15px;
+    }
+
+    .hero h1{
+        font-size:38px;
+        letter-spacing:-2.4px;
+    }
+
+    .products{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+    .card{
+        grid-template-columns:84px minmax(0,1fr) !important;
+
+        min-height:104px;
+        padding:8px;
+    }
+
+    .brand-box{
+        width:84px;
+        height:84px;
+    }
+
+    .brand-box img,
+    .brand-logo{
+        width:84px !important;
+        height:84px !important;
+    }
+
+    .card h3{
+        font-size:14px;
+    }
+
+    .discount{
+        font-size:10px;
+    }
+
+    .buy{
+        min-height:28px;
+        padding:0 9px;
+        font-size:7px;
+    }
+
+    .product-panel{
+        padding:17px !important;
+    }
+
+    .product-panel .panel-header h2{
+        font-size:24px;
+    }
+       }
