@@ -1,6 +1,6 @@
 /* =====================================================
    GIFTCARDSTORE — MAIN APPLICATION
-   PREMIUM MARKETPLACE UI
+   PREMIUM MOBILE MARKETPLACE
 ===================================================== */
 
 window.GCS = window.GCS || {};
@@ -10,11 +10,8 @@ window.GCS = window.GCS || {};
    STORAGE
 ===================================================== */
 
-const GCS_CART_KEY =
-    "gcsCart";
-
-const GCS_WISHLIST_KEY =
-    "gcsWishlist";
+const GCS_CART_KEY = "gcsCart";
+const GCS_WISHLIST_KEY = "gcsWishlist";
 
 
 function readGCSStorage(key, fallback) {
@@ -92,11 +89,11 @@ function gcsEsc(value) {
     return typeof escapeHTML === "function"
         ? escapeHTML(value)
         : String(value ?? "")
-            .replace(/&/g,"&amp;")
-            .replace(/</g,"&lt;")
-            .replace(/>/g,"&gt;")
-            .replace(/"/g,"&quot;")
-            .replace(/'/g,"&#039;");
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
 
 }
 
@@ -303,12 +300,15 @@ GCS.getCartTotals = function () {
         price,
         savings,
         count: cart.reduce(
-            (a, item) =>
-                a +
-                Math.max(
-                    1,
-                    gcsNumber(item.quantity)
-                ),
+            function (a, item) {
+
+                return a +
+                    Math.max(
+                        1,
+                        gcsNumber(item.quantity)
+                    );
+
+            },
             0
         )
     };
@@ -343,7 +343,7 @@ GCS.updateCartCount = function () {
 GCS.addToCart = function () {
 
     const brand =
-        getBrand(
+        GCS.getBrand(
             GCS.selectedBrand
         );
 
@@ -367,16 +367,32 @@ GCS.addToCart = function () {
     }
 
     const discount =
-        getBrandDiscount(
-            GCS.selectedBrand,
-            GCS.selectedMode
-        );
+        typeof getBrandDiscount === "function"
+            ? getBrandDiscount(
+                GCS.selectedBrand,
+                GCS.selectedMode
+            )
+            : (
+                GCS.selectedMode === "custom"
+                    ? Number(
+                        brand.customDiscount || 0
+                    )
+                    : Number(
+                        brand.fixedDiscount || 0
+                    )
+            );
 
     const savings =
-        calculateSavings(
-            GCS.selectedValue,
-            discount
-        );
+        typeof calculateSavings === "function"
+            ? calculateSavings(
+                GCS.selectedValue,
+                discount
+            )
+            : (
+                GCS.selectedValue *
+                discount /
+                100
+            );
 
     const itemId =
         GCS.selectedBrand +
@@ -464,7 +480,7 @@ GCS.addToCart = function () {
 
 
 /* =====================================================
-   UPDATE QUANTITY
+   UPDATE CART QUANTITY
 ===================================================== */
 
 GCS.updateCartQuantity = function (
@@ -545,12 +561,18 @@ GCS.openCart = function () {
         );
 
     if (overlay) {
+
         overlay.style.display =
             "flex";
+
     }
 
 };
 
+
+/* =====================================================
+   RENDER CART
+===================================================== */
 
 GCS.renderCart = function () {
 
@@ -610,6 +632,7 @@ GCS.renderCart = function () {
 
     }
 
+
     container.innerHTML =
         cart.map(
             function (item) {
@@ -637,6 +660,7 @@ GCS.renderCart = function () {
 
                         </div>
 
+
                         <div class="cart-item-content">
 
                             <div class="cart-item-top">
@@ -654,22 +678,34 @@ GCS.renderCart = function () {
 
                                 </div>
 
+
                                 <div class="cart-item-price">
-                                    ${gcsMoney(item.price * quantity)}
+                                    ${gcsMoney(
+                                        item.price *
+                                        quantity
+                                    )}
                                 </div>
 
                             </div>
 
+
                             <div class="cart-item-save">
-                                Save ${gcsMoney(item.savings)}
-                                each
+                                Save ${gcsMoney(
+                                    item.savings
+                                )} each
                             </div>
+
 
                             <div class="cart-item-controls">
 
                                 <button
                                     class="qty-button"
-                                    onclick="GCS.updateCartQuantity(decodeURIComponent('${token}'),-1)">
+                                    onclick="
+                                        GCS.updateCartQuantity(
+                                            decodeURIComponent('${token}'),
+                                            -1
+                                        )
+                                    ">
                                     −
                                 </button>
 
@@ -679,13 +715,22 @@ GCS.renderCart = function () {
 
                                 <button
                                     class="qty-button"
-                                    onclick="GCS.updateCartQuantity(decodeURIComponent('${token}'),1)">
+                                    onclick="
+                                        GCS.updateCartQuantity(
+                                            decodeURIComponent('${token}'),
+                                            1
+                                        )
+                                    ">
                                     +
                                 </button>
 
                                 <button
                                     class="remove-cart"
-                                    onclick="GCS.removeFromCart(decodeURIComponent('${token}'))">
+                                    onclick="
+                                        GCS.removeFromCart(
+                                            decodeURIComponent('${token}')
+                                        )
+                                    ">
                                     Remove
                                 </button>
 
@@ -722,6 +767,7 @@ GCS.renderCart = function () {
 
             </div>
 
+
             <div class="cart-summary-row cart-summary-saving">
 
                 <span>
@@ -733,6 +779,7 @@ GCS.renderCart = function () {
                 </strong>
 
             </div>
+
 
             <div class="cart-summary-row cart-summary-total">
 
@@ -749,6 +796,7 @@ GCS.renderCart = function () {
         `;
 
     }
+
 
     if (button) {
         button.disabled = false;
@@ -778,6 +826,7 @@ GCS.checkoutCart = function () {
 
     }
 
+
     if (!GCS.isLoggedIn()) {
 
         window.checkoutWaitingForLogin =
@@ -791,6 +840,7 @@ GCS.checkoutCart = function () {
 
     }
 
+
     GCS.renderCheckout();
 
     GCS.closeAllOverlays();
@@ -801,20 +851,22 @@ GCS.checkoutCart = function () {
         );
 
     if (overlay) {
+
         overlay.style.display =
             "flex";
+
     }
 
 };
 
 
-/*
- * Compatibility with account.js.
- */
-
 GCS.openCheckout =
     GCS.checkoutCart;
 
+
+/* =====================================================
+   RENDER CHECKOUT
+===================================================== */
 
 GCS.renderCheckout = function () {
 
@@ -843,6 +895,7 @@ GCS.renderCheckout = function () {
     const cart =
         GCS.getCart();
 
+
     container.innerHTML =
         cart.map(
             function (item) {
@@ -862,11 +915,15 @@ GCS.renderCheckout = function () {
                         <div>
 
                             <div class="checkout-line-name">
-                                ${gcsEsc(item.brand)}
+                                ${gcsEsc(
+                                    item.brand
+                                )}
                             </div>
 
                             <div class="checkout-line-meta">
-                                ${gcsMoney(item.value)}
+                                ${gcsMoney(
+                                    item.value
+                                )}
                                 × ${quantity}
                             </div>
 
@@ -874,7 +931,8 @@ GCS.renderCheckout = function () {
 
                         <div class="checkout-line-price">
                             ${gcsMoney(
-                                item.price * quantity
+                                item.price *
+                                quantity
                             )}
                         </div>
 
@@ -902,10 +960,13 @@ GCS.renderCheckout = function () {
                 </span>
 
                 <strong>
-                    ${gcsMoney(totals.value)}
+                    ${gcsMoney(
+                        totals.value
+                    )}
                 </strong>
 
             </div>
+
 
             <div class="checkout-total-row">
 
@@ -914,10 +975,13 @@ GCS.renderCheckout = function () {
                 </span>
 
                 <strong>
-                    − ${gcsMoney(totals.savings)}
+                    − ${gcsMoney(
+                        totals.savings
+                    )}
                 </strong>
 
             </div>
+
 
             <div class="checkout-total-row checkout-total-final">
 
@@ -926,7 +990,9 @@ GCS.renderCheckout = function () {
                 </span>
 
                 <strong>
-                    ${gcsMoney(totals.price)}
+                    ${gcsMoney(
+                        totals.price
+                    )}
                 </strong>
 
             </div>
@@ -955,11 +1021,14 @@ GCS.openProduct = function (
 ) {
 
     const brand =
-        getBrand(brandId);
+        GCS.getBrand(
+            brandId
+        );
 
     if (!brand) {
         return;
     }
+
 
     GCS.selectedBrand =
         brandId;
@@ -973,6 +1042,7 @@ GCS.openProduct = function (
     GCS.selectedPrice =
         0;
 
+
     const overlay =
         document.getElementById(
             "productOverlay"
@@ -982,7 +1052,9 @@ GCS.openProduct = function (
         return;
     }
 
+
     GCS.closeAllOverlays();
+
 
     const name =
         document.getElementById(
@@ -1014,10 +1086,14 @@ GCS.openProduct = function (
             "customAmount"
         );
 
+
     if (name) {
+
         name.textContent =
             brand.name;
+
     }
+
 
     if (logo) {
 
@@ -1030,66 +1106,111 @@ GCS.openProduct = function (
     }
 
 
+    /* =================================================
+       CLEAN PRODUCT INFORMATION
+       NO "UP TO"
+       NO FAKE MINIMUM
+    ================================================= */
+
     if (info) {
 
-        const fixed =
-            brand.fixedValues
-                .map(
-                    value =>
-                        gcsMoney(value)
-                )
-                .join(" · ");
+        const fixedDiscount =
+            Number(
+                brand.fixedDiscount || 0
+            );
 
-        const custom =
-            brand.custom &&
-            brand.custom.enabled
-                ? "Custom values available"
-                : "Preset values only";
+        const customDiscount =
+            Number(
+                brand.customDiscount || 0
+            );
+
+        const activeDiscount =
+            GCS.selectedMode === "custom"
+                ? customDiscount
+                : fixedDiscount;
+
 
         info.innerHTML = `
 
-            <strong>
-                ${gcsEsc(brand.name)}
-            </strong>
+            <div class="product-rate-row">
 
-            · ${gcsEsc(brand.category)}
+                <span>
+                    ${gcsEsc(
+                        brand.category ||
+                        "Gift Card"
+                    )}
+                </span>
 
-            · Fixed values:
-            ${gcsEsc(fixed)}
+                <strong>
+                    SAVE ${activeDiscount}%
+                </strong>
 
-            · ${custom}
-
-            · Up to
-            ${Math.max(
-                brand.fixedDiscount || 0,
-                brand.customDiscount || 0
-            )}% off
+            </div>
 
         `;
 
     }
 
 
+    /* =================================================
+       FIXED VALUES
+       ONLY USE REAL VALUES FROM DATA
+    ================================================= */
+
     if (values) {
 
         values.innerHTML = "";
 
-        brand.fixedValues.forEach(
+
+        const fixedValues =
+            Array.isArray(
+                brand.fixedValues
+            )
+                ? brand.fixedValues
+                : [];
+
+
+        fixedValues.forEach(
             function (value, index) {
 
-                const price =
-                    calculatePrice(
-                        value,
-                        brand.fixedDiscount
+                const discount =
+                    Number(
+                        brand.fixedDiscount || 0
                     );
+
+
+                const price =
+                    typeof calculatePrice ===
+                    "function"
+
+                        ? calculatePrice(
+                            value,
+                            discount
+                        )
+
+                        : (
+                            value -
+                            (
+                                value *
+                                discount /
+                                100
+                            )
+                        );
+
 
                 const button =
                     document.createElement(
                         "button"
                     );
 
+
                 button.className =
                     "value-button";
+
+
+                button.type =
+                    "button";
+
 
                 button.innerHTML = `
 
@@ -1103,13 +1224,14 @@ GCS.openProduct = function (
 
                 `;
 
+
                 button.addEventListener(
                     "click",
                     function () {
 
                         document
                             .querySelectorAll(
-                                ".value-button"
+                                "#fixedValues .value-button"
                             )
                             .forEach(
                                 item =>
@@ -1118,9 +1240,11 @@ GCS.openProduct = function (
                                     )
                             );
 
+
                         button.classList.add(
                             "active"
                         );
+
 
                         GCS.selectedMode =
                             "fixed";
@@ -1131,14 +1255,17 @@ GCS.openProduct = function (
                         GCS.selectedPrice =
                             price;
 
+
                         GCS.updatePreview();
 
                     }
                 );
 
+
                 values.appendChild(
                     button
                 );
+
 
                 if (index === 0) {
 
@@ -1160,6 +1287,10 @@ GCS.openProduct = function (
     }
 
 
+    /* =================================================
+       CUSTOM MODE
+    ================================================= */
+
     if (customButton) {
 
         const enabled =
@@ -1167,6 +1298,7 @@ GCS.openProduct = function (
                 brand.custom &&
                 brand.custom.enabled
             );
+
 
         customButton.style.display =
             enabled
@@ -1179,10 +1311,12 @@ GCS.openProduct = function (
     if (customAmount) {
 
         customAmount.min =
-            brand.custom?.min || 100;
+            brand.custom?.min ||
+            100;
 
         customAmount.max =
-            brand.custom?.max || 10000;
+            brand.custom?.max ||
+            10000;
 
         customAmount.value =
             "";
@@ -1195,9 +1329,26 @@ GCS.openProduct = function (
             "customArea"
         );
 
+
     if (customArea) {
+
         customArea.style.display =
             "none";
+
+    }
+
+
+    const fixedArea =
+        document.getElementById(
+            "fixedArea"
+        );
+
+
+    if (fixedArea) {
+
+        fixedArea.style.display =
+            "block";
+
     }
 
 
@@ -1206,15 +1357,29 @@ GCS.openProduct = function (
             "fixedMode"
         );
 
+
     if (fixedButton) {
+
         fixedButton.classList.add(
             "active"
         );
+
+    }
+
+
+    if (customButton) {
+
+        customButton.classList.remove(
+            "active"
+        );
+
     }
 
 
     GCS.updateWishlistProductButton();
+
     GCS.updatePreview();
+
 
     overlay.style.display =
         "flex";
@@ -1223,7 +1388,7 @@ GCS.openProduct = function (
 
 
 /* =====================================================
-   PRODUCT CLOSE
+   CLOSE PRODUCT
 ===================================================== */
 
 GCS.closeProduct = function () {
@@ -1234,15 +1399,17 @@ GCS.closeProduct = function () {
         );
 
     if (overlay) {
+
         overlay.style.display =
             "none";
+
     }
 
 };
 
 
 /* =====================================================
-   MODE
+   PRODUCT MODE
 ===================================================== */
 
 GCS.selectMode = function (
@@ -1250,13 +1417,14 @@ GCS.selectMode = function (
 ) {
 
     const brand =
-        getBrand(
+        GCS.getBrand(
             GCS.selectedBrand
         );
 
     if (!brand) {
         return;
     }
+
 
     if (
         mode === "custom" &&
@@ -1267,8 +1435,10 @@ GCS.selectMode = function (
 
     }
 
+
     GCS.selectedMode =
         mode;
+
 
     const fixedArea =
         document.getElementById(
@@ -1290,6 +1460,7 @@ GCS.selectMode = function (
             "customMode"
         );
 
+
     if (fixedArea) {
 
         fixedArea.style.display =
@@ -1298,6 +1469,7 @@ GCS.selectMode = function (
                 : "none";
 
     }
+
 
     if (customArea) {
 
@@ -1308,6 +1480,7 @@ GCS.selectMode = function (
 
     }
 
+
     if (fixedButton) {
 
         fixedButton.classList.toggle(
@@ -1316,6 +1489,7 @@ GCS.selectMode = function (
         );
 
     }
+
 
     if (customButton) {
 
@@ -1326,6 +1500,7 @@ GCS.selectMode = function (
 
     }
 
+
     if (mode === "custom") {
 
         GCS.selectedValue =
@@ -1335,6 +1510,7 @@ GCS.selectMode = function (
             0;
 
     }
+
 
     GCS.updatePreview();
 
@@ -1353,7 +1529,7 @@ GCS.updateCustomPrice = function () {
         );
 
     const brand =
-        getBrand(
+        GCS.getBrand(
             GCS.selectedBrand
         );
 
@@ -1361,10 +1537,16 @@ GCS.updateCustomPrice = function () {
         return;
     }
 
+
     const amount =
-        Number(input.value);
+        Number(
+            input.value
+        );
+
 
     if (
+        typeof isValidProductValue ===
+            "function" &&
         !isValidProductValue(
             GCS.selectedBrand,
             amount,
@@ -1384,14 +1566,53 @@ GCS.updateCustomPrice = function () {
 
     }
 
+
+    if (
+        !amount ||
+        amount <= 0
+    ) {
+
+        GCS.selectedValue =
+            0;
+
+        GCS.selectedPrice =
+            0;
+
+        GCS.updatePreview();
+
+        return;
+
+    }
+
+
     GCS.selectedValue =
         amount;
 
+
     GCS.selectedPrice =
-        calculatePrice(
-            amount,
-            brand.customDiscount
-        );
+        typeof calculatePrice ===
+            "function"
+
+            ? calculatePrice(
+                amount,
+                Number(
+                    brand.customDiscount ||
+                    0
+                )
+            )
+
+            : (
+                amount -
+                (
+                    amount *
+                    Number(
+                        brand.customDiscount ||
+                        0
+                    ) /
+                    100
+                )
+            );
+
 
     GCS.updatePreview();
 
@@ -1405,7 +1626,7 @@ GCS.updateCustomPrice = function () {
 GCS.updatePreview = function () {
 
     const brand =
-        getBrand(
+        GCS.getBrand(
             GCS.selectedBrand
         );
 
@@ -1413,11 +1634,31 @@ GCS.updatePreview = function () {
         return;
     }
 
-    const discount =
-        getBrandDiscount(
-            GCS.selectedBrand,
-            GCS.selectedMode
-        );
+
+    let discount = 0;
+
+
+    if (
+        GCS.selectedMode ===
+        "custom"
+    ) {
+
+        discount =
+            Number(
+                brand.customDiscount ||
+                0
+            );
+
+    } else {
+
+        discount =
+            Number(
+                brand.fixedDiscount ||
+                0
+            );
+
+    }
+
 
     const value =
         document.getElementById(
@@ -1434,6 +1675,7 @@ GCS.updatePreview = function () {
             "previewPrice"
         );
 
+
     if (value) {
 
         value.textContent =
@@ -1445,12 +1687,14 @@ GCS.updatePreview = function () {
 
     }
 
+
     if (discountElement) {
 
         discountElement.textContent =
             discount + "%";
 
     }
+
 
     if (price) {
 
@@ -1490,7 +1734,9 @@ GCS.isWishlisted = function (
 ) {
 
     return GCS.getWishlist()
-        .includes(brandId);
+        .includes(
+            brandId
+        );
 
 };
 
@@ -1502,6 +1748,7 @@ GCS.toggleWishlist = function (
     let list =
         GCS.getWishlist();
 
+
     if (list.includes(brandId)) {
 
         list =
@@ -1509,6 +1756,7 @@ GCS.toggleWishlist = function (
                 id =>
                     id !== brandId
             );
+
 
         showNotice(
             "Removed from your saved brands.",
@@ -1518,7 +1766,10 @@ GCS.toggleWishlist = function (
 
     } else {
 
-        list.push(brandId);
+        list.push(
+            brandId
+        );
+
 
         showNotice(
             "Saved to your wishlist.",
@@ -1528,12 +1779,15 @@ GCS.toggleWishlist = function (
 
     }
 
+
     writeGCSStorage(
         GCS_WISHLIST_KEY,
         list
     );
 
+
     GCS.updateWishlistProductButton();
+
 
     if (
         typeof GCS.renderProducts ===
@@ -1556,6 +1810,7 @@ GCS.toggleWishlistSelected =
             return;
         }
 
+
         GCS.toggleWishlist(
             GCS.selectedBrand
         );
@@ -1571,19 +1826,23 @@ GCS.updateWishlistProductButton =
                 "wishlistProductButton"
             );
 
+
         if (!button) {
             return;
         }
+
 
         const active =
             GCS.isWishlisted(
                 GCS.selectedBrand
             );
 
+
         button.classList.toggle(
             "active",
             active
         );
+
 
         button.textContent =
             active
@@ -1605,8 +1864,10 @@ GCS.applyFilters = function () {
             ? getAllBrands()
             : [];
 
+
     const category =
         GCS.activeCategory;
+
 
     const query =
         GCS.searchQuery
@@ -1623,14 +1884,28 @@ GCS.applyFilters = function () {
                     brand.category ===
                         category;
 
+
+                const name =
+                    String(
+                        brand.name ||
+                        ""
+                    )
+                    .toLowerCase();
+
+
+                const brandCategory =
+                    String(
+                        brand.category ||
+                        ""
+                    )
+                    .toLowerCase();
+
+
                 const searchMatch =
                     !query ||
-                    brand.name
-                        .toLowerCase()
-                        .includes(query) ||
-                    brand.category
-                        .toLowerCase()
-                        .includes(query);
+                    name.includes(query) ||
+                    brandCategory.includes(query);
+
 
                 return (
                     categoryMatch &&
@@ -1650,6 +1925,7 @@ GCS.applyFilters = function () {
         document.getElementById(
             "searchInfo"
         );
+
 
     if (info) {
 
@@ -1691,12 +1967,18 @@ GCS.clearSearch = function () {
             "search"
         );
 
+
     if (input) {
-        input.value = "";
+
+        input.value =
+            "";
+
     }
+
 
     GCS.searchQuery =
         "";
+
 
     GCS.applyFilters();
 
@@ -1710,6 +1992,7 @@ GCS.filterCategory = function (
 
     GCS.activeCategory =
         category;
+
 
     document
         .querySelectorAll(
@@ -1725,6 +2008,7 @@ GCS.filterCategory = function (
             }
         );
 
+
     if (button) {
 
         button.classList.add(
@@ -1733,6 +2017,7 @@ GCS.filterCategory = function (
 
     }
 
+
     GCS.applyFilters();
 
 };
@@ -1740,6 +2025,7 @@ GCS.filterCategory = function (
 
 /* =====================================================
    RENDER PRODUCTS
+   PREMIUM MOBILE LIST
 ===================================================== */
 
 GCS.renderProducts = function (
@@ -1751,9 +2037,11 @@ GCS.renderProducts = function (
             "cards"
         );
 
+
     if (!container) {
         return;
     }
+
 
     const list =
         brands ||
@@ -1764,6 +2052,10 @@ GCS.renderProducts = function (
                 : []
         );
 
+
+    /* =================================================
+       EMPTY
+    ================================================= */
 
     if (!list.length) {
 
@@ -1792,124 +2084,376 @@ GCS.renderProducts = function (
     }
 
 
-    container.innerHTML =
-        list.map(
-            function (brand) {
+    /* =================================================
+       GROUP BY CATEGORY
+    ================================================= */
 
-                const discount =
-                    Math.max(
-                        brand.fixedDiscount || 0,
-                        brand.customDiscount || 0
-                    );
-
-                const active =
-                    GCS.isWishlisted(
-                        brand.id
-                    );
-
-                const minimum =
-                    brand.fixedValues?.length
-                        ? Math.min(
-                            ...brand.fixedValues
-                        )
-                        : 0;
+    const groups = {};
 
 
-                return `
+    list.forEach(
+        function (brand) {
 
-                    <article
-                        class="card"
-                        data-brand-id="${gcsEsc(
-                            brand.id
-                        )}">
-
-                        <button
-                            class="wishlist-card-button ${
-                                active
-                                    ? "active"
-                                    : ""
-                            }"
-                            onclick="
-                                event.stopPropagation();
-                                GCS.toggleWishlist('${gcsEsc(
-                                    brand.id
-                                )}')
-                            "
-                            aria-label="Save ${gcsEsc(
-                                brand.name
-                            )}">
-
-                            ${active ? "♥" : "♡"}
-
-                        </button>
+            const category =
+                brand.category ||
+                "Other";
 
 
-                        <div class="brand-box">
+            if (!groups[category]) {
 
-                            <img
-                                class="brand-logo"
-                                src="${gcsEsc(
-                                    brand.logo
-                                )}"
-                                alt="${gcsEsc(
-                                    brand.name
-                                )}"
-                                loading="lazy">
-
-                        </div>
-
-
-                        <div class="brand">
-                            ${gcsEsc(
-                                brand.category
-                            )}
-                        </div>
-
-
-                        <h3>
-                            ${gcsEsc(
-                                brand.name
-                            )}
-                        </h3>
-
-
-                        <div class="discount">
-                            Up to ${discount}% off
-                        </div>
-
-
-                        <div class="card-min-value"
-                             style="
-                                color:var(--muted);
-                                font-size:10px;
-                                margin-bottom:8px;
-                             ">
-                            From ${gcsMoney(minimum)}
-                        </div>
-
-
-                        <button
-                            class="buy"
-                            type="button">
-                            View Gift Cards
-                        </button>
-
-                    </article>
-
-                `;
+                groups[category] =
+                    [];
 
             }
-        )
-        .join("");
 
+
+            groups[category].push(
+                brand
+            );
+
+        }
+    );
+
+
+    const categoryOrder = [
+
+        "Shopping",
+        "Grocery",
+        "Food",
+        "Fashion",
+        "Beauty",
+        "Entertainment",
+        "Travel",
+        "Electronics",
+        "Home",
+        "Kids",
+        "Sports",
+        "Fitness",
+        "Other"
+
+    ];
+
+
+    const orderedCategories = [];
+
+
+    categoryOrder.forEach(
+        function (category) {
+
+            if (
+                groups[category] &&
+                groups[category].length
+            ) {
+
+                orderedCategories.push(
+                    category
+                );
+
+            }
+
+        }
+    );
+
+
+    Object.keys(groups)
+        .forEach(
+            function (category) {
+
+                if (
+                    !orderedCategories.includes(
+                        category
+                    )
+                ) {
+
+                    orderedCategories.push(
+                        category
+                    );
+
+                }
+
+            }
+        );
+
+
+    /* =================================================
+       CATEGORY TITLES
+    ================================================= */
+
+    const categoryTitles = {
+
+        Shopping:
+            "Shopping",
+
+        Grocery:
+            "Grocery",
+
+        Food:
+            "Food & Dining",
+
+        Fashion:
+            "Fashion",
+
+        Beauty:
+            "Beauty",
+
+        Entertainment:
+            "Entertainment",
+
+        Travel:
+            "Travel",
+
+        Electronics:
+            "Electronics",
+
+        Home:
+            "Home & Living",
+
+        Kids:
+            "Kids & Family",
+
+        Sports:
+            "Sports",
+
+        Fitness:
+            "Fitness",
+
+        Other:
+            "Other"
+
+    };
+
+
+    let html =
+        "";
+
+
+    /* =================================================
+       BUILD CATEGORY SECTIONS
+    ================================================= */
+
+    orderedCategories.forEach(
+        function (category) {
+
+            const categoryBrands =
+                groups[category];
+
+
+            html += `
+
+                <section
+                    class="brand-category-section"
+                    data-category="${gcsEsc(
+                        category
+                    )}">
+
+                    <div class="brand-category-heading">
+
+                        <div>
+
+                            <div class="brand-category-eyebrow">
+                                EXPLORE
+                            </div>
+
+                            <h2>
+                                ${gcsEsc(
+                                    categoryTitles[
+                                        category
+                                    ] ||
+                                    category
+                                )}
+                            </h2>
+
+                        </div>
+
+
+                        <span class="brand-category-count">
+                            ${categoryBrands.length}
+                        </span>
+
+                    </div>
+
+
+                    <div class="brand-category-list">
+
+            `;
+
+
+            /* =========================================
+               BRAND CARDS
+            ========================================= */
+
+            categoryBrands.forEach(
+                function (brand) {
+
+                    /*
+                     * IMPORTANT:
+                     * fixedDiscount is the exact
+                     * customer-facing rate.
+                     *
+                     * Example:
+                     * 6% means SAVE 6%.
+                     *
+                     * Never display "Up to".
+                     */
+
+                    const discount =
+                        Number(
+                            brand.fixedDiscount ||
+                            brand.customDiscount ||
+                            0
+                        );
+
+
+                    const active =
+                        GCS.isWishlisted(
+                            brand.id
+                        );
+
+
+                    html += `
+
+                        <article
+                            class="card premium-brand-card"
+                            data-brand-id="${gcsEsc(
+                                brand.id
+                            )}">
+
+
+                            <div class="brand-card-image">
+
+                                <img
+                                    class="brand-logo"
+                                    src="${gcsEsc(
+                                        brand.logo
+                                    )}"
+                                    alt="${gcsEsc(
+                                        brand.name
+                                    )}"
+                                    loading="lazy">
+
+                            </div>
+
+
+                            <div class="brand-card-content">
+
+
+                                <div class="brand-card-top">
+
+                                    <span class="brand-card-category">
+                                        ${gcsEsc(
+                                            brand.category ||
+                                            ""
+                                        )}
+                                    </span>
+
+
+                                    <button
+                                        class="wishlist-card-button ${
+                                            active
+                                                ? "active"
+                                                : ""
+                                        }"
+                                        type="button"
+                                        onclick="
+                                            event.stopPropagation();
+                                            GCS.toggleWishlist('${gcsEsc(
+                                                brand.id
+                                            )}')
+                                        "
+                                        aria-label="Save ${gcsEsc(
+                                            brand.name
+                                        )}">
+
+                                        ${
+                                            active
+                                                ? "♥"
+                                                : "♡"
+                                        }
+
+                                    </button>
+
+                                </div>
+
+
+                                <h3 class="brand-card-name">
+
+                                    ${gcsEsc(
+                                        brand.name
+                                    )}
+
+                                </h3>
+
+
+                                <div class="brand-card-offer">
+
+                                    <span>
+                                        SAVE
+                                    </span>
+
+                                    <strong>
+                                        ${discount}%
+                                    </strong>
+
+                                    <span class="brand-card-arrow">
+                                        →
+                                    </span>
+
+                                </div>
+
+
+                                <button
+                                    class="brand-card-purchase"
+                                    type="button">
+
+                                    Buy gift card
+
+                                    <span>
+                                        →
+                                    </span>
+
+                                </button>
+
+
+                            </div>
+
+                        </article>
+
+                    `;
+
+                }
+            );
+
+
+            html += `
+
+                    </div>
+
+                </section>
+
+            `;
+
+        }
+    );
+
+
+    container.innerHTML =
+        html;
+
+
+    /* =================================================
+       CARD INTERACTIONS
+    ================================================= */
 
     container
-        .querySelectorAll(".card")
+        .querySelectorAll(
+            ".premium-brand-card"
+        )
         .forEach(
             function (card) {
 
                 const brandId =
                     card.dataset.brandId;
+
 
                 card.addEventListener(
                     "click",
@@ -1921,6 +2465,30 @@ GCS.renderProducts = function (
 
                     }
                 );
+
+
+                const purchaseButton =
+                    card.querySelector(
+                        ".brand-card-purchase"
+                    );
+
+
+                if (purchaseButton) {
+
+                    purchaseButton.addEventListener(
+                        "click",
+                        function (event) {
+
+                            event.stopPropagation();
+
+                            GCS.openProduct(
+                                brandId
+                            );
+
+                        }
+                    );
+
+                }
 
             }
         );
@@ -1939,10 +2507,12 @@ GCS.updateHeader = function () {
             "loginButton"
         );
 
+
     const account =
         document.getElementById(
             "accountButton"
         );
+
 
     const loggedIn =
         GCS.isLoggedIn();
@@ -1984,9 +2554,12 @@ GCS.closeSuccess = function () {
             "successOverlay"
         );
 
+
     if (overlay) {
+
         overlay.style.display =
             "none";
+
     }
 
 };
@@ -2003,20 +2576,27 @@ GCS.clearEmailError = function () {
             "email"
         );
 
+
     const error =
         document.getElementById(
             "emailError"
         );
 
+
     if (input) {
+
         input.classList.remove(
             "error"
         );
+
     }
 
+
     if (error) {
+
         error.style.display =
             "none";
+
     }
 
 };
@@ -2043,8 +2623,10 @@ GCS.createOrder = function () {
     const account =
         GCS.getAccount();
 
+
     const cart =
         GCS.getCart();
+
 
     if (!cart.length) {
 
@@ -2063,6 +2645,7 @@ GCS.createOrder = function () {
         document.getElementById(
             "email"
         );
+
 
     const email =
         emailInput
@@ -2083,24 +2666,27 @@ GCS.createOrder = function () {
                 "emailError"
             );
 
+
         if (error) {
+
             error.style.display =
                 "block";
+
         }
 
+
         if (emailInput) {
+
             emailInput.classList.add(
                 "error"
             );
+
         }
+
 
         return;
 
     }
-
-
-    const totals =
-        GCS.getCartTotals();
 
 
     const stamp =
@@ -2110,7 +2696,8 @@ GCS.createOrder = function () {
 
 
     const batchId =
-        "GCS-" + stamp;
+        "GCS-" +
+        stamp;
 
 
     cart.forEach(
@@ -2152,7 +2739,8 @@ GCS.createOrder = function () {
                     ),
 
                 discount:
-                    item.discount + "%",
+                    item.discount +
+                    "%",
 
                 savings:
                     gcsMoney(
@@ -2182,7 +2770,9 @@ GCS.createOrder = function () {
                 "function"
             ) {
 
-                saveOrder(order);
+                saveOrder(
+                    order
+                );
 
             }
 
@@ -2190,7 +2780,10 @@ GCS.createOrder = function () {
     );
 
 
-    GCS.saveCart([]);
+    GCS.saveCart(
+        []
+    );
+
 
     GCS.closeAllOverlays();
 
@@ -2200,9 +2793,12 @@ GCS.createOrder = function () {
             "orderId"
         );
 
+
     if (orderId) {
+
         orderId.textContent =
             batchId;
+
     }
 
 
@@ -2211,9 +2807,12 @@ GCS.createOrder = function () {
             "successOverlay"
         );
 
+
     if (success) {
+
         success.style.display =
             "flex";
+
     }
 
 
@@ -2223,12 +2822,13 @@ GCS.createOrder = function () {
 
 
 /* =====================================================
-   START
+   START APPLICATION
 ===================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
     function () {
+
 
         if (
             typeof createAccountModal ===
@@ -2250,9 +2850,12 @@ document.addEventListener(
                 "loginButton"
             );
 
+
         if (login) {
+
             login.onclick =
                 GCS.openLogin;
+
         }
 
 
@@ -2261,9 +2864,12 @@ document.addEventListener(
                 "accountButton"
             );
 
+
         if (account) {
+
             account.onclick =
                 GCS.openAccount;
+
         }
 
 
@@ -2271,6 +2877,7 @@ document.addEventListener(
             document.getElementById(
                 "search"
             );
+
 
         if (search) {
 
@@ -2282,28 +2889,22 @@ document.addEventListener(
         }
 
 
-        setTimeout(
-            function () {
+        const count =
+            document.getElementById(
+                "heroBrandCount"
+            );
 
-                const count =
-                    document.getElementById(
-                        "heroBrandCount"
-                    );
 
-                if (
-                    count &&
-                    typeof getAllBrands ===
-                    "function"
-                ) {
+        if (
+            count &&
+            typeof getAllBrands ===
+            "function"
+        ) {
 
-                    count.textContent =
-                        getAllBrands().length;
+            count.textContent =
+                getAllBrands().length;
 
-                }
-
-            },
-            100
-        );
+        }
 
     }
 );
