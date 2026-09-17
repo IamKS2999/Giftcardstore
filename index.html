@@ -274,9 +274,8 @@
 
 </section>
 
-
 <!-- =====================================================
-     PRODUCT MODAL
+     PRODUCT MODAL — PREMIUM CONFIGURATOR
 ===================================================== -->
 
 <div
@@ -285,7 +284,7 @@
 
     <div class="panel product-panel">
 
-        <div class="panel-header">
+        <div class="product-config-header">
 
             <div>
                 <div class="panel-eyebrow">
@@ -297,13 +296,13 @@
                 </h2>
 
                 <p>
-                    Select a denomination or enter
-                    your own amount.
+                    Select a value and see your savings instantly.
                 </p>
             </div>
 
             <button
                 class="close-button"
+                type="button"
                 onclick="GCS.closeProduct()">
                 ×
             </button>
@@ -313,89 +312,240 @@
 
         <!-- BRAND -->
 
-        <div class="selected-brand">
+        <div class="config-section">
 
-            <div class="selected-brand-logo">
-
-                <img
-                    id="productLogo"
-                    src=""
-                    alt="">
-
+            <div class="config-label">
+                Brand
             </div>
 
-            <div>
+            <div class="config-brand">
 
-                <div
-                    class="selected-brand-name"
-                    id="productBrand">
-                    Amazon
+                <div class="config-brand-logo">
+                    <img
+                        id="productLogo"
+                        src=""
+                        alt="">
                 </div>
 
-                <div class="selected-brand-subtitle">
-                    Gift Card
+                <div class="config-brand-copy">
+
+                    <strong id="productBrand">
+                        Amazon
+                    </strong>
+
+                    <span>
+                        Gift Card
+                    </span>
+
                 </div>
+
+                <button
+                    id="wishlistProductButton"
+                    class="wishlist-product-button"
+                    type="button"
+                    aria-label="Save to wishlist"
+                    onclick="GCS.toggleWishlistSelected()">
+
+                    ♡
+
+                </button>
 
             </div>
-
-            <button
-                id="wishlistProductButton"
-                class="wishlist-product-button"
-                type="button"
-                onclick="GCS.toggleWishlistSelected()">
-                ♡
-            </button>
 
         </div>
 
 
-        <!-- PRODUCT INFO -->
+        <!-- TYPE -->
+
+        <div class="config-section">
+
+            <div class="config-label">
+                Gift Card Type
+            </div>
+
+            <div class="mode-buttons">
+
+                <button
+                    class="mode-button active"
+                    id="fixedMode"
+                    type="button"
+                    onclick="GCS.selectMode('fixed')">
+
+                    <span class="mode-icon">
+                        ₹
+                    </span>
+
+                    <span class="mode-copy">
+
+                        <strong>
+                            Fixed Value
+                        </strong>
+
+                        <small>
+                            Choose a preset
+                        </small>
+
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="mode-button"
+                    id="customMode"
+                    type="button"
+                    onclick="GCS.selectMode('custom')">
+
+                    <span class="mode-icon">
+                        ✎
+                    </span>
+
+                    <span class="mode-copy">
+
+                        <strong>
+                            Custom Value
+                        </strong>
+
+                        <small>
+                            Enter your amount
+                        </small>
+
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- VALUE -->
 
         <div
-            id="productInfo"
-            class="product-info-box">
+            class="config-section"
+            id="fixedArea">
+
+            <div class="config-label">
+                Value
+            </div>
+
+            <div
+                class="fixed-values"
+                id="fixedValues">
+            </div>
+
         </div>
 
 
-        <!-- MODE -->
+        <!-- CUSTOM VALUE -->
 
-        <div class="field-label">
-            Gift Card Type
+        <div
+            id="customArea"
+            class="custom-area"
+            style="display:none">
+
+            <div class="config-label">
+                Value
+            </div>
+
+            <div class="amount-input">
+
+                <span>
+                    ₹
+                </span>
+
+                <input
+                    id="customAmount"
+                    class="custom-input"
+                    type="number"
+                    min="100"
+                    max="10000"
+                    placeholder="Enter amount"
+                    oninput="GCS.updateCustomPrice()">
+
+            </div>
+
+            <div class="input-hint">
+                Minimum ₹100 · Maximum ₹10,000
+            </div>
+
         </div>
 
-        <div class="mode-buttons">
 
-            <button
-                class="mode-button active"
-                id="fixedMode"
-                onclick="GCS.selectMode('fixed')">
+        <!-- PRICE -->
 
-                <strong>
-                    Fixed Value
+        <div class="config-summary">
+
+            <div class="summary-line">
+
+                <span>
+                    Gift Card Value
+                </span>
+
+                <strong id="previewValue">
+                    —
                 </strong>
 
-                <small>
-                    Choose a preset
-                </small>
+            </div>
 
-            </button>
 
-            <button
-                class="mode-button"
-                id="customMode"
-                onclick="GCS.selectMode('custom')">
+            <div class="summary-line">
 
-                <strong>
-                    Custom Value
+                <span>
+                    Your Discount
+                </span>
+
+                <strong
+                    id="previewDiscount"
+                    class="discount-text">
+                    0%
                 </strong>
 
-                <small>
-                    Enter your amount
-                </small>
+            </div>
 
-            </button>
+
+            <div class="summary-divider"></div>
+
+
+            <div class="summary-line summary-total">
+
+                <span>
+                    You Pay
+                </span>
+
+                <strong id="previewPrice">
+                    —
+                </strong>
+
+            </div>
 
         </div>
+
+
+        <button
+            class="wide-primary product-add-button"
+            type="button"
+            onclick="GCS.continueProduct()">
+
+            Add to Cart
+
+            <span>
+                →
+            </span>
+
+        </button>
+
+
+        <div class="config-note">
+            Digital gift card · Prototype checkout
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     CART
 
 
         <!-- FIXED -->
