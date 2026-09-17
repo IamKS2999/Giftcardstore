@@ -196,13 +196,14 @@ addBrand(
 );
 
 addBrand(
-    "Tire",
-    "Tire",
-    "Shopping",
-    "tire.co.in",
+    "Tira",
+    "Tira",
+    "Beauty",
+    "tirabeauty.com",
     4,
     6,
-    [500, 1000, 1500, 2000, 3000, 5000, 10000]
+    [500, 1000, 2000, 5000, 10000],
+    true
 );
 
 addBrand(
