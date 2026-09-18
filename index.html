@@ -7,7 +7,7 @@
 
 <title>GiftCardStore — Smart Gift Cards</title>
 
-<link rel="stylesheet" href="style.css?v=20260917-01">
+<link rel="stylesheet" href="css/style.css?v=20260917-01">
 
 </head>
 
@@ -274,21 +274,23 @@
 
 </section>
 
+
 <!-- =====================================================
-     PRODUCT MODAL — PREMIUM CONFIGURATOR
+     PRODUCT CONFIGURATOR
 ===================================================== -->
 
 <div
-    class="overlay"
-    id="productOverlay">
+    class="overlay gcs-product-overlay"
+    id="productOverlay"
+    aria-hidden="true">
 
-    <div class="panel product-panel">
+    <div class="panel product-panel gcs-product-panel">
 
-        <div class="product-config-header">
+        <div class="gcs-product-top">
 
             <div>
                 <div class="panel-eyebrow">
-                    Gift Card
+                    GIFT CARD
                 </div>
 
                 <h2>
@@ -301,351 +303,205 @@
             </div>
 
             <button
-                class="close-button"
+                class="close-button gcs-product-close"
                 type="button"
-                onclick="GCS.closeProduct()">
+                onclick="GCS.closeProduct()"
+                aria-label="Close">
                 ×
             </button>
 
         </div>
 
 
-        <!-- BRAND -->
+        <div class="gcs-product-layout">
 
-        <div class="config-section">
+            <aside class="gcs-product-brand-column">
 
-            <div class="config-label">
-                Brand
-            </div>
-
-            <div class="config-brand">
-
-                <div class="config-brand-logo">
-                    <img
-                        id="productLogo"
-                        src=""
-                        alt="">
+                <div class="gcs-step-label">
+                    BRAND
                 </div>
 
-                <div class="config-brand-copy">
+                <div class="gcs-brand-preview">
 
-                    <strong id="productBrand">
-                        Amazon
-                    </strong>
+                    <div class="gcs-brand-preview-logo">
+                        <img
+                            id="productLogo"
+                            src=""
+                            alt="">
+                    </div>
+
+                    <div class="gcs-brand-preview-copy">
+                        <strong id="productBrand">
+                            Amazon
+                        </strong>
+                        <span>
+                            Gift Card
+                        </span>
+                    </div>
+
+                    <button
+                        id="wishlistProductButton"
+                        class="wishlist-product-button gcs-wishlist"
+                        type="button"
+                        onclick="GCS.toggleWishlistSelected()"
+                        aria-label="Save brand">
+                        ♡
+                    </button>
+
+                </div>
+
+                <div class="gcs-brand-note">
+                    <span>✓</span>
+                    Instant savings preview
+                </div>
+
+            </aside>
+
+
+            <main class="gcs-product-config">
+
+                <div class="gcs-step-label">
+                    TYPE
+                </div>
+
+                <div class="mode-buttons gcs-mode-buttons">
+
+                    <button
+                        class="mode-button gcs-mode-card active"
+                        id="fixedMode"
+                        type="button"
+                        onclick="GCS.selectMode('fixed')">
+
+                        <span class="gcs-mode-icon">₹</span>
+
+                        <span class="gcs-mode-copy">
+                            <strong>
+                                Fixed value
+                            </strong>
+                            <small>
+                                Choose a preset
+                            </small>
+                        </span>
+
+                    </button>
+
+                    <button
+                        class="mode-button gcs-mode-card"
+                        id="customMode"
+                        type="button"
+                        onclick="GCS.selectMode('custom')">
+
+                        <span class="gcs-mode-icon">✦</span>
+
+                        <span class="gcs-mode-copy">
+                            <strong>
+                                Custom value
+                            </strong>
+                            <small>
+                                Enter your amount
+                            </small>
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <div class="gcs-step-label gcs-value-label">
+                    VALUE
+                </div>
+
+                <div id="fixedArea">
+
+                    <div
+                        class="fixed-values gcs-fixed-values"
+                        id="fixedValues">
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="customArea"
+                    class="custom-area gcs-custom-area"
+                    style="display:none">
+
+                    <div class="amount-input">
+                        <span>₹</span>
+
+                        <input
+                            id="customAmount"
+                            class="custom-input"
+                            type="number"
+                            min="100"
+                            max="10000"
+                            placeholder="Enter amount"
+                            oninput="GCS.updateCustomPrice()">
+                    </div>
+
+                    <div class="input-hint">
+                        Enter an amount within the available range.
+                    </div>
+
+                </div>
+
+
+                <div class="gcs-price-card">
+
+                    <div class="gcs-price-row">
+                        <span>
+                            Gift card value
+                        </span>
+                        <strong id="previewValue">
+                            —
+                        </strong>
+                    </div>
+
+                    <div class="gcs-price-row">
+                        <span>
+                            Your discount
+                        </span>
+                        <strong
+                            id="previewDiscount"
+                            class="gcs-green">
+                            0%
+                        </strong>
+                    </div>
+
+                    <div class="gcs-price-divider"></div>
+
+                    <div class="gcs-price-row gcs-price-total">
+                        <span>
+                            You pay
+                        </span>
+                        <strong id="previewPrice">
+                            —
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="wide-primary gcs-add-button"
+                    type="button"
+                    onclick="GCS.addToCart()">
 
                     <span>
-                        Gift Card
+                        Add to Cart
                     </span>
 
+                    <span>→</span>
+
+                </button>
+
+                <div class="gcs-prototype-note">
+                    Digital gift card · Prototype checkout
                 </div>
 
-                <button
-                    id="wishlistProductButton"
-                    class="wishlist-product-button"
-                    type="button"
-                    aria-label="Save to wishlist"
-                    onclick="GCS.toggleWishlistSelected()">
-
-                    ♡
-
-                </button>
-
-            </div>
+            </main>
 
         </div>
-
-
-        <!-- TYPE -->
-
-        <div class="config-section">
-
-            <div class="config-label">
-                Gift Card Type
-            </div>
-
-            <div class="mode-buttons">
-
-                <button
-                    class="mode-button active"
-                    id="fixedMode"
-                    type="button"
-                    onclick="GCS.selectMode('fixed')">
-
-                    <span class="mode-icon">
-                        ₹
-                    </span>
-
-                    <span class="mode-copy">
-
-                        <strong>
-                            Fixed Value
-                        </strong>
-
-                        <small>
-                            Choose a preset
-                        </small>
-
-                    </span>
-
-                </button>
-
-
-                <button
-                    class="mode-button"
-                    id="customMode"
-                    type="button"
-                    onclick="GCS.selectMode('custom')">
-
-                    <span class="mode-icon">
-                        ✎
-                    </span>
-
-                    <span class="mode-copy">
-
-                        <strong>
-                            Custom Value
-                        </strong>
-
-                        <small>
-                            Enter your amount
-                        </small>
-
-                    </span>
-
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- VALUE -->
-
-        <div
-            class="config-section"
-            id="fixedArea">
-
-            <div class="config-label">
-                Value
-            </div>
-
-            <div
-                class="fixed-values"
-                id="fixedValues">
-            </div>
-
-        </div>
-
-
-        <!-- CUSTOM VALUE -->
-
-        <div
-            id="customArea"
-            class="custom-area"
-            style="display:none">
-
-            <div class="config-label">
-                Value
-            </div>
-
-            <div class="amount-input">
-
-                <span>
-                    ₹
-                </span>
-
-                <input
-                    id="customAmount"
-                    class="custom-input"
-                    type="number"
-                    min="100"
-                    max="10000"
-                    placeholder="Enter amount"
-                    oninput="GCS.updateCustomPrice()">
-
-            </div>
-
-            <div class="input-hint">
-                Minimum ₹100 · Maximum ₹10,000
-            </div>
-
-        </div>
-
-
-        <!-- PRICE -->
-
-        <div class="config-summary">
-
-            <div class="summary-line">
-
-                <span>
-                    Gift Card Value
-                </span>
-
-                <strong id="previewValue">
-                    —
-                </strong>
-
-            </div>
-
-
-            <div class="summary-line">
-
-                <span>
-                    Your Discount
-                </span>
-
-                <strong
-                    id="previewDiscount"
-                    class="discount-text">
-                    0%
-                </strong>
-
-            </div>
-
-
-            <div class="summary-divider"></div>
-
-
-            <div class="summary-line summary-total">
-
-                <span>
-                    You Pay
-                </span>
-
-                <strong id="previewPrice">
-                    —
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <button
-            class="wide-primary product-add-button"
-            type="button"
-            onclick="GCS.continueProduct()">
-
-            Add to Cart
-
-            <span>
-                →
-            </span>
-
-        </button>
-
-
-        <div class="config-note">
-            Digital gift card · Prototype checkout
-        </div>
-
-    </div>
-
-</div>
-
-<!-- =====================================================
-     CART
-
-
-        <!-- FIXED -->
-
-        <div id="fixedArea">
-
-            <div
-                class="fixed-values"
-                id="fixedValues">
-            </div>
-
-        </div>
-
-
-        <!-- CUSTOM -->
-
-        <div
-            id="customArea"
-            class="custom-area"
-            style="display:none">
-
-            <div class="amount-input">
-
-                <span>
-                    ₹
-                </span>
-
-                <input
-                    id="customAmount"
-                    class="custom-input"
-                    type="number"
-                    min="100"
-                    max="10000"
-                    placeholder="Enter amount"
-                    oninput="GCS.updateCustomPrice()">
-
-            </div>
-
-            <div class="input-hint">
-                Minimum ₹100 · Maximum ₹10,000
-            </div>
-
-        </div>
-
-
-        <!-- PREVIEW -->
-
-        <div class="price-preview">
-
-            <div class="preview-row">
-
-                <span>
-                    Gift Card Value
-                </span>
-
-                <strong id="previewValue">
-                    —
-                </strong>
-
-            </div>
-
-
-            <div class="preview-row">
-
-                <span>
-                    Your Discount
-                </span>
-
-                <strong
-                    class="discount-text"
-                    id="previewDiscount">
-                    3%
-                </strong>
-
-            </div>
-
-            <div class="preview-divider"></div>
-
-            <div class="preview-row preview-total">
-
-                <span>
-                    You Pay
-                </span>
-
-                <strong id="previewPrice">
-                    —
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <button
-            class="wide-primary"
-            onclick="GCS.continueProduct()">
-
-            Add to Cart
-
-        </button>
 
     </div>
 
@@ -987,14 +843,14 @@
      JAVASCRIPT
 ===================================================== -->
 
-<script src="js/brands.js?v=20260918-01"></script>
-<script src="js/catalog.js?v=20260918-01"></script>
-<script src="js/products.js?v=20260918-01"></script>
-<script src="js/account.js?v=20260918-01"></script>
-<script src="js/orders.js?v=20260918-01"></script>
-<script src="js/ui.js?v=20260918-01"></script>
-<script src="js/app.js?v=20260918-01"></script>
-<script src="js/features.js?v=20260918-01"></script>
+<script src="js/brands.js?v=20260917-01"></script>
+<script src="js/catalog.js?v=20260917-01"></script>
+<script src="js/products.js?v=20260917-01"></script>
+<script src="js/account.js?v=20260917-01"></script>
+<script src="js/orders.js?v=20260917-01"></script>
+<script src="js/ui.js?v=20260917-01"></script>
+<script src="js/app.js?v=20260917-01"></script>
+<script src="js/features.js?v=20260917-01"></script>
 
 </body>
 </html>
